@@ -1,10 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\student\\Documents\\GitHub\\GFFCreativeTeam\\MechaAction\\",
+  "WorkspaceRootPath": "C:\\Users\\moriy\\Git\\GFF\\GFFCreativeTeam\\MechaAction\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|c:\\users\\student\\documents\\github\\gffcreativeteam\\mechaaction\\assets\\test.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|solutionrelative:assets\\test.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|c:\\users\\moriy\\git\\gff\\gffcreativeteam\\mechaaction\\assets\\scripts\\commandmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\commandmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,23 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "test.cs",
-              "DocumentMoniker": "C:\\Users\\student\\Documents\\GitHub\\GFFCreativeTeam\\MechaAction\\Assets\\test.cs",
-              "RelativeDocumentMoniker": "Assets\\test.cs",
-              "ToolTip": "C:\\Users\\student\\Documents\\GitHub\\GFFCreativeTeam\\MechaAction\\Assets\\test.cs",
-              "RelativeToolTip": "Assets\\test.cs",
-              "ViewState": "AgIAAHYAAAAAAAAAAAAgwAsAAAAXAAAAAAAAAA==",
+              "Title": "CommandManager.cs",
+              "DocumentMoniker": "C:\\Users\\moriy\\Git\\GFF\\GFFCreativeTeam\\MechaAction\\Assets\\Scripts\\CommandManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CommandManager.cs",
+              "ToolTip": "C:\\Users\\moriy\\Git\\GFF\\GFFCreativeTeam\\MechaAction\\Assets\\Scripts\\CommandManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CommandManager.cs",
+              "ViewState": "AgIAAJEAAAAAAAAAAAAQwLsAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-09T01:54:54.798Z",
+              "WhenOpened": "2025-09-14T13:35:35.769Z",
               "EditorCaption": ""
             }
           ]
