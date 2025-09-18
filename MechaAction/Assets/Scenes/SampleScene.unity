@@ -556,11 +556,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1094043265}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe8471e7df700ef4aaf9d90426298b97, type: 3}
+  m_Script: {fileID: 11500000, guid: a9a54ff46394ba846964bba880939957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 5
-  _jumpPower: 100
+  inputActions: {fileID: -944628639613478452, guid: ef24843de1d159b458b54350abe9e55a, type: 3}
+  bufferLimit: 30
+  frameDuration: 60
+  commandList: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
