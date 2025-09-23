@@ -1,9 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\moriy\\Git\\GFF\\GFFCreativeTeam\\MechaAction\\",
+  "WorkspaceRootPath": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\GFFCreativeTeam\\MechaAction\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|c:\\users\\moriy\\git\\gff\\gffcreativeteam\\mechaaction\\assets\\scripts\\commandmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\EnemySpawner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\IEnemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\Enemy\\Slime.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|c:\\users\\owner\\desktop\\github\u4FDD\u5B58\u5148\\gffcreativeteam\\mechaaction\\assets\\okamoto\\pplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|solutionrelative:assets\\okamoto\\pplayer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|c:\\users\\owner\\desktop\\github\u4FDD\u5B58\u5148\\gffcreativeteam\\mechaaction\\assets\\scripts\\commandmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F1198EE1-1DD8-7DF7-EEBA-C092DE4EA5B2}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\commandmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -14,15 +27,71 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Slime.cs",
+              "DocumentMoniker": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\Enemy\\Slime.cs",
+              "RelativeDocumentMoniker": "..\\..\\action\\Assets\\Script\\Enemy\\Slime.cs",
+              "ToolTip": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\Enemy\\Slime.cs",
+              "RelativeToolTip": "..\\..\\action\\Assets\\Script\\Enemy\\Slime.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAGkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-21T12:13:54.302Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "IEnemy.cs",
+              "DocumentMoniker": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\IEnemy.cs",
+              "RelativeDocumentMoniker": "..\\..\\action\\Assets\\Script\\IEnemy.cs",
+              "ToolTip": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\IEnemy.cs",
+              "RelativeToolTip": "..\\..\\action\\Assets\\Script\\IEnemy.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-21T12:13:14.424Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "EnemySpawner.cs",
+              "DocumentMoniker": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\EnemySpawner.cs",
+              "RelativeDocumentMoniker": "..\\..\\action\\Assets\\Script\\EnemySpawner.cs",
+              "ToolTip": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\action\\Assets\\Script\\EnemySpawner.cs",
+              "RelativeToolTip": "..\\..\\action\\Assets\\Script\\EnemySpawner.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-21T12:12:32.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PPlayer.cs",
+              "DocumentMoniker": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\GFFCreativeTeam\\MechaAction\\Assets\\okamoto\\PPlayer.cs",
+              "RelativeDocumentMoniker": "Assets\\okamoto\\PPlayer.cs",
+              "ToolTip": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\GFFCreativeTeam\\MechaAction\\Assets\\okamoto\\PPlayer.cs",
+              "RelativeToolTip": "Assets\\okamoto\\PPlayer.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAQwE0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-21T11:54:44.259Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "CommandManager.cs",
-              "DocumentMoniker": "C:\\Users\\moriy\\Git\\GFF\\GFFCreativeTeam\\MechaAction\\Assets\\Scripts\\CommandManager.cs",
+              "DocumentMoniker": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\GFFCreativeTeam\\MechaAction\\Assets\\Scripts\\CommandManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\CommandManager.cs",
-              "ToolTip": "C:\\Users\\moriy\\Git\\GFF\\GFFCreativeTeam\\MechaAction\\Assets\\Scripts\\CommandManager.cs",
+              "ToolTip": "C:\\Users\\Owner\\Desktop\\github\u4FDD\u5B58\u5148\\GFFCreativeTeam\\MechaAction\\Assets\\Scripts\\CommandManager.cs",
               "RelativeToolTip": "Assets\\Scripts\\CommandManager.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAgwKMAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
