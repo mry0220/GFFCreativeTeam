@@ -14,9 +14,15 @@ public class GManager : MonoBehaviour
     }
 
     // Clamp値を変更
-    public void SetCameraBounds(Vector2 min, Vector2 max)
+    public void SetCameraBounds(Vector2 min, Vector2 max) //カメラ制限
     {
         _mainCamera.minPos = min;
         _mainCamera.maxPos = max;
+    }
+
+    public void OnPlayerHit() //プレイヤーがダメージを受けたとき
+    {
+        if (_mainCamera != null)
+            _mainCamera.ShakeCamera();   // カメラ揺らす
     }
 }
