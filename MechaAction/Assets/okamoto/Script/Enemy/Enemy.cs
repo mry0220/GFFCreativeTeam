@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public enum EnemyState { Look, Chase, Return, Attack }
+    private enum EnemyState { Look, Chase, Return, Attack }
 
     [SerializeField] private float _lookRange = 3f;    // パトロール範囲
     [SerializeField] private float _chaseRange = 5f;   // 探知範囲

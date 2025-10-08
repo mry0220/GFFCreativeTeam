@@ -25,4 +25,16 @@ public class GManager : MonoBehaviour
         if (_mainCamera != null)
             _mainCamera.ShakeCamera();   // カメラ揺らす
     }
+
+    public void DiePlayer()
+    {
+        //currentpointへ移動 Player.position == currentpoint;
+        //HPを戻す、残機を減らす GetComponent<Player_HP>PlayerHP.ReturnHP();
+        //フェードアウトさせる
+    }
+
+    public void CheckPoint(Vector3 newPos)
+    {
+        Vector3 currentpoint = newPos;
+    }
 }

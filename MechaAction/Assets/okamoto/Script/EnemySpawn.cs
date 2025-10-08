@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    [Header("スポーンする敵プレハブ")]
-    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject _enemy;
 
-    [Header("プレイヤーとの距離設定")]
     [SerializeField] private float spawnDistance = 10f;   // この距離以内に来たら出現
     [SerializeField] private float despawnDistance = 15f; // この距離より離れたら削除
 
-    private GameObject currentEnemy;
-    private Transform player;
+    private GameObject _currentEnemy;
+    private Transform _player;
 
     private void Start()
     {
-        player = GameObject.FindWithTag("Player")?.transform;
+        _player = GameObject.FindWithTag("Player")?.transform;
 
         // GManagerなどからプレイヤーTransformを取得（直接FindしてもOK）
         if (GManager.Instance != null)
@@ -31,19 +29,19 @@ public class EnemySpawn : MonoBehaviour
 
     private void Update()
     {
-        if (player == null) return;
+        if (_player == null) return;
 
-        float distance = Vector3.Distance(transform.position, player.position);
+        float distance = Vector3.Distance(transform.position, _player.position);
 
         // プレイヤーが近づいたらスポーン
-        if (distance < spawnDistance && currentEnemy == null)
+        if (distance < spawnDistance && _currentEnemy == null)
         {
             Debug.Log("spawn");
             SpawnEnemy();
         }
 
         // プレイヤーが離れたら消滅
-        if (currentEnemy != null && distance > despawnDistance)
+        if (distance > despawnDistance && _currentEnemy != null)
         {
             Debug.Log("despawn");
             DespawnEnemy();
@@ -52,15 +50,15 @@ public class EnemySpawn : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        currentEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        _currentEnemy = Instantiate(_enemy, transform.position, Quaternion.identity);
     }
 
     private void DespawnEnemy()
     {
-        if (currentEnemy != null)
+        if (_currentEnemy != null)
         {
-            Destroy(currentEnemy);
-            currentEnemy = null;
+            Destroy(_currentEnemy);
+            _currentEnemy = null;
         }
     }
 }

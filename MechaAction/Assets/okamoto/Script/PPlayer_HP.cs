@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PPlayer_HP : MonoBehaviour
 {
+    private int hp =10;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,7 +15,8 @@ public class PPlayer_HP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (hp <= 0)
+            GManager.Instance.DiePlayer();
     }
 
    // ----- 3D Trigger (必要ならコメント切替) -----
