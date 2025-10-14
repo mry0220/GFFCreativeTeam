@@ -17,6 +17,7 @@ public class BurstEnemy : MonoBehaviour
     private Vector3 _spawnPos;
     private Transform _player;
     private Rigidbody _rb;
+    private float _moveSpeed = 1.0f;
 
     private void Awake()
     {
@@ -43,7 +44,7 @@ public class BurstEnemy : MonoBehaviour
                 {
                     _state = EnemyState.Look;
                 }
-                else if (Vector3.Distance(transform.position, _player.position) < 4f)
+                else if (Vector3.Distance(transform.position, _player.position) < 1f)
                 {
                     _state = EnemyState.Attack;
                 }
@@ -67,6 +68,17 @@ public class BurstEnemy : MonoBehaviour
 
     private void Move()
     {
+        //int dire
+
+        //if(transform.position < _player.position)
+
+        Vector3 direction = (_player.position - _rb.position).normalized;
+
+        Vector3 velocity = _rb.velocity;
+
+        velocity.x = direction.x * _moveSpeed;
+
+        _rb.velocity = velocity;
 
     }
 
