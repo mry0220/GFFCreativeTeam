@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Animations;
 
@@ -17,7 +19,10 @@ public class BurstEnemy : MonoBehaviour
     private Vector3 _spawnPos;
     private Transform _player;
     private Rigidbody _rb;
-    private float _moveSpeed = 1.0f;
+    private float _moveSpeed = 3.0f;
+    private bool _moveStop = false;
+    private int _direction = 0;
+    private float _attacktime = 0;
 
     private void Awake()
     {
@@ -32,7 +37,8 @@ public class BurstEnemy : MonoBehaviour
         {
             case EnemyState.Look:
                 Look();
-                if (Vector3.Distance(transform.position, _player.position) < 5f)
+                _attacktime = 0.0f;
+                if (Vector3.Distance(transform.position, _player.position) < 8f)
                 {
                     _state = EnemyState.Move;
                 }
@@ -40,11 +46,12 @@ public class BurstEnemy : MonoBehaviour
 
             case EnemyState.Move:
                 Move();
-                if (Vector3.Distance(transform.position, _player.position) > 6f)
+                _attacktime = Time.fixedDeltaTime;
+                if (Vector3.Distance(transform.position, _player.position) > 9f)
                 {
                     _state = EnemyState.Look;
                 }
-                else if (Vector3.Distance(transform.position, _player.position) < 1f)
+                else if ((_attacktime / 10) == 0)
                 {
                     _state = EnemyState.Attack;
                 }
@@ -63,23 +70,55 @@ public class BurstEnemy : MonoBehaviour
 
     private void Look()
     {
-
+        _direction = 0;
     }
 
     private void Move()
     {
-        //int dire
-
-        //if(transform.position < _player.position)
-
-        Vector3 direction = (_player.position - _rb.position).normalized;
-
         Vector3 velocity = _rb.velocity;
 
-        velocity.x = direction.x * _moveSpeed;
+        if (_moveStop)
+        {
+            _rb.velocity = Vector3.zero;
+            return;
+        }
+
+        if (_rb.position.x < _player.position.x)
+        {
+            if(_direction == -1)
+            {
+                StartCoroutine(Waitturn(1));
+            }
+            _direction = 1;
+        }
+        else
+        {
+            if (_direction == 1)
+            {
+                StartCoroutine(Waitturn(-1));
+            }
+            _direction = -1;
+        }
+
+        //int direction = (_rb.position.x < _player.position.x) ? 1 : -1;
+
+        //Vector3 direction = (_player.position - _rb.position).normalized;
+
+        velocity.x = _direction * _moveSpeed;
 
         _rb.velocity = velocity;
+        Debug.Log(_direction);
+    }
 
+    private IEnumerator Waitturn(int _newdirection)
+    {
+        _moveStop = true;
+        yield return new WaitForSeconds(0.5f);
+
+        _direction = _newdirection;
+        _moveStop = false;
+
+        yield break;
     }
 
     private void Wait()
