@@ -10,13 +10,13 @@ public class BurstEnemy : MonoBehaviour
     private enum EnemyState { 
         Look,          //’T‚·
         Move,          //’ÇÕ
-        Wait,          //”­ŽË—pˆÓ
+        Wait,          //”­ŽË—pˆÓ(‚¢‚ç‚È‚¢)
         Attack         //”­ŽË
     }
 
     private EnemyState _state = EnemyState.Look;
 
-    private Vector3 _spawnPos;
+    private Vector3 _spawnPos;//‚à‚Æ‚É‚à‚Ç‚é‚½‚ß
     private Transform _player;
     private Rigidbody _rb;
     private float _moveSpeed = 3.0f;
@@ -45,13 +45,14 @@ public class BurstEnemy : MonoBehaviour
                 break;
 
             case EnemyState.Move:
+                _attacktime += Time.deltaTime;
                 Move();
-                _attacktime = Time.fixedDeltaTime;
+                
                 if (Vector3.Distance(transform.position, _player.position) > 9f)
                 {
                     _state = EnemyState.Look;
                 }
-                else if ((_attacktime / 10) == 0)
+                else if (_attacktime > 3f)
                 {
                     _state = EnemyState.Attack;
                 }
@@ -63,6 +64,7 @@ public class BurstEnemy : MonoBehaviour
 
             case EnemyState.Attack:
                 Attack();
+                _attacktime = 0.0f;
                 _state = EnemyState.Move;
                 break;
         }
@@ -101,15 +103,16 @@ public class BurstEnemy : MonoBehaviour
         }
 
         //int direction = (_rb.position.x < _player.position.x) ? 1 : -1;
-
         //Vector3 direction = (_player.position - _rb.position).normalized;
 
         velocity.x = _direction * _moveSpeed;
 
         _rb.velocity = velocity;
         Debug.Log(_direction);
+        //Debug.Log(_attacktime);
     }
 
+    //U‚è•Ô‚é‚Æ‚«­‚µ—¯‚Ü‚é
     private IEnumerator Waitturn(int _newdirection)
     {
         _moveStop = true;

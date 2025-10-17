@@ -13,7 +13,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private float shakeMagnitude = 0.2f;
     //private Coroutine shakeCoroutine;
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (target == null) return;
 

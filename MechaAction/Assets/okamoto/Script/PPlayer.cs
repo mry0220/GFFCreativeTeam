@@ -12,12 +12,13 @@ public class PPlayer : MonoBehaviour
     private Vector2 _inputVector;
 
     private bool _isGrounded;
-    private bool _isJump;
+    private bool _isJump = false;
+    private bool _isSecondJump;
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
 
-    private float _FallTime;
+    private float _fallTime;
     private float _fallSpeed;
 
     private void Awake()
@@ -27,9 +28,19 @@ public class PPlayer : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(_isJump);
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (_isJump==true && _isSecondJump==false) return;
             _isJump = true;
+
+
+            //if (_isJump)
+            //{
+            //    _isSecondJump = true;
+            //}
+    
         }
     }
 
@@ -44,18 +55,34 @@ public class PPlayer : MonoBehaviour
 
         if (_isGrounded)
         {
+
             if( _isJump)
             {
                 _rb.AddForce(0f, _jumpPower, 0f,ForceMode.Impulse);
                 _isJump = false;
+                Debug.Log("a");
             }
+            _isSecondJump = true;
         }
         else
         {
-            _FallTime += Time.deltaTime;
+            if (_isSecondJump && _isJump)
+            {
+                velocity.y = 0f;
+                _fallTime = 0f;
+                _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
+                _isSecondJump = false;
+            }
+
+            if(_isJump)
+            {
+                _isJump = false;
+            }
+
+            _fallTime += Time.deltaTime;
 
             //_moveVector.y = Physics.gravity.y * _FallTime * 2.0f;　//直接値を変えてしますので次のフレームで０に戻ってしまう
-            _fallSpeed = Physics.gravity.y * _FallTime * 2f*2f; //Unityの標準重力に任せたいなら fallSpeed は不要
+            _fallSpeed = Physics.gravity.y * _fallTime * 2f*2f; //Unityの標準重力に任せたいなら fallSpeed は不要
 
 
             //  --- 後々落下速度の制限 ---
@@ -76,7 +103,7 @@ public class PPlayer : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Grounded"))
         {
-            _FallTime = 0;
+            _fallTime = 0f;
             _isGrounded = true;
         }
     }
@@ -85,7 +112,7 @@ public class PPlayer : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Grounded")) 
         {
-            _FallTime = 0;
+            _fallTime = 0f;
             _isGrounded = false;
         }
     }
