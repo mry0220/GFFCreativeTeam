@@ -14,6 +14,7 @@ public class PPlayer : MonoBehaviour
     private bool _isGrounded;
     private bool _isJump = false;
     private bool _isSecondJump;
+    private bool _isDash = false;
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
@@ -28,19 +29,39 @@ public class PPlayer : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(_isJump);
+        // マウスのスクリーン座標を取得
+        Vector3 mousePos = Input.mousePosition;
+
+        //Debug.Log($"Screen Position: X={mousePos.x}, Y={mousePos.y}");
+
+        // ワールド座標に変換（カメラ必須）
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(
+            new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane)
+        );
+
+        if(transform.position.x  < worldPos.x)
+        {
+
+        }
+        //Debug.Log($"World Position: {worldPos}");
+
+        //Debug.Log(_isJump);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (_isJump==true && _isSecondJump==false) return;
             _isJump = true;
-
-
-            //if (_isJump)
-            //{
-            //    _isSecondJump = true;
-            //}
     
+        }
+
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            _isDash = true;
+            Debug.Log("DashTrue");
+        }
+        else
+        {
+            _isDash = false;
+            Debug.Log("DashFalse");
         }
     }
 
@@ -50,7 +71,16 @@ public class PPlayer : MonoBehaviour
         _inputVector.y = Input.GetAxisRaw("Vertical");
 
         Vector3 velocity = _rb.velocity;　//一度変数にコピーしてから編集
-        velocity.x = _moveVector.x * _moveSpeed;
+
+        if(_isDash)
+        {
+            velocity.x = _moveVector.x * _moveSpeed;
+            Debug.Log("dash");
+        }
+        else
+        {
+            velocity.x = _moveVector.x * _moveSpeed * 0.5f;
+        }
         _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
 
         if (_isGrounded)
@@ -60,7 +90,7 @@ public class PPlayer : MonoBehaviour
             {
                 _rb.AddForce(0f, _jumpPower, 0f,ForceMode.Impulse);
                 _isJump = false;
-                Debug.Log("a");
+                //Debug.Log("a");
             }
             _isSecondJump = true;
         }
