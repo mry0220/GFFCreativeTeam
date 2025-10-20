@@ -14,6 +14,10 @@ public class PPlayer : MonoBehaviour
     private bool _isGrounded;
     private bool _isJump = false;
     private bool _isSecondJump;
+    private bool _isRun = false;
+    private int _Runcount = 0;
+    private int _lookDir;
+    private float prevHorizontal = 0f;
     private bool _isDash = false;
 
     [SerializeField] private float _moveSpeed;
@@ -36,16 +40,18 @@ public class PPlayer : MonoBehaviour
 
         // ワールド座標に変換（カメラ必須）
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(
-            new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane)
+            new Vector3(mousePos.x, mousePos.y,10f )//Camera.main.nearClipPlane
         );
+        
 
         if(transform.position.x  < worldPos.x)
         {
-
+            _lookDir = 1;
         }
-        //Debug.Log($"World Position: {worldPos}");
-
-        //Debug.Log(_isJump);
+        else if (transform.position.x > worldPos.x)
+        {
+            _lookDir = -1;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -53,16 +59,50 @@ public class PPlayer : MonoBehaviour
     
         }
 
-        if(Input.GetKey(KeyCode.LeftShift))
+
+        if (prevHorizontal == 0f && _inputVector.x == 1)//_inputVectorの押す瞬間を取得するため
+        {
+            if(_Runcount <= 0)
+            {
+                _Runcount = 100;
+            }
+            else
+            {
+                _isRun = true;
+                Debug.Log("Dash!");
+            }
+        }
+
+        if (prevHorizontal == 0f && _inputVector.x == -1)//_inputVectorの押す瞬間を取得するため
+        {
+            if (_Runcount <= 0)
+            {
+                _Runcount = 100;
+            }
+            else
+            {
+                _isRun = true;
+                Debug.Log("Dash!");
+            }
+        }
+
+        if (_Runcount > 0)
+        {
+            _Runcount--;
+        }
+        if(_inputVector.x == 0)
+        {
+            _isRun = false;
+            Debug.Log("nodash");
+        }
+
+        prevHorizontal = _inputVector.x;
+
+        if(Input.GetKeyDown(KeyCode.LeftShift))
         {
             _isDash = true;
-            Debug.Log("DashTrue");
         }
-        else
-        {
-            _isDash = false;
-            Debug.Log("DashFalse");
-        }
+         
     }
 
     private void FixedUpdate()
@@ -70,18 +110,40 @@ public class PPlayer : MonoBehaviour
         _inputVector.x = Input.GetAxisRaw("Horizontal");
         _inputVector.y = Input.GetAxisRaw("Vertical");
 
-        Vector3 velocity = _rb.velocity;　//一度変数にコピーしてから編集
+        Vector3 velocity = _rb.velocity; //一度変数にコピーしてから編集
+        _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
 
         if(_isDash)
         {
-            velocity.x = _moveVector.x * _moveSpeed;
-            Debug.Log("dash");
+            StartCoroutine(_Dash());
+            return;
         }
-        else
+
+        if(_lookDir == 1)
         {
-            velocity.x = _moveVector.x * _moveSpeed * 0.5f;
+            if (_isRun && _moveVector.x > 0f)
+            {
+                velocity.x = _moveVector.x * _moveSpeed;
+
+            }
+            else
+            {
+                velocity.x = _moveVector.x * _moveSpeed * 0.5f;
+            }
         }
-        _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
+        else if (_lookDir == -1)
+        {
+            if (_isRun && _moveVector.x < 0f)
+            {
+                velocity.x = _moveVector.x * _moveSpeed;
+
+            }
+            else
+            {
+                velocity.x = _moveVector.x * _moveSpeed * 0.5f;
+            }
+        }
+
 
         if (_isGrounded)
         {
@@ -90,7 +152,6 @@ public class PPlayer : MonoBehaviour
             {
                 _rb.AddForce(0f, _jumpPower, 0f,ForceMode.Impulse);
                 _isJump = false;
-                //Debug.Log("a");
             }
             _isSecondJump = true;
         }
@@ -127,6 +188,12 @@ public class PPlayer : MonoBehaviour
         //_rb.velocity = _moveSpeed * _moveVector;
 
         _rb.velocity = velocity; //編集した値を戻してrigidbodyで実行
+    }
+
+    private IEnumerator _Dash()
+    {
+
+        yield break;
     }
 
     private void OnCollisionEnter(Collision collision)
