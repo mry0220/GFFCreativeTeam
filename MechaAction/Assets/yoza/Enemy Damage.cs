@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Damage : MonoBehaviour
+public class EnemyDamage : MonoBehaviour
 {
     [Header("好きに入れて")]
    [SerializeField]   public float damageAmount = 20f;
@@ -16,8 +16,8 @@ public class Damage : MonoBehaviour
         // keiyakuを持っている（HPを持つべき）オブジェクトであれば
         if (targetHealth != null)
         {
-            // 抽象的なIHealth型を通してTakeDamageを呼ぶ
-            targetHealth.TakeDamage(damageAmount);
+            // 抽象的なIHealth型を通してPlayerDamageを呼ぶ
+            targetHealth.PlayerDamage(damageAmount);
 
             // 弾丸などの場合は、ここで自身を破壊する
             // Destroy(gameObject);
@@ -30,7 +30,7 @@ public class Damage : MonoBehaviour
         keiyaku targetHealth = target.GetComponent<keiyaku>();
         if (targetHealth != null)
         {
-            targetHealth.TakeDamage(damageAmount);
+            targetHealth.PlayerDamage(damageAmount);
         }
     }*/
 }

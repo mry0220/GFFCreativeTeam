@@ -10,7 +10,7 @@ using UnityEngine;
     float CurrentHP { get; }
 
     // HP‚ğ‘€ì‚·‚é‚½‚ß‚Ìƒƒ\ƒbƒh
-    void TakeDamage(float amount);
+    void PlayerDamage(float amount);
     void Heal(float amount);
     void Die();
 

@@ -5,42 +5,42 @@ using UnityEngine;
 public class PlayerHP : MonoBehaviour
 {
     // [SerializeField] でInspectorから設定可能にする
-    [Header("Health Values")]
-    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float maxHP = 100f;
 
     // 現在のHPはprivate変数で管理
-    private float currentHealth;
+    private float currentHP;
 
     // 現在のHPを他のスクリプト（UIなど）から取得するための公開プロパティ
-    public float CurrentHealth => currentHealth;
-    public float MaxHealth => maxHealth;
+    public float CurrentHP => currentHP;
+    public float MaxHP => maxHP;
 
     void Start()
     {
         // ゲーム開始時にHPを最大値に設定
-        currentHealth = maxHealth;
-        Debug.Log(gameObject.name + "のHPが初期化されました: " + currentHealth);
+        currentHP = maxHP;
+        Debug.Log(gameObject.name + "のHPが初期化されました: " + currentHP);
     }
 
    
     //ダメージを受け、HPを減少させる。
     public void TakeDamage(float damageAmount)
     {
-        if (currentHealth <= 0)
+        if (currentHP <= 0)
         {
             // 既に死亡している場合は処理をスキップ
             return;
         }
 
-        currentHealth -= damageAmount;
 
+        // --- ここからダメージ処理 ---
+        currentHP -= damageAmount;
         // HPが0未満にならないように制限
-        currentHealth = Mathf.Max(currentHealth, 0);
+        currentHP = Mathf.Max(currentHP, 0);
 
-        Debug.Log(gameObject.name + "が" + damageAmount + "ダメージ受けました。残りHP: " + currentHealth);
+        Debug.Log(gameObject.name + "が" + damageAmount + "ダメージ受けました。残りHP: " + currentHP);
 
         // HPが0以下になったかチェック
-        if (currentHealth <= 0)
+        if (currentHP <= 0)
         {
             Die();
         }
@@ -50,12 +50,12 @@ public class PlayerHP : MonoBehaviour
     // HPを回復させる。
     public void Heal(float healAmount)
     {
-        currentHealth += healAmount;
+        currentHP += healAmount;
 
         // HPが最大値を超えないように制限
-        currentHealth = Mathf.Min(currentHealth, maxHealth);
+        currentHP = Mathf.Min(currentHP, maxHP);
 
-        Debug.Log(gameObject.name + "のHPが" + healAmount + "回復しました。残りHP: " + currentHealth);
+        Debug.Log(gameObject.name + "のHPが" + healAmount + "回復しました。残りHP: " + currentHP);
     }
 
     
@@ -64,6 +64,7 @@ public class PlayerHP : MonoBehaviour
     {
         Debug.Log(gameObject.name + "は倒されました。ゲームオーバー！");
         // ここにゲームオーバー画面の表示、リスタート処理、プレイヤー入力の無効化などの処理を追加
-        gameObject.SetActive(false); // 例としてプレイヤーオブジェクトを非アクティブ化
+        // プレイヤーオブジェクトを非アクティブ化
+        gameObject.SetActive(false);
     }
 }

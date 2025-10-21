@@ -21,7 +21,7 @@ public class EnemyHP : MonoBehaviour, keiyaku
 
   
     //ダメージを受け、HPを減少させる処理
-    public void TakeDamage(float amount)
+    public void PlayerDamage(float amount)
     {
         if (currentHP <= 0) return;
 

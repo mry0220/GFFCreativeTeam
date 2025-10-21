@@ -35,7 +35,7 @@ public class test : MonoBehaviour
         // Dキー でダメージをテスト
          else if (Input.GetKeyDown(KeyCode.D))
         {
-            targetHealth.TakeDamage(testDamage);
+            targetHealth.PlayerDamage(testDamage);
         }
 
         // Hキーで回復をテスト
