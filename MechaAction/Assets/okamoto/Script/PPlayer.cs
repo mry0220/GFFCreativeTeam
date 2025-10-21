@@ -19,6 +19,7 @@ public class PPlayer : MonoBehaviour
     private int _lookDir;
     private float prevHorizontal = 0f;
     private bool _isDash = false;
+    private bool _canDash = true;
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
@@ -44,11 +45,11 @@ public class PPlayer : MonoBehaviour
         );
         
 
-        if(transform.position.x  < worldPos.x)
+        if(transform.position.x  < worldPos.x && !_isDash)
         {
             _lookDir = 1;
         }
-        else if (transform.position.x > worldPos.x)
+        else if (transform.position.x > worldPos.x && !_isDash)
         {
             _lookDir = -1;
         }
@@ -64,7 +65,7 @@ public class PPlayer : MonoBehaviour
         {
             if(_Runcount <= 0)
             {
-                _Runcount = 100;
+                _Runcount = 150;
             }
             else
             {
@@ -77,7 +78,7 @@ public class PPlayer : MonoBehaviour
         {
             if (_Runcount <= 0)
             {
-                _Runcount = 100;
+                _Runcount = 150;
             }
             else
             {
@@ -98,9 +99,10 @@ public class PPlayer : MonoBehaviour
 
         prevHorizontal = _inputVector.x;
 
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetMouseButtonDown(1) && _canDash)
         {
             _isDash = true;
+            _canDash = false;
         }
          
     }
@@ -154,6 +156,7 @@ public class PPlayer : MonoBehaviour
                 _isJump = false;
             }
             _isSecondJump = true;
+            _canDash = true;
         }
         else
         {
@@ -164,7 +167,6 @@ public class PPlayer : MonoBehaviour
                 _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
                 _isSecondJump = false;
             }
-
             if(_isJump)
             {
                 _isJump = false;
@@ -192,7 +194,23 @@ public class PPlayer : MonoBehaviour
 
     private IEnumerator _Dash()
     {
-
+        Vector3 velocity = _rb.velocity;
+        velocity.x = 0f;
+        velocity.y = 0f;
+        _fallTime = 0f;
+        _rb.velocity = velocity;
+        velocity = _rb.velocity;
+        if (_lookDir == 1)
+        {
+            velocity.x = _lookDir * 10f;
+        }
+        else if(_lookDir == -1)
+        {
+            velocity.x = _lookDir * 10f;
+        }
+        _rb.velocity = velocity;
+        yield return new WaitForSeconds(0.5f);
+        _isDash = false;
         yield break;
     }
 
