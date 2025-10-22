@@ -19,20 +19,28 @@ public class DogEnemy : MonoBehaviour
     private Transform _player;
     private Rigidbody _rb;
 
+    private bool _moveStop = false;
+    private int _direction = 0;
+
     private void Awake()
     {
-        _spawnPos = transform.position;
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
     }
 
+    private void Start()
+    {
+        _spawnPos = transform.position;
+    }
+
     private void FixedUpdate()
     {
+
         switch (_state)
         {
             case EnemyState.Look:
                 Look();
-                if (Vector3.Distance(transform.position, _player.position) < 8f)
+                if (Vector3.Distance(transform.position, _player.position) < 13f)
                 {
                     _state = EnemyState.Move;
                 }
@@ -40,13 +48,9 @@ public class DogEnemy : MonoBehaviour
 
             case EnemyState.Move:
                 Move();
-                if (Vector3.Distance(transform.position, _player.position) > 9f)
+                if (Vector3.Distance(transform.position, _player.position) > 17f)
                 {
                     _state = EnemyState.Look;
-                }
-                else if (Vector3.Distance(transform.position, _player.position) < 1f)
-                {
-                    _state = EnemyState.Attack;
                 }
                 break;
 
@@ -59,6 +63,8 @@ public class DogEnemy : MonoBehaviour
                 _state = EnemyState.Move;
                 break;
         }
+
+
     }
 
     private void Look()
@@ -68,7 +74,48 @@ public class DogEnemy : MonoBehaviour
 
     private void Move()
     {
-        
+        Vector3 velocity = _rb.velocity;
+
+
+        if (_moveStop)
+        {
+            _rb.velocity = Vector3.zero;
+            return;
+        }
+
+        if (_rb.position.x < _player.position.x)
+        {
+            if (_direction == -1)
+            {
+                StartCoroutine(Waitturn(1));
+            }
+            _direction = 1;
+        }
+        else
+        {
+            if (_direction == 1)
+            {
+                StartCoroutine(Waitturn(-1));
+            }
+            _direction = -1;
+        }
+
+        //FrontJump();
+        //BackJump();
+
+        _rb.velocity = velocity;
+    }
+
+
+    private IEnumerator Waitturn(int _newdirection)
+    {
+        _moveStop = true;
+        yield return new WaitForSeconds(0.5f);
+
+        _direction = _newdirection;
+        _moveStop = false;
+
+        yield break;
     }
 
     private void Wait()

@@ -19,7 +19,7 @@ public class PPlayer : MonoBehaviour
     private int _lookDir;
     private float prevHorizontal = 0f;
     private bool _isDash = false;
-    private bool _canDash = true;
+    private bool _canDash = true;//空中で２回目ダッシュを防ぐため
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
@@ -102,6 +102,7 @@ public class PPlayer : MonoBehaviour
         if(Input.GetMouseButtonDown(1) && _canDash)
         {
             _isDash = true;
+            StartCoroutine(_Dash());
             _canDash = false;
         }
          
@@ -114,10 +115,8 @@ public class PPlayer : MonoBehaviour
 
         Vector3 velocity = _rb.velocity; //一度変数にコピーしてから編集
         _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
-
         if(_isDash)
         {
-            StartCoroutine(_Dash());
             return;
         }
 
@@ -177,13 +176,14 @@ public class PPlayer : MonoBehaviour
             //_moveVector.y = Physics.gravity.y * _FallTime * 2.0f;　//直接値を変えてしますので次のフレームで０に戻ってしまう
             _fallSpeed = Physics.gravity.y * _fallTime * 2f*2f; //Unityの標準重力に任せたいなら fallSpeed は不要
 
-
-            //  --- 後々落下速度の制限 ---
-
             //Debug.Log(_fallSpeed);
 
             velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y速度に徐々に加算
                                                            //Time.fixedDeltaTime 物理演算をフレームレートに依存させないため必須
+　　　　　　if(velocity.y < -20f)//落下速度の制限
+            {
+                velocity.y = -20f;
+            }
         }
 
 
@@ -194,22 +194,29 @@ public class PPlayer : MonoBehaviour
 
     private IEnumerator _Dash()
     {
+        _isDash = true;
         Vector3 velocity = _rb.velocity;
-        velocity.x = 0f;
-        velocity.y = 0f;
         _fallTime = 0f;
-        _rb.velocity = velocity;
-        velocity = _rb.velocity;
-        if (_lookDir == 1)
+
+        float t = 0f;
+        float duration = 0.2f;
+        while(t < duration)
         {
-            velocity.x = _lookDir * 10f;
+            velocity = _rb.velocity;
+            if (_lookDir == 1)
+            {
+                velocity.x = _lookDir * 15f;
+                velocity.y = 0f;
+            }
+            else if (_lookDir == -1)
+            {
+                velocity.x = _lookDir * 15f;
+                velocity.y = 0f;
+            }
+            _rb.velocity = velocity;
+            t += Time.deltaTime;
+            yield return new WaitForFixedUpdate();  //コルーチン内でFixedUpdateできるのAIで知った
         }
-        else if(_lookDir == -1)
-        {
-            velocity.x = _lookDir * 10f;
-        }
-        _rb.velocity = velocity;
-        yield return new WaitForSeconds(0.5f);
         _isDash = false;
         yield break;
     }

@@ -26,9 +26,13 @@ public class BurstEnemy : MonoBehaviour
 
     private void Awake()
     {
-        _spawnPos = transform.position;
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        _spawnPos = transform.position;
     }
 
     private void FixedUpdate()
