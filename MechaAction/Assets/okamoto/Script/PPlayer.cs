@@ -6,6 +6,7 @@ public class PPlayer : MonoBehaviour
 {
 
     private Rigidbody _rb;
+    private Animator _anim;
 
     private Vector2 _moveVector;
 
@@ -30,6 +31,7 @@ public class PPlayer : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -102,6 +104,7 @@ public class PPlayer : MonoBehaviour
         if(Input.GetMouseButtonDown(1) && _canDash)
         {
             _isDash = true;
+            _anim.SetTrigger("Dash");
             StartCoroutine(_Dash());
             _canDash = false;
         }
@@ -119,8 +122,29 @@ public class PPlayer : MonoBehaviour
         {
             return;
         }
+        
+        if(_inputVector.x != 0)//歩きアニメーション
+        {
+            Debug.Log("warkAnimation");
+            _anim.SetBool("Wark",true);
+            //_anim.Play("Armature_Walk");
+        }
+        else
+        {
+            _anim.SetBool("Wark", false);
 
-        if(_lookDir == 1)
+        }
+
+        if(_isRun)
+        {
+            _anim.SetBool("Run", true);
+        }
+        else
+        {
+            _anim.SetBool("Run", false);
+        }
+
+        if (_lookDir == 1)
         {
             if (_isRun && _moveVector.x > 0f)
             {
@@ -130,6 +154,7 @@ public class PPlayer : MonoBehaviour
             else
             {
                 velocity.x = _moveVector.x * _moveSpeed * 0.5f;
+                //_anim.Play("Armature_Walk");
             }
         }
         else if (_lookDir == -1)

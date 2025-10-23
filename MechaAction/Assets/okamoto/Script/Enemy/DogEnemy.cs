@@ -74,7 +74,7 @@ public class DogEnemy : MonoBehaviour
                 break;
 
             case EnemyState.Attack:
-                if(!_isattack)
+                if(!_isattack)//コルーチンの重複防ぐ
                     StartCoroutine(Attack());
                 _state = EnemyState.Wait;
                 break;
@@ -151,10 +151,10 @@ public class DogEnemy : MonoBehaviour
     {
         _ismove = true;
         Vector3 velocity = _rb.velocity;
-        int _rand = Random.Range(1, 4);
+        //int _rand = Random.Range(1, 4);
         if (Vector3.Distance(transform.position, _player.position) > 7f)
         {
-            Debug.Log("backjump");
+            Debug.Log("frontjump");
             _rb.AddForce(_direction * 13f, _jumpPower, 0f, ForceMode.Impulse);
             if (_isGrounded)
             {
@@ -170,7 +170,7 @@ public class DogEnemy : MonoBehaviour
         }
         else
         {
-            Debug.Log("frontjump");
+            Debug.Log("backjump");
             _rb.AddForce(_direction * -9f, _jumpPower, 0f, ForceMode.Impulse);
             if (_isGrounded)
             {
