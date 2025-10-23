@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class JumpAttack : MonoBehaviour
 {
-    public enum EnemyState { Idle, ArcingJump, Dropping, Cooldown}
+    public enum EnemyState { Look, Chace, }
 
     [SerializeField] private Transform player;
-    [SerializeField] private float _jumpPower = 10f;
-    [SerializeField] private float _dropForce = 30f;
+    //[SerializeField] private float _jumpPower = 10f;
+    //[SerializeField] private float _dropForce = 30f;
     [SerializeField] private float _detectionRange = 7f;
     [SerializeField] private float _cooldownTime = 2f;
 
     private Rigidbody rb;
-    private EnemyState currentState = EnemyState.Idle;
+    private EnemyState currentState = EnemyState.Look;
     private float cooldownTimer = 0f;
 
     private void Awake()
@@ -23,7 +23,7 @@ public class JumpAttack : MonoBehaviour
     {
         switch (currentState)
         {
-            case EnemyState.Idle:
+            case EnemyState.Look:
                 float xDistance = Mathf.Abs(transform.position.x - player.position.x);
                 float totalDistance = Vector3.Distance(transform.position, player.position);
 
@@ -31,7 +31,9 @@ public class JumpAttack : MonoBehaviour
                 {
                     Debug.Log("ãﬂê⁄çUåÇ");
                 }
-                else if(totalDistance < _detectionRange)
+
+                break;
+                /*else if(totalDistance < _detectionRange)
                 {
                     ArcJump();
                 }
@@ -60,13 +62,13 @@ public class JumpAttack : MonoBehaviour
                 cooldownTimer -= Time.deltaTime;
                 if (cooldownTimer <= 0f)
                 {
-                    currentState = EnemyState.Idle;
+                    currentState = EnemyState.Look;
                 }
-                break;
+                break;*/
         }
     }
 
-    private void ArcJump()
+    /*private void ArcJump()
     {
         Vector3 Direction = (player.position - transform.position).normalized;
         Vector3 arcVelocity = new Vector3(Direction.x,_jumpPower, Direction.z);
@@ -87,6 +89,6 @@ public class JumpAttack : MonoBehaviour
             currentState = EnemyState.Cooldown;
             cooldownTimer = _cooldownTime;
         }
-    }
+    }*/
 
 }
