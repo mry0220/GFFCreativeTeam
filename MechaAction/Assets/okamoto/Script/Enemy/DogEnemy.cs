@@ -107,8 +107,6 @@ public class DogEnemy : MonoBehaviour
             return;
         }
 
-        Vector3 velocity = _rb.velocity;
-
         if (_moveStop)
         {
             _rb.velocity = Vector3.zero;
@@ -132,7 +130,6 @@ public class DogEnemy : MonoBehaviour
             _direction = -1;
         }
 
-        _rb.velocity = velocity;
     }
 
 
@@ -150,17 +147,21 @@ public class DogEnemy : MonoBehaviour
     private IEnumerator Move()
     {
         _ismove = true;
-        Vector3 velocity = _rb.velocity;
         //int _rand = Random.Range(1, 4);
         if (Vector3.Distance(transform.position, _player.position) > 7f)
         {
             Debug.Log("frontjump");
             _rb.AddForce(_direction * 13f, _jumpPower, 0f, ForceMode.Impulse);
-            if (_isGrounded)
-            {
-                velocity.x = 0f;//着地で止まる（意味ないかも
-                _state = EnemyState.Attack;
-            }
+
+            yield return new WaitForSeconds(0.4f);
+
+            
+            Debug.Log("ぴた");
+            yield return new WaitForFixedUpdate(); //コルーチン内だとFixedUpdate(Update?)で
+                                                       //上書きされnew Vector3が使えなため(AI参照)
+            _rb.velocity = Vector3.zero;
+            _state = EnemyState.Attack;
+            
             
         }
         else if(Vector3.Distance(transform.position, _player.position) <= 7f &&
@@ -172,14 +173,16 @@ public class DogEnemy : MonoBehaviour
         {
             Debug.Log("backjump");
             _rb.AddForce(_direction * -9f, _jumpPower, 0f, ForceMode.Impulse);
-            if (_isGrounded)
-            {
-                velocity.x = 0f;//着地で止まる（意味ないかも
-                _state = EnemyState.Attack;
-            }
+
+            yield return new WaitForSeconds(0.4f);
+
+            Debug.Log("ぴた");
+            yield return new WaitForFixedUpdate(); //コルーチン内だとFixedUpdate(Update?)で
+                                                       //上書きされnew Vector3が使えなため(AI参照)
+            _rb.velocity = Vector3.zero;
+            _state = EnemyState.Attack;
         }
 
-        _rb.velocity = velocity;
         _ismove = false;
         yield break;
     }

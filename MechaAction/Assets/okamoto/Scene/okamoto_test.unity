@@ -120,6 +120,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &290976212 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5743444538287252562, guid: 4e0ceeb45765c644a8e3f97622f6f1ff, type: 3}
+  m_PrefabInstance: {fileID: 7663362960057181374}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &304040719
 GameObject:
   m_ObjectHideFlags: 0
@@ -896,7 +901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1246565571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1176,7 +1181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e608ae5ed5e454381a2583d5ca0a83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 1438791130}
+  target: {fileID: 290976212}
   minPos: {x: 0, y: 3}
   maxPos: {x: 30, y: 100}
   smoothSpeed: 9
@@ -1519,13 +1524,14 @@ GameObject:
   - component: {fileID: 2042430587}
   - component: {fileID: 2042430586}
   - component: {fileID: 2042430590}
-  m_Layer: 0
+  - component: {fileID: 2042430591}
+  m_Layer: 7
   m_Name: BigEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &2042430586
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1608,7 +1614,7 @@ Transform:
   m_GameObject: {fileID: 2042430585}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.2670164, y: 1, z: 0}
+  m_LocalPosition: {x: 6.79, y: 1, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1641,6 +1647,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 64
   m_CollisionDetection: 0
+--- !u!114 &2042430591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042430585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af7403baea4bcc4980ae13360dd3cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7663362960057181374
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -72,7 +72,7 @@ public class PPlayer : MonoBehaviour
             else
             {
                 _isRun = true;
-                Debug.Log("Dash!");
+                //Debug.Log("Dash!");
             }
         }
 
@@ -85,7 +85,7 @@ public class PPlayer : MonoBehaviour
             else
             {
                 _isRun = true;
-                Debug.Log("Dash!");
+                //Debug.Log("Dash!");
             }
         }
 
@@ -96,7 +96,7 @@ public class PPlayer : MonoBehaviour
         if(_inputVector.x == 0)
         {
             _isRun = false;
-            Debug.Log("nodash");
+            //Debug.Log("nodash");
         }
 
         prevHorizontal = _inputVector.x;
@@ -116,16 +116,18 @@ public class PPlayer : MonoBehaviour
         _inputVector.x = Input.GetAxisRaw("Horizontal");
         _inputVector.y = Input.GetAxisRaw("Vertical");
 
-        Vector3 velocity = _rb.velocity; //一度変数にコピーしてから編集
-        _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
-        if(_isDash)
+        if (_isDash)
         {
             return;
         }
+
+        Vector3 velocity = _rb.velocity; //一度変数にコピーしてから編集
+        _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
+        
         
         if(_inputVector.x != 0)//歩きアニメーション
         {
-            Debug.Log("warkAnimation");
+            //Debug.Log("warkAnimation");
             _anim.SetBool("Wark",true);
             //_anim.Play("Armature_Walk");
         }
