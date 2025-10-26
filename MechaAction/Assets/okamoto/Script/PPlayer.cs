@@ -104,7 +104,7 @@ public class PPlayer : MonoBehaviour
         if(Input.GetMouseButtonDown(1) && _canDash)
         {
             _isDash = true;
-            _anim.SetTrigger("Dash");
+            _anim.SetFloat("Speed",3);
             StartCoroutine(_Dash());
             _canDash = false;
         }
@@ -125,25 +125,26 @@ public class PPlayer : MonoBehaviour
         _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
         
         
-        if(_inputVector.x != 0)//歩きアニメーション
+        if(_moveVector.x == 0)//歩きアニメーション
         {
-            //Debug.Log("warkAnimation");
-            _anim.SetBool("Wark",true);
-            //_anim.Play("Armature_Walk");
-        }
-        else
-        {
-            _anim.SetBool("Wark", false);
+           // _anim.SetFloat("Speed", 0);
 
         }
 
-        if(_isRun)
+        if (velocity.x >= -1 && velocity.x <= 1)
         {
-            _anim.SetBool("Run", true);
+            _anim.SetFloat("Speed", 0);
+            Debug.Log("Speed0");
+        }
+        else if((velocity.x > 1 && velocity.x <= 4)|| (velocity.x < 1 && velocity.x >= -4))
+        {
+            _anim.SetFloat("Speed", 1);
+            Debug.Log("Speed1");
         }
         else
         {
-            _anim.SetBool("Run", false);
+            _anim.SetFloat("Speed", 2);
+            Debug.Log("Speed2");
         }
 
         if (_lookDir == 1)
@@ -151,12 +152,10 @@ public class PPlayer : MonoBehaviour
             if (_isRun && _moveVector.x > 0f)
             {
                 velocity.x = _moveVector.x * _moveSpeed;
-
             }
             else
             {
                 velocity.x = _moveVector.x * _moveSpeed * 0.5f;
-                //_anim.Play("Armature_Walk");
             }
         }
         else if (_lookDir == -1)
@@ -164,7 +163,6 @@ public class PPlayer : MonoBehaviour
             if (_isRun && _moveVector.x < 0f)
             {
                 velocity.x = _moveVector.x * _moveSpeed;
-
             }
             else
             {
@@ -215,7 +213,7 @@ public class PPlayer : MonoBehaviour
 
 
         //_rb.velocity = _moveSpeed * _moveVector;
-
+        Debug.Log(velocity.x);
         _rb.velocity = velocity; //編集した値を戻してrigidbodyで実行
     }
 
@@ -240,6 +238,7 @@ public class PPlayer : MonoBehaviour
                 velocity.x = _lookDir * 15f;
                 velocity.y = 0f;
             }
+            Debug.Log(velocity.x);
             _rb.velocity = velocity;
             t += Time.deltaTime;
             yield return new WaitForFixedUpdate();  //コルーチン内でFixedUpdateできるのAIで知った
