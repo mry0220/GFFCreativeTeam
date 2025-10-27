@@ -56,35 +56,44 @@ public class Dolon2 : MonoBehaviour
     }
     private void Move()
     {
+
         Vector3 velocity = _rd.velocity;
-        if (_player.position.x < _rd.position.x) 
-        {
-            if (Vector3.Distance(_player.position, _rd.position) > 4f)
-            {
-                _direction = -1;
 
-            }
-            else if (Vector3.Distance(_player.position, _rd.position) < 2f)
-            {
-                _direction = 1;
-            }
-            velocity.x = _direction * _movespeed;
-            velocity.y = 0f;
-        }
-        else 
-        {
-            if (Vector3.Distance(_player.position, _rd.position) > 4f)
-            {
-                _direction = 1;
+        float P_Rkyori = Vector3.Distance(_player.position, _rd.position);
 
-            }
-            else if (Vector3.Distance(_player.position, _rd.position) < 2f)
+        
+      //  if()
+            if (_player.position.x < _rd.position.x)
             {
-                _direction = -1;
+                if (P_Rkyori > 3f)
+
+                {
+                    _direction = -1;
+
+                }
+                else if (P_Rkyori < 2f)
+                {
+                    _direction = 1;
+                }
+                velocity.x = _direction * _movespeed;
+                velocity.y = 0f;
             }
-            velocity.x = _direction * _movespeed;
-            velocity.y = 0f;
-        }
+            else
+            {
+                if (P_Rkyori > 3f)
+
+                {
+                    _direction = 1;
+
+                }
+                else if (P_Rkyori < 2f)
+                {
+                    _direction = -1;
+                }
+                velocity.x = _direction * _movespeed;
+                velocity.y = 0f;
+            }
+        
 
         _rd.velocity = velocity;
     }
@@ -95,6 +104,23 @@ public class Dolon2 : MonoBehaviour
 
     private void Attack()
     {
+        Vector3 velocity = _rd.velocity;
 
+        float P_Rkyori = Vector3.Distance(_player.position, _rd.position);
+
+        if (_player.position.x < _rd.position.x)
+        {
+            if (P_Rkyori > 3f)
+            {
+                Debug.Log("Attack");
+            }
+            else
+            {
+                if (P_Rkyori > 3f)
+                {
+                    Debug.Log("Attack");
+                }
+            }
+        }
     }
 }
