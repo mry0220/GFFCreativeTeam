@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tire : MonoBehaviour
 {
-    [Header("右への速度"), SerializeField] private float _horizontalSpeed = 25;  // 右への移動速度
+    [Header("右への速度"), SerializeField] private float _horizontalSpeed = 25f;  // 右への移動速度
 
     private Rigidbody _rb;
 

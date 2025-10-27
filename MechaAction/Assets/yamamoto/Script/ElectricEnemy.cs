@@ -8,8 +8,8 @@ public class ElectricEnemy : MonoBehaviour
     {
         Look,
         Move,
-        Wait,
-        Attack
+        Attack,
+        GroundAttack
     }
 
     private EnemyState _state = EnemyState.Look;
@@ -22,7 +22,10 @@ public class ElectricEnemy : MonoBehaviour
     private bool _moveStop = false;
     private int _direction = 0;
 
-    
+    private bool _isgroundatack = false;
+    private bool _isattack = false;
+
+    private float _lapseTime;
 
     private void Awake()
     {
@@ -33,10 +36,13 @@ public class ElectricEnemy : MonoBehaviour
     private void Start()
     {
         _spawnPos = transform.position;
+        _lapseTime = 0.0f;
     }
 
     private void FixedUpdate()
     {
+        _lapseTime += Time.deltaTime;
+
         switch( _state)
         {
             case EnemyState.Look:
@@ -53,20 +59,29 @@ public class ElectricEnemy : MonoBehaviour
                 {
                     _state = EnemyState.Look;
                 }
-                else if (Vector3.Distance(transform.position, _player.position) < 7f)
+                else if (Vector3.Distance(transform.position, _player.position) < 6f
+                    && _lapseTime >= 5)
                 {
                     Debug.Log("ínñ çUåÇ");
+                    _state = EnemyState.GroundAttack;
+                }
+                else if (Vector3.Distance(transform.position, _player.position) < 3f)
+                {
+                    Debug.Log("çUåÇ");
                     _state = EnemyState.Attack;
                 }
-                    Move();
+                Move();
 
-                break;
-
-            case EnemyState.Wait:
                 break;
 
             case EnemyState.Attack:
+                if (!_isattack)
+                    StartCoroutine(Attack());
+                break;
 
+            case EnemyState.GroundAttack:
+                if(!_isgroundatack)
+                    StartCoroutine(GroundAtack());
                 break;
         }
     }
@@ -76,18 +91,12 @@ public class ElectricEnemy : MonoBehaviour
         _direction = 0;
     }
 
-    private IEnumerator Waitturn(int _newdirection)
-    {
-        _moveStop = true;
-        yield return new WaitForSeconds(0.5f);
-        _direction = _newdirection;
-        _moveStop = false;
-        yield break;
-    }
+    
 
     private void Move()
     {
         Vector3 velocity = _rb.velocity;
+        Debug.Log("ìÆÇ¢ÇƒÇÈÇÊ");
 
         if (_moveStop)
         {
@@ -116,14 +125,37 @@ public class ElectricEnemy : MonoBehaviour
         _rb.velocity = velocity;
     }
 
-    private void Wait()
+    private IEnumerator Waitturn(int _newdirection)
     {
-
+        _moveStop = true;
+        yield return new WaitForSeconds(0.5f);
+        _direction = _newdirection;
+        _moveStop = false;
+        yield break;
     }
 
-    private void Attack()
+    private IEnumerator Attack()
     {
+        _isattack = true;
+        _rb.velocity = Vector3.zero;
+        yield return new WaitForSeconds(2f);
+        _lapseTime = 0;
 
+        _state = EnemyState.Move;
+        _isattack = false;
+        yield break;
+    }
+
+    private IEnumerator GroundAtack()
+    {
+        _isgroundatack = true;
+        _rb.velocity = Vector3.zero;
+        yield return new WaitForSeconds(2f);
+        _lapseTime = 0;
+
+        _state = EnemyState.Move;
+        _isgroundatack = false;
+        yield break;
     }
 
 }
