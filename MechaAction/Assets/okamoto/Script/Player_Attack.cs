@@ -11,6 +11,13 @@ public class Player_Attack : MonoBehaviour
 
     private PlayerState _state = PlayerState.Sowd;
 
+    private Animator _anim;
+
+    private void Start()
+    {
+        _anim = GetComponent<Animator>();
+    }
+
     private void Update()
     {
         switch(_state)
@@ -32,13 +39,24 @@ public class Player_Attack : MonoBehaviour
 
                 break;
         }
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            LeftAttack();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            tatakituke();
+        }
     }
 
     public void LeftAttack()
     {
         if(_state == PlayerState.Sowd)
         {
-
+            _anim.SetTrigger("Attack");
+            _anim.SetInteger("Attacktype", 0);
 
         }
         else if(_state == PlayerState.Gun)
@@ -50,7 +68,8 @@ public class Player_Attack : MonoBehaviour
 
     public void tatakituke()
     {
-
+        _anim.SetTrigger("Attack");
+        _anim.SetInteger("Attacktype", 1);
     }
 }
 /*
