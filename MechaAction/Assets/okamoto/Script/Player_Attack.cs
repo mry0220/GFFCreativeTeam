@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Player_Attack : MonoBehaviour
 {
+    [SerializeField] PlayerAttackSO _playerAttackSO;
+
+    private int _damage = 0;
+
     private enum PlayerState {
         Sowd,
         Gun
     }
+
 
     private PlayerState _state = PlayerState.Sowd;
 
@@ -16,6 +21,9 @@ public class Player_Attack : MonoBehaviour
     private void Start()
     {
         _anim = GetComponent<Animator>();
+        //Debug.Log(_playerAttackSO.playerAttackList[0].Damage);
+        //Debug.Log(_playerAttackSO.playerAttackList[1].Damage);
+
     }
 
     private void Update()
@@ -49,6 +57,11 @@ public class Player_Attack : MonoBehaviour
         {
             tatakituke();
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            slash();
+        }
     }
 
     public void LeftAttack()
@@ -58,25 +71,29 @@ public class Player_Attack : MonoBehaviour
             _anim.SetTrigger("Attack");
             _anim.SetInteger("Attacktype", 0);
 
+
+            Debug.Log(_damage);
         }
         else if(_state == PlayerState.Gun)
         {
-
+           
 
         }
     }
 
     public void tatakituke()
     {
-        _anim.SetTrigger("Attack");
-        _anim.SetInteger("Attacktype", 1);
+        _damage = _playerAttackSO.playerAttackList[0].Damage;
+
+        Debug.Log(_damage);
+        //_anim.SetTrigger("Attack");
+        //_anim.SetInteger("Attacktype", 1);
+    }
+
+    public void slash()
+    {
+        _damage = _playerAttackSO.playerAttackList[1].Damage;
+
+        Debug.Log(_damage);
     }
 }
-/*
-#include 
-int a = 2004;
-
-int main(void)
-{
-    printf("%d”N%dŒŽ%d“ú",a,04,9);
-}*/

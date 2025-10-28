@@ -11,8 +11,8 @@ public class PlayerHP_T : MonoBehaviour
     private float currentHP;
 
     // 現在のHPを他のスクリプト（UIなど）から取得するための公開プロパティ
-    public float CurrentHP => currentHP;
-    public float MaxHP => maxHP;
+    public float CurrentHP => currentHP; //UIHPゲージで使う　ゲームマネージャーでmaxにするためだめかも
+    public float MaxHP => maxHP;//こっちもまあ使うか
 
     void Start()
     {
