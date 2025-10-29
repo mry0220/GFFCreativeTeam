@@ -29,7 +29,9 @@ public class Player_Attack : MonoBehaviour
 
     private void Update()
     {
-        switch(_state)
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+
+        switch (_state)
         {
             case PlayerState.Sowd:
                 if (Input.GetKeyDown(KeyCode.G))
@@ -70,7 +72,7 @@ public class Player_Attack : MonoBehaviour
         if(_state == PlayerState.Sowd)
         {
             _anim.SetTrigger("Attack");
-            _anim.SetInteger("Attacktype", 0);
+            _anim.SetInteger("AttackType", 0);
 
 
             //Debug.Log(_damage);
@@ -85,15 +87,10 @@ public class Player_Attack : MonoBehaviour
     public void tatakituke()
     {
         sword.enabled = true;
-        //StartCoroutine(Enabled());
 
-        //_damage = _playerAttackSO.playerAttackList[0].Damage;
-        //Debug.Log(_damage);
-        //_anim.SetTrigger("Attack");
-        //_anim.SetInteger("Attacktype", 1);
-        sword.tatakitukeAttack();
         _anim.SetTrigger("Attack");
-        //_anim.SetInteger("Attacktype", 0);
+        _anim.SetInteger("AttackType", 1);
+        sword.tatakitukeAttack();
     }
 
     public void slash()
@@ -116,8 +113,13 @@ public class Player_Attack : MonoBehaviour
         yield break;
     }*/
 
-    public void OnEnable()//animationシグナルで呼ぶ
+    public void _Enabletfalse()//animationシグナルで呼ぶ
     {
         sword.enabled = false;
+    }
+
+    public void _Enabletrue()//animationシグナルで呼ぶ
+    {
+        sword.enabled = true;
     }
 }
