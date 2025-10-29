@@ -2,30 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricEnemy : MonoBehaviour
+public class MoveEnemy : MonoBehaviour
 {
     private enum EnemyState
     {
-        Look,
-        Move,
-        Attack,
-        GroundAttack
+        Look,          //íTÇ∑
+        Move,          //í«ê’
+        Wait,          //î≠éÀópà”(Ç¢ÇÁÇ»Ç¢)
+        Attack         //î≠éÀ
     }
 
     private EnemyState _state = EnemyState.Look;
 
-    private Vector3 _spawnPos;  // Ç‡Ç∆Ç…ñﬂÇÈ
+    private Vector3 _spawnPos;//Ç‡Ç∆Ç…Ç‡Ç«ÇÈÇΩÇﬂ
     private Transform _player;
     private Rigidbody _rb;
-
-    private bool _isgrounded;
+    private float _moveSpeed = 3.0f;
     private bool _moveStop = false;
     private int _direction = 0;
-
-    private bool _isgroundatack = false;
-    private bool _isattack = false;
-
-    private float _lapseTime;
+    private float _attacktime = 0;
 
     private void Awake()
     {
@@ -36,52 +31,43 @@ public class ElectricEnemy : MonoBehaviour
     private void Start()
     {
         _spawnPos = transform.position;
-        _lapseTime = 0.0f;
     }
 
     private void FixedUpdate()
     {
-        _lapseTime += Time.deltaTime;
-
-        switch( _state)
+        switch (_state)
         {
             case EnemyState.Look:
                 Look();
-                if (Vector3.Distance(transform.position, _player.position) < 10f)
+                _attacktime = 0.0f;
+                if (Vector3.Distance(transform.position, _player.position) < 8f)
                 {
-                    Debug.Log("î≠å©");
                     _state = EnemyState.Move;
                 }
                 break;
 
             case EnemyState.Move:
-                if (Vector3.Distance(transform.position, _player.position) > 12f)
+                _attacktime += Time.deltaTime;
+                Move();
+
+                if (Vector3.Distance(transform.position, _player.position) > 9f)
                 {
                     _state = EnemyState.Look;
                 }
-                else if (Vector3.Distance(transform.position, _player.position) < 6f
-                    && _lapseTime >= 5)
+                else if (_attacktime > 3f && Vector3.Distance(transform.position, _player.position) < 3f)
                 {
-                    Debug.Log("ínñ çUåÇ");
-                    _state = EnemyState.GroundAttack;
-                }
-                else if (Vector3.Distance(transform.position, _player.position) < 3f)
-                {
-                    Debug.Log("çUåÇ");
                     _state = EnemyState.Attack;
                 }
-                Move();
+                break;
 
+            case EnemyState.Wait:
+                Wait();
                 break;
 
             case EnemyState.Attack:
-                if (!_isattack)
-                    StartCoroutine(Attack());
-                break;
-
-            case EnemyState.GroundAttack:
-                if(!_isgroundatack)
-                    StartCoroutine(GroundAtack());
+                Attack();
+                _attacktime = 0.0f;
+                _state = EnemyState.Move;
                 break;
         }
     }
@@ -91,12 +77,9 @@ public class ElectricEnemy : MonoBehaviour
         _direction = 0;
     }
 
-    
-
     private void Move()
     {
         Vector3 velocity = _rb.velocity;
-        Debug.Log("ìÆÇ¢ÇƒÇÈÇÊ");
 
         if (_moveStop)
         {
@@ -120,42 +103,36 @@ public class ElectricEnemy : MonoBehaviour
             }
             _direction = -1;
         }
-        velocity.x = _direction * 3f;
+
+        //int direction = (_rb.position.x < _player.position.x) ? 1 : -1;
+        //Vector3 direction = (_player.position - _rb.position).normalized;
+
+        velocity.x = _direction * _moveSpeed;
 
         _rb.velocity = velocity;
+        Debug.Log(_direction);
+        //Debug.Log(_attacktime);
     }
 
+    //êUÇËï‘ÇÈÇ∆Ç´è≠ÇµóØÇ‹ÇÈ
     private IEnumerator Waitturn(int _newdirection)
     {
         _moveStop = true;
         yield return new WaitForSeconds(0.5f);
+
         _direction = _newdirection;
         _moveStop = false;
+
         yield break;
     }
 
-    private IEnumerator Attack()
+    private void Wait()
     {
-        _isattack = true;
-        _rb.velocity = Vector3.zero;
-        yield return new WaitForSeconds(2f);
-        _lapseTime = 0;
 
-        _state = EnemyState.Move;
-        _isattack = false;
-        yield break;
     }
 
-    private IEnumerator GroundAtack()
+    private void Attack()
     {
-        _isgroundatack = true;
-        _rb.velocity = Vector3.zero;
-        yield return new WaitForSeconds(2f);
-        _lapseTime = 0;
-
-        _state = EnemyState.Move;
-        _isgroundatack = false;
-        yield break;
+        Debug.Log("Attack");
     }
-
 }

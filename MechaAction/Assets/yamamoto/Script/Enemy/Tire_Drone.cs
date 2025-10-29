@@ -5,6 +5,8 @@ using UnityEngine;
 public class Tire_Drone : MonoBehaviour
 {
 
+    [SerializeField] private Tire _isfall;
+
     [Header("右への速度"), SerializeField] private float _horizontalSpeed = 25f;  // 右への移動速度
 
     private Rigidbody _rb;
@@ -14,6 +16,7 @@ public class Tire_Drone : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _player = GameObject.FindWithTag("Player").transform;
+        _isfall = GetComponent<Tire>();
     }
 
     private void FixedUpdate()
