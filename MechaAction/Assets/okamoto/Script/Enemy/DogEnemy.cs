@@ -18,6 +18,7 @@ public class DogEnemy : MonoBehaviour
     private Vector3 _spawnPos;//‚à‚Æ‚É‚à‚Ç‚é‚½‚ß
     private Transform _player;
     private Rigidbody _rb;
+    private Dog_Attack _attack;
 
     private float _jumpPower = 7f;
 
@@ -32,10 +33,14 @@ public class DogEnemy : MonoBehaviour
     private float _fallTime;
     private float _fallSpeed;
 
+    private bool _isRight = false;
+    private bool _isLeft = false;
+
     private void Awake()
     {
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
+        _attack = GetComponent<Dog_Attack>();
     }
 
     private void Start()
@@ -45,6 +50,18 @@ public class DogEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(_isRight)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+            _isRight = false;
+        }
+        else if(_isLeft)
+        {
+            transform.rotation = Quaternion.Euler(0, 270, 0);
+            _isLeft = false;
+        }
+        
+
         Vector3 velocity = _rb.velocity;
         switch (_state)
         {
@@ -115,18 +132,23 @@ public class DogEnemy : MonoBehaviour
 
         if (_rb.position.x < _player.position.x)
         {
-            if (_direction == -1)
+            if (_direction == -1 || _direction == 0)
             {
+                _isRight = true;
+                Debug.Log("right");
                 StartCoroutine(Waitturn(1));
             }
             _direction = 1;
         }
         else
         {
-            if (_direction == 1)
+            if (_direction == 1 || _direction == 0)
             {
+                _isLeft = true;
+                Debug.Log("left");
                 StartCoroutine(Waitturn(-1));
             }
+            
             _direction = -1;
         }
 
@@ -137,7 +159,6 @@ public class DogEnemy : MonoBehaviour
     {
         _moveStop = true;
         yield return new WaitForSeconds(0.5f);
-
         _direction = _newdirection;
         _moveStop = false;
 
@@ -202,6 +223,7 @@ public class DogEnemy : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         Debug.Log("Attack");
+        _attack.GunAttack();
         _isattack = false;
         yield break;
     }

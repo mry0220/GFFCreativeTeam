@@ -23,5 +23,6 @@ public class PlayerAttackSO : ScriptableObject
         }
 
         public int Damage { get => damage;}
+        public int Knockback { get => knockback;}
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Grounded
   - Enemy
+  - PlayerWeapon
   layers:
   - Default
   - TransparentFX

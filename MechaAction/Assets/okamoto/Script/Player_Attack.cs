@@ -5,8 +5,9 @@ using UnityEngine;
 public class Player_Attack : MonoBehaviour
 {
     [SerializeField] PlayerAttackSO _playerAttackSO;
+    [SerializeField] private SwordHitbox sword;
 
-    private int _damage = 0;
+    //private int _damage = 0;
 
     private enum PlayerState {
         Sowd,
@@ -34,7 +35,7 @@ public class Player_Attack : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.G))
                 {
                     _state = PlayerState.Gun;
-                    Debug.Log("GunMode");
+                    //Debug.Log("GunMode");
                 }
 
                 break;
@@ -42,7 +43,7 @@ public class Player_Attack : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.G))
                 {
                     _state = PlayerState.Sowd;
-                    Debug.Log("SowdMode");
+                    //Debug.Log("SowdMode");
                 }
 
                 break;
@@ -72,7 +73,7 @@ public class Player_Attack : MonoBehaviour
             _anim.SetInteger("Attacktype", 0);
 
 
-            Debug.Log(_damage);
+            //Debug.Log(_damage);
         }
         else if(_state == PlayerState.Gun)
         {
@@ -83,17 +84,40 @@ public class Player_Attack : MonoBehaviour
 
     public void tatakituke()
     {
-        _damage = _playerAttackSO.playerAttackList[0].Damage;
+        sword.enabled = true;
+        //StartCoroutine(Enabled());
 
-        Debug.Log(_damage);
+        //_damage = _playerAttackSO.playerAttackList[0].Damage;
+        //Debug.Log(_damage);
         //_anim.SetTrigger("Attack");
         //_anim.SetInteger("Attacktype", 1);
+        sword.tatakitukeAttack();
+        _anim.SetTrigger("Attack");
+        //_anim.SetInteger("Attacktype", 0);
     }
 
     public void slash()
     {
-        _damage = _playerAttackSO.playerAttackList[1].Damage;
+        sword.enabled = true;
+        //StartCoroutine(Enabled());
+        //_damage = _playerAttackSO.playerAttackList[1].Damage;
 
-        Debug.Log(_damage);
+        //Debug.Log(_damage);
+        sword.slashAttack();
+        _anim.SetTrigger("Attack");
+        //_anim.SetInteger("Attacktype", 0);
+    }
+
+    /*private IEnumerator Enabled()
+    {
+        sword.enabled = true;
+        yield return new WaitForSeconds(2f);
+        sword.enabled = false;
+        yield break;
+    }*/
+
+    public void OnEnable()//animationƒVƒOƒiƒ‹‚ÅŒÄ‚Ô
+    {
+        sword.enabled = false;
     }
 }
