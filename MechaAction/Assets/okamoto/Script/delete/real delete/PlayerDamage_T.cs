@@ -17,7 +17,7 @@ public class PlayerDamage_T : MonoBehaviour
         if (targetHealth != null)
         {
             // ’ŠÛ“I‚ÈIHealthŒ^‚ğ’Ê‚µ‚ÄPlayerDamage‚ğŒÄ‚Ô
-            targetHealth.PlayerDamage(damageAmount);
+            //targetHealth.PlayerDamage(damageAmount);
 
             // ’eŠÛ‚È‚Ç‚Ìê‡‚ÍA‚±‚±‚Å©g‚ğ”j‰ó‚·‚é
             // Destroy(gameObject);

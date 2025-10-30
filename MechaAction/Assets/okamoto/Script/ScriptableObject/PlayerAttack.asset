@@ -21,5 +21,10 @@ MonoBehaviour:
   - Attackname: GroundAttack
     type: 0
     damage: 50
+    knockback: 5
+    critical: 20
+  - Attackname: Slash
+    type: 0
+    damage: 40
     knockback: 2
     critical: 20

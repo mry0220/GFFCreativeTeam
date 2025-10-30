@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class PPlayer : MonoBehaviour
 {
-
     private Rigidbody _rb;
     private Animator _anim;
 
@@ -26,7 +27,6 @@ public class PPlayer : MonoBehaviour
     [SerializeField] private float _jumpPower;
 
     private float _fallTime;
-    private float _fallSpeed;
 
     private void Awake()
     {
@@ -199,7 +199,7 @@ public class PPlayer : MonoBehaviour
             _fallTime += Time.deltaTime;
 
             //_moveVector.y = Physics.gravity.y * _FallTime * 2.0f;　//直接値を変えてしますので次のフレームで０に戻ってしまう
-            _fallSpeed = Physics.gravity.y * _fallTime * 2f*2f; //Unityの標準重力に任せたいなら fallSpeed は不要
+            float _fallSpeed = Physics.gravity.y * _fallTime * 2f*2f; //Unityの標準重力に任せたいなら fallSpeed は不要
 
             //Debug.Log(_fallSpeed);
 

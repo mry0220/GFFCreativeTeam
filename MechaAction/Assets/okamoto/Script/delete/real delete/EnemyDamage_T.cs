@@ -19,7 +19,7 @@ public class EnemyDamage_T : MonoBehaviour
             if (playerHealth != null)
             {
                 // ダメージを与える
-                playerHealth.TakeDamage(damageAmount);
+                //playerHealth.TakeDamage(damageAmount);
 
                 // 弾丸などの場合は、ダメージを与えた後、自身を破壊する
                 //Destroy(gameObject);

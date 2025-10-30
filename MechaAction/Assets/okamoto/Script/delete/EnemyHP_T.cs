@@ -6,9 +6,6 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class EnemyHP_T : MonoBehaviour, IDamage
 {
     [SerializeField] private float maxHP = 50f; // HP
-    private Transform _player;
-    private int _direction = 0;
-
 
     private Rigidbody _rb;
     private float currentHP;
@@ -23,47 +20,21 @@ public class EnemyHP_T : MonoBehaviour, IDamage
         currentHP = maxHP;
         Debug.Log(gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
         _rb = GetComponent<Rigidbody>();
-        _player = GameObject.FindWithTag("Player").transform;
 
-    }
-
-    private void Update()
-    {
-        if (_rb.position.x < _player.position.x)
-        {
-            
-            _direction = 1;
-        }
-        else
-        {
-
-            _direction = -1;
-        }
     }
 
     //ダメージを受け、HPを減少させる処理
-    public void PlayerDamage(float amount)
+    public void TakeDamage(int amount,int knockback,int dir)
     {
         if (currentHP <= 0) return;
 
         currentHP -= amount;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
 
-        Debug.Log(gameObject.name + " (敵) が" + amount + "ダメージ受けました。残りHP: " + currentHP);
-
-        if (currentHP <= 0)
+        if (knockback != 0)
         {
-            Die();
+            _rb.AddForce(dir * knockback, 3f, 0, ForceMode.Impulse);
         }
-    }
-
-    public void PlayerDamage(float amount,float knockback)
-    {
-        if (currentHP <= 0) return;
-
-        currentHP -= amount;
-        currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
-        _rb.AddForce(-_direction * knockback,3f,0,ForceMode.Impulse);
 
         Debug.Log(gameObject.name + " (敵) が" + amount + "ダメージ受けました。残りHP: " + currentHP);
 

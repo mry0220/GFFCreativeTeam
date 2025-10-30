@@ -8,8 +8,16 @@ public class SwordHitbox : MonoBehaviour
     private HashSet<GameObject> hitTargets = new HashSet<GameObject>();
     //public int damage = 10;//プレイヤースクリプトで技によって変更
     [SerializeField] PlayerAttackSO _playerAttackSO;
+    [SerializeField] GameObject _slashPrefab;
+    public Transform _slashPosition;
     private int _damage;
     private int _knockback;
+    private int _dir = 0;
+
+    private void Awake()
+    {
+
+    }
 
     private void Start()
     {
@@ -22,22 +30,35 @@ public class SwordHitbox : MonoBehaviour
         hitTargets.Clear();
     }
 
-    //問題　連続した攻撃の際、アニメーションのシグナルか何かでClear();を呼ぶ必要あり
-
-    public void tatakitukeAttack()
+    private void Update()
     {
-        Debug.Log("叩きつけ");
-        _damage = _playerAttackSO.playerAttackList[0].Damage;
-        _knockback = _playerAttackSO.playerAttackList[0].Knockback;
-
+        
     }
 
-    public void slashAttack()
+    public void leftAttack(int dir)
     {
+        _damage = _playerAttackSO.playerAttackList[0].Damage;
+        _knockback = _playerAttackSO.playerAttackList[0].Knockback;
+        _dir = dir;
+    }
+
+    //問題　連続した攻撃の際、アニメーションのシグナルか何かでClear();を呼ぶ必要あり
+
+    public void tatakitukeAttack(int dir)
+    {
+        Debug.Log("叩きつけ");
         _damage = _playerAttackSO.playerAttackList[1].Damage;
         _knockback = _playerAttackSO.playerAttackList[1].Knockback;
+        _dir = dir;
+    }
 
+    public void slashAttack(int dir)
+    {
+        _damage = _playerAttackSO.playerAttackList[2].Damage;
+        _knockback = _playerAttackSO.playerAttackList[2].Knockback;
+        _dir += dir;
 
+        Instantiate(_slashPrefab, _slashPosition.position, Quaternion.identity);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,35 +69,8 @@ public class SwordHitbox : MonoBehaviour
         {
             //null条件
 
-            other.GetComponent<IDamage>().PlayerDamage(_damage,_knockback);//敵のインターフェース<IDamage>取得
+            other.GetComponent<IDamage>().TakeDamage(_damage,_knockback,_dir);//敵のインターフェース<IDamage>取得
             hitTargets.Add(other.gameObject);
         }
     }
 }
-/*
- プレイヤーのスクリプト
-[SerializeField] private SwordHitbox swordHitbox;
-
-public void DoAttack(string attackType)
-{
-    int damageValue = 0;
-
-    switch (attackType
-    {
-        case "LightAttack":
-            damageValue = 10;
-            break;
-        case "HeavyAttack":
-            damageValue = 25;
-            break;
-        case "SpecialAttack":
-            damageValue = 50;
-            break;
-    }
-
-    // ダメージ値を渡す
-    swordHitbox.damage = damageValue;
-
-    // ヒットボックスを有効化（アニメーションイベントなどで管理すると自然）
-    swordHitbox.gameObject.SetActive(true);
-*/

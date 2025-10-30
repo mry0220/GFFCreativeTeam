@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Dog_Attack : MonoBehaviour
 {
-    private int damage = 20;
+    //private int damage = 20;
     private void Update()
     {
         //transform.position += transform.forward * 3f * Time.deltaTime;

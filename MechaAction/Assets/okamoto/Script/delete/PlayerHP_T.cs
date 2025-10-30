@@ -4,40 +4,48 @@ using UnityEngine;
 
 public class PlayerHP_T : MonoBehaviour
 {
+    private Player _player;
+
     // [SerializeField] でInspectorから設定可能にする
-    [SerializeField] private float maxHP = 100f;
+    [SerializeField] private int maxHP = 100;
 
     // 現在のHPはprivate変数で管理
-    private float currentHP;
+    private int currentHP;
 
     // 現在のHPを他のスクリプト（UIなど）から取得するための公開プロパティ
-    public float CurrentHP => currentHP; //UIHPゲージで使う　ゲームマネージャーでmaxにするためだめかも
-    public float MaxHP => maxHP;//こっちもまあ使うか
+    public int CurrentHP => currentHP; //UIHPゲージで使う　ゲームマネージャーでmaxにするためだめかも
+    public int MaxHP => maxHP;//こっちもまあ使うか
 
     void Start()
     {
         // ゲーム開始時にHPを最大値に設定
         currentHP = maxHP;
         Debug.Log(gameObject.name + "のHPが初期化されました: " + currentHP);
+        _player = GetComponent<Player>();
     }
 
 
     //ダメージを受け、HPを減少させる。
-    public void TakeDamage(float damageAmount)
+    public void TakeDamage(int damageAmount,int knockback,int dir)
     {
         if (currentHP <= 0)
         {
             // 既に死亡している場合は処理をスキップ
             return;
         }
-
-
         // --- ここからダメージ処理 ---
         currentHP -= damageAmount;
         // HPが0未満にならないように制限
         currentHP = Mathf.Max(currentHP, 0);
 
         Debug.Log(gameObject.name + "が" + damageAmount + "ダメージ受けました。残りHP: " + currentHP);
+
+        if(knockback != 0)
+        {
+            _player._ChangeState(PlayerState.Knockback);
+            _player.KnockBack(dir, knockback);
+            StartCoroutine(_StateNormal());
+        }
 
         // HPが0以下になったかチェック
         if (currentHP <= 0)
@@ -46,9 +54,15 @@ public class PlayerHP_T : MonoBehaviour
         }
     }
 
+    private IEnumerator _StateNormal()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _player._ReturnNormal();
+        yield break;
+    }
 
     // HPを回復させる。
-    public void Heal(float healAmount)
+    public void Heal(int healAmount)
     {
         currentHP += healAmount;
 
