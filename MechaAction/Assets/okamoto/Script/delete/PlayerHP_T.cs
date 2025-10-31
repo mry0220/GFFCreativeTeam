@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHP_T : MonoBehaviour
+public class PlayerHP_T : MonoBehaviour ,IDamage
 {
     private Player _player;
 
@@ -74,11 +74,14 @@ public class PlayerHP_T : MonoBehaviour
 
 
     // HPが0になったときの死亡処理。（プレイヤー専用）
-    private void Die()
+    public void Die()
     {
         Debug.Log(gameObject.name + "は倒されました。ゲームオーバー！");
+        _player._ChangeState(PlayerState.Dead);
+        _player.Dead();
+
         // ここにゲームオーバー画面の表示、リスタート処理、プレイヤー入力の無効化などの処理を追加
         // プレイヤーオブジェクトを非アクティブ化
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 }

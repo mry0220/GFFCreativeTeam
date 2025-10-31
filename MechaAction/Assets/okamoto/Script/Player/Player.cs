@@ -56,6 +56,9 @@ public class Player : MonoBehaviour
 
     private float _fallTime;
 
+    private bool _isRight = false;
+    private bool _isLeft = false;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -67,6 +70,17 @@ public class Player : MonoBehaviour
         _MousePosition();//マウスの位置取得
         
         _InputDetection();//ダッシュの２回入力検知
+
+        if (_isRight)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+            _isRight = false;
+        }
+        else if (_isLeft)
+        {
+            transform.rotation = Quaternion.Euler(0, 270, 0);
+            _isLeft = false;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -158,10 +172,12 @@ public class Player : MonoBehaviour
         if (transform.position.x < worldPos.x && !_isDash)
         {
             _lookDir = 1;
+            _isRight = true;
         }
         else if (transform.position.x > worldPos.x && !_isDash)
         {
             _lookDir = -1;
+            _isLeft = true;
         }
     }
 
@@ -307,7 +323,13 @@ public class Player : MonoBehaviour
 
     public void KnockBack(int dir,int knockback)
     {
+        _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, 3f, 0f, ForceMode.Impulse);
+    }
+
+    public void Dead()
+    {
+
     }
 
     private void OnCollisionEnter(Collision collision)

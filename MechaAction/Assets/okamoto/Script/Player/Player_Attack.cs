@@ -5,7 +5,8 @@ using UnityEngine;
 public class Player_Attack : MonoBehaviour
 {
     [SerializeField] PlayerAttackSO _playerAttackSO;
-    [SerializeField] private SwordHitbox sword;
+    [SerializeField] private SwordHitbox _sword;
+    [SerializeField] private GunHitbox _gun;
 
     private Player _player;
     private int _dir;
@@ -33,6 +34,8 @@ public class Player_Attack : MonoBehaviour
 
     private void Update()
     {
+        if(_player.IsDead) return;
+
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
 
         switch (_state)
@@ -67,7 +70,7 @@ public class Player_Attack : MonoBehaviour
             tatakituke();
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             slash();
         }
@@ -84,13 +87,13 @@ public class Player_Attack : MonoBehaviour
             _anim.SetTrigger("Attack");
             _anim.SetInteger("AttackType", 0);
 
-            sword.leftAttack(_dir);
+            _sword.leftAttack(_dir);
             //Debug.Log(_damage);
         }
         else if(_state == PlayerAttackType.Gun)
         {
-           
-
+            _gun.leftAttack(_dir);
+            _player._ReturnNormal();
         }
     }
 
@@ -98,24 +101,42 @@ public class Player_Attack : MonoBehaviour
     {
         if (!_player.CanMove) return;
 
-        _player._ChangeState(PlayerState.Attack);
-        sword.enabled = true;
+        if(_state == PlayerAttackType.Sowd)
+        {
+            _player._ChangeState(PlayerState.Attack);
+            _sword.enabled = true;
 
-        _anim.SetTrigger("Attack");
-        _anim.SetInteger("AttackType", 1);
-        sword.tatakitukeAttack(_dir);
+            _anim.SetTrigger("Attack");
+            _anim.SetInteger("AttackType", 1);
+            _sword.tatakitukeAttack(_dir);
+        }
+        else if(_state == PlayerAttackType.Gun)
+        {
+            _gun.ShotGun(_dir);
+            _player._ReturnNormal();
+        }
+            
     }
 
     public void slash()
     {
         if (!_player.CanMove) return;
 
-        _player._ChangeState(PlayerState.Attack);
-        sword.enabled = true;
+        if (_state == PlayerAttackType.Sowd)
+        {
+            _player._ChangeState(PlayerState.Attack);
+            _sword.enabled = true;
 
-        sword.slashAttack(_dir);
-        _anim.SetTrigger("Attack");
-        _anim.SetInteger("AttackType", 2);
+            _sword.slashAttack(_dir);
+            _anim.SetTrigger("Attack");
+            _anim.SetInteger("AttackType", 2);
+        }
+        else if (_state == PlayerAttackType.Gun)
+        {
+            _gun.Rifle(_dir);
+            _player._ReturnNormal();
+        }
+       
     }
 
     /*private IEnumerator Enabled()
@@ -129,12 +150,12 @@ public class Player_Attack : MonoBehaviour
 
     public void _Enabletfalse()//animationシグナルで呼ぶ
     {
-        sword.enabled = false;
+        _sword.enabled = false;
         _player._ReturnNormal();//多分呼ぶ場所がちがう
     }
 
     public void _Enabletrue()//animationシグナルで呼ぶ
     {
-        sword.enabled = true;
+        _sword.enabled = true;
     }
 }

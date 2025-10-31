@@ -6,6 +6,6 @@ public interface IDamage
 {
     void TakeDamage(int amount,int knockback,int dir);
 
-    void Heal(float amount);
+    void Heal(int amount);
     void Die();
 }

@@ -4,25 +4,38 @@ using UnityEngine;
 
 public class Dog_Attack : MonoBehaviour
 {
-    //private int damage = 20;
+    private DogEnemy _enemy;
+    public LayerMask ignoreLayer;
+
+    private int _damage = 20;
+    private int _knockback = 5;
+    private int _dir;
+
+    private void Awake()
+    {
+        _enemy = GetComponent<DogEnemy>();
+    }
+
     private void Update()
     {
         //transform.position += transform.forward * 3f * Time.deltaTime;
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+        _dir = _enemy._direction;
     }
 
     public void GunAttack()
     {
-        
-
         Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, 10f))
+        if (Physics.Raycast(ray, out RaycastHit hit, 10f,~ignoreLayer))
         {
-            GameObject target = hit.collider.gameObject;
-
-            if(target.tag == "Player")
+            if (hit.collider.CompareTag("Player"))
             {
-                Debug.Log("playerにアタック");
+                var Interface = hit.collider.GetComponent<IDamage>();
+                if (Interface != null)
+                {
+                    Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
+
+                }
             }
         }
     }

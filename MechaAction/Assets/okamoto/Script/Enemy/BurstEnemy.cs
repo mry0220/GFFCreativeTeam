@@ -19,15 +19,17 @@ public class BurstEnemy : MonoBehaviour
     private Vector3 _spawnPos;//‚à‚Æ‚É‚à‚Ç‚é‚½‚ß
     private Transform _player;
     private Rigidbody _rb;
+    private Burst_Attack _attack;
     private float _moveSpeed = 3.0f;
     private bool _moveStop = false;
-    private int _direction = 0;
+    public int _direction = 0;
     private float _attacktime = 0;
 
     private void Awake()
     {
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
+        _attack = GetComponent<Burst_Attack>();
     }
 
     private void Start()
@@ -56,7 +58,7 @@ public class BurstEnemy : MonoBehaviour
                 {
                     _state = EnemyState.Look;
                 }
-                else if (_attacktime > 3f)
+                else if (_attacktime > 2f)
                 {
                     _state = EnemyState.Attack;
                 }
@@ -135,6 +137,6 @@ public class BurstEnemy : MonoBehaviour
 
     private void Attack()
     {
-        Debug.Log("Attack");
+        _attack.GunAttack();
     }
 }

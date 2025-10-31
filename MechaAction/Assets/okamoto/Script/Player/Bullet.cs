@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class Slash : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     private Rigidbody _rb;
     private Player _player;
@@ -36,7 +35,7 @@ public class Slash : MonoBehaviour
 
     private IEnumerator _Destroy()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
         yield break;
     }
@@ -54,5 +53,4 @@ public class Slash : MonoBehaviour
             }
         }
     }
-
 }

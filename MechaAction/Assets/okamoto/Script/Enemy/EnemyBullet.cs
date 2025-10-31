@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class Slash : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     private Rigidbody _rb;
-    private Player _player;
+    private BurstEnemy _enemy;
 
     [SerializeField] private float _speed;
     private int _dir;
@@ -18,12 +17,12 @@ public class Slash : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        _enemy = GameObject.FindWithTag("Enemy").GetComponent<BurstEnemy>();
     }
 
     private void Start()
     {
-        _dir = _player._lookDir;
+        _dir = _enemy._direction;
         StartCoroutine(_Destroy());
     }
 
@@ -36,7 +35,7 @@ public class Slash : MonoBehaviour
 
     private IEnumerator _Destroy()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
         yield break;
     }
@@ -45,7 +44,7 @@ public class Slash : MonoBehaviour
     {
         //Debug.Log("“–‚½‚Á‚½");
 
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Player"))
         {
             var Interface = other.GetComponent<IDamage>();
             if (Interface != null)
@@ -54,5 +53,4 @@ public class Slash : MonoBehaviour
             }
         }
     }
-
 }

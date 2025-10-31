@@ -67,10 +67,12 @@ public class SwordHitbox : MonoBehaviour
 
         if (other.CompareTag("Enemy") && !hitTargets.Contains(other.gameObject))
         {
-            //null条件
-
-            other.GetComponent<IDamage>().TakeDamage(_damage,_knockback,_dir);//敵のインターフェース<IDamage>取得
-            hitTargets.Add(other.gameObject);
+            var Interface = other.GetComponent<IDamage>();
+            if(Interface != null)
+            {
+                Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
+                hitTargets.Add(other.gameObject);
+            }
         }
     }
 }

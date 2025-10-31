@@ -7,6 +7,7 @@ public class EnemyHP_T : MonoBehaviour, IDamage
 {
     [SerializeField] private float maxHP = 50f; // HP
 
+    private Transform _player;
     private Rigidbody _rb;
     private float currentHP;
     //[SerializeField] private float currentHealth; // デバッグ用にInspectorで確認可能になる
@@ -19,8 +20,14 @@ public class EnemyHP_T : MonoBehaviour, IDamage
     {
         currentHP = maxHP;
         Debug.Log(gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
+        _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
 
+    }
+
+    private void Update()
+    {
+        DistanceDead();
     }
 
     //ダメージを受け、HPを減少させる処理
@@ -45,7 +52,7 @@ public class EnemyHP_T : MonoBehaviour, IDamage
     }
 
     // HPを回復させる処理 (敵にはあまり使わないかもしれないが、インターフェースの契約として実装)
-    public void Heal(float amount)
+    public void Heal(int amount)
     {
         currentHP += amount;
         currentHP = Mathf.Min(currentHP, maxHP); // 最大HPを超えないようにクランプ
@@ -53,6 +60,14 @@ public class EnemyHP_T : MonoBehaviour, IDamage
         Debug.Log(gameObject.name + " (敵) のHPが" + amount + "回復しました。残りHP: " + currentHP);
     }
 
+
+    private void DistanceDead()
+    {
+        if (Vector3.Distance(transform.position, _player.position) > 30f)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // 敵独自の死亡処理
     public void Die()

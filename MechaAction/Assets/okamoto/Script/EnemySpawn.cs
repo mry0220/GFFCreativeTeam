@@ -41,11 +41,11 @@ public class EnemySpawn : MonoBehaviour
         }
 
         // ƒvƒŒƒCƒ„[‚ª—£‚ê‚½‚çÁ–Å
-        if (distance > despawnDistance && _currentEnemy != null)
-        {
-            Debug.Log("despawn");
-            DespawnEnemy();
-        }
+        //if (distance > despawnDistance && _currentEnemy != null)
+        //{
+        //    Debug.Log("despawn");
+        //    DespawnEnemy();
+        //}
     }
 
     private void SpawnEnemy()

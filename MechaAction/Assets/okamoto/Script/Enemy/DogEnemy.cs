@@ -24,7 +24,8 @@ public class DogEnemy : MonoBehaviour
 
     private bool _isGrounded;
     private bool _moveStop = false;
-    private int _direction = 0;
+
+    public int _direction = 0;
 
     private bool _iswait;//waitコルーチンの重複を防ぐ
     private bool _ismove;//moveコルーチンの重複を防ぐ

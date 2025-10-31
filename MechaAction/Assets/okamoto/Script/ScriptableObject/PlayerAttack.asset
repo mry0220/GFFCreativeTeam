@@ -28,3 +28,18 @@ MonoBehaviour:
     damage: 40
     knockback: 2
     critical: 20
+  - Attackname: leftAttack
+    type: 1
+    damage: 20
+    knockback: 0
+    critical: 5
+  - Attackname: ShotGun
+    type: 1
+    damage: 50
+    knockback: 7
+    critical: 5
+  - Attackname: Rifle
+    type: 1
+    damage: 80
+    knockback: 4
+    critical: 40
