@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Cameralimit : MonoBehaviour
 {
+    private AreaEnemySpawn _spawn;
+
     [SerializeField]
     public Vector2 cameraMin;
     public Vector2 cameraMax;
@@ -21,6 +23,8 @@ public class Cameralimit : MonoBehaviour
 
     private void Start()
     {
+        _spawn = GetComponent<AreaEnemySpawn>();
+
         if (invisibleWall != null)
             invisibleWall.SetActive(false);
     }
@@ -34,10 +38,13 @@ public class Cameralimit : MonoBehaviour
 
         // カメラ制限を設定
         GManager.Instance.SetCameraBounds(cameraMin, cameraMax);
+        _spawn.StartSpawn();
+
+        invisibleWall.SetActive(true);
 
         if (lockX && invisibleWall != null)
         {
-            invisibleWall.SetActive(true);
+            
 
 
             Debug.Log("敵全滅で解除される予定"); //敵のスポーン処理をつくってから考える
@@ -46,5 +53,11 @@ public class Cameralimit : MonoBehaviour
         }
 
         activated = true;
+    }
+
+    public void Clear()
+    {
+        invisibleWall.SetActive(false);
+        GManager.Instance.SetCameraBounds(cameraMin,cameraMax);
     }
 }

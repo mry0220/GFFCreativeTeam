@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Burst_Attack : MonoBehaviour
 {
-    private BurstEnemy _enemy;
 
     [SerializeField] GameObject _bulletPrefab;
     public Transform _bulletPosition;
 
     private void Awake()
     {
-        _enemy = GetComponent<BurstEnemy>();
+        
     }
 
     public void GunAttack()

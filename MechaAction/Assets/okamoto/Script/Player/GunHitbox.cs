@@ -21,7 +21,7 @@ public class GunHitbox : MonoBehaviour
 
     private void Start()
     {
-        this.enabled = false;
+
     }
 
     void OnEnable()

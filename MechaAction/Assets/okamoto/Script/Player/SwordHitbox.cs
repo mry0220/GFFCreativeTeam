@@ -9,25 +9,31 @@ public class SwordHitbox : MonoBehaviour
     //public int damage = 10;//プレイヤースクリプトで技によって変更
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] GameObject _slashPrefab;
+
+    private Collider _collider;
     public Transform _slashPosition;
     private int _damage;
     private int _knockback;
     private int _dir = 0;
 
+    private bool _groundattack = false;
+
     private void Awake()
     {
-
+        _collider = GetComponent<Collider>();
     }
 
     private void Start()
     {
-        this.enabled = false;
+        _collider.enabled = false; // スクリプトより先に物理無効化
     }
 
     void OnEnable()
     {
         // 攻撃開始時にリストをリセット
         hitTargets.Clear();
+        _collider.enabled = true;
+        _groundattack = false;
     }
 
     private void Update()
@@ -46,10 +52,11 @@ public class SwordHitbox : MonoBehaviour
 
     public void tatakitukeAttack(int dir)
     {
-        Debug.Log("叩きつけ");
         _damage = _playerAttackSO.playerAttackList[1].Damage;
         _knockback = _playerAttackSO.playerAttackList[1].Knockback;
         _dir = dir;
+        _groundattack = true;
+
     }
 
     public void slashAttack(int dir)
@@ -63,16 +70,35 @@ public class SwordHitbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("当たった");
-
         if (other.CompareTag("Enemy") && !hitTargets.Contains(other.gameObject))
         {
             var Interface = other.GetComponent<IDamage>();
-            if(Interface != null)
+            if (Interface != null)
             {
                 Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
                 hitTargets.Add(other.gameObject);
             }
         }
+
+        if (other.CompareTag("Grounded") && _groundattack)
+        {
+            Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f);
+            foreach (var hit in hits)
+            {
+                if (hit.CompareTag("Enemy"))
+                {
+                    // IDamageable 実装クラスへダメージ
+                    var Interface = hit.GetComponent<IDamage>();
+                    if (Interface != null) Interface.TakeDamage(_damage,_knockback,_dir);
+                }
+            }
+            _groundattack = false;
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, 1.5f);
     }
 }

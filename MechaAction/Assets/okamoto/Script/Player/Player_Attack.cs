@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Sockets;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player_Attack : MonoBehaviour
@@ -7,6 +9,7 @@ public class Player_Attack : MonoBehaviour
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] private SwordHitbox _sword;
     [SerializeField] private GunHitbox _gun;
+    [SerializeField] private Transform _muzzlepooint;
 
     private Player _player;
     private int _dir;
@@ -22,6 +25,7 @@ public class Player_Attack : MonoBehaviour
     private PlayerAttackType _state = PlayerAttackType.Sowd;
 
     private Animator _anim;
+    public GameObject star;
 
     private void Start()
     {
@@ -29,7 +33,7 @@ public class Player_Attack : MonoBehaviour
         _player = GetComponent<Player>();
         //Debug.Log(_playerAttackSO.playerAttackList[0].Damage);
         //Debug.Log(_playerAttackSO.playerAttackList[1].Damage);
-
+        _sword.enabled = false;
     }
 
     private void Update()
@@ -84,6 +88,8 @@ public class Player_Attack : MonoBehaviour
 
         if(_state == PlayerAttackType.Sowd)
         {
+            _sword.enabled = true;
+
             _anim.SetTrigger("Attack");
             _anim.SetInteger("AttackType", 0);
 
@@ -94,6 +100,8 @@ public class Player_Attack : MonoBehaviour
         {
             _gun.leftAttack(_dir);
             _player._ReturnNormal();
+            GameObject effect = Instantiate(star, _muzzlepooint.position, Quaternion.identity);
+            Destroy(effect, 0.2f); // アニメーションの長さに合わせて
         }
     }
 

@@ -27,6 +27,12 @@ public class AreaEnemySpawn : MonoBehaviour
     private int currentWaveIndex = 0;
     private List<GameObject> aliveEnemies = new List<GameObject>();
     private bool spawning = false;
+    private Cameralimit _limit;
+
+    private void Start()
+    {
+        _limit = GetComponent<Cameralimit>();
+    }
 
     // Cameralimitから呼び出して最初のWaveを開始
     public void StartSpawn()
@@ -44,7 +50,7 @@ public class AreaEnemySpawn : MonoBehaviour
         {
             Debug.Log("全てのWaveが終了しました！");
             // Cameralimitに通知してエリア解放
-            Cameralimit limit = GetComponent<Cameralimit>();
+            _limit.Clear();
             //if (limit != null) limit.OnEnemiesCleared();
             return;
         }
@@ -58,13 +64,18 @@ public class AreaEnemySpawn : MonoBehaviour
             GameObject enemy = Instantiate(enemyData.enemyPrefab, enemyData.spawnPoint.position, Quaternion.identity);
             aliveEnemies.Add(enemy);
 
-            // 敵死亡時のイベント登録
-            Enemy e = enemy.GetComponent<Enemy>();
-            if (e != null)
-            {
-                //e.onDeath += () => OnEnemyDied(enemy);
-            }
         }
+        StartCoroutine(WaitUntilAllDead());
+
+    }
+
+    private IEnumerator WaitUntilAllDead()
+    {
+        while(aliveEnemies.Exists(enemy => enemy != null))
+            yield return null;
+
+        currentWaveIndex++;
+        SpawnWave(currentWaveIndex);
     }
 
     // 敵死亡時の処理

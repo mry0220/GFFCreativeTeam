@@ -6,8 +6,9 @@ public class EnemySpawn : MonoBehaviour
 {
     [SerializeField] private GameObject _enemy;
 
-    [SerializeField] private float spawnDistance = 10f;   // この距離以内に来たら出現
-    [SerializeField] private float despawnDistance = 15f; // この距離より離れたら削除
+    [SerializeField] private float _spawnDistance = 10f;   // この距離以内に来たら出現
+    [SerializeField] private float _respawnDistance = 15f; // この距離より離れたら削除
+    private bool _canspawn = true;
 
     private GameObject _currentEnemy;
     private Transform _player;
@@ -34,18 +35,17 @@ public class EnemySpawn : MonoBehaviour
         float distance = Vector3.Distance(transform.position, _player.position);
 
         // プレイヤーが近づいたらスポーン
-        if (distance < spawnDistance && _currentEnemy == null)
+        if (distance < _spawnDistance && _currentEnemy == null && _canspawn)
         {
-            Debug.Log("spawn");
             SpawnEnemy();
+            _canspawn = false;
         }
 
-        // プレイヤーが離れたら消滅
-        //if (distance > despawnDistance && _currentEnemy != null)
-        //{
-        //    Debug.Log("despawn");
-        //    DespawnEnemy();
-        //}
+        if (distance > _respawnDistance && _currentEnemy == null)
+        {
+            _canspawn = true;
+           
+        }
     }
 
     private void SpawnEnemy()

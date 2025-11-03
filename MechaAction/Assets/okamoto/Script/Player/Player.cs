@@ -149,6 +149,10 @@ public class Player : MonoBehaviour
     {
         state = newState;
         Debug.Log("state‚ª" + newState + "‚É•Ï‚í‚Á‚½");
+        if(newState == PlayerState.Attack && _isGrounded)
+        {
+            _rb.velocity = Vector3.zero;
+        }
     }
 
     public void _ReturnNormal()
@@ -332,8 +336,25 @@ public class Player : MonoBehaviour
 
     }
 
+    private IEnumerator Gimmick()
+    {
+        yield return new WaitForSeconds(0.8f);
+        _ReturnNormal();
+
+        yield break;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("JumpGimmick"))
+        {
+            _fallTime = 0f;
+            _rb.velocity = Vector3.zero;
+            _ChangeState(PlayerState.Other);
+            StartCoroutine(Gimmick());
+            _rb.AddForce(0f,23f,0f, ForceMode.Impulse);
+        }
+
         if (collision.gameObject.CompareTag("Grounded"))
         {
             _fallTime = 0f;
