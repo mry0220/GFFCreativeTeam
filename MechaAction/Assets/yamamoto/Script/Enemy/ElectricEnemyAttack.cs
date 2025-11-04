@@ -18,29 +18,17 @@ public class ElectricEnemyAttack : MonoBehaviour
     }
 
     public void ElectricAttack()
-
     {
-
-
         Ray ray = new Ray(transform.position, transform.forward);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 10f))
-
         {
-
             GameObject target = hit.collider.gameObject;
 
             if (target.tag == "Player")
-
             {
-
                 Debug.Log("playerにアタック");
-
             }
-
         }
-
     }
-
-
 }

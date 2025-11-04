@@ -18,10 +18,11 @@ public class ElectricEnemy : MonoBehaviour
     private Transform _player;
     private Rigidbody _rb;
     private ElectricEnemyAttack _attack;
+    public GameObject _groundattack;
 
     private bool _isgrounded;
     private bool _moveStop = false;
-    private int _direction = 0;
+    public int _direction = 0;
 
     private bool _isgroundatack = false;
     private bool _isattack = false;
@@ -97,7 +98,7 @@ public class ElectricEnemy : MonoBehaviour
 
             case EnemyState.GroundAttack:
                 if(!_isgroundatack)
-                    StartCoroutine(GroundAtack());
+                    StartCoroutine(GroundAttack());
                 break;
         }
     }
@@ -112,7 +113,7 @@ public class ElectricEnemy : MonoBehaviour
     private void Move()
     {
         Vector3 velocity = _rb.velocity;
-        Debug.Log("動いてるよ");
+        Debug.Log("動いてるよぅ");
 
         if (_moveStop)
         {
@@ -165,12 +166,15 @@ public class ElectricEnemy : MonoBehaviour
         yield break;
     }
 
-    private IEnumerator GroundAtack()
+    private IEnumerator GroundAttack()
     {
         _isgroundatack = true;
         _rb.velocity = Vector3.zero;
         yield return new WaitForSeconds(2f);
-       
+        //インスタンス化
+        GameObject _attack = Instantiate(_groundattack, transform.position, Quaternion.identity);
+        _attack.GetComponent<GroundBall>().Initialize(this);
+        Debug.Log("deta");
         _lapseTime = 0;
 
         _state = EnemyState.Move;
