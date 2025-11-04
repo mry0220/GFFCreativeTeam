@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GunHitbox : MonoBehaviour
@@ -10,6 +11,9 @@ public class GunHitbox : MonoBehaviour
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] GameObject _bulletPrefab;
     public Transform _bulletPosition;
+    [SerializeField] private Transform _muzzlepoint;
+    public GameObject _guneffect;
+
     private int _damage;
     private int _knockback;
     private int _dir = 0;
@@ -40,6 +44,8 @@ public class GunHitbox : MonoBehaviour
         _damage = _playerAttackSO.playerAttackList[3].Damage;
         _knockback = _playerAttackSO.playerAttackList[3].Knockback;
         _dir = dir;
+        GameObject effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
+        Destroy(effect, 0.2f); // アニメーションの長さに合わせて
 
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
         Ray ray = new Ray(transform.position, transform.forward);

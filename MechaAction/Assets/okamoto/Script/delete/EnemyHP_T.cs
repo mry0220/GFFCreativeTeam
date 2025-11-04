@@ -16,6 +16,8 @@ public class EnemyHP_T : MonoBehaviour, IDamage
     public float MaxHP => maxHP;
     public float CurrentHP => currentHP;
 
+    public GameObject _damageeffect;
+
     void Start()
     {
         currentHP = maxHP;
@@ -37,6 +39,10 @@ public class EnemyHP_T : MonoBehaviour, IDamage
 
         currentHP -= amount;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
+
+        //_damageeffect = 
+        GameObject effect = Instantiate(_damageeffect, transform.position, Quaternion.identity);
+        Destroy(effect, 0.2f); // アニメーションの長さに合わせて
 
         if (knockback != 0)
         {

@@ -36,7 +36,7 @@ public class Slash : MonoBehaviour
 
     private IEnumerator _Destroy()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
         yield break;
     }

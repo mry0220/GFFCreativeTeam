@@ -9,7 +9,6 @@ public class Player_Attack : MonoBehaviour
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] private SwordHitbox _sword;
     [SerializeField] private GunHitbox _gun;
-    [SerializeField] private Transform _muzzlepooint;
 
     private Player _player;
     private int _dir;
@@ -25,7 +24,6 @@ public class Player_Attack : MonoBehaviour
     private PlayerAttackType _state = PlayerAttackType.Sowd;
 
     private Animator _anim;
-    public GameObject star;
 
     private void Start()
     {
@@ -100,8 +98,6 @@ public class Player_Attack : MonoBehaviour
         {
             _gun.leftAttack(_dir);
             _player._ReturnNormal();
-            GameObject effect = Instantiate(star, _muzzlepooint.position, Quaternion.identity);
-            Destroy(effect, 0.2f); // アニメーションの長さに合わせて
         }
     }
 

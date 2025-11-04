@@ -9,6 +9,10 @@ public class SwordHitbox : MonoBehaviour
     //public int damage = 10;//プレイヤースクリプトで技によって変更
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] GameObject _slashPrefab;
+    [SerializeField] private Transform _groundpoint;
+    public GameObject _groundeffect;
+
+
 
     private Collider _collider;
     public Transform _slashPosition;
@@ -82,6 +86,9 @@ public class SwordHitbox : MonoBehaviour
 
         if (other.CompareTag("Grounded") && _groundattack)
         {
+            GameObject effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
+            Destroy(effect, 0.2f); // アニメーションの長さに合わせて
+
             Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f);
             foreach (var hit in hits)
             {
