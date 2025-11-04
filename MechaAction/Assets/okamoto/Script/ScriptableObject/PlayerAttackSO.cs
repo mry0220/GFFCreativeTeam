@@ -14,7 +14,9 @@ public class PlayerAttackSO : ScriptableObject
         [SerializeField] Weapontype type;
         [SerializeField] int damage;
         [SerializeField] int knockback;
+        [SerializeField] string effectname;
         [SerializeField] int critical;
+
 
         public enum Weapontype
         {
@@ -24,5 +26,6 @@ public class PlayerAttackSO : ScriptableObject
 
         public int Damage { get => damage;}
         public int Knockback { get => knockback;}
+        public string EffectName { get => effectname;}
     }
 }

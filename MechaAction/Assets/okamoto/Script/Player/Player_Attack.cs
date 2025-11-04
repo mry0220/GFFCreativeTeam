@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Player_Attack : MonoBehaviour
 {
-    [SerializeField] PlayerAttackSO _playerAttackSO;
+    //[SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] private SwordHitbox _sword;
     [SerializeField] private GunHitbox _gun;
 
@@ -88,9 +88,10 @@ public class Player_Attack : MonoBehaviour
         {
             _sword.enabled = true;
 
-            _anim.SetTrigger("Attack");
-            _anim.SetInteger("AttackType", 0);
 
+            _anim.SetInteger("AttackType", 0);
+            _anim.SetTrigger("Attack");
+            
             _sword.leftAttack(_dir);
             //Debug.Log(_damage);
         }
@@ -109,9 +110,10 @@ public class Player_Attack : MonoBehaviour
         {
             _player._ChangeState(PlayerState.Attack);
             _sword.enabled = true;
-
-            _anim.SetTrigger("Attack");
+            Debug.Log("”½‰ž");
             _anim.SetInteger("AttackType", 1);
+            _anim.SetTrigger("Attack");
+           
             _sword.tatakitukeAttack(_dir);
         }
         else if(_state == PlayerAttackType.Gun)

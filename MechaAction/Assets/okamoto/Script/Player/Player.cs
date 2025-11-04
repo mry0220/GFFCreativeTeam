@@ -148,7 +148,7 @@ public class Player : MonoBehaviour
     public void _ChangeState(PlayerState newState)
     {
         state = newState;
-        Debug.Log("state‚ª" + newState + "‚É•Ï‚í‚Á‚½");
+        //Debug.Log("state‚ª" + newState + "‚É•Ï‚í‚Á‚½");
         if(newState == PlayerState.Attack && _isGrounded)
         {
             _rb.velocity = Vector3.zero;

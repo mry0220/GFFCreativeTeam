@@ -6,6 +6,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class EnemyHP_T : MonoBehaviour, IDamage
 {
     [SerializeField] private float maxHP = 50f; // HP
+    [SerializeField] DamageEffectSO _damageEffectSO;
 
     private Transform _player;
     private Rigidbody _rb;
@@ -15,8 +16,6 @@ public class EnemyHP_T : MonoBehaviour, IDamage
     // IHealthインターフェースの実装（読み取り専用プロパティ）
     public float MaxHP => maxHP;
     public float CurrentHP => currentHP;
-
-    public GameObject _damageeffect;
 
     void Start()
     {
@@ -33,23 +32,50 @@ public class EnemyHP_T : MonoBehaviour, IDamage
     }
 
     //ダメージを受け、HPを減少させる処理
-    public void TakeDamage(int amount,int knockback,int dir)
+    public void TakeDamage(int damage,int knockback,int dir)
     {
         if (currentHP <= 0) return;
 
-        currentHP -= amount;
+        currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
 
-        //_damageeffect = 
-        GameObject effect = Instantiate(_damageeffect, transform.position, Quaternion.identity);
-        Destroy(effect, 0.2f); // アニメーションの長さに合わせて
+
+        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
+        if (attackData != null && attackData.HitEffect != null)
+        {
+            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+            Destroy(effect,0.2f);
+        }
 
         if (knockback != 0)
         {
             _rb.AddForce(dir * knockback, 3f, 0, ForceMode.Impulse);
         }
 
-        Debug.Log(gameObject.name + " (敵) が" + amount + "ダメージ受けました。残りHP: " + currentHP);
+        Debug.Log(gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+
+        if (currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void TakeElectDamage(int damage, float electtime, string name)
+    {
+        if (currentHP <= 0) return;
+
+        currentHP -= damage;
+        currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
+
+
+        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
+        if (attackData != null && attackData.HitEffect != null)
+        {
+            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+            Destroy(effect, 0.2f);
+        }
+
+        Debug.Log(gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
         if (currentHP <= 0)
         {

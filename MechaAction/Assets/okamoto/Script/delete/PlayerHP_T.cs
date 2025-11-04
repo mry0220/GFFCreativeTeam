@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHP_T : MonoBehaviour ,IDamage
+public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
 {
     private Player _player;
 
@@ -26,7 +26,7 @@ public class PlayerHP_T : MonoBehaviour ,IDamage
 
 
     //ダメージを受け、HPを減少させる。
-    public void TakeDamage(int damageAmount,int knockback,int dir)
+    public void TakeDamage(int damage,int knockback,int dir,string name)
     {
         if (currentHP <= 0)
         {
@@ -34,11 +34,11 @@ public class PlayerHP_T : MonoBehaviour ,IDamage
             return;
         }
         // --- ここからダメージ処理 ---
-        currentHP -= damageAmount;
+        currentHP -= damage;
         // HPが0未満にならないように制限
         currentHP = Mathf.Max(currentHP, 0);
 
-        Debug.Log(gameObject.name + "が" + damageAmount + "ダメージ受けました。残りHP: " + currentHP);
+        Debug.Log(gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
         if(knockback != 0)
         {
@@ -52,6 +52,39 @@ public class PlayerHP_T : MonoBehaviour ,IDamage
         {
             Die();
         }
+    }
+
+    public void TakeElectDamage(int damage, float electtime, string name)
+    {
+        if (currentHP <= 0)
+        {
+            // 既に死亡している場合は処理をスキップ
+            return;
+        }
+        // --- ここからダメージ処理 ---
+        currentHP -= damage;
+        // HPが0未満にならないように制限
+        currentHP = Mathf.Max(currentHP, 0);
+
+        Debug.Log(gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+
+        // HPが0以下になったかチェック
+        if (currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void TakeBanDamage(float bantime, string name)
+    {
+        if (currentHP <= 0)
+        {
+            // 既に死亡している場合は処理をスキップ
+            return;
+        }
+ 
+
+
     }
 
     private IEnumerator _StateNormal()

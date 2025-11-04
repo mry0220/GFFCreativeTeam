@@ -114,7 +114,7 @@ public class BurstEnemy : MonoBehaviour
         velocity.x = _direction * _moveSpeed;
 
         _rb.velocity = velocity;
-        Debug.Log(_direction);
+        //Debug.Log(_direction);
         //Debug.Log(_attacktime);
     }
 

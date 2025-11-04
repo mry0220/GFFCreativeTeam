@@ -18,6 +18,7 @@ public class SwordHitbox : MonoBehaviour
     public Transform _slashPosition;
     private int _damage;
     private int _knockback;
+    private string _name;
     private int _dir = 0;
 
     private bool _groundattack = false;
