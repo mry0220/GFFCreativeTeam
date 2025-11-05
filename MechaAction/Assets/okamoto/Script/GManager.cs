@@ -38,4 +38,9 @@ public class GManager : MonoBehaviour
     {
         currentpoint = newPos;
     }
+
+    public void Reset()
+    {
+        
+    }
 }
