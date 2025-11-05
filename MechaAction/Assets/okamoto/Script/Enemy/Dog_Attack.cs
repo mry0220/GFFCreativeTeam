@@ -9,6 +9,7 @@ public class Dog_Attack : MonoBehaviour
 
     private int _damage = 20;
     private int _knockback = 5;
+    private string _name = "DamageEffect";
     private int _dir;
 
     private void Awake()
@@ -30,10 +31,10 @@ public class Dog_Attack : MonoBehaviour
         {
             if (hit.collider.CompareTag("Player"))
             {
-                var Interface = hit.collider.GetComponent<IDamage>();
+                var Interface = hit.collider.GetComponent<IPlayerDamage>();
                 if (Interface != null)
                 {
-                    Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
+                    Interface.TakeDamage(_damage, _knockback, _dir,_name);//敵のインターフェース<IDamage>取得
 
                 }
             }

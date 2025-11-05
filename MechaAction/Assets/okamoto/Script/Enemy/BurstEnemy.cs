@@ -20,7 +20,7 @@ public class BurstEnemy : MonoBehaviour
     private Transform _player;
     private Rigidbody _rb;
     private Burst_Attack _attack;
-    private float _moveSpeed = 3.0f;
+    private float _moveSpeed = 1.0f;
     private bool _moveStop = false;
     public int _direction = 0;
     private float _attacktime = 0;

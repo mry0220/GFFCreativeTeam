@@ -12,6 +12,7 @@ public class EnemyBullet : MonoBehaviour
 
     [SerializeField] private int _damage;
     [SerializeField] private int _knockback;
+    private string _name = "DamageEffect";
 
     Vector3 velocity;
     private void Awake()
@@ -46,10 +47,10 @@ public class EnemyBullet : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            var Interface = other.GetComponent<IDamage>();
+            var Interface = other.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_damage, _knockback, _dir,_name);//敵のインターフェース<IDamage>取得
             }
         }
     }

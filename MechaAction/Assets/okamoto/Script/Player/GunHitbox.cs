@@ -7,8 +7,9 @@ public class GunHitbox : MonoBehaviour
 {
     //1回の攻撃で同じ敵に何度も当たり判定が入らないようにする
     //private HashSet<GameObject> hitTargets = new HashSet<GameObject>();
-    //public int damage = 10;//プレイヤースクリプトで技によって変更
     [SerializeField] PlayerAttackSO _playerAttackSO;
+    [SerializeField] DamageEffectSO _damageEffectSO;
+
     [SerializeField] GameObject _bulletPrefab;
     public Transform _bulletPosition;
     [SerializeField] private Transform _muzzlepoint;
@@ -16,17 +17,8 @@ public class GunHitbox : MonoBehaviour
 
     private int _damage;
     private int _knockback;
+    private string _name;
     private int _dir = 0;
-
-    private void Awake()
-    {
-
-    }
-
-    private void Start()
-    {
-
-    }
 
     void OnEnable()
     {
@@ -34,18 +26,15 @@ public class GunHitbox : MonoBehaviour
         //hitTargets.Clear();
     }
 
-    private void Update()
-    {
-
-    }
-
     public void leftAttack(int dir)
     {
         _damage = _playerAttackSO.playerAttackList[3].Damage;
         _knockback = _playerAttackSO.playerAttackList[3].Knockback;
+        _name = _playerAttackSO.playerAttackList[3].EffectName;
         _dir = dir;
-        GameObject effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
-        Destroy(effect, 0.2f); // アニメーションの長さに合わせて
+
+        var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
+        Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
         Ray ray = new Ray(transform.position, transform.forward);
@@ -58,18 +47,26 @@ public class GunHitbox : MonoBehaviour
                 {
                     Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
 
+                    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _name);//ラムダ形式AIで知った
+                    if (attackData != null && attackData.HitEffect != null)
+                    {
+                        var effect = Instantiate(attackData.HitEffect, hit.transform.position, Quaternion.identity);
+                        Destroy(effect, 0.2f);
+                    }
                 }
             }
         }
     }
 
-    //問題　連続した攻撃の際、アニメーションのシグナルか何かでClear();を呼ぶ必要あり
-
     public void ShotGun(int dir)
     {
         _damage = _playerAttackSO.playerAttackList[4].Damage;
         _knockback = _playerAttackSO.playerAttackList[4].Knockback;
+        _name = _playerAttackSO.playerAttackList[4].EffectName;
         _dir = dir;
+
+        var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
+        Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
         //Ray ray = new Ray();
@@ -82,6 +79,12 @@ public class GunHitbox : MonoBehaviour
                 {
                     Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
 
+                    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _name);//ラムダ形式AIで知った
+                    if (attackData != null && attackData.HitEffect != null)
+                    {
+                        var effect = Instantiate(attackData.HitEffect, hit.transform.position, Quaternion.identity);
+                        Destroy(effect, 0.2f);
+                    }
                 }
             }
         }

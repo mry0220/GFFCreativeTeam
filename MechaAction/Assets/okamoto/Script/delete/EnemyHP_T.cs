@@ -40,12 +40,12 @@ public class EnemyHP_T : MonoBehaviour, IDamage
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
 
 
-        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
-        if (attackData != null && attackData.HitEffect != null)
-        {
-            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-            Destroy(effect,0.2f);
-        }
+        //var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
+        //if (attackData != null && attackData.HitEffect != null)
+        //{
+        //    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+        //    Destroy(effect,0.2f);
+        //}
 
         if (knockback != 0)
         {

@@ -8,6 +8,8 @@ public class SwordHitbox : MonoBehaviour
     private HashSet<GameObject> hitTargets = new HashSet<GameObject>();
     //public int damage = 10;//プレイヤースクリプトで技によって変更
     [SerializeField] PlayerAttackSO _playerAttackSO;
+    [SerializeField] DamageEffectSO _damageEffectSO;
+
     [SerializeField] GameObject _slashPrefab;
     [SerializeField] private Transform _groundpoint;
     public GameObject _groundeffect;
@@ -18,7 +20,7 @@ public class SwordHitbox : MonoBehaviour
     public Transform _slashPosition;
     private int _damage;
     private int _knockback;
-    private string _name;
+    private string _effectname;
     private int _dir = 0;
 
     private bool _groundattack = false;
@@ -50,6 +52,7 @@ public class SwordHitbox : MonoBehaviour
     {
         _damage = _playerAttackSO.playerAttackList[0].Damage;
         _knockback = _playerAttackSO.playerAttackList[0].Knockback;
+        _effectname = _playerAttackSO.playerAttackList[0].EffectName;
         _dir = dir;
     }
 
@@ -59,6 +62,7 @@ public class SwordHitbox : MonoBehaviour
     {
         _damage = _playerAttackSO.playerAttackList[1].Damage;
         _knockback = _playerAttackSO.playerAttackList[1].Knockback;
+        _effectname = _playerAttackSO.playerAttackList[1].EffectName;
         _dir = dir;
         _groundattack = true;
 
@@ -68,9 +72,10 @@ public class SwordHitbox : MonoBehaviour
     {
         _damage = _playerAttackSO.playerAttackList[2].Damage;
         _knockback = _playerAttackSO.playerAttackList[2].Knockback;
+        _effectname = _playerAttackSO.playerAttackList[2].EffectName;
         _dir += dir;
 
-        Instantiate(_slashPrefab, _slashPosition.position, Quaternion.identity);
+        Instantiate(_slashPrefab, _slashPosition.position, gameObject.transform.rotation);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -82,13 +87,20 @@ public class SwordHitbox : MonoBehaviour
             {
                 Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
                 hitTargets.Add(other.gameObject);
+
+                var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+                if (attackData != null && attackData.HitEffect != null)
+                {
+                    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+                    Destroy(effect, 0.2f);
+                }
             }
         }
 
         if (other.CompareTag("Grounded") && _groundattack)
         {
-            GameObject effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
-            Destroy(effect, 0.2f); // アニメーションの長さに合わせて
+            var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
+            Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
             Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f);
             foreach (var hit in hits)
@@ -98,6 +110,13 @@ public class SwordHitbox : MonoBehaviour
                     // IDamageable 実装クラスへダメージ
                     var Interface = hit.GetComponent<IDamage>();
                     if (Interface != null) Interface.TakeDamage(_damage,_knockback,_dir);
+
+                    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+                    if (attackData != null && attackData.HitEffect != null)
+                    {
+                        var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+                        Destroy(effect, 0.2f);
+                    }
                 }
             }
             _groundattack = false;

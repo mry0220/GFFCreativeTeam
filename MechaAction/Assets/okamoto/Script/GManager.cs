@@ -7,6 +7,7 @@ public class GManager : MonoBehaviour
     public static GManager Instance;
     [SerializeField] private CameraManager _mainCamera;
 
+    Vector3 currentpoint;
     void Awake()
     {
         if (Instance == null) Instance = this;   //ˆê‰ž
@@ -35,6 +36,6 @@ public class GManager : MonoBehaviour
 
     public void CheckPoint(Vector3 newPos)
     {
-        Vector3 currentpoint = newPos;
+        currentpoint = newPos;
     }
 }

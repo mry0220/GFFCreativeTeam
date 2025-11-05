@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
 {
     private Player _player;
+    [SerializeField] DamageEffectSO _damageEffectSO;
+
 
     // [SerializeField] でInspectorから設定可能にする
     [SerializeField] private int maxHP = 100;
@@ -37,6 +39,14 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
         currentHP -= damage;
         // HPが0未満にならないように制限
         currentHP = Mathf.Max(currentHP, 0);
+        StartCoroutine(_DamageTime());
+
+        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == name);//ラムダ形式AIで知った
+        if (attackData != null && attackData.HitEffect != null)
+        {
+            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+            Destroy(effect, 0.2f);
+        }
 
         Debug.Log(gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
@@ -94,6 +104,24 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
         yield break;
     }
 
+    private IEnumerator _DamageTime()
+    {
+        GManager.Instance.OnPlayerHit();
+        Debug.Log("無敵");
+        int layer = LayerMask.NameToLayer("PlayerDamage");
+        gameObject.layer = layer;
+        for (int i= 0; i < 10; i++)
+        {
+            
+
+        }
+        yield return new WaitForSeconds(3f);
+        layer = LayerMask.NameToLayer("Player");
+        gameObject.layer = layer;
+
+        yield break;
+    }
+
     // HPを回復させる。
     public void Heal(int healAmount)
     {
@@ -110,8 +138,11 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
     public void Die()
     {
         Debug.Log(gameObject.name + "は倒されました。ゲームオーバー！");
+        int layer = LayerMask.NameToLayer("PlayerDamage");
+        gameObject.layer = layer;
         _player._ChangeState(PlayerState.Dead);
         _player.Dead();
+        GManager.Instance.DiePlayer();
 
         // ここにゲームオーバー画面の表示、リスタート処理、プレイヤー入力の無効化などの処理を追加
         // プレイヤーオブジェクトを非アクティブ化
