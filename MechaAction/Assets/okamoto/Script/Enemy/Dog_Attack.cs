@@ -40,5 +40,16 @@ public class Dog_Attack : MonoBehaviour
             }
         }
     }
-    
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
+            if (Interface != null)
+            {
+                Interface.TakeDamage(_damage, _knockback, _dir, _name);//敵のインターフェース<IDamage>取得
+            }
+        }
+    }
 }

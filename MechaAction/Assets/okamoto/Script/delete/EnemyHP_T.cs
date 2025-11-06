@@ -49,7 +49,7 @@ public class EnemyHP_T : MonoBehaviour, IDamage
 
         if (knockback != 0)
         {
-            _rb.AddForce(dir * knockback, 3f, 0, ForceMode.Impulse);
+            _rb.AddForce(dir * knockback, knockback * 0.4f, 0, ForceMode.Impulse);
         }
 
         Debug.Log(gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);

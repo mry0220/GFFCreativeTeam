@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     public bool CanMove => _state == PlayerState.Standing;
 
     private Rigidbody _rb;
+    private CapsuleCollider _col;
     private Animator _anim;
 
     private Vector2 _moveVector;
@@ -53,6 +54,12 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
+    [SerializeField] private float _maxSlopAngle = 45f;
+
+    private bool _isSlope = false;
+    private float groundAngle = 0f;
+    private Vector2 groundNormal = Vector2.up;
+    [SerializeField] private LayerMask groundLayerMask = 10;
 
     private float _fallTime;
 
@@ -62,6 +69,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _col = GetComponent<CapsuleCollider>();
         _anim = GetComponent<Animator>();
     }
 
@@ -107,6 +115,7 @@ public class Player : MonoBehaviour
         velocity = _rb.velocity; //一度変数にコピーしてから編集
         _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
 
+        _CheckGround();
         _Move();//移動処理
 
         _Jump();
@@ -211,6 +220,15 @@ public class Player : MonoBehaviour
         }
 
         prevHorizontal = _inputVector.x;
+    }
+
+    private void _CheckGround()
+    {
+        Vector2 bounds = _col.bounds.size;
+        Vector2 center = _col.bounds.center;
+
+        float rayLength = bounds.y / 2 + 1.1f;
+        //RaycastHit hit = Physics.Raycast(center, Vector2.down, rayLength, groundLayerMask);
     }
 
     private void _Move()
@@ -328,7 +346,7 @@ public class Player : MonoBehaviour
     public void KnockBack(int dir,int knockback)
     {
         _rb.velocity = Vector3.zero;
-        _rb.AddForce(dir * knockback, 3f, 0f, ForceMode.Impulse);
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
     }
 
     public void Dead()

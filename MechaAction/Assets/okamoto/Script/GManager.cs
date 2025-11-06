@@ -7,6 +7,8 @@ public class GManager : MonoBehaviour
     public static GManager Instance;
     [SerializeField] private CameraManager _mainCamera;
 
+    public int life = 3;
+
     Vector3 currentpoint;
     void Awake()
     {
@@ -29,9 +31,11 @@ public class GManager : MonoBehaviour
 
     public void DiePlayer()
     {
+        life--;
         //currentpointへ移動 Player.position == currentpoint;
         //HPを戻す、残機を減らす GetComponent<Player_HP>PlayerHP.ReturnHP();
         //フェードアウトさせる
+        //gameover画面
     }
 
     public void CheckPoint(Vector3 newPos)
@@ -41,6 +45,6 @@ public class GManager : MonoBehaviour
 
     public void Reset()
     {
-        
+        life = 3;
     }
 }

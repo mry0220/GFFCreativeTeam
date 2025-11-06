@@ -108,16 +108,16 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
     {
         GManager.Instance.OnPlayerHit();
         Debug.Log("無敵");
-        int layer = LayerMask.NameToLayer("PlayerDamage");
-        gameObject.layer = layer;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Enemy"), true);
         for (int i= 0; i < 10; i++)
         {
             
 
         }
         yield return new WaitForSeconds(3f);
-        layer = LayerMask.NameToLayer("Player");
-        gameObject.layer = layer;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Enemy"), false);
 
         yield break;
     }
@@ -144,7 +144,7 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
         _player.Dead();
         GManager.Instance.DiePlayer();
 
-        // ここにゲームオーバー画面の表示、リスタート処理、プレイヤー入力の無効化などの処理を追加
+        // ここにプレイヤー入力の無効化などの処理を追加
         // プレイヤーオブジェクトを非アクティブ化
         //gameObject.SetActive(false);
     }
