@@ -115,7 +115,6 @@ public class zibacucumo : MonoBehaviour
             if(hit.CompareTag("Player"))
             {
                 Debug.Log("3É_ÉÅÅ[ÉW");
-                
             }
         }
         toxic_parent.count--;

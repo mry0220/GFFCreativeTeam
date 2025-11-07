@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class ShieldAndFire : MonoBehaviour
-{
+{  
+    
     const float ATTACKTIME = 3f;
     const float SHIELDTIME = 3f;
 
@@ -16,7 +18,7 @@ public class ShieldAndFire : MonoBehaviour
         SHIELD,
         DESTROY,
     };
-
+ 
     private Rigidbody _rb;
     private Transform _playerTransfrom;
     private bool _ATTACK;
@@ -24,17 +26,20 @@ public class ShieldAndFire : MonoBehaviour
     private EnemyState state;
     private int _dir;
     private int tmp;
-
+    private float _moveSpeed = 5f;
+    [SerializeField] Vector3 _velocity;
+    
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _playerTransfrom = GameObject.FindWithTag("player").transform;
+        _playerTransfrom = GameObject.FindWithTag("Player").transform;
     }
 
     private void Start()
     {
         state =EnemyState.DITECTION;
+        _velocity = _rb.velocity;
     }
 
     private void FixedUpdate()
@@ -43,7 +48,7 @@ public class ShieldAndFire : MonoBehaviour
         switch(state)
         {
             case EnemyState.DITECTION:
-                ditection();
+                Ditection();
                 break;
 
             case EnemyState.MOVE:
@@ -63,30 +68,50 @@ public class ShieldAndFire : MonoBehaviour
         }
     }
 
-    private void ditection()
+    private void Ditection()
     {
-        if (_distance < 10)
+        if (_distance < 20)
             //state =
-            move();
+            Move();
     }
 
-    private void move()
-    {
-        tmp = _dir;
-
-        _dir = (_rb.position.x < _playerTransfrom.position.x) ? 1 : -1;
-    }
-
-    private void attack()
+    private void Move()
     {
 
+       tmp = _dir;
+   
+       _dir = (_rb.position.x < _playerTransfrom.position.x) ? 1 : -1;
+      if (tmp != _dir)
+      {
+           _velocity.x = 0;
+           return;
+       }
+       else
+       {
+           _velocity.x = _dir * _moveSpeed;
+       }
+       
+       if(_distance<4f)
+       {
+           _velocity.x = 0;
+        
+       }
+       
+        _rb.velocity = _velocity;
+ 
     }
-    private void shield()
+
+    private void Attack()
+    {
+
+       
+    }
+    private void Shield()
     {
 
     }
 
-    private void destroy()
+    private void Destroy()
     {
 
     }
