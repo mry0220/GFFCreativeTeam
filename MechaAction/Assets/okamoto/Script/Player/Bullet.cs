@@ -13,17 +13,24 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private int _damage;
     [SerializeField] private int _knockback;
+    private string _name;
 
     Vector3 velocity;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _player = GameObject.FindWithTag("Player").GetComponent<Player>();
+    }
+
+    public void Initialize(int damage, int knockback, int dir, string name)
+    {
+        _damage = damage;
+        _knockback = knockback;
+        _name = name;
+        _dir = dir;
     }
 
     private void Start()
     {
-        _dir = _player._lookDir;
         StartCoroutine(_Destroy());
     }
 

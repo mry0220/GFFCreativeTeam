@@ -4,19 +4,40 @@ using UnityEngine;
 
 public class Burst_Attack : MonoBehaviour
 {
+    [SerializeField] EnemyAttackSO _enemyattackSO;
     private BurstEnemy _enemy;
 
+    private int _clear;
     [SerializeField] GameObject _bulletPrefab;
     public Transform _bulletPosition;
 
-    [SerializeField] private int _damage = 3;
-    [SerializeField] private int _knockback = 0;
-    [SerializeField] private int _dir;
-    [SerializeField] private string _name = "DamageEffect";
+    private int _damage;
+    private int _knockback;
+    private int _hitdamage;
+    private int _hitknockback;
+    private int _dir;
+    private string _effectname;
 
     private void Awake()
     {
         _enemy = GetComponent<BurstEnemy>();
+    }
+
+    private void Start()
+    {
+        _clear = GManager.Instance.clear;
+        Debug.Log(_clear);
+        var attackData = _enemyattackSO.GetEffect("BurstEnemy");
+        if (attackData != null)
+        {
+            _damage = (int)(attackData.Damage * (_clear * 1.5));
+            _knockback = (int)(attackData.Knockback * (_clear * 1.5));
+            _hitdamage = (int)(attackData.Hitdamage * (_clear * 1.5));
+            _hitknockback = (int)(attackData.Hitknockback * (_clear * 1.5));
+            _effectname = (string)(attackData.EffectName);
+        }
+
+
     }
 
     private void Update()
@@ -33,7 +54,8 @@ public class Burst_Attack : MonoBehaviour
     {
         for(int i = 0;i < 3; i++)
         {
-            Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
+            GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
+            bullet.GetComponent<EnemyBullet>().Initialize(_damage ,_knockback,_dir,_effectname);
             yield return new WaitForSeconds(0.2f);
         }
         yield break;
@@ -46,7 +68,7 @@ public class Burst_Attack : MonoBehaviour
             var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_damage, _knockback, _dir,_name);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_hitdamage, _hitknockback, _dir,_effectname);//敵のインターフェース<IDamage>取得
             }
         }
     }

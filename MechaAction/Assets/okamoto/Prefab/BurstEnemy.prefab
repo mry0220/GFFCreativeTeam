@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9311e8cb29a4db248b36667f9cc92da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyattackSO: {fileID: 11400000, guid: 0cfcbf6313351a24e8996898f0cd9710, type: 2}
   _bulletPrefab: {fileID: 6861717528325547553, guid: c763292e764631b47b1f6e728f1779b3, type: 3}
   _bulletPosition: {fileID: 8421021114266396386}
 --- !u!114 &8894308913296232743

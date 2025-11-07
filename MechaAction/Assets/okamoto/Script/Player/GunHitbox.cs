@@ -94,9 +94,10 @@ public class GunHitbox : MonoBehaviour
     {
         _damage = _playerAttackSO.playerAttackList[5].Damage;
         _knockback = _playerAttackSO.playerAttackList[5].Knockback;
-        _dir += dir;
+        _dir = dir;
 
-        Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
+        GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
+        bullet.GetComponent<Bullet>().Initialize(_damage, _knockback, _dir, "DamageEffect");
     }
 
     //private void OnTriggerEnter(Collider other)

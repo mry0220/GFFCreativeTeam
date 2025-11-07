@@ -73,9 +73,10 @@ public class SwordHitbox : MonoBehaviour
         _damage = _playerAttackSO.playerAttackList[2].Damage;
         _knockback = _playerAttackSO.playerAttackList[2].Knockback;
         _effectname = _playerAttackSO.playerAttackList[2].EffectName;
-        _dir += dir;
+        _dir = dir;
 
-        Instantiate(_slashPrefab, _slashPosition.position, gameObject.transform.rotation);
+        GameObject slash = Instantiate(_slashPrefab, _slashPosition.position, gameObject.transform.rotation);
+        slash.GetComponent<Slash>().Initialize(_damage, _knockback, _dir, _effectname);
     }
 
     private void OnTriggerEnter(Collider other)

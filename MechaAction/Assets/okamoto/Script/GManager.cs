@@ -8,6 +8,7 @@ public class GManager : MonoBehaviour
     [SerializeField] private CameraManager _mainCamera;
 
     public int life = 3;
+    public int clear = 1;
 
     Vector3 currentpoint;
     void Awake()

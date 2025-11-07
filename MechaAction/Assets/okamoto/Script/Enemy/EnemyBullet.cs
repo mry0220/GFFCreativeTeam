@@ -5,25 +5,30 @@ using UnityEngine;
 public class EnemyBullet : MonoBehaviour
 {
     private Rigidbody _rb;
-    private BurstEnemy _enemy;
 
     [SerializeField] private float _speed;
     private int _dir;
 
-    [SerializeField] private int _damage;
-    [SerializeField] private int _knockback;
+    private int _damage;
+    private int _knockback;
     private string _name = "DamageEffect";
 
     Vector3 velocity;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _enemy = GameObject.FindWithTag("Enemy").GetComponent<BurstEnemy>();
+    }
+
+    public void Initialize(int damage ,int knockback ,int dir,string name)
+    {
+        _damage = damage;
+        _knockback = knockback;
+        _name = name;
+        _dir = dir;
     }
 
     private void Start()
     {
-        _dir = _enemy._direction;
         StartCoroutine(_Destroy());
     }
 
@@ -32,6 +37,7 @@ public class EnemyBullet : MonoBehaviour
         velocity = _rb.velocity;
         velocity.x = _dir * _speed;
         _rb.velocity = velocity;
+        Debug.Log(_dir);
     }
 
     private IEnumerator _Destroy()

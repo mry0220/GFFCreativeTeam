@@ -38,6 +38,7 @@ public class EnemyHP_T : MonoBehaviour, IDamage
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
+        GManager.Instance.OnPlayerHit();
 
 
         //var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った

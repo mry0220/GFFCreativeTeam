@@ -1334,7 +1334,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 59766e3dd5e9d334d97d5124d271defe, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -1358,6 +1358,9 @@ MonoBehaviour:
   _lookDir: 0
   _moveSpeed: 7
   _jumpPower: 11
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 1034
 --- !u!114 &5675162069934690767
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public enum PlayerState
 {
@@ -43,6 +45,7 @@ public class Player : MonoBehaviour
     private Vector3 velocity;
 
     private bool _isGrounded;
+    private bool _isRayGrounded;
     private bool _isJump = false;
     private bool _isSecondJump;
     private bool _isRun = false;
@@ -54,11 +57,12 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
-    [SerializeField] private float _maxSlopAngle = 45f;
 
-    private bool _isSlope = false;
-    private float groundAngle = 0f;
-    private Vector2 groundNormal = Vector2.up;
+    //[SerializeField] private float _maxSlopAngle = 45f;
+    //private bool _isSlope = false;
+    //private float groundAngle = 0f;
+    //private Vector2 groundNormal = Vector2.up;
+    RaycastHit hit;
     [SerializeField] private LayerMask groundLayerMask = 10;
 
     private float _fallTime;
@@ -103,6 +107,27 @@ public class Player : MonoBehaviour
             _canDash = false;
         }
 
+        //Vector2 bounds = _col.bounds.size;
+        //Vector2 center = _col.bounds.center;
+
+        //float rayLength = bounds.y / 2 + 1.1f;
+        //Vector3 rayPosition = transform.position;
+        //Ray ray = new Ray(center, Vector3.down);
+        //_isRayGrounded = Physics.Raycast(ray, rayLength,groundLayerMask);
+
+        _isRayGrounded = Physics.SphereCast(transform.position, 0.4f, Vector3.down,out hit, 2f, groundLayerMask);
+
+        Debug.DrawRay(transform.position, Vector3.down * 2f, Color.red);
+        
+
+        //Debug.Log(_isRayGrounded);
+
+
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position * hit.distance, 0.4f);
     }
 
     private void FixedUpdate()
@@ -115,7 +140,7 @@ public class Player : MonoBehaviour
         velocity = _rb.velocity; //一度変数にコピーしてから編集
         _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
 
-        _CheckGround();
+        //_CheckGround();
         _Move();//移動処理
 
         _Jump();
@@ -222,14 +247,14 @@ public class Player : MonoBehaviour
         prevHorizontal = _inputVector.x;
     }
 
-    private void _CheckGround()
-    {
-        Vector2 bounds = _col.bounds.size;
-        Vector2 center = _col.bounds.center;
+    //private void _CheckGround()
+    //{
+    //    Vector2 bounds = _col.bounds.size;
+    //    Vector2 center = _col.bounds.center;
 
-        float rayLength = bounds.y / 2 + 1.1f;
-        //RaycastHit hit = Physics.Raycast(center, Vector2.down, rayLength, groundLayerMask);
-    }
+    //    float rayLength = bounds.y / 2 + 1.1f;
+    //    //RaycastHit hit = Physics.Raycast(center, Vector2.down, rayLength, groundLayerMask);
+    //}
 
     private void _Move()
     {
@@ -375,6 +400,7 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Grounded"))
         {
+            Debug.Log("着地");
             _fallTime = 0f;
             _isGrounded = true;
         }
