@@ -14,11 +14,11 @@ public class tama : MonoBehaviour
       _rb.velocity = transform.right * _speed;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if ((other.))
-        {
-            
-        }
-    }
+   // private void OnTriggerEnter(Collider other)
+   // {
+   //     if ((other.))
+   //     {
+   //         
+   //     }
+   // }
 }

@@ -25,21 +25,20 @@ public class NewBehaviourScript : MonoBehaviour
     private GameObject _myEnergyBall;   
 
     // private EnemyState _state = EnemyState.DITECTION;
-    private Rigidbody _rd;
+    private Rigidbody _rb;
     private Transform _playerTransform;
     private bool _ATTACK;
-    private Vector3 distance;
 
     private float _attackTime;
     private void Awake()
     {
-        _rd = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
         _playerTransform = _player.transform;
     }
 
     private void FixedUpdate()
     {
-        if (Vector3.Distance(_playerTransform.position, _rd.position) < 20f)
+        if (Vector3.Distance(_playerTransform.position, _rb.position) < 20f)
         {
             //Debug.Log("fuga");
             Debug.Log("hoge");
@@ -55,7 +54,7 @@ public class NewBehaviourScript : MonoBehaviour
         {
             case EnemyState.DITECTION:
                
-                if (Vector3.Distance(_playerTransform.position, _rd.position) < 20f)
+                if (Vector3.Distance(_playerTransform.position, _rb.position) < 20f)
                 {
                     _state = EnemyState.LOOK;
                 } 
@@ -73,7 +72,7 @@ public class NewBehaviourScript : MonoBehaviour
                     _state = EnemyState.ATTACK;
                 }
 
-                if (Vector3.Distance(_playerTransform.position, _rd.position) >= 20f)
+                if (Vector3.Distance(_playerTransform.position, _rb.position) >= 20f)
                 {
                     _state = EnemyState.DITECTION;
                 }

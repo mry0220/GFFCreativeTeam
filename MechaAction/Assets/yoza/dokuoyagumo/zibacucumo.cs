@@ -23,8 +23,6 @@ public class zibacucumo : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _player = GameObject.FindWithTag("Player").transform;
-        
-
     }
 
     private void Start()
