@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
+using static UnityEngine.UI.Image;
 
 public enum PlayerState
 {
@@ -54,6 +56,7 @@ public class Player : MonoBehaviour
     private float prevHorizontal = 0f;
     private bool _isDash = false;//ダッシュ中向きが変わらないように
     private bool _canDash = true;//空中で２回目ダッシュを防ぐため
+    public bool _isBan= false;
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
@@ -64,6 +67,7 @@ public class Player : MonoBehaviour
     //private Vector2 groundNormal = Vector2.up;
     RaycastHit hit;
     [SerializeField] private LayerMask groundLayerMask = 10;
+    Vector3 origin;
 
     private float _fallTime;
 
@@ -107,27 +111,28 @@ public class Player : MonoBehaviour
             _canDash = false;
         }
 
-        //Vector2 bounds = _col.bounds.size;
-        //Vector2 center = _col.bounds.center;
+        Vector2 bounds = _col.bounds.size;
+        Vector2 center = _col.bounds.center;
 
         //float rayLength = bounds.y / 2 + 1.1f;
         //Vector3 rayPosition = transform.position;
         //Ray ray = new Ray(center, Vector3.down);
         //_isRayGrounded = Physics.Raycast(ray, rayLength,groundLayerMask);
 
-        _isRayGrounded = Physics.SphereCast(transform.position, 0.4f, Vector3.down,out hit, 2f, groundLayerMask);
+        origin = transform.position + Vector3.down * (bounds.y / 2);
+        _isRayGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down,out hit, 1f, groundLayerMask);
+        Debug.DrawRay(origin, Vector3.down * 2f, Color.red, 2f);
 
-        Debug.DrawRay(transform.position, Vector3.down * 2f, Color.red);
-        
-
-        //Debug.Log(_isRayGrounded);
+        Debug.Log(_isRayGrounded);
 
 
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position * hit.distance, 0.4f);
+        Gizmos.DrawWireSphere(origin, 0.4f);
+        Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
+        //Gizmos.DrawWireSphere(origin + Vector3.down * hit.distance, 0.4f);
     }
 
     private void FixedUpdate()
@@ -169,7 +174,7 @@ public class Player : MonoBehaviour
         }
         #endregion
 
-        if( !_isGrounded )
+        if( !_isGrounded)
         {
             _Gravity();
         }
@@ -288,17 +293,20 @@ public class Player : MonoBehaviour
     private void _Jump()
     {
         if (!CanMove) return;
+        if (_isBan) return;
 
         if (_isGrounded)
         {
-
-            if (_isJump)
+            if(_isRayGrounded)
             {
-                _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
-                _isJump = false;
+                if (_isJump)
+                {
+                    _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
+                    _isJump = false;
+                }
+                _isSecondJump = true;
+                _canDash = true;
             }
-            _isSecondJump = true;
-            _canDash = true;
         }
         else
         {
@@ -368,11 +376,25 @@ public class Player : MonoBehaviour
         yield break;
     }
 
-    public void KnockBack(int dir,int knockback)
+    public void SKnockBack(int dir,int knockback)
     {
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        //anim
     }
+
+    public void BKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        //anim
+    }
+
+    public void Stun()//電撃ダメージで呼ぶ
+    {
+        _rb.velocity = Vector3.zero;
+    }
+
 
     public void Dead()
     {
@@ -400,6 +422,7 @@ public class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Grounded"))
         {
+
             Debug.Log("着地");
             _fallTime = 0f;
             _isGrounded = true;

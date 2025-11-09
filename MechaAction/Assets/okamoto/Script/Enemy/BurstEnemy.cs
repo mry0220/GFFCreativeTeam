@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class BurstEnemy : MonoBehaviour
+public class BurstEnemy : MonoBehaviour, IEnemy
 {
     private enum EnemyState { 
         Look,          //’T‚·
@@ -138,5 +138,15 @@ public class BurstEnemy : MonoBehaviour
     private void Attack()
     {
         _attack.GunAttack();
+    }
+
+    public void SKnockBack(int dir,int knockback)
+    {
+
+    }
+
+    public void BKnockBack(int dir, int knockback)
+    {
+
     }
 }

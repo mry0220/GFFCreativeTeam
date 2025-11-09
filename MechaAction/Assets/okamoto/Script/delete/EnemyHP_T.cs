@@ -7,6 +7,7 @@ public class EnemyHP_T : MonoBehaviour, IDamage
 {
     [SerializeField] private float maxHP = 50f; // HP
     [SerializeField] DamageEffectSO _damageEffectSO;
+    private IEnemy _ienemy;
 
     private Transform _player;
     private Rigidbody _rb;
@@ -23,7 +24,7 @@ public class EnemyHP_T : MonoBehaviour, IDamage
         Debug.Log(gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
-
+        _ienemy = GetComponent<IEnemy>();
     }
 
     private void Update()
@@ -47,10 +48,16 @@ public class EnemyHP_T : MonoBehaviour, IDamage
         //    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
         //    Destroy(effect,0.2f);
         //}
-
-        if (knockback != 0)
+        if (damage >= 10)
         {
-            _rb.AddForce(dir * knockback, knockback * 0.4f, 0, ForceMode.Impulse);
+            if (knockback >= 0 && knockback < 5)
+            {
+               _ienemy.SKnockBack(dir, knockback);
+            }
+            if (knockback >= 5)
+            {
+                _ienemy.BKnockBack(dir, knockback);
+            }
         }
 
         Debug.Log(gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);

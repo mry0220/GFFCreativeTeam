@@ -50,12 +50,22 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
 
         Debug.Log(gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
-        if(knockback != 0)
+        if(damage >= 10)
         {
-            _player._ChangeState(PlayerState.Knockback);
-            _player.KnockBack(dir, knockback);
-            StartCoroutine(_StateNormal());
+            if(knockback  >= 0 && knockback < 5)
+            {
+                _player._ChangeState(PlayerState.Knockback);
+                _player.SKnockBack(dir, knockback);
+                StartCoroutine(_StateNormal(0.5f));
+            }
+            if (knockback >= 5)
+            {
+                _player._ChangeState(PlayerState.Knockback);
+                _player.BKnockBack(dir, knockback);
+                StartCoroutine(_StateNormal(1f));
+            }
         }
+        
 
         // HPが0以下になったかチェック
         if (currentHP <= 0)
@@ -78,6 +88,17 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
 
         Debug.Log(gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
+        _player._ChangeState(PlayerState.Other);
+        _player.Stun();//vector3.zero
+        StartCoroutine(_StateNormal(electtime));
+
+        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == name);//ラムダ形式AIで知った
+        if (attackData != null && attackData.HitEffect != null)
+        {
+            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+            Destroy(effect, electtime);
+        }
+
         // HPが0以下になったかチェック
         if (currentHP <= 0)
         {
@@ -92,15 +113,30 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
             // 既に死亡している場合は処理をスキップ
             return;
         }
- 
 
+        StartCoroutine(_BanTime(bantime));
+
+        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == name);//ラムダ形式AIで知った
+        if (attackData != null && attackData.HitEffect != null)
+        {
+            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+            Destroy(effect, bantime);
+        }
 
     }
 
-    private IEnumerator _StateNormal()
+    private IEnumerator _StateNormal(float time)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(time);
         _player._ReturnNormal();
+        yield break;
+    }
+
+    private IEnumerator _BanTime(float bantime)
+    {
+        _player._isBan = true;
+        yield return new WaitForSeconds(bantime);
+        _player._isBan = false;
         yield break;
     }
 
