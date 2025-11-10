@@ -9,6 +9,9 @@ public class Cameralimit : MonoBehaviour
     [SerializeField]
     public Vector2 cameraMin;
     public Vector2 cameraMax;
+    public Vector2 cameraMinRE;
+    public Vector2 cameraMaxRE;
+    
 
     [SerializeField]
     public bool lockX;
@@ -58,6 +61,6 @@ public class Cameralimit : MonoBehaviour
     public void Clear()
     {
         invisibleWall.SetActive(false);
-        GManager.Instance.SetCameraBounds(cameraMin,cameraMax);
+        GManager.Instance.SetCameraBounds(cameraMinRE,cameraMaxRE);
     }
 }

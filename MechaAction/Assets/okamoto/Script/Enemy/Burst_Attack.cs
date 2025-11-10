@@ -26,7 +26,7 @@ public class Burst_Attack : MonoBehaviour
     private void Start()
     {
         _clear = GManager.Instance.clear;
-        Debug.Log(_clear);
+        //Debug.Log(_clear);
         var attackData = _enemyattackSO.GetEffect("BurstEnemy");
         if (attackData != null)
         {

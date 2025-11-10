@@ -13,6 +13,7 @@ public class Player_Attack : MonoBehaviour
     private Player _player;
     private int _dir;
 
+    private bool _canattack = true;//攻撃クリック連打防止
     //private int _damage = 0;
 
     private enum PlayerAttackType {
@@ -62,7 +63,7 @@ public class Player_Attack : MonoBehaviour
 
         _dir = _player._lookDir;
 
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && _canattack)
         {
             LeftAttack();
         }
@@ -80,7 +81,7 @@ public class Player_Attack : MonoBehaviour
 
     public void LeftAttack()
     {
-        //if(!_player.CanMove) return;
+        //if(!_player.CanMove) return;連続してつかえない
 
         _player._ChangeState(PlayerState.Attack);
 
@@ -91,7 +92,9 @@ public class Player_Attack : MonoBehaviour
 
             _anim.SetInteger("AttackType", 0);
             _anim.SetTrigger("Attack");
-            
+            //_anim.ResetTrigger("Attack");
+
+
             _sword.leftAttack(_dir);
             //Debug.Log(_damage);
         }
@@ -110,7 +113,6 @@ public class Player_Attack : MonoBehaviour
         {
             _player._ChangeState(PlayerState.Attack);
             _sword.enabled = true;
-            Debug.Log("反応");
             _anim.SetInteger("AttackType", 1);
             _anim.SetTrigger("Attack");
            
@@ -153,11 +155,16 @@ public class Player_Attack : MonoBehaviour
         yield break;
     }*/
 
+    public void _TowClickAttack()
+    {
+        _canattack = false;
+    }
 
     public void _Enabletfalse()//animationシグナルで呼ぶ
     {
         _sword.enabled = false;
         _player._ReturnNormal();//多分呼ぶ場所がちがう
+        _canattack = true;
     }
 
     public void _Enabletrue()//animationシグナルで呼ぶ

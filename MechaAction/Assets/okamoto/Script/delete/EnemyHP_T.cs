@@ -112,7 +112,7 @@ public class EnemyHP_T : MonoBehaviour, IDamage
     // 敵独自の死亡処理
     public void Die()
     {
-        Debug.Log(gameObject.name + " (敵) は倒されました！スコア加算と破壊を実行します。");
+        Debug.Log(gameObject.name + " (敵) は倒されました！");
 
         // 独自の敵の死亡処理を記述
         // 例1: スコアを加算する処理

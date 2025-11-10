@@ -18,6 +18,7 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
     public int CurrentHP => currentHP; //UIHPゲージで使う　ゲームマネージャーでmaxにするためだめかも
     public int MaxHP => maxHP;//こっちもまあ使うか
 
+
     void Start()
     {
         // ゲーム開始時にHPを最大値に設定
@@ -143,14 +144,10 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
     private IEnumerator _DamageTime()
     {
         GManager.Instance.OnPlayerHit();
-        Debug.Log("無敵");
+        //Debug.Log("無敵");
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), true);
-        for (int i= 0; i < 10; i++)
-        {
-            
-
-        }
+       
         yield return new WaitForSeconds(3f);
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), false);
@@ -174,8 +171,8 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
     public void Die()
     {
         Debug.Log(gameObject.name + "は倒されました。ゲームオーバー！");
-        int layer = LayerMask.NameToLayer("PlayerDamage");
-        gameObject.layer = layer;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Enemy"), true);
         _player._ChangeState(PlayerState.Dead);
         _player.Dead();
         GManager.Instance.DiePlayer();
@@ -183,5 +180,19 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
         // ここにプレイヤー入力の無効化などの処理を追加
         // プレイヤーオブジェクトを非アクティブ化
         //gameObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("DeadArea"))
+        {
+            currentHP = 0;
+            Die();
+        }
+    }
+
+    public void ResetHP()
+    {
+        currentHP = MaxHP;
     }
 }

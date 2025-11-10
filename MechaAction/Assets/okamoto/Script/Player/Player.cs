@@ -121,10 +121,6 @@ public class Player : MonoBehaviour
 
         origin = transform.position + Vector3.down * (bounds.y / 2);
         _isRayGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down,out hit, 1f, groundLayerMask);
-        Debug.DrawRay(origin, Vector3.down * 2f, Color.red, 2f);
-
-        Debug.Log(_isRayGrounded);
-
 
     }
 
@@ -398,7 +394,8 @@ public class Player : MonoBehaviour
 
     public void Dead()
     {
-
+        _rb.velocity = Vector3.zero;
+        //anim
     }
 
     private IEnumerator Gimmick()
@@ -423,7 +420,6 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Grounded"))
         {
 
-            Debug.Log("’…’n");
             _fallTime = 0f;
             _isGrounded = true;
         }

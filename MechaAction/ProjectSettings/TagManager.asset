@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - PlayerWeapon
   - JumpGimmick
+  - DeadArea
   layers:
   - Default
   - TransparentFX

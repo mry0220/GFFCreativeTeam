@@ -25,6 +25,8 @@ public class SwordHitbox : MonoBehaviour
 
     private bool _groundattack = false;
 
+    public float _update = 1.0f;
+
     private void Awake()
     {
         _collider = GetComponent<Collider>();
@@ -70,7 +72,7 @@ public class SwordHitbox : MonoBehaviour
 
     public void slashAttack(int dir)
     {
-        _damage = _playerAttackSO.playerAttackList[2].Damage;
+        _damage = (int)(_playerAttackSO.playerAttackList[2].Damage * _update);
         _knockback = _playerAttackSO.playerAttackList[2].Knockback;
         _effectname = _playerAttackSO.playerAttackList[2].EffectName;
         _dir = dir;

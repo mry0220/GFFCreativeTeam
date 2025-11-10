@@ -37,7 +37,7 @@ public class EnemyBullet : MonoBehaviour
         velocity = _rb.velocity;
         velocity.x = _dir * _speed;
         _rb.velocity = velocity;
-        Debug.Log(_dir);
+        //Debug.Log(_dir);
     }
 
     private IEnumerator _Destroy()
