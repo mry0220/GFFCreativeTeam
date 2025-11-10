@@ -95,7 +95,10 @@ public class SpiderChild : MonoBehaviour
             if (hit.CompareTag("Player"))
             {
                 Debug.Log("3É_ÉÅÅ[ÉW");
+<<<<<<< HEAD:MechaAction/Assets/yoza/ClusterSpider/SpiderChild.cs
 
+=======
+>>>>>>> 8880ead71dbb140b2608152fe5f83b7b1b30729f:MechaAction/Assets/yoza/dokuoyagumo/zibacucumo.cs
             }
         }
 
