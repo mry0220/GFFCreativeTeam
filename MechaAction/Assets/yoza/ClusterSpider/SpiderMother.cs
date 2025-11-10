@@ -1,51 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using Cooltime;
 
-public class toxic_parent : MonoBehaviour
+public class SpiderMother : MonoBehaviour
 {
-    const float SYUSANTIME = 5f;
-    const int GENERATEMAX = 3;
+    const float GENERATETIME = 5f;
+    const int GENERATECOUNT = 3;
 
+    CoolDown _coolDown = new CoolDown();
+    
+    
+    static public int GenerateCount = 0;
+
+    [SerializeField] private GameObject Bombspider;
+    
     private Rigidbody _rb;
-    Vector3 _velocity;
-    private bool _moveStop;
     private Transform _player;
+    Vector3 _velocity;
+
     private int _dir;
+    
     private float _moveSpeed = 5f;
     private float _time;
-    [SerializeField] private float test;
-    private int tmp;
+    private float _distance;
+    [SerializeField]private float _ditection;       //索敵範囲が確定したらconstに変更
+    [SerializeField] private float _stiffTime;      //硬直時間が確定したらconstに変更
 
-    private float _syusantime;
-    [SerializeField] private GameObject Bombspider;
+
+
+    private float _generateTime;
     private GameObject _Bombspider;
+
     
-
-   static public int count =0;
-
-    //[SerializeField]List<GameObject> _Bombchildren = new List<GameObject>();
-
-
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _player = GameObject.FindWithTag("Player").transform;
+        _coolDown.CoolTime(5f);
     }
 
-    private void Start()
-    {
-       // for(int i =0;i < 3;i++)
-     //   _Bombchildren.Add(Bombspider);
-
-    }
     private void FixedUpdate()
    {
-        if (Vector3.Distance(transform.position, _player.position) <= 10)
+        _distance = Vector3.Distance(_rb.position, _player.position);
+        
+        if (_distance<= _ditection)
         {
-            if ((_time += Time.deltaTime) >= 1f)
+            if ((_time += Time.deltaTime) >= _stiffTime)
             {
                 Move();
             }
@@ -55,31 +59,31 @@ public class toxic_parent : MonoBehaviour
     {
 
         _velocity = _rb.velocity;
+        _generateTime +=Time.deltaTime;
 
-       
-        _syusantime +=Time.deltaTime;
-
-        tmp = _dir;
+        int dirBefore = _dir;
 
         _dir = (_rb.position.x > _player.position.x) ? 1 : -1;
 
-        if (tmp != _dir)
+        if (dirBefore != _dir)
         {
             _velocity.x = 0;
             _time = 0;
             return;
         }
+
         else
         {
             _velocity.x = _dir * _moveSpeed;
-        }                  
+        }
+        
         _rb.velocity = _velocity;
 
-        test = _syusantime;
-        if (_syusantime>=SYUSANTIME)
+        if (_generateTime>=GENERATETIME)
         {
-            _syusantime = 0f;
-            if (count < 3)
+            _generateTime = 0f;
+            
+            if (GenerateCount < GENERATECOUNT)
             {
                 Generate();
                 _time = 0;
@@ -91,7 +95,7 @@ public class toxic_parent : MonoBehaviour
     {
         _rb.velocity = Vector3.zero;
         _Bombspider = Instantiate(Bombspider, transform.position, transform.rotation);
-        count++;
+        GenerateCount++;
     }
    
 }

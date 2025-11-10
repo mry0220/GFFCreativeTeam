@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using static Enemy;
 
-public class NewBehaviourScript : MonoBehaviour
+public class StunEnemy : MonoBehaviour
 {
     const float ATTACKTIME = 5f;
 
