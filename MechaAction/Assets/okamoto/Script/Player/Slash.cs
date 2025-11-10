@@ -6,14 +6,13 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class Slash : MonoBehaviour
 {
     private Rigidbody _rb;
-    private Player _player;
     [SerializeField] DamageEffectSO _damageEffectSO;
     [SerializeField] private float _speed;
-    private int _dir;
 
-    [SerializeField] private int _damage;
-    [SerializeField] private int _knockback;
-    private string _name;
+    private int _damage;
+    private int _knockback;
+    private int _dir;
+    private string _effectname;
 
     Vector3 velocity;
     private void Awake()
@@ -25,7 +24,7 @@ public class Slash : MonoBehaviour
     {
         _damage = damage;
         _knockback = knockback;
-        _name = name;
+        _effectname = name;
         _dir = dir;
     }
 
@@ -60,7 +59,7 @@ public class Slash : MonoBehaviour
             {
                 Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
 
-                var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
+                var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
                 if (attackData != null && attackData.HitEffect != null)
                 {
                     var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);

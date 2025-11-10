@@ -6,40 +6,35 @@ using UnityEngine;
 
 public class Player_Attack : MonoBehaviour
 {
-    //[SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] private SwordHitbox _sword;
     [SerializeField] private GunHitbox _gun;
 
+    private Animator _anim;
     private Player _player;
     private int _dir;
 
     private bool _canattack = true;//攻撃クリック連打防止
-    //private int _damage = 0;
-
     private enum PlayerAttackType {
         Sowd,
         Gun
     }
 
-
     private PlayerAttackType _state = PlayerAttackType.Sowd;
 
-    private Animator _anim;
-
-    private void Start()
+    private void Awake()
     {
         _anim = GetComponent<Animator>();
         _player = GetComponent<Player>();
-        //Debug.Log(_playerAttackSO.playerAttackList[0].Damage);
-        //Debug.Log(_playerAttackSO.playerAttackList[1].Damage);
+    }
+
+    private void Start()
+    {
         _sword.enabled = false;
     }
 
     private void Update()
     {
         if(_player.IsDead) return;
-
-        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
 
         switch (_state)
         {
@@ -81,7 +76,7 @@ public class Player_Attack : MonoBehaviour
 
     public void LeftAttack()
     {
-        //if(!_player.CanMove) return;連続してつかえない
+        if(!_player.CanMove) return;
 
         _player._ChangeState(PlayerState.Attack);
 
@@ -94,9 +89,7 @@ public class Player_Attack : MonoBehaviour
             _anim.SetTrigger("Attack");
             //_anim.ResetTrigger("Attack");
 
-
             _sword.leftAttack(_dir);
-            //Debug.Log(_damage);
         }
         else if(_state == PlayerAttackType.Gun)
         {
@@ -109,9 +102,10 @@ public class Player_Attack : MonoBehaviour
     {
         if (!_player.CanMove) return;
 
-        if(_state == PlayerAttackType.Sowd)
+        _player._ChangeState(PlayerState.Attack);
+
+        if (_state == PlayerAttackType.Sowd)
         {
-            _player._ChangeState(PlayerState.Attack);
             _sword.enabled = true;
             _anim.SetInteger("AttackType", 1);
             _anim.SetTrigger("Attack");
@@ -122,29 +116,29 @@ public class Player_Attack : MonoBehaviour
         {
             _gun.ShotGun(_dir);
             _player._ReturnNormal();
-        }
-            
+        }  
     }
 
     public void slash()
     {
         if (!_player.CanMove) return;
 
+        _player._ChangeState(PlayerState.Attack);
+
         if (_state == PlayerAttackType.Sowd)
         {
-            _player._ChangeState(PlayerState.Attack);
             _sword.enabled = true;
 
-            _sword.slashAttack(_dir);
             _anim.SetTrigger("Attack");
             _anim.SetInteger("AttackType", 2);
+
+            _sword.slashAttack(_dir);
         }
         else if (_state == PlayerAttackType.Gun)
         {
             _gun.Rifle(_dir);
             _player._ReturnNormal();
         }
-       
     }
 
     /*private IEnumerator Enabled()
@@ -163,12 +157,12 @@ public class Player_Attack : MonoBehaviour
     public void _Enabletfalse()//animationシグナルで呼ぶ
     {
         _sword.enabled = false;
-        _player._ReturnNormal();//多分呼ぶ場所がちがう
+        _player._ReturnNormal();//最後に呼ぶ
         _canattack = true;
     }
 
     public void _Enabletrue()//animationシグナルで呼ぶ
     {
-        _sword.enabled = true;
+        _sword.enabled = true;//意味ないかも
     }
 }

@@ -6,7 +6,7 @@ public class SwordHitbox : MonoBehaviour
 {
     //1回の攻撃で同じ敵に何度も当たり判定が入らないようにする
     private HashSet<GameObject> hitTargets = new HashSet<GameObject>();
-    //public int damage = 10;//プレイヤースクリプトで技によって変更
+
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] DamageEffectSO _damageEffectSO;
 
@@ -14,14 +14,12 @@ public class SwordHitbox : MonoBehaviour
     [SerializeField] private Transform _groundpoint;
     public GameObject _groundeffect;
 
-
-
     private Collider _collider;
     public Transform _slashPosition;
     private int _damage;
     private int _knockback;
     private string _effectname;
-    private int _dir = 0;
+    private int _dir;
 
     private bool _groundattack = false;
 
@@ -43,11 +41,6 @@ public class SwordHitbox : MonoBehaviour
         hitTargets.Clear();
         _collider.enabled = true;
         _groundattack = false;
-    }
-
-    private void Update()
-    {
-        
     }
 
     public void leftAttack(int dir)

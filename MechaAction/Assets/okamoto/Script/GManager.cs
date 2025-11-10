@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static PlayerAttackSO;
 
 public class GManager : MonoBehaviour
 {
@@ -23,11 +22,18 @@ public class GManager : MonoBehaviour
     Vector3 currentpoint;
     void Awake()
     {
-        if (Instance == null) Instance = this;   //一応
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;   //一応
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         _player = GameObject.FindWithTag("Player").transform;
-
+        //参照をここにもってくる
         
     }
 
@@ -90,6 +96,7 @@ public class GManager : MonoBehaviour
     public void Reset()//gameoverのRetry
     {
         life = 2;
+        clear++;
         score = 0;
         //currentpoint 0に戻す（ロードで意味ない）
         //ロードしなおす

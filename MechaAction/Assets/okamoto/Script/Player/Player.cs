@@ -8,11 +8,11 @@ using static UnityEngine.UI.Image;
 
 public enum PlayerState
 {
-    Standing,
+    Standing,    //立ち、動く、ジャンプ
     Dash,
     Attack,
     Knockback,
-    Other,
+    Other,　　　//ギミック、電気、妨害
     Dead
 }
 
@@ -47,7 +47,6 @@ public class Player : MonoBehaviour
     private Vector3 velocity;
 
     private bool _isGrounded;
-    private bool _isRayGrounded;
     private bool _isJump = false;
     private bool _isSecondJump;
     private bool _isRun = false;
@@ -61,12 +60,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpPower;
 
-    //[SerializeField] private float _maxSlopAngle = 45f;
-    //private bool _isSlope = false;
-    //private float groundAngle = 0f;
-    //private Vector2 groundNormal = Vector2.up;
-    RaycastHit hit;
-    [SerializeField] private LayerMask groundLayerMask = 10;
     Vector3 origin;
 
     private float _fallTime;
@@ -112,23 +105,19 @@ public class Player : MonoBehaviour
         }
 
         Vector2 bounds = _col.bounds.size;
-        Vector2 center = _col.bounds.center;
-
-        //float rayLength = bounds.y / 2 + 1.1f;
-        //Vector3 rayPosition = transform.position;
-        //Ray ray = new Ray(center, Vector3.down);
-        //_isRayGrounded = Physics.Raycast(ray, rayLength,groundLayerMask);
-
+        RaycastHit hit;
         origin = transform.position + Vector3.down * (bounds.y / 2);
-        _isRayGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down,out hit, 1f, groundLayerMask);
+        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
 
+        //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+        //Debug.Log(velocity.x);
+        //Debug.Log(_isGrounded);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(origin, 0.4f);
         Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
-        //Gizmos.DrawWireSphere(origin + Vector3.down * hit.distance, 0.4f);
     }
 
     private void FixedUpdate()
@@ -141,42 +130,49 @@ public class Player : MonoBehaviour
         velocity = _rb.velocity; //一度変数にコピーしてから編集
         _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
 
-        //_CheckGround();
-        _Move();//移動処理
+        _Move();
 
         _Jump();
 
         #region　歩きアニメーション
-        if (_moveVector.x == 0)//歩きアニメーション
-        {
-            // _anim.SetFloat("Speed", 0);
 
-        }
-
-        if (velocity.x >= -1 && velocity.x <= 1)
+        if(_isGrounded)
         {
-            _anim.SetFloat("Speed", 0);
-            //Debug.Log("Speed0");
-        }
-        else if ((velocity.x > 1 && velocity.x <= 4) || (velocity.x < 1 && velocity.x >= -4))
-        {
-            _anim.SetFloat("Speed", 1);
-            //Debug.Log("Speed1");
+            if (velocity.x >= -1 && velocity.x <= 1)
+            {
+                _anim.SetFloat("Speed", 0);
+                //Debug.Log("Speed0");
+            }
+            else if ((velocity.x > 1 && velocity.x <= 4) || (velocity.x < 1 && velocity.x >= -4))
+            {
+                _anim.SetFloat("Speed", 1);
+                //Debug.Log("Speed1");
+            }
+            else
+            {
+                _anim.SetFloat("Speed", 2);
+                //Debug.Log("Speed2");
+            }
         }
         else
         {
-            _anim.SetFloat("Speed", 2);
-            //Debug.Log("Speed2");
+            if(velocity.y > 0)
+            {
+                _anim.SetInteger("JumpSpeed", 0);
+            }
+            else
+            {
+                _anim.SetInteger("JumpSpeed", 1);
+            }
         }
+
         #endregion
 
-        if( !_isGrounded)
+        if (!_isGrounded)
         {
             _Gravity();
         }
 
-        //_rb.velocity = _moveSpeed * _moveVector;
-        //Debug.Log(velocity.x);
         _rb.velocity = velocity; //編集した値を戻してrigidbodyで実行
     }
 
@@ -186,6 +182,7 @@ public class Player : MonoBehaviour
         //Debug.Log("stateが" + newState + "に変わった");
         if(newState == PlayerState.Attack && _isGrounded)
         {
+            //Debug.Log("chengestate動きを止める");
             _rb.velocity = Vector3.zero;
         }
     }
@@ -248,15 +245,6 @@ public class Player : MonoBehaviour
         prevHorizontal = _inputVector.x;
     }
 
-    //private void _CheckGround()
-    //{
-    //    Vector2 bounds = _col.bounds.size;
-    //    Vector2 center = _col.bounds.center;
-
-    //    float rayLength = bounds.y / 2 + 1.1f;
-    //    //RaycastHit hit = Physics.Raycast(center, Vector2.down, rayLength, groundLayerMask);
-    //}
-
     private void _Move()
     {
         if(!CanMove) return;
@@ -289,20 +277,19 @@ public class Player : MonoBehaviour
     private void _Jump()
     {
         if (!CanMove) return;
-        if (_isBan) return;
+        if (_isBan) return;//PlayerHPで管理したbool
 
         if (_isGrounded)
         {
-            if(_isRayGrounded)
+            if (_isJump)
             {
-                if (_isJump)
-                {
-                    _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
-                    _isJump = false;
-                }
-                _isSecondJump = true;
-                _canDash = true;
+                _anim.SetTrigger("Jump");
+                _fallTime = 0f;
+                _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
+                _isJump = false;
             }
+            _isSecondJump = true;
+            _canDash = true;
         }
         else
         {
@@ -310,6 +297,7 @@ public class Player : MonoBehaviour
             {
                 velocity.y = 0f;//二段目で跳ね上がり防ぎ
                 _fallTime = 0f;
+                _anim.SetTrigger("Jump");
                 _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
                 _isSecondJump = false;
             }
@@ -417,20 +405,20 @@ public class Player : MonoBehaviour
             _rb.AddForce(0f,23f,0f, ForceMode.Impulse);
         }
 
-        if (collision.gameObject.CompareTag("Grounded"))
-        {
-
-            _fallTime = 0f;
-            _isGrounded = true;
-        }
+        //if (collision.gameObject.CompareTag("Grounded"))
+        //{
+        //    Debug.Log("ground");
+        //    _fallTime = 0f;
+        //    _isGrounded = true;
+        //}
     }
 
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Grounded"))
-        {
-            _fallTime = 0f;
-            _isGrounded = false;
-        }
-    }
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Grounded"))
+    //    {
+    //        _fallTime = 0f;
+    //        _isGrounded = false;
+    //    }
+    //}
 }

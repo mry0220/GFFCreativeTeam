@@ -31,7 +31,6 @@ public class EnemyAttackSO : ScriptableObject
     }
     private void OnEnable()
     {
-        Debug.Log("EnemyattackSO enable");
         Initialize();
     }
 

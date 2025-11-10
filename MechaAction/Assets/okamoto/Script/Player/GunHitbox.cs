@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class GunHitbox : MonoBehaviour
 {
-    //1回の攻撃で同じ敵に何度も当たり判定が入らないようにする
-    //private HashSet<GameObject> hitTargets = new HashSet<GameObject>();
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] DamageEffectSO _damageEffectSO;
 
@@ -18,13 +16,8 @@ public class GunHitbox : MonoBehaviour
     private int _damage;
     private int _knockback;
     private string _name;
-    private int _dir = 0;
+    private int _dir;
 
-    void OnEnable()
-    {
-        // 攻撃開始時にリストをリセット
-        //hitTargets.Clear();
-    }
 
     public void leftAttack(int dir)
     {
@@ -36,7 +29,8 @@ public class GunHitbox : MonoBehaviour
         var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
-        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+
+        //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
         Ray ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, 10f))
         {
@@ -68,8 +62,7 @@ public class GunHitbox : MonoBehaviour
         var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
-        Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
-        //Ray ray = new Ray();
+        //Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
         if (Physics.BoxCast(transform.position, Vector3.one * 0.5f, transform.forward, out RaycastHit hit,Quaternion.identity, 10f))
         {
             if (hit.collider.CompareTag("Enemy"))
@@ -99,17 +92,4 @@ public class GunHitbox : MonoBehaviour
         GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
         bullet.GetComponent<Bullet>().Initialize(_damage, _knockback, _dir, "DamageEffect");
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log("当たった");
-
-    //    if (other.CompareTag("Enemy") && !hitTargets.Contains(other.gameObject))
-    //    {
-    //        //null条件
-
-    //        other.GetComponent<IDamage>().TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
-    //        hitTargets.Add(other.gameObject);
-    //    }
-    //}
 }
