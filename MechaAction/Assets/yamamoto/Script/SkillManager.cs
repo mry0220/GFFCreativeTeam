@@ -17,7 +17,7 @@ public class SkillManager : MonoBehaviour
     [SerializeField] GameObject skillBlockPanel;
     int skillPoint = 10;
 
-    List<SkillType> skillList = new List<SkillType>();
+    [SerializeField] List<SkillType> skillList = new List<SkillType>();//購入済みを把握するlist
     SkillBlock[] skillBlocks;
 
     public static SkillManager instance;
@@ -46,12 +46,12 @@ public class SkillManager : MonoBehaviour
         skillInfoText.text = text;
     }
 
-    public bool HasSkill(SkillType skillType)
+    public bool HasSkill(SkillType skillType)//listのなかにあるかどうか
     {
         return skillList.Contains(skillType);
     }
 
-    public bool CanLearnSkill(int cost, SkillType skillType)
+    public bool CanLearnSkill(int cost, SkillType skillType)//コストが足りているか
     {
         if (skillPoint < cost)
         {
@@ -62,7 +62,7 @@ public class SkillManager : MonoBehaviour
         //{
         //    return HasSkill(SkillType.ATTACK) && HasSkill(SkillType.DEFENSE);
         //}
-        if (skillType == SkillType.COMBO)
+        if (skillType == SkillType.COMBO) //コンボを取得したいときAttackは取得しているか
         {
             return HasSkill(SkillType.ATTACK);
         }

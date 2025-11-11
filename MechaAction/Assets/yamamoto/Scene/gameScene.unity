@@ -510,6 +510,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 306433062}
     m_Modifications:
+    - target: {fileID: 221285447458218146, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCursor
+      objectReference: {fileID: 0}
     - target: {fileID: 1507388847162661974, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: m_Text
       value: 2p
@@ -521,6 +525,10 @@ PrefabInstance:
     - target: {fileID: 1507388847162661974, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: m_FontData.m_FontSize
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264434494729156315, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 3492420791854826671, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -639,6 +647,14 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8729005445128753108, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: infoText
+      value: 
+      objectReference: {fileID: 791108143}
+    - target: {fileID: 8729005445128753108, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 249735756}
+    - target: {fileID: 8729005445128753108, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: skillType
       value: 1
       objectReference: {fileID: 0}
@@ -664,6 +680,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 306433062}
     m_Modifications:
+    - target: {fileID: 221285447458218146, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCursor
+      objectReference: {fileID: 0}
     - target: {fileID: 1507388847162661974, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: m_Text
       value: 3p
@@ -675,6 +695,10 @@ PrefabInstance:
     - target: {fileID: 1507388847162661974, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: m_FontData.m_FontSize
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264434494729156315, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 3492420791854826671, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -792,6 +816,14 @@ PrefabInstance:
       propertyPath: name
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8729005445128753108, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: infoText
+      value: 
+      objectReference: {fileID: 791108143}
+    - target: {fileID: 8729005445128753108, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 249735756}
     - target: {fileID: 8729005445128753108, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: skillType
       value: 2
@@ -1950,6 +1982,7 @@ MonoBehaviour:
   skillPointText: {fileID: 249735756}
   skillInfoText: {fileID: 791108143}
   skillBlockPanel: {fileID: 306433061}
+  skillList: 
 --- !u!1 &1049500313
 GameObject:
   m_ObjectHideFlags: 0
@@ -3511,6 +3544,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 306433062}
     m_Modifications:
+    - target: {fileID: 221285447458218146, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnCursor
+      objectReference: {fileID: 0}
     - target: {fileID: 1507388847162661974, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
       propertyPath: m_FontData.m_MinSize
       value: 1
