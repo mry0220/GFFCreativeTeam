@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class EnemyHP_T : MonoBehaviour, IDamage
+public class EnemyHP : MonoBehaviour,IDamage
 {
     [SerializeField] private float maxHP = 50f; // HP
     [SerializeField] DamageEffectSO _damageEffectSO;
     private IEnemy _ienemy;
 
     private Transform _player;
-    private Rigidbody _rb;
     private float currentHP;
     //[SerializeField] private float currentHealth; // デバッグ用にInspectorで確認可能になる
 
@@ -23,7 +21,6 @@ public class EnemyHP_T : MonoBehaviour, IDamage
         currentHP = maxHP;
         Debug.Log(gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
         _player = GameObject.FindWithTag("Player").transform;
-        _rb = GetComponent<Rigidbody>();
         _ienemy = GetComponent<IEnemy>();
     }
 
@@ -33,7 +30,7 @@ public class EnemyHP_T : MonoBehaviour, IDamage
     }
 
     //ダメージを受け、HPを減少させる処理
-    public void TakeDamage(int damage,int knockback,int dir)
+    public void TakeDamage(int damage, int knockback, int dir)
     {
         if (currentHP <= 0) return;
 
@@ -52,10 +49,11 @@ public class EnemyHP_T : MonoBehaviour, IDamage
         {
             if (knockback >= 0 && knockback < 5)
             {
-               _ienemy.SKnockBack(dir, knockback);
+                _ienemy.SKnockBack(dir, knockback);
             }
             if (knockback >= 5)
             {
+                Debug.Log("Bkock");
                 _ienemy.BKnockBack(dir, knockback);
             }
         }

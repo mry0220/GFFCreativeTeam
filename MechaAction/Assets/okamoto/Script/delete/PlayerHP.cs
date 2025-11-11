@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
+public class PlayerHP : MonoBehaviour ,IPlayerDamage
 {
     private Player _player;
     [SerializeField] DamageEffectSO _damageEffectSO;
@@ -28,17 +28,17 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
 
 
     //ダメージを受け、HPを減少させる。
-    public void TakeDamage(int damage,int knockback,int dir,string name)
+    public void TakeDamage(int damage, int knockback, int dir, string name)
     {
         if (currentHP <= 0)
         {
             // 既に死亡している場合は処理をスキップ
             return;
         }
- 
+
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0);
-        
+
 
         var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == name);//ラムダ形式AIで知った
         if (attackData != null && attackData.HitEffect != null)
@@ -49,9 +49,9 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
 
         Debug.Log(gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
-        if(damage >= 10)
+        if (damage >= 10)
         {
-            if (knockback  >= 0 && knockback < 5)
+            if (knockback >= 0 && knockback < 5)
             {
                 _player._ChangeState(PlayerState.Knockback);
                 _player.SKnockBack(dir, knockback);
@@ -80,7 +80,7 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
             // 既に死亡している場合は処理をスキップ
             return;
         }
-        
+
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0);
 
@@ -185,8 +185,19 @@ public class PlayerHP_T : MonoBehaviour ,IPlayerDamage
         }
     }
 
-    public void ResetHP()//GManagerからHPリセット
+    public IEnumerator ResetHP()//GManagerから復活の命令
     {
         currentHP = MaxHP;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+           LayerMask.NameToLayer("Enemy"), false);
+        Debug.Log("back");
+        yield return new WaitForSeconds(1f);
+        if(_player == null)
+        {
+            _player = GetComponent<Player>();
+        }
+        _player._ChangeState(PlayerState.Respawn);//一旦respawnに
+        StartCoroutine(_StateNormal(1f));//standingにもどす
+        yield break ;
     }
 }

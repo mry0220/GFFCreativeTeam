@@ -13,17 +13,17 @@ public class EnemyDamage_T : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             // 衝突した相手からPlayerHealthSimpleコンポーネントを直接取得
-            PlayerHP_T playerHealth = other.GetComponent<PlayerHP_T>();
+            //PlayerHP_T playerHealth = other.GetComponent<PlayerHP_T>();
 
             // PlayerHealthSimpleコンポーネントがアタッチされていれば
-            if (playerHealth != null)
-            {
+            //if (playerHealth != null)
+            //{
                 // ダメージを与える
                 //playerHealth.TakeDamage(damageAmount);
 
                 // 弾丸などの場合は、ダメージを与えた後、自身を破壊する
                 //Destroy(gameObject);
-            }
+            //}
         }
     }
 }

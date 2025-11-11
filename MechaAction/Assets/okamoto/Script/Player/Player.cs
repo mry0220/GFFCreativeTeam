@@ -13,7 +13,8 @@ public enum PlayerState
     Attack,
     Knockback,
     Other,　　　//ギミック、電気、妨害
-    Dead
+    Dead,       //死んだら状態遷移防止
+    Respawn     //唯一Deadをすり抜ける
 }
 
 public class Player : MonoBehaviour
@@ -25,7 +26,8 @@ public class Player : MonoBehaviour
         get => _state;
         set
         {
-            if (IsDead)
+            Debug.Log("変えたい");
+            if (IsDead　&& value != PlayerState.Respawn)//DeadかつRespawn以外
             {
                 return;
             }
@@ -178,6 +180,7 @@ public class Player : MonoBehaviour
 
     public void _ChangeState(PlayerState newState)
     {
+        Debug.Log("change");
         state = newState;
         //Debug.Log("stateが" + newState + "に変わった");
         if(newState == PlayerState.Attack && _isGrounded)

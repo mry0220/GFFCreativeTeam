@@ -11,7 +11,8 @@ public class BurstEnemy : MonoBehaviour, IEnemy
         Look,          //íTÇ∑
         Move,          //í«ê’
         Wait,          //î≠éÀópà”(Ç¢ÇÁÇ»Ç¢)
-        Attack         //î≠éÀ
+        Attack,         //î≠éÀ
+        Damage
     }
 
     private EnemyState _state = EnemyState.Look;
@@ -140,13 +141,28 @@ public class BurstEnemy : MonoBehaviour, IEnemy
         _attack.GunAttack();
     }
 
+    public IEnumerator _ReturnNormal(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _state = EnemyState.Look;
+        yield break ;
+    }
+
     public void SKnockBack(int dir,int knockback)
     {
-
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(0.5f));
+        //anim
     }
 
     public void BKnockBack(int dir, int knockback)
     {
-
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(1.0f));
+        //anim
     }
 }

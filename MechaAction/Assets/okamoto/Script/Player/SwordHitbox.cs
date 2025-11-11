@@ -10,7 +10,8 @@ public class SwordHitbox : MonoBehaviour
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] DamageEffectSO _damageEffectSO;
 
-    [SerializeField] GameObject _slashPrefab;
+    [SerializeField] private Transform _player;
+    [SerializeField] private GameObject _slashPrefab;
     [SerializeField] private Transform _groundpoint;
     public GameObject _groundeffect;
 
@@ -70,7 +71,11 @@ public class SwordHitbox : MonoBehaviour
         _effectname = _playerAttackSO.playerAttackList[2].EffectName;
         _dir = dir;
 
-        GameObject slash = Instantiate(_slashPrefab, _slashPosition.position, gameObject.transform.rotation);
+        var slash = Instantiate(_slashPrefab, _slashPosition.position, Quaternion.identity);
+        if(_dir < 0)
+        {
+            slash.transform.localScale = new Vector3(_dir*0.1f, 0.1f, 0.1f);
+        }
         slash.GetComponent<Slash>().Initialize(_damage, _knockback, _dir, _effectname);
     }
 
@@ -95,7 +100,12 @@ public class SwordHitbox : MonoBehaviour
 
         if (other.CompareTag("Grounded") && _groundattack)
         {
+            Debug.Log("地面");
             var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
+            if (_dir < 0)
+            {
+                G_effect.transform.localScale = new Vector3(_dir * 0.1f, 0.1f, 0.1f);
+            }
             Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
             Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f);

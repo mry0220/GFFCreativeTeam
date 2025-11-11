@@ -30,7 +30,7 @@ public class Slash : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(_Destroy());
+        Destroy(gameObject, 0.5f);
     }
 
     private void FixedUpdate()
@@ -39,13 +39,6 @@ public class Slash : MonoBehaviour
         velocity.x = _dir * _speed;
         _rb.velocity = velocity;
         
-    }
-
-    private IEnumerator _Destroy()
-    {
-        yield return new WaitForSeconds(0.5f);
-        Destroy(gameObject);
-        yield break;
     }
 
     private void OnTriggerEnter(Collider other)

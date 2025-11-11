@@ -8,7 +8,7 @@ public class GManager : MonoBehaviour
     public static GManager Instance;
     [SerializeField] private CameraManager _mainCamera;
     [SerializeField] private Transform _player;
-    [SerializeField] private PlayerHP_T _playerhp;
+    [SerializeField] private PlayerHP _playerhp;
     [SerializeField] private SwordHitbox _sword;
     [SerializeField] PowerUpSO _powerup;
 
@@ -35,6 +35,11 @@ public class GManager : MonoBehaviour
         _player = GameObject.FindWithTag("Player").transform;
         //éQè∆ÇÇ±Ç±Ç…Ç‡Ç¡ÇƒÇ≠ÇÈ
         
+    }
+
+    private void Start()
+    {
+        currentpoint = _player.transform.position;
     }
 
     private void Update()
@@ -85,7 +90,7 @@ public class GManager : MonoBehaviour
         life--;
         _player.position = currentpoint;
         SetCameraBounds(new Vector2(0,3), new Vector2(1000,5));
-        _playerhp.ResetHP();
+        StartCoroutine(_playerhp.ResetHP());
     }
 
     public void CheckPoint(Vector3 newPos)

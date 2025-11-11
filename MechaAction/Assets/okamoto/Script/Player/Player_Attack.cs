@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using Unity.VisualScripting;
 using UnityEngine;
+using Cooltime;
 
 public class Player_Attack : MonoBehaviour
 {
@@ -14,6 +15,15 @@ public class Player_Attack : MonoBehaviour
     private int _dir;
 
     private bool _canattack = true;//UŒ‚ƒNƒŠƒbƒN˜A‘Å–hŽ~
+
+    private CoolDown coolDown = new CoolDown();
+
+    private Coroutine _tatakitukecoroutine;
+    private Coroutine _shotguncoroutine;
+    private Coroutine _slashcoroutine;
+    private Coroutine _riflecoroutine;
+
+
     private enum PlayerAttackType {
         Sowd,
         Gun
@@ -82,14 +92,15 @@ public class Player_Attack : MonoBehaviour
 
         if(_state == PlayerAttackType.Sowd)
         {
-            _sword.enabled = true;
 
+            _sword.enabled = true;
 
             _anim.SetInteger("AttackType", 0);
             _anim.SetTrigger("Attack");
             //_anim.ResetTrigger("Attack");
 
             _sword.leftAttack(_dir);
+
         }
         else if(_state == PlayerAttackType.Gun)
         {
@@ -98,45 +109,81 @@ public class Player_Attack : MonoBehaviour
         }
     }
 
+    //[SerializeField]bool test = false;
+
+
     public void tatakituke()
     {
-        if (!_player.CanMove) return;
-
-        _player._ChangeState(PlayerState.Attack);
-
         if (_state == PlayerAttackType.Sowd)
         {
+            if (!_player.CanMove || _tatakitukecoroutine != null) return;
+            _player._ChangeState(PlayerState.Attack);
+
+            //test = false;
             _sword.enabled = true;
             _anim.SetInteger("AttackType", 1);
             _anim.SetTrigger("Attack");
-           
-            _sword.tatakitukeAttack(_dir);
+            _tatakitukecoroutine = StartCoroutine(
+                coolDown.Skill(callback => { _tatakitukecoroutine = callback; },
+                3f,
+                null,
+                _sword.tatakitukeAttack,
+                0,
+                _dir));
+            // Debug.Log((int)skill.Current);
+            //_sword.tatakitukeAttack(_dir);
+            return;
         }
         else if(_state == PlayerAttackType.Gun)
         {
-            _gun.ShotGun(_dir);
+            if (!_player.CanMove || _shotguncoroutine != null) return;
+            _player._ChangeState(PlayerState.Attack);
+
+            _shotguncoroutine = StartCoroutine(
+               coolDown.Skill(callback => { _shotguncoroutine = callback; },
+               3f,
+               null,
+               _gun.ShotGun,
+               0,
+               _dir));
+
+            //_gun.ShotGun(_dir);
             _player._ReturnNormal();
         }  
     }
 
     public void slash()
     {
-        if (!_player.CanMove) return;
-
-        _player._ChangeState(PlayerState.Attack);
-
         if (_state == PlayerAttackType.Sowd)
         {
-            _sword.enabled = true;
+            if (!_player.CanMove || _slashcoroutine != null) return;
+            _player._ChangeState(PlayerState.Attack);
 
+            _sword.enabled = true;
             _anim.SetTrigger("Attack");
             _anim.SetInteger("AttackType", 2);
-
-            _sword.slashAttack(_dir);
+            _slashcoroutine = StartCoroutine(
+                coolDown.Skill(callback => { _slashcoroutine = callback; },
+                3f,
+                null,
+                _sword.slashAttack,
+                0,
+                _dir));
+            //_sword.slashAttack(_dir);
         }
         else if (_state == PlayerAttackType.Gun)
         {
-            _gun.Rifle(_dir);
+            if (!_player.CanMove || _riflecoroutine != null) return;
+            _player._ChangeState(PlayerState.Attack);
+
+            _riflecoroutine = StartCoroutine(
+               coolDown.Skill(callback => { _riflecoroutine= callback; },
+               3f,
+               null,
+               _gun.Rifle,
+               0,
+               _dir));
+            //_gun.Rifle(_dir);
             _player._ReturnNormal();
         }
     }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1935879016242764503}
   - component: {fileID: 5291384064461092561}
   - component: {fileID: -3359981528136249846}
-  - component: {fileID: 8894308913296232743}
+  - component: {fileID: 3715457419920906432}
   m_Layer: 7
   m_Name: BurstEnemy
   m_TagString: Enemy
@@ -166,7 +166,7 @@ MonoBehaviour:
   _enemyattackSO: {fileID: 11400000, guid: 0cfcbf6313351a24e8996898f0cd9710, type: 2}
   _bulletPrefab: {fileID: 6861717528325547553, guid: c763292e764631b47b1f6e728f1779b3, type: 3}
   _bulletPosition: {fileID: 8421021114266396386}
---- !u!114 &8894308913296232743
+--- !u!114 &3715457419920906432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 966973153731146112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72a37b49de7269c44b82fe66e2521a46, type: 3}
+  m_Script: {fileID: 11500000, guid: 08792ac2bcab02b41af74df4cd8dd109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 50
