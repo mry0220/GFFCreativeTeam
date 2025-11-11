@@ -31,7 +31,12 @@ public class Player : MonoBehaviour
             {
                 return;
             }
-            _state = value;
+            else
+            {
+                if(value == PlayerState.Respawn)
+                Debug.Log("RespawnèÛë‘");
+            }
+                _state = value;
         }
     }
 

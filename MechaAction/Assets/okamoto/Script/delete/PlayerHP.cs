@@ -123,6 +123,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
     private IEnumerator _StateNormal(float time)
     {
+        Debug.Log("call coroutine _stateNormal");
         yield return new WaitForSeconds(time);
         _player._ReturnNormal();
         yield break;
@@ -192,12 +193,20 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
            LayerMask.NameToLayer("Enemy"), false);
         Debug.Log("back");
         yield return new WaitForSeconds(1f);
-        if(_player == null)
-        {
-            _player = GetComponent<Player>();
-        }
+        
         _player._ChangeState(PlayerState.Respawn);//àÍíUrespawnÇ…
-        StartCoroutine(_StateNormal(1f));//standingÇ…Ç‡Ç«Ç∑
+        Debug.Log("coroutine _stateNormal");
+        yield return StartCoroutine(hoge(1f));
+        //_player._ReturnNormal();
+        //StartCoroutine(_StateNormal(1f));//standingÇ…Ç‡Ç«Ç∑
         yield break ;
+    }
+
+    private IEnumerator hoge(float time)
+    {
+        Debug.Log("ÇÊÇŒÇÍÇΩÇ®");
+        yield return new WaitForSeconds(time);
+        Debug.Log("Ç≥ÇÊÇ»ÇÁÅ`");
+        yield break;
     }
 }
