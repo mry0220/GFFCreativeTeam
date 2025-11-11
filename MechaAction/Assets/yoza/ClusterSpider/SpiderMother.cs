@@ -40,7 +40,7 @@ public class SpiderMother : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _player = GameObject.FindWithTag("Player").transform;
-        _coolDown.CoolTime(5f);
+        _coolDown.DiraySkill(5f);
     }
 
     private void FixedUpdate()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 
@@ -7,30 +8,23 @@ namespace Cooltime
 {
     public class CoolDown
     {
-        public delegate void Skill(int dir);
+        const int MS = 1000;
 
+        
 
-
-        public void CoolTime(float coolTime)
-        { 
-            float time = 0;
-
-            while (time < coolTime)
-            {
-                time += Time.deltaTime;
-            }
+        public void DiraySkill(float coolTime=0,Action<int> dirskill =null,Action skill = null,int dir =0)
+        {
+            Thread.Sleep((int)(coolTime * MS));
+            skill();
+            dirskill(dir);
             return;
         }
-        public IEnumerator SkillCooltime(float cooltime,Action skill = null,bool isCooltime = false)
-        {
-            skill();
-                yield return new WaitForSeconds(cooltime);
-        }
 
-        public IEnumerator SkillDilayCooltime(float cooltime =0, Action skill = null,float countdown = 0)
+        public IEnumerator Skill(float cooltime =0,Action skill = null, Action<int> dirskill = null,float diray = 0,int dir = 0)
         {
-                yield return new WaitForSeconds(countdown);
+                yield return new WaitForSeconds(diray);
                 skill();
+                dirskill(dir);
             yield return new WaitForSeconds(cooltime);
         }
     }
@@ -38,13 +32,15 @@ namespace Cooltime
 
 namespace Critical
 {
+
     class CriticalDamage
     {
+        const float PERCENT = 0.01f;
         public double damage(int ATK = 0,float critical = 5f, float criticalDamage = 50f)
         {
             float Crit = UnityEngine.Random.Range(1f, 100f);
 
-            return (Crit < critical) ? ATK + (ATK *( criticalDamage * 0.01)) : ATK;
+            return (Crit < critical) ? ATK + (ATK *( criticalDamage * PERCENT)) : ATK;
 
         }
 

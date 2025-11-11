@@ -83,13 +83,11 @@ public class DroneEnemy : MonoBehaviour
         Debug.Log("Attack");
         _state = EnemyState.STIFFNESS;
     }
-    [SerializeField] float _testtime;
 
     private float stifftime;
     private bool Stiffness()
     {
         stifftime += Time.deltaTime;
-        _testtime = stifftime;
         if (stifftime > 3f)
         {
             stifftime = 0;

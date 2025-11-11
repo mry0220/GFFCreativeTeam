@@ -40,58 +40,16 @@ public class StunEnemy : MonoBehaviour
     {
         if (Vector3.Distance(_playerTransform.position, _rb.position) < 20f)
         {
-            //Debug.Log("fuga");
-            Debug.Log("hoge");
             Look();
         }
         else
         {
-        _attackTime = 0f;
+            _attackTime = 0f;
         }
 
-#if false
-        switch (_state)
-        {
-            case EnemyState.DITECTION:
-               
-                if (Vector3.Distance(_playerTransform.position, _rb.position) < 20f)
-                {
-                    _state = EnemyState.LOOK;
-                } 
-                Didection();
-                break;
 
-                case EnemyState.LOOK:
-                Look();
-                //StartCoroutine(Attack());
-                _attackTime += Time.deltaTime;
-
-                if(_attackTime >= ATTACKTIME)
-                {
-                    _attackTime = 0f;
-                    _state = EnemyState.ATTACK;
-                }
-
-                if (Vector3.Distance(_playerTransform.position, _rb.position) >= 20f)
-                {
-                    _state = EnemyState.DITECTION;
-                }
-                break;
-
-                //case EnemyState.WAIT:
-                //Wait(); 
-                //break;
-
-                case EnemyState.ATTACK:
-                Attack();
-                break;
-        }
-#endif
     }
-    //private void Direction()
-    //
-    //{
-    //}
+   
     private void Look()
     {
         _attackTime += Time.deltaTime;
@@ -100,7 +58,6 @@ public class StunEnemy : MonoBehaviour
         Debug.Log(Angle);
         transform.rotation = Quaternion.Euler(0f, 0f, Angle);
 
-        test = _attackTime;
         if (_attackTime >= ATTACKTIME)
         {
             _attackTime = 0f;
@@ -108,11 +65,6 @@ public class StunEnemy : MonoBehaviour
         }
         
     }
-    //private IEnumerator Attack()
-    //{
-    //
-    //    yield break;
-    //}
 
     private void Attack()
     {
@@ -128,10 +80,5 @@ public class StunEnemy : MonoBehaviour
 
         return degree;
     }
-   // private void Wait()
-    //{
-
-    //}
-
 
 }

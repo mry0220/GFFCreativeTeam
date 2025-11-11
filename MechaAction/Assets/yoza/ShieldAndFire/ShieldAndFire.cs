@@ -20,20 +20,15 @@ public class ShieldAndFire : MonoBehaviour
 
     private Rigidbody _rb;
     private Transform _playerTransfrom;
-    private bool _ATTACK;
     private float _distance;
     private EnemyState state;
     private int _dir;
-    private int tmp;
     private float _moveSpeed = 5f;
     private float _gravityTime;
     private bool _isGround;
     [SerializeField] Vector3 _velocity;
-    private float _attackTime;
-    private float _shieldTime;
     [SerializeField] private GameObject FlameThrower;
     [SerializeField] private GameObject _player;
-    private GameObject _myFlameThrower;
 
 
 
@@ -44,7 +39,6 @@ public class ShieldAndFire : MonoBehaviour
         _playerTransfrom = GameObject.FindWithTag("Player").transform;
 
     }
-
     private void Start()
     {
         state = EnemyState.DITECTION;
@@ -78,11 +72,11 @@ public class ShieldAndFire : MonoBehaviour
                     break;
 
                 case EnemyState.ATTACK:
-                    ATKtime += Time.deltaTime;
+                    _ATKtime += Time.deltaTime;
                     Attack();
-                    if (ATKtime >= ATTACKTIME)
+                    if (_ATKtime >= ATTACKTIME)
                     {
-                        ATKtime = 0;
+                        _ATKtime = 0;
                             state = _distance >= 4f ? EnemyState.MOVE : EnemyState.SHIELD;
                     }
                     break;
@@ -110,8 +104,6 @@ public class ShieldAndFire : MonoBehaviour
             state = EnemyState.MOVE;
             return;
         }
-            _attackTime = 0;
-            _shieldTime = 0;
     }
 
     private void Move()
@@ -132,25 +124,15 @@ public class ShieldAndFire : MonoBehaviour
         _rb.velocity = _velocity;
 
     }
-    [SerializeField]private float testtime;
-        float Attacktime = 0;
 
-    private float ATKtime;
+    private float _ATKtime;
     private void Attack()
     {
-        if (ATKtime <= ATTACKTIME)
+        if (_ATKtime <= ATTACKTIME)
             Debug.Log("FlameThrower");
         else
             return;
     }
-
-    //_myFlameThrower = Instantiate(FlameThrower, transform.position, transform.rotation);
-    // if (_shieldTime >= SHIELDTIME)
-    // {
-    //     _shieldTime = 0f;
-    //     Shield();
-    // }
-
 
     private float _SHItime;
     private void Shield()
