@@ -428,7 +428,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 189611074}
         m_TargetAssemblyTypeName: Start, Assembly-CSharp
-        m_MethodName: OnStatButtonPressed
+        m_MethodName: OnStartButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

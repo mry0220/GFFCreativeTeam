@@ -1,21 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.WebSockets;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GManager : MonoBehaviour
 {
     public static GManager Instance;
-    [SerializeField] private CameraManager _mainCamera;
-    [SerializeField] private Transform _player;
-    [SerializeField] private PlayerHP _playerhp;
-    [SerializeField] private SwordHitbox _sword;
+　　private CameraManager _mainCamera;
+    private UIController _ui;
+    private GameObject _player;
+    private Transform _playerposition;
+    private PlayerHP _playerhp;
     [SerializeField] PowerUpSO _powerup;
-
-
     public bool _isAttack;
 
-    private int life = 3;
+    private int life = 0;
     public int clear = 1;
     public int score = 0;
 
@@ -32,26 +34,39 @@ public class GManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        _player = GameObject.FindWithTag("Player").transform;
+        SceneManager.sceneLoaded += SceneLoaded;
         //参照をここにもってくる
-        
+
+
     }
 
     private void Start()
     {
-        currentpoint = _player.transform.position;
+        //_mainCamera = FindFirstObjectByType<CameraManager>();
+        //_player = GameObject.FindWithTag("Player");
+        //if( _player != null )
+        //{
+        //    _playerposition = _player.transform;
+        //    _playerhp = _player.GetComponent<PlayerHP>();
+        //    currentpoint = _player.transform.position;
+        //}
+        //GameObject[] uiObjects = GameObject.FindGameObjectsWithTag("UI");
+        //_UIGameOver = uiObjects.FirstOrDefault(obj => obj.name == "GameOver");
+        //_UIGameOver.SetActive(false);
+        //var _GameUI = uiObjects.FirstOrDefault(obj => obj.name == "GameUI");
     }
 
     private void Update()
     {
-        if(_isAttack)
-        {
-            _sword._update = _powerup.DamageMult;
-        }
-        else
-        {
-            _sword._update = 1.0f;
-        }
+        //if(_isAttack)
+        //{
+        //    _sword._update = _powerup.DamageMult;
+        //}
+        //else
+        //{
+        //    _sword._update = 1.0f;
+        //}
+
 
         if (Input.GetKeyDown(KeyCode.O))
         {
@@ -59,8 +74,8 @@ public class GManager : MonoBehaviour
             //Debug.Log("SowdMode");
         }
 
-        Debug.Log(life);
-        Debug.Log(clear);
+        //Debug.Log(life);
+        //Debug.Log(clear);
 
     }
 
@@ -81,14 +96,14 @@ public class GManager : MonoBehaviour
     {
         if (life == 0)
         {
-            //gameover
+            _ui.GameOver();
             Debug.Log("gameover");
         }
 
         //フェードアウトさせる
 
         life--;
-        _player.position = currentpoint;
+        _playerposition.position = currentpoint;
         SetCameraBounds(new Vector2(0,3), new Vector2(1000,5));
         StartCoroutine(_playerhp.ResetHP());
     }
@@ -112,10 +127,36 @@ public class GManager : MonoBehaviour
     {
         clear++;
         score = 3;
-        //UIを出す
+        //強化UIを出す
 
         //UIでnextstage Reset();を呼ぶ
         Reset();
        
+    }
+
+    void SceneLoaded(Scene nextScene, LoadSceneMode mode)//シーンがロードされると呼ばれる
+    {
+        if(nextScene.name == "StageScene")
+        {
+            life = 0;
+        }
+
+        _mainCamera = FindFirstObjectByType<CameraManager>();
+        _player = GameObject.FindWithTag("Player");
+        if( _player != null )
+        {
+            _playerposition = _player.transform;
+            _playerhp = _player.GetComponent<PlayerHP>();
+            currentpoint = _player.transform.position;
+        }
+        _ui = FindFirstObjectByType<UIController>();
+        if( _ui != null )
+        {
+            Debug.Log("ui");
+        }
+        else
+        {
+            Debug.Log("ui_unll");
+        }
     }
 }

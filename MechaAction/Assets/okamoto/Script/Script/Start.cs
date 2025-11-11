@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class Start : MonoBehaviour
 {
-    public void OnStatButtonPressed()
+    public void OnButton()
     {
-        SceneManager.LoadScene("gameScene");
+        SceneManager.LoadScene("StageScene");
     }
 }

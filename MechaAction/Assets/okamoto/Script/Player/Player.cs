@@ -26,15 +26,9 @@ public class Player : MonoBehaviour
         get => _state;
         set
         {
-            Debug.Log("•Ï‚¦‚½‚¢");
             if (IsDead@&& value != PlayerState.Respawn)//Dead‚©‚ÂRespawnˆÈŠO
             {
                 return;
-            }
-            else
-            {
-                if(value == PlayerState.Respawn)
-                Debug.Log("Respawnó‘Ô");
             }
                 _state = value;
         }
@@ -185,7 +179,6 @@ public class Player : MonoBehaviour
 
     public void _ChangeState(PlayerState newState)
     {
-        Debug.Log("change");
         state = newState;
         //Debug.Log("state‚ª" + newState + "‚É•Ï‚í‚Á‚½");
         if(newState == PlayerState.Attack && _isGrounded)

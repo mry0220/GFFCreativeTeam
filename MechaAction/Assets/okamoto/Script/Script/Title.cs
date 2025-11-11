@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
-    public void OnStatButtonPressed()
+    public void OnButton()
     {
         SceneManager.LoadScene("Title");
     }

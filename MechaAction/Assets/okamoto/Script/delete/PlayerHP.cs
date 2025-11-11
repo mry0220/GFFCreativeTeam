@@ -123,7 +123,6 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
     private IEnumerator _StateNormal(float time)
     {
-        Debug.Log("call coroutine _stateNormal");
         yield return new WaitForSeconds(time);
         _player._ReturnNormal();
         yield break;
@@ -191,22 +190,10 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         currentHP = MaxHP;
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
            LayerMask.NameToLayer("Enemy"), false);
-        Debug.Log("back");
         yield return new WaitForSeconds(1f);
-        
+        _player.Dead();//Vector3.zeroÇ…Ç∑ÇÈÇΩÇﬂÅ@å„è¡Ç∑
         _player._ChangeState(PlayerState.Respawn);//àÍíUrespawnÇ…
-        Debug.Log("coroutine _stateNormal");
-        yield return StartCoroutine(hoge(1f));
-        //_player._ReturnNormal();
-        //StartCoroutine(_StateNormal(1f));//standingÇ…Ç‡Ç«Ç∑
+        StartCoroutine(_StateNormal(1f));//standingÇ…Ç‡Ç«Ç∑
         yield break ;
-    }
-
-    private IEnumerator hoge(float time)
-    {
-        Debug.Log("ÇÊÇŒÇÍÇΩÇ®");
-        yield return new WaitForSeconds(time);
-        Debug.Log("Ç≥ÇÊÇ»ÇÁÅ`");
-        yield break;
     }
 }

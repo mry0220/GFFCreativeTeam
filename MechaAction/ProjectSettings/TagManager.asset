@@ -9,6 +9,7 @@ TagManager:
   - PlayerWeapon
   - JumpGimmick
   - DeadArea
+  - UI
   layers:
   - Default
   - TransparentFX
