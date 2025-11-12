@@ -115,7 +115,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2014232244539538816
 CanvasRenderer:
@@ -170,9 +170,9 @@ MonoBehaviour:
   nameText: {fileID: 0}
   infoText: {fileID: 0}
   skillType: 0
-  cost: 1
-  name: 1
-  info: "1\u3064\u76EE"
+  cost: 0
+  name: 0
+  info: 0
   hidePanel: {fileID: 9212765739335513995}
 --- !u!114 &2264434494729156315
 MonoBehaviour:
@@ -291,10 +291,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3492420791854826671}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8904805725996535414
 CanvasRenderer:

@@ -1,23 +1,45 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class HPBarUI : MonoBehaviour
 {
     [SerializeField] private Image hpBarImage;   // HP–{‘Ì‚ÌImage
-    [SerializeField] private float maxHealth = 100f;
+    private GameObject _player;
+    private PlayerHP _playerhp;
+    private float maxHealth;
     private float currentHealth;
 
     void Awake()
     {
-        currentHealth = maxHealth;
+        _player = GameObject.FindWithTag("Player");
+        if (_player != null)
+        {
+            _playerhp = _player.GetComponent<PlayerHP>();
+        }
+            //currentHealth = maxHealth;
+            
+    }
+
+    private void Start()
+    {
+        maxHealth = _playerhp.MaxHP;
+        currentHealth = _playerhp.CurrentHP;
         UpdateBar();
     }
 
-    public void ChangeHP(float value)
+    private void Update()
     {
-        currentHealth = Mathf.Clamp(currentHealth + value, 0, maxHealth);
+        currentHealth = _playerhp.CurrentHP;
         UpdateBar();
     }
+
+    //public void ChangeHP(float value)
+    //{
+
+    //    currentHealth = Mathf.Clamp(currentHealth + value, 0, maxHealth);
+    //    UpdateBar();
+    //}
 
     private void UpdateBar()
     {
@@ -25,9 +47,9 @@ public class HPBarUI : MonoBehaviour
         hpBarImage.fillAmount = percent;
     }
 
-    public void ResetHP()
-    {
-        currentHealth = maxHealth;
-        UpdateBar();
-    }
+    //public void ResetHP()
+    //{
+    //    currentHealth = maxHealth;
+    //    UpdateBar();
+    //}
 }

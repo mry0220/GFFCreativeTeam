@@ -67,7 +67,6 @@ public class GManager : MonoBehaviour
         //    _sword._update = 1.0f;
         //}
 
-
         if (Input.GetKeyDown(KeyCode.O))
         {
             Reset();
@@ -92,20 +91,22 @@ public class GManager : MonoBehaviour
             _mainCamera.ShakeCamera();   // カメラ揺らす
     }
 
-    public void DiePlayer()
+    public IEnumerator DiePlayer()
     {
         if (life == 0)
         {
             _ui.GameOver();
             Debug.Log("gameover");
+            yield break;
         }
 
         //フェードアウトさせる
-
+        yield return new WaitForSeconds(0.1f);
         life--;
         _playerposition.position = currentpoint;
         SetCameraBounds(new Vector2(0,3), new Vector2(1000,5));
         StartCoroutine(_playerhp.ResetHP());
+        yield break;
     }
 
     public void CheckPoint(Vector3 newPos)
@@ -116,7 +117,6 @@ public class GManager : MonoBehaviour
     public void Reset()//gameoverのRetry
     {
         life = 2;
-        clear++;
         score = 0;
         //currentpoint 0に戻す（ロードで意味ない）
         //ロードしなおす
@@ -126,7 +126,7 @@ public class GManager : MonoBehaviour
     public void Clear()
     {
         clear++;
-        score = 3;
+        score = 0;
         //強化UIを出す
 
         //UIでnextstage Reset();を呼ぶ

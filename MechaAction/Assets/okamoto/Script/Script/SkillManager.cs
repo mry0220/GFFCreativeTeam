@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public enum SkillType
 {
@@ -12,8 +13,9 @@ public enum SkillType
 
 public class SkillManager : MonoBehaviour
 {
-    [SerializeField] Text skillPointText;
-    [SerializeField] Text skillInfoText;
+    public static SkillManager Instance;
+    [SerializeField] TextMeshProUGUI skillPointText;
+    [SerializeField] TextMeshProUGUI skillInfoText;
     [SerializeField] GameObject skillBlockPanel;
     int skillPoint = 10;
 
@@ -24,9 +26,14 @@ public class SkillManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;   //一応
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
         skillBlocks = skillBlockPanel.GetComponentsInChildren<SkillBlock>();
     }
@@ -39,7 +46,7 @@ public class SkillManager : MonoBehaviour
 
     void UpdateSkillPointText()
     {
-        skillPointText.text = string.Format("消費可能ポイント：{0}", skillPoint);
+        skillPointText.text = string.Format("Poin : {0}", skillPoint);
     }
     public void UpdateSkillInfoText(string text ="")
     {

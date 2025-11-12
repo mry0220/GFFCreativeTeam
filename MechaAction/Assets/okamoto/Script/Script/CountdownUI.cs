@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using TMPro;
 
 public class CountdownUI : MonoBehaviour
 {
     [SerializeField]
-    private Text TimerUI;
+    private TextMeshProUGUI TimerUI;
 
     public GameObject CircularUI;
     public Image CooldownImage;
@@ -24,7 +25,7 @@ public class CountdownUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && !isCooling)
+        if (Input.GetKeyDown(KeyCode.I) && !isCooling)
         {
             CircularUI.SetActive(true);
             timer = cooldownTime;
@@ -44,6 +45,6 @@ public class CountdownUI : MonoBehaviour
                 CooldownImage.fillAmount = 0f;
             }
         }
-        TimerUI.GetComponent<Text>().text = timer.ToString("F1");
+        TimerUI.GetComponent<TextMeshProUGUI>().text = timer.ToString("F1");
     }
 }

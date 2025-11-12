@@ -19,7 +19,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     void Start()
     {
         currentHP = maxHP;
-        Debug.Log(gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
+        Debug.Log("<color=red>" + gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
         _player = GameObject.FindWithTag("Player").transform;
         _ienemy = GetComponent<IEnemy>();
     }
@@ -58,7 +58,7 @@ public class EnemyHP : MonoBehaviour,IDamage
             }
         }
 
-        Debug.Log(gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+        Debug.Log("<color=red>" + gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
         if (currentHP <= 0)
         {
@@ -81,7 +81,7 @@ public class EnemyHP : MonoBehaviour,IDamage
             Destroy(effect, 0.2f);
         }
 
-        Debug.Log(gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+        Debug.Log("<color=red>" + gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
         if (currentHP <= 0)
         {
@@ -110,7 +110,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     // 敵独自の死亡処理
     public void Die()
     {
-        Debug.Log(gameObject.name + " (敵) は倒されました！");
+        Debug.Log("<color=red>" + gameObject.name + " (敵) は倒されました！");
 
         // 独自の敵の死亡処理を記述
         // 例1: スコアを加算する処理

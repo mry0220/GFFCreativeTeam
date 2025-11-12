@@ -6,37 +6,46 @@ using UnityEngine.UI;
 public class Fade : MonoBehaviour
 {
     public Image Fadeimage; 
-    public float fadeDuration = 1.0f;
+    private float fadeDuration = 3.0f;
 
     private bool isFading = false;
 
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.F) && !isFading)
-        {
-            isFading = true;
-            StartCoroutine(FadeOut());
-            Debug.Log("フェードアウト");
-            // new WaitForSeconds(0.5f);
-        }
-        if (Input.GetKeyDown(KeyCode.G) && isFading)
-        {
-            StartCoroutine(FadeIn());
-            Debug.Log("フェードイン");
-            isFading =false;
-        }
+        StartCoroutine(FadeIn());
     }
+
+    private void OnEnable()
+    {
+        //フェードイン
+    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.F) && !isFading)
+    //    {
+    //        isFading = true;
+    //        StartCoroutine(FadeOut());
+    //        Debug.Log("フェードアウト");
+    //        // new WaitForSeconds(0.5f);
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.G) && isFading)
+    //    {
+    //        StartCoroutine(FadeIn());
+    //        Debug.Log("フェードイン");
+    //        isFading =false;
+    //    }
+    //}
 
     //IEnumerator FadeSequence()
     //{
-        //isFading = true;
-        //yield return StartCoroutine(FadeOut());
-        //yield return new WaitForSeconds(0.5f); 
-        //yield return StartCoroutine(FadeIn());
-        //isFading = false;
+    //isFading = true;
+    //yield return StartCoroutine(FadeOut());
+    //yield return new WaitForSeconds(0.5f); 
+    //yield return StartCoroutine(FadeIn());
+    //isFading = false;
     //}
 
-    IEnumerator FadeOut()
+    public IEnumerator FadeOut()
     {
         float timer = 0f;
         Color color = Fadeimage.color;
@@ -49,8 +58,9 @@ public class Fade : MonoBehaviour
         }
     }
 
-    IEnumerator FadeIn()
+    public IEnumerator FadeIn()
     {
+        yield return new WaitForSeconds(0.1f);
         float timer = 0f;
         Color color = Fadeimage.color;
         while (timer < fadeDuration)
@@ -60,6 +70,9 @@ public class Fade : MonoBehaviour
             Fadeimage.color = color;
             yield return null;
         }
+
+
+        yield break;
     }
 
 }

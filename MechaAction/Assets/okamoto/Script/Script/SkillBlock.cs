@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SkillBlock : MonoBehaviour
 {
-    [SerializeField] Text nameText;
-    [SerializeField] Text infoText;
+    [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] TextMeshProUGUI infoText;
     [SerializeField] SkillType skillType;
     [SerializeField] int cost;
     [SerializeField] new string name;
