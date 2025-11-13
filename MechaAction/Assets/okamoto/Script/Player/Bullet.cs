@@ -11,8 +11,9 @@ public class Bullet : MonoBehaviour
     
     private int _damage;
     private int _knockback;
-    private int _dir;
     private string _effectname;
+    private string _audioname;
+    private int _dir;
 
     Vector3 velocity;
     private void Awake()
@@ -20,11 +21,12 @@ public class Bullet : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
-    public void Initialize(int damage, int knockback, int dir, string name)
+    public void Initialize(int damage, int knockback, int dir, string effectname, string audioname)
     {
         _damage = damage;
         _knockback = knockback;
-        _effectname = name;
+        _effectname = effectname;
+        _audioname = audioname;
         _dir = dir;
     }
 
@@ -56,7 +58,7 @@ public class Bullet : MonoBehaviour
             var Interface = other.GetComponent<IDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_damage, _knockback, _dir, _audioname);//敵のインターフェース<IDamage>取得
 
                 var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
                 if (attackData != null && attackData.HitEffect != null)

@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class Tire : MonoBehaviour
 {
-    [Header("右への速度"), SerializeField] private float _horizontalSpeed = 25f;  // 右への移動速度
+    private float _moveSpeed = 5f;  // 右への移動速度
 
     private Rigidbody _rb;
-
-    private Vector2 _moveVector;
-    private Vector2 _inputVector;
 
     private bool _isGrounded;
 
     private float _FallTime = 0f;
     private float _fallSpeed = 1f;
-
+    private int dir;
+    Vector3 velocity;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -23,19 +21,26 @@ public class Tire : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 velocity = _rb.velocity;
-        velocity.x = _horizontalSpeed;
+        //velocity = _rb.velocity;
 
-        if(!_isGrounded )
-        {
-            _FallTime += Time.deltaTime;
+        //velocity.x = _moveSpeed * dir;
 
-            _fallSpeed = Physics.gravity.y * _FallTime * 3f * 3f;
+        //if(!_isGrounded )
+        //{
+        //    _FallTime += Time.deltaTime;
 
-            velocity.y += _fallSpeed * Time.fixedDeltaTime;
-        }
+        //    _fallSpeed = Physics.gravity.y * _FallTime * 2f * 2f;
 
-            _rb.velocity = velocity;
+        //    velocity.y += _fallSpeed * Time.fixedDeltaTime;
+        //}
+
+        //    _rb.velocity = velocity;
+    }
+
+    public void _FallStart(int _dir)
+    {
+        _FallTime = 0;
+        dir = _dir;
     }
 
     private void OnCollisionEnter(Collision collision)

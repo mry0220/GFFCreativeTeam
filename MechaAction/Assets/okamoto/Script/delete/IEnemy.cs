@@ -7,4 +7,6 @@ public interface IEnemy
     void SKnockBack(int dir,int knockback);
 
     void BKnockBack(int dir, int knockback);
+
+    void ElectStun(int dir,int knockback,float electtime);
 }

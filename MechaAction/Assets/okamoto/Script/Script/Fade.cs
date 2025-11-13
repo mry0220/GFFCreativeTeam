@@ -6,18 +6,21 @@ using UnityEngine.UI;
 public class Fade : MonoBehaviour
 {
     public Image Fadeimage; 
-    private float fadeDuration = 3.0f;
-
-    private bool isFading = false;
+    private float fadeDuration = 1f;
 
     private void Start()
     {
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeOut());
     }
 
     private void OnEnable()
     {
-        //フェードイン
+        StartCoroutine (FadeIn());
+    }
+
+    public　void Fade_Out()
+    {
+        StartCoroutine(FadeOut());
     }
     //private void Update()
     //{
@@ -47,20 +50,8 @@ public class Fade : MonoBehaviour
 
     public IEnumerator FadeOut()
     {
-        float timer = 0f;
-        Color color = Fadeimage.color;
-        while (timer < fadeDuration)
-        {
-            timer += Time.deltaTime;
-            color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
-            Fadeimage.color = color;
-            yield return null;
-        }
-    }
-
-    public IEnumerator FadeIn()
-    {
         yield return new WaitForSeconds(0.1f);
+
         float timer = 0f;
         Color color = Fadeimage.color;
         while (timer < fadeDuration)
@@ -71,8 +62,21 @@ public class Fade : MonoBehaviour
             yield return null;
         }
 
-
+        gameObject.SetActive(false);
         yield break;
+    }
+
+    public IEnumerator FadeIn()
+    {
+        float timer = 0f;
+        Color color = Fadeimage.color;
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+            Fadeimage.color = color;
+            yield return null;
+        }
     }
 
 }

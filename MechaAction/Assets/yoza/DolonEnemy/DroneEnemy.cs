@@ -1,8 +1,11 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 [RequireComponent(typeof(Rigidbody))]
-public class DroneEnemy : MonoBehaviour
+public class DroneEnemy : MonoBehaviour, IEnemy
 {
     enum EnemyState
     { 
@@ -10,23 +13,43 @@ public class DroneEnemy : MonoBehaviour
         MOVE,
         ATTACK,
         STIFFNESS,
+        DAMAGE//“®‚©‚È‚¢
     };
 
-
+    private Drone_Attack _attack;
     private Rigidbody _rb;
     private Transform _playerTransform;
     private EnemyState _state;
    [SerializeField] private float _distance;
     private Vector3 _velocity;
     private float _moveSpeed = 5f;
+    public int dir;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _playerTransform = GameObject.FindWithTag("Player").transform;
+        _attack = GetComponent<Drone_Attack>();
         _state = EnemyState.DITECTION;
     }
+
+    private void Update()
+    {
+        if (_rb.position.x < _playerTransform.position.x)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);//‰E
+            dir = 1;
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, 270, 0);//¶
+            dir = -1;
+        }
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+    }
+
     private void FixedUpdate()
     {
+        
         _distance = Vector3.Distance(_rb.position, _playerTransform.position);
         switch (_state)
         {
@@ -48,7 +71,7 @@ public class DroneEnemy : MonoBehaviour
                     if (IsStiff == false)
                     {
                         _state = EnemyState.DITECTION;
-                        Debug.Log("false");
+                        //Debug.Log("false");
                     }
                     break;
                 }
@@ -80,7 +103,8 @@ public class DroneEnemy : MonoBehaviour
 
     private void Attack()
     {
-        Debug.Log("Attack");
+        //Debug.Log("Attack");
+        StartCoroutine(_attack.Attack());
         _state = EnemyState.STIFFNESS;
     }
 
@@ -95,5 +119,38 @@ public class DroneEnemy : MonoBehaviour
         }
         else
             return true;
+    }
+
+    public IEnumerator _ReturnNormal(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _state = EnemyState.DITECTION;
+        yield break;
+    }
+
+    public void SKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.DAMAGE;
+        StartCoroutine(_ReturnNormal(0.5f));
+        //anim
+    }
+
+    public void BKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.DAMAGE;
+        StartCoroutine(_ReturnNormal(1.0f));
+        //anim
+    }
+
+    public void ElectStun(int dir, int knockback, float electtime)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.DAMAGE;
+        StartCoroutine(_ReturnNormal(electtime));
     }
 }

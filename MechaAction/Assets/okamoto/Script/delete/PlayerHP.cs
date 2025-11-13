@@ -15,7 +15,9 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     public int CurrentHP => currentHP; //UIHPゲージで使う　ゲームマネージャーでmaxにするためだめかも
     public int MaxHP => maxHP;//こっちもまあ使うか
 
-
+    private int _HP = 0;
+    private int _KNOCKS = 0;
+    private float _UNB = 0f;
     public void Awake()
     {
         _player = GetComponent<Player>();
@@ -23,13 +25,63 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
     private void Start()
     {
-        currentHP = maxHP;
         Debug.Log("<color=yellow>" + gameObject.name + "のHPが初期化されました: " + currentHP);
+        ApplySkillUpgrades();
+        maxHP += _HP;
+        currentHP = maxHP;
     }
 
+    private void ApplySkillUpgrades()
+    {
+        if (SkillManager.Instance.HasSkill(SkillType.HP1))
+        {
+            _HP += 50;
+            Debug.Log("HPアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.HP2))
+        {
+            _HP += 70;
+            Debug.Log("HPアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.HP3))
+        {
+            _HP += 80;
+            Debug.Log("HPアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.KNOCKS1))
+        {
+            _KNOCKS += 1;
+            Debug.Log("ノック減アップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.KNOCKS2))
+        {
+            _KNOCKS += 1;
+            Debug.Log("ノック減アップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.KNOCKS3))
+        {
+            _KNOCKS += 1;
+            Debug.Log("ノック減アップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.GUN1))
+        {
+            _UNB += 0.1f;
+            Debug.Log("無敵アップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.GUN2))
+        {
+            _UNB += 0.2f;
+            Debug.Log("無敵アップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.GUN3))
+        {
+            _UNB += 0.2f;
+            Debug.Log("無敵アップ！");
+        }
+    }
 
     //ダメージを受け、HPを減少させる。
-    public void TakeDamage(int damage, int knockback, int dir, string name)
+    public void TakeDamage(int damage, int knockback, int dir, string effectname, string audioname)
     {
         if (currentHP <= 0)
         {
@@ -39,9 +91,11 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0);
+        knockback -= _KNOCKS;
+        knockback = Mathf.Max(knockback, 0);
+        AudioManager.Instance.PlaySound(audioname);
 
-
-        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == name);//ラムダ形式AIで知った
+        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
         if (attackData != null && attackData.HitEffect != null)
         {
             var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
@@ -50,31 +104,34 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
         Debug.Log("<color=yellow>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
+        // HPが0以下になったかチェック
+        if (currentHP <= 0)
+        {
+            Die();
+            return;
+        }
+
         if (damage >= 10)
         {
             if (knockback >= 0 && knockback < 5)
             {
                 _player._ChangeState(PlayerState.Knockback);
                 _player.SKnockBack(dir, knockback);
-                StartCoroutine(_DamageTime(0.5f));
+                StartCoroutine(_DamageTime(1f));
                 StartCoroutine(_StateNormal(0.5f));
             }
             if (knockback >= 5)
             {
                 _player._ChangeState(PlayerState.Knockback);
                 _player.BKnockBack(dir, knockback);
-                StartCoroutine(_DamageTime(1f));
+                StartCoroutine(_DamageTime(1.5f));
                 StartCoroutine(_StateNormal(1f));
             }
         }
-        // HPが0以下になったかチェック
-        if (currentHP <= 0)
-        {
-            Die();
-        }
+        
     }
 
-    public void TakeElectDamage(int damage, float electtime, string name)
+    public void TakeElectDamage(int damage, float electtime, string effectname, string audioname)
     {
         if (currentHP <= 0)
         {
@@ -85,7 +142,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0);
 
-        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == name);//ラムダ形式AIで知った
+        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
         if (attackData != null && attackData.HitEffect != null)
         {
             var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
@@ -94,17 +151,19 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
         Debug.Log("<color=yellow>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP:" + currentHP);
 
-        _player._ChangeState(PlayerState.Other);
-        _player.Stun();//vector3.zero
-        StartCoroutine(_StateNormal(electtime));
-
         if (currentHP <= 0)
         {
             Die();
         }
+
+        _player._ChangeState(PlayerState.Other);
+        _player.Stun();//vector3.zero
+        StartCoroutine(_StateNormal(electtime));
+
+        
     }
 
-    public void TakeBanDamage(float bantime, string name)
+    public void TakeBanDamage(float bantime, string effectname, string audioname)
     {
         if (currentHP <= 0)
         {
@@ -112,7 +171,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             return;
         }
 
-        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == name);//ラムダ形式AIで知った
+        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
         if (attackData != null && attackData.HitEffect != null)
         {
             var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
@@ -143,7 +202,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), true);
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(time + _UNB);
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), false);
 
@@ -151,7 +210,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     }
 
     // HPを回復させる。
-    public void Heal(int healAmount)
+    public void Heal(int healAmount, string effectname, string audioname)
     {
         currentHP += healAmount;
 
@@ -189,12 +248,12 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     public IEnumerator ResetHP()//GManagerから復活の命令
     {
         currentHP = MaxHP;
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-           LayerMask.NameToLayer("Enemy"), false);
-        yield return new WaitForSeconds(1f);
-        _player.Dead();//Vector3.zeroにするため　後消す
-        _player._ChangeState(PlayerState.Respawn);//一旦respawnに
-        StartCoroutine(_StateNormal(1f));//standingにもどす
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+        //   LayerMask.NameToLayer("Enemy"), false);
+        //yield return new WaitForSeconds(1f);
+        //_player.Dead();//Vector3.zeroにするため　後消す
+        //_player._ChangeState(PlayerState.Respawn);//一旦respawnに
+        //StartCoroutine(_StateNormal(1f));//standingにもどす
         yield break ;
     }
 }

@@ -21,11 +21,31 @@ MonoBehaviour:
     electtime: 0
     bantime: 0
     effectname: DamageEffect
-  - enemyname: 
+    audioname: 
+  - enemyname: BoxDrone_Normal
     damage: 0
     knockback: 0
-    hitdamage: 0
+    hitdamage: 5
     hitknockback: 0
     electtime: 0
     bantime: 0
-    effectname: 
+    effectname: DamageEffect
+    audioname: 
+  - enemyname: BoxDrone_Move
+    damage: 0
+    knockback: 0
+    hitdamage: 5
+    hitknockback: 0
+    electtime: 0
+    bantime: 0
+    effectname: DamageEffect
+    audioname: 
+  - enemyname: Drone
+    damage: 20
+    knockback: 5
+    hitdamage: 5
+    hitknockback: 0
+    electtime: 0
+    bantime: 0
+    effectname: DamageEffect
+    audioname: 

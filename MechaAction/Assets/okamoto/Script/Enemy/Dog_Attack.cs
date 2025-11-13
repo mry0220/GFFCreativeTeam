@@ -34,7 +34,7 @@ public class Dog_Attack : MonoBehaviour
                 var Interface = hit.collider.GetComponent<IPlayerDamage>();
                 if (Interface != null)
                 {
-                    Interface.TakeDamage(_damage, _knockback, _dir,_name);//敵のインターフェース<IDamage>取得
+                    //Interface.TakeDamage(_damage, _knockback, _dir,_name);//敵のインターフェース<IDamage>取得
 
                 }
             }
@@ -48,7 +48,7 @@ public class Dog_Attack : MonoBehaviour
             var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_damage, _knockback, _dir, _name);//敵のインターフェース<IDamage>取得
+                //Interface.TakeDamage(_damage, _knockback, _dir, _name);//敵のインターフェース<IDamage>取得
             }
         }
     }

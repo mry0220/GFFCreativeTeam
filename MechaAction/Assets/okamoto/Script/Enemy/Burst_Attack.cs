@@ -17,6 +17,7 @@ public class Burst_Attack : MonoBehaviour
     private int _hitknockback;
     private int _dir;
     private string _effectname;
+    private string _audioname;
 
     private void Awake()
     {
@@ -34,7 +35,8 @@ public class Burst_Attack : MonoBehaviour
             _knockback = (int)(attackData.Knockback * (_clear * 1.5));
             _hitdamage = (int)(attackData.Hitdamage * (_clear * 1.5));
             _hitknockback = (int)(attackData.Hitknockback * (_clear * 1.5));
-            _effectname = (string)(attackData.EffectName);
+            _effectname = attackData.EffectName;
+            _audioname = attackData.AudioName;
         }
 
 
@@ -55,7 +57,7 @@ public class Burst_Attack : MonoBehaviour
         for(int i = 0;i < 3; i++)
         {
             GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
-            bullet.GetComponent<EnemyBullet>().Initialize(_damage ,_knockback,_dir,_effectname);
+            bullet.GetComponent<EnemyBullet>().Initialize(_damage ,_knockback,_dir,_effectname , _audioname);
             yield return new WaitForSeconds(0.2f);
         }
         yield break;
@@ -68,7 +70,7 @@ public class Burst_Attack : MonoBehaviour
             var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_hitdamage, _hitknockback, _dir,_effectname);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
             }
         }
     }

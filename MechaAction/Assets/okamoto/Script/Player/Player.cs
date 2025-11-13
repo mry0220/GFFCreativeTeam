@@ -68,11 +68,36 @@ public class Player : MonoBehaviour
     private bool _isRight = false;
     private bool _isLeft = false;
 
+    private float _SPEED = 0f;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _col = GetComponent<CapsuleCollider>();
         _anim = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        ApplySkillUpgrades();
+    }
+    private void ApplySkillUpgrades()
+    {
+        if (SkillManager.Instance.HasSkill(SkillType.SHOTGUN))
+        {
+            _SPEED += 0.1f;
+            Debug.Log("スピードアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.RIFLE))
+        {
+            _SPEED += 0.2f;
+            Debug.Log("スピードアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
+        {
+            _SPEED += 0.2f;
+            Debug.Log("スピードアップ！");
+        }
     }
 
     private void Update()
@@ -173,6 +198,10 @@ public class Player : MonoBehaviour
         {
             _Gravity();
         }
+        else
+        {
+            _fallTime = 0f;
+        }
 
         _rb.velocity = velocity; //編集した値を戻してrigidbodyで実行
     }
@@ -254,22 +283,22 @@ public class Player : MonoBehaviour
         {
             if (_isRun && _moveVector.x > 0f)
             {
-                velocity.x = _moveVector.x * _moveSpeed;
+                velocity.x = _moveVector.x * (_moveSpeed + _SPEED);
             }
             else
             {
-                velocity.x = _moveVector.x * _moveSpeed * 0.5f;
+                velocity.x = _moveVector.x * (_moveSpeed + _SPEED) * 0.5f;
             }
         }
         else if (_lookDir == -1)
         {
             if (_isRun && _moveVector.x < 0f)
             {
-                velocity.x = _moveVector.x * _moveSpeed;
+                velocity.x = _moveVector.x * (_moveSpeed + _SPEED);
             }
             else
             {
-                velocity.x = _moveVector.x * _moveSpeed * 0.5f;
+                velocity.x = _moveVector.x * (_moveSpeed + _SPEED) * 0.5f;
             }
         }
         
@@ -331,7 +360,8 @@ public class Player : MonoBehaviour
         if(!CanMove) yield break;
 
         _ChangeState(PlayerState.Dash);
-
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Enemy"), true);
         _isDash = true;
         Vector3 velocity = _rb.velocity;
         _fallTime = 0f;
@@ -356,6 +386,8 @@ public class Player : MonoBehaviour
             t += Time.deltaTime;
             yield return new WaitForFixedUpdate();  //コルーチン内でFixedUpdateできるのAIで知った
         }
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Enemy"), false);
         _ReturnNormal();
         _isDash = false;
         yield break;

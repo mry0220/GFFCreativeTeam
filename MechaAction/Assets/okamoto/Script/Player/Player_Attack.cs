@@ -9,12 +9,11 @@ public class Player_Attack : MonoBehaviour
 {
     [SerializeField] private SwordHitbox _sword;
     [SerializeField] private GunHitbox _gun;
+    private SkillCoolTimeUI _ui;
 
     private Animator _anim;
     private Player _player;
     private int _dir;
-
-    private bool _canattack = true;//攻撃クリック連打防止
 
     private CoolDown coolDown = new CoolDown();
 
@@ -31,15 +30,38 @@ public class Player_Attack : MonoBehaviour
 
     private PlayerAttackType _state = PlayerAttackType.Sowd;
 
+    private float _SKILL = 0f;
+
     private void Awake()
     {
         _anim = GetComponent<Animator>();
         _player = GetComponent<Player>();
+        _ui = FindFirstObjectByType<SkillCoolTimeUI>();
     }
 
     private void Start()
     {
         _sword.enabled = false;
+        ApplySkillUpgrades();
+    }
+
+    private void ApplySkillUpgrades()
+    {
+        if (SkillManager.Instance.HasSkill(SkillType.HP1))
+        {
+            _SKILL += 0.1f;
+            Debug.Log("スキルアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.HP2))
+        {
+            _SKILL += 0.2f;
+            Debug.Log("スキルアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.HP3))
+        {
+            _SKILL += 0.3f;
+            Debug.Log("スキルアップ！");
+        }
     }
 
     private void Update()
@@ -68,7 +90,7 @@ public class Player_Attack : MonoBehaviour
 
         _dir = _player._lookDir;
 
-        if(Input.GetMouseButtonDown(0) && _canattack)
+        if(Input.GetMouseButtonDown(0))
         {
             LeftAttack();
         }
@@ -119,13 +141,16 @@ public class Player_Attack : MonoBehaviour
             if (!_player.CanMove || _tatakitukecoroutine != null) return;
             _player._ChangeState(PlayerState.Attack);
 
+            float cooltime = 3f - _SKILL;
+            _ui.GroundSkillCoolTime(cooltime);
+
             //test = false;
             _sword.enabled = true;
             _anim.SetInteger("AttackType", 1);
             _anim.SetTrigger("Attack");
             _tatakitukecoroutine = StartCoroutine(
                 coolDown.Skill(callback => { _tatakitukecoroutine = callback; },
-                3f,
+                cooltime,
                 null,
                 _sword.tatakitukeAttack,
                 0,
@@ -139,9 +164,12 @@ public class Player_Attack : MonoBehaviour
             if (!_player.CanMove || _shotguncoroutine != null) return;
             _player._ChangeState(PlayerState.Attack);
 
+            float cooltime = 3f - _SKILL;
+            _ui.ShotgunSkillCoolTime(cooltime);
+
             _shotguncoroutine = StartCoroutine(
                coolDown.Skill(callback => { _shotguncoroutine = callback; },
-               3f,
+               cooltime,
                null,
                _gun.ShotGun,
                0,
@@ -159,12 +187,15 @@ public class Player_Attack : MonoBehaviour
             if (!_player.CanMove || _slashcoroutine != null) return;
             _player._ChangeState(PlayerState.Attack);
 
+            float cooltime = 3f - _SKILL;
+            _ui.SlashSkillCoolTime(cooltime);
+
             _sword.enabled = true;
             _anim.SetTrigger("Attack");
             _anim.SetInteger("AttackType", 2);
             _slashcoroutine = StartCoroutine(
                 coolDown.Skill(callback => { _slashcoroutine = callback; },
-                3f,
+                cooltime,
                 null,
                 _sword.slashAttack,
                 0,
@@ -176,9 +207,12 @@ public class Player_Attack : MonoBehaviour
             if (!_player.CanMove || _riflecoroutine != null) return;
             _player._ChangeState(PlayerState.Attack);
 
+            float cooltime = 3f - _SKILL;
+            _ui.RifleSkillCoolTime(cooltime);
+
             _riflecoroutine = StartCoroutine(
                coolDown.Skill(callback => { _riflecoroutine= callback; },
-               3f,
+               cooltime,
                null,
                _gun.Rifle,
                0,
@@ -195,21 +229,21 @@ public class Player_Attack : MonoBehaviour
         sword.enabled = false;
         yield break;
     }*/
-
-    public void _TowClickAttack()
-    {
-        _canattack = false;
-    }
-
     public void _Enabletfalse()//animationシグナルで呼ぶ
     {
         _sword.enabled = false;
+        _sword.ColliderEnabled();//collider false
+        Debug.Log("falswe");
         _player._ReturnNormal();//最後に呼ぶ
-        _canattack = true;
     }
 
-    public void _Enabletrue()//animationシグナルで呼ぶ
+    public void GroundAttack()
     {
-        _sword.enabled = true;//意味ないかも
+        _sword.GroundAttackSignal();
     }
+
+    //public void _Enabletrue()//animationシグナルで呼ぶ
+    //{
+    //    _sword.enabled = true;//意味ないかも
+    //}
 }

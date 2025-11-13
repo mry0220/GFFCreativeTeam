@@ -20,11 +20,17 @@ public class SwordHitbox : MonoBehaviour
     private int _damage;
     private int _knockback;
     private string _effectname;
+    private string _audioname;
     private int _dir;
 
     private bool _groundattack = false;
 
-    public float _update = 1.0f;
+    private int _ATTACK= 0;
+    private int _SLASH = 0;
+    private bool _ELECTSLASH = false;
+    private int _GROUND = 0;
+    private float _GROUNDRADIUS = 0;
+    private int _KNOCKP = 0;
 
     private void Awake()
     {
@@ -34,6 +40,53 @@ public class SwordHitbox : MonoBehaviour
     private void Start()
     {
         _collider.enabled = false; // スクリプトより先に物理無効化
+        ApplySkillUpgrades();
+    }
+
+    private void ApplySkillUpgrades()
+    {
+        if (SkillManager.Instance.HasSkill(SkillType.ATTACK1))
+        {
+            _ATTACK += 20;
+            Debug.Log("攻撃力アップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.ATTACK2))
+        {
+            _ATTACK += 20;
+            Debug.Log("攻撃力アップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.ATTACK3))
+        {
+            _ATTACK += 20;
+            Debug.Log("攻撃力アップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.GROUND))
+        {
+            _SLASH += 30;
+            _ELECTSLASH = true;
+            Debug.Log("スラッシュアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.GROUND))
+        {
+            _GROUND += 30;
+            _GROUNDRADIUS += 1f;
+            Debug.Log("グラウンドアタックアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
+        {
+            _KNOCKP += 20;
+            Debug.Log("ノックバックアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP2))
+        {
+            _KNOCKP += 20;
+            Debug.Log("ノックバックアップ！");
+        }
+        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP3))
+        {
+            _KNOCKP += 20;
+            Debug.Log("ノックバックアップ！");
+        }
     }
 
     void OnEnable()
@@ -44,11 +97,17 @@ public class SwordHitbox : MonoBehaviour
         _groundattack = false;
     }
 
+    public void ColliderEnabled()
+    {
+        _collider.enabled = false;
+    }
+
     public void leftAttack(int dir)
     {
-        _damage = _playerAttackSO.playerAttackList[0].Damage;
-        _knockback = _playerAttackSO.playerAttackList[0].Knockback;
+        _damage = _playerAttackSO.playerAttackList[0].Damage + _ATTACK;
+        _knockback = _playerAttackSO.playerAttackList[0].Knockback + _KNOCKP;
         _effectname = _playerAttackSO.playerAttackList[0].EffectName;
+        _audioname = _playerAttackSO.playerAttackList[0].AudioName;
         _dir = dir;
     }
 
@@ -56,9 +115,10 @@ public class SwordHitbox : MonoBehaviour
 
     public void tatakitukeAttack(int dir)
     {
-        _damage = _playerAttackSO.playerAttackList[1].Damage;
-        _knockback = _playerAttackSO.playerAttackList[1].Knockback;
+        _damage = _playerAttackSO.playerAttackList[1].Damage + _ATTACK + _GROUND;
+        _knockback = _playerAttackSO.playerAttackList[1].Knockback + _KNOCKP + _GROUND;
         _effectname = _playerAttackSO.playerAttackList[1].EffectName;
+        _audioname = _playerAttackSO.playerAttackList[1].AudioName;
         _dir = dir;
         _groundattack = true;
 
@@ -66,9 +126,11 @@ public class SwordHitbox : MonoBehaviour
 
     public void slashAttack(int dir)
     {
-        _damage = (int)(_playerAttackSO.playerAttackList[2].Damage * _update);
-        _knockback = _playerAttackSO.playerAttackList[2].Knockback;
+        _damage = _playerAttackSO.playerAttackList[2].Damage + _ATTACK + _SLASH;
+        _knockback = _playerAttackSO.playerAttackList[2].Knockback + _KNOCKP;
         _effectname = _playerAttackSO.playerAttackList[2].EffectName;
+        _audioname = _playerAttackSO.playerAttackList[2].AudioName;
+        
         _dir = dir;
 
         var slash = Instantiate(_slashPrefab, _slashPosition.position, Quaternion.identity);
@@ -76,7 +138,7 @@ public class SwordHitbox : MonoBehaviour
         {
             slash.transform.localScale = new Vector3(_dir*0.1f, 0.1f, 0.1f);
         }
-        slash.GetComponent<Slash>().Initialize(_damage, _knockback, _dir, _effectname);
+        slash.GetComponent<Slash>().Initialize(_damage, _knockback, _dir, _effectname,_audioname,_ELECTSLASH);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -86,7 +148,7 @@ public class SwordHitbox : MonoBehaviour
             var Interface = other.GetComponent<IDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_damage, _knockback, _dir);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_damage, _knockback, _dir , _audioname);//敵のインターフェース<IDamage>取得
                 hitTargets.Add(other.gameObject);
 
                 var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
@@ -100,33 +162,63 @@ public class SwordHitbox : MonoBehaviour
 
         if (other.CompareTag("Grounded") && _groundattack)
         {
-            Debug.Log("地面");
-            var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
-            if (_dir < 0)
-            {
-                G_effect.transform.localScale = new Vector3(_dir * 0.1f, 0.1f, 0.1f);
-            }
-            Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
+            //Debug.Log("地面");
+            //var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
+            //if (_dir < 0)
+            //{
+            //    G_effect.transform.localScale = new Vector3(_dir * 0.1f, 0.1f, 0.1f);
+            //}
+            //Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
-            Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f);
-            foreach (var hit in hits)
+            //Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f + _GROUNDRADIUS);
+            //foreach (var hit in hits)
+            //{
+            //    if (hit.CompareTag("Enemy"))
+            //    {
+            //        // IDamageable 実装クラスへダメージ
+            //        var Interface = hit.GetComponent<IDamage>();
+            //        if (Interface != null) Interface.TakeDamage(_damage,_knockback,_dir, _audioname);
+
+            //        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+            //        if (attackData != null && attackData.HitEffect != null)
+            //        {
+            //            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+            //            Destroy(effect, 0.2f);
+            //        }
+            //    }
+            //}
+            //_groundattack = false;
+        }
+    }
+
+    public void GroundAttackSignal()//グラウンドアタックをPlayerAttackシグナルでよぶ
+    {
+        Debug.Log("地面");
+        var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
+        if (_dir < 0)
+        {
+            G_effect.transform.localScale = new Vector3(_dir * 0.1f, 0.1f, 0.1f);
+        }
+        Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f + _GROUNDRADIUS);
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Enemy"))
             {
-                if (hit.CompareTag("Enemy"))
+                // IDamageable 実装クラスへダメージ
+                var Interface = hit.GetComponent<IDamage>();
+                if (Interface != null) Interface.TakeDamage(_damage, _knockback, _dir, _audioname);
+
+                var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+                if (attackData != null && attackData.HitEffect != null)
                 {
-                    // IDamageable 実装クラスへダメージ
-                    var Interface = hit.GetComponent<IDamage>();
-                    if (Interface != null) Interface.TakeDamage(_damage,_knockback,_dir);
-
-                    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                    if (attackData != null && attackData.HitEffect != null)
-                    {
-                        var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-                        Destroy(effect, 0.2f);
-                    }
+                    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+                    Destroy(effect, 0.2f);
                 }
             }
-            _groundattack = false;
         }
+        _groundattack = false;
     }
 
     void OnDrawGizmosSelected()

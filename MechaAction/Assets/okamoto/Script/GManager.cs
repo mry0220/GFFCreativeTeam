@@ -11,17 +11,19 @@ public class GManager : MonoBehaviour
     public static GManager Instance;
 　　private CameraManager _mainCamera;
     private UIController _ui;
-    private GameObject _player;
+    private GameObject _playerobj;
     private Transform _playerposition;
+    private Player _player;
     private PlayerHP _playerhp;
     [SerializeField] PowerUpSO _powerup;
     public bool _isAttack;
 
-    private int life = 0;
+    private int life = 1;
     public int clear = 1;
     public int score = 0;
 
-    Vector3 currentpoint;
+    public Vector3 currentpoint;
+    private Vector3 _startPosition = new Vector3(0f,3.5f,0f);
     void Awake()
     {
         if (Instance == null)
@@ -33,7 +35,8 @@ public class GManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        
+        currentpoint = _startPosition;
         SceneManager.sceneLoaded += SceneLoaded;
         //参照をここにもってくる
 
@@ -42,18 +45,7 @@ public class GManager : MonoBehaviour
 
     private void Start()
     {
-        //_mainCamera = FindFirstObjectByType<CameraManager>();
-        //_player = GameObject.FindWithTag("Player");
-        //if( _player != null )
-        //{
-        //    _playerposition = _player.transform;
-        //    _playerhp = _player.GetComponent<PlayerHP>();
-        //    currentpoint = _player.transform.position;
-        //}
-        //GameObject[] uiObjects = GameObject.FindGameObjectsWithTag("UI");
-        //_UIGameOver = uiObjects.FirstOrDefault(obj => obj.name == "GameOver");
-        //_UIGameOver.SetActive(false);
-        //var _GameUI = uiObjects.FirstOrDefault(obj => obj.name == "GameUI");
+        
     }
 
     private void Update()
@@ -66,12 +58,6 @@ public class GManager : MonoBehaviour
         //{
         //    _sword._update = 1.0f;
         //}
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            Reset();
-            //Debug.Log("SowdMode");
-        }
 
         //Debug.Log(life);
         //Debug.Log(clear);
@@ -93,6 +79,7 @@ public class GManager : MonoBehaviour
 
     public IEnumerator DiePlayer()
     {
+        _player.Dead();//Vector3.zeroにするため　後消す
         if (life == 0)
         {
             _ui.GameOver();
@@ -100,12 +87,23 @@ public class GManager : MonoBehaviour
             yield break;
         }
 
-        //フェードアウトさせる
-        yield return new WaitForSeconds(0.1f);
-        life--;
-        _playerposition.position = currentpoint;
+        _ui.FadeIn();                                                  //フェードインさせる
+        yield return new WaitForSeconds(1.5f);
+
+        _player._ChangeState(PlayerState.Respawn);                     //一旦respawnに
+        life--;                                                        //life-1
         SetCameraBounds(new Vector2(0,3), new Vector2(1000,5));
+        _playerposition.position = currentpoint;
         StartCoroutine(_playerhp.ResetHP());
+        _ui.FadeOut();
+        yield return new WaitForSeconds(1f);
+
+        _player._ReturnNormal();
+
+        yield return new WaitForSeconds(2f);
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+           LayerMask.NameToLayer("Enemy"), false);
+
         yield break;
     }
 
@@ -117,46 +115,49 @@ public class GManager : MonoBehaviour
     public void Reset()//gameoverのRetry
     {
         life = 2;
-        score = 0;
-        //currentpoint 0に戻す（ロードで意味ない）
+        score = 0;//一応
+        currentpoint = _startPosition;
+        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+         LayerMask.NameToLayer("Enemy"), false);//一応
+        Debug.Log("Reset");//呼ばれた
         //ロードしなおす
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void Clear()
     {
-        clear++;
+        //スコアを保存
         score = 0;
         //強化UIを出す
+        _ui.Shop();
+    }
 
-        //UIでnextstage Reset();を呼ぶ
+    public void NextStage()
+    {
+        clear++;
         Reset();
-       
     }
 
     void SceneLoaded(Scene nextScene, LoadSceneMode mode)//シーンがロードされると呼ばれる
     {
-        if(nextScene.name == "StageScene")
-        {
-            life = 0;
-        }
-
         _mainCamera = FindFirstObjectByType<CameraManager>();
-        _player = GameObject.FindWithTag("Player");
-        if( _player != null )
+        _playerobj = GameObject.FindWithTag("Player");
+        if (_playerobj != null)
         {
-            _playerposition = _player.transform;
-            _playerhp = _player.GetComponent<PlayerHP>();
-            currentpoint = _player.transform.position;
+            _player = _playerobj.GetComponent<Player>();
+            _playerposition = _playerobj.transform;
+            _playerhp = _playerobj.GetComponent<PlayerHP>();
+            currentpoint = _playerobj.transform.position;
         }
         _ui = FindFirstObjectByType<UIController>();
-        if( _ui != null )
+
+        if (nextScene.name == "StageScene")
         {
-            Debug.Log("ui");
+            _playerposition.position = currentpoint;
+            life = 0;
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+          LayerMask.NameToLayer("Enemy"), false);
         }
-        else
-        {
-            Debug.Log("ui_unll");
-        }
+
+        
     }
 }

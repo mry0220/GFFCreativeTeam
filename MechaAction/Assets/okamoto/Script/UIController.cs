@@ -2,85 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class UIController : MonoBehaviour
 {
     [SerializeField] private GameObject _UIGameOver;
     [SerializeField] private GameObject _UIShop;
+    //private Transform canvasSkill;
+    [SerializeField] private GameObject _UIFade;
+    private Fade _fade;
 
-    //public Image Fadeimage;
-    //public float fadeDuration = 1.0f;
+    private void Awake()
+    {
+        _fade = _UIFade.GetComponent<Fade>();
+    }
 
-    //private bool isFading = false;
     private void Start()
     {
         _UIGameOver.SetActive(false);
-        //_UIShop.SetActive(false);
-        //StartCoroutine(FadeIn());
+        _UIShop.SetActive(false);
     }
 
     public void GameOver()
     {
-        _UIGameOver.SetActive(true);
+        _UIGameOver.SetActive(true);//GameOver画面表示
     }
 
-    public void Shp()
+    public void Shop()
     {
-        _UIShop.SetActive(true);
+        _UIShop.SetActive(true);//強化画面表示
     }
 
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.F) && !isFading)
-    //    {
-    //        isFading = true;
-    //        StartCoroutine(FadeOut());
-    //        Debug.Log("フェードアウト");
-    //        // new WaitForSeconds(0.5f);
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.G) && isFading)
-    //    {
-    //        StartCoroutine(FadeIn());
-    //        Debug.Log("フェードイン");
-    //        isFading = false;
-    //    }
-    //}
+    public void FadeIn()
+    {
+        _UIFade.SetActive(true);//OnEnableでActive(true)かつFadeIn
+    }
 
-    //IEnumerator FadeSequence()
-    //{
-    //isFading = true;
-    //yield return StartCoroutine(FadeOut());
-    //yield return new WaitForSeconds(0.5f); 
-    //yield return StartCoroutine(FadeIn());
-    //isFading = false;
-    //}
-
-    //public IEnumerator FadeOut()
-    //{
-        
-    //    float timer = 0f;
-    //    Color color = Fadeimage.color;
-    //    while (timer < fadeDuration)
-    //    {
-    //        timer += Time.deltaTime;
-    //        color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
-    //        Fadeimage.color = color;
-    //        yield return null;
-    //    }
-    //}
-
-    //public IEnumerator FadeIn()
-    //{
-    //    yield return new WaitForSeconds(0.1f);
-
-    //    float timer = 0f;
-    //    Color color = Fadeimage.color;
-    //    while (timer < fadeDuration)
-    //    {
-    //        timer += Time.deltaTime;
-    //        color.a = Mathf.Lerp(1f, 0f, timer / fadeDuration);
-    //        Fadeimage.color = color;
-    //        yield return null;
-    //    }
-    //}
+    public void FadeOut()
+    {
+        _fade.Fade_Out();//FadeOutで自動でActive(false)
+    }
 }

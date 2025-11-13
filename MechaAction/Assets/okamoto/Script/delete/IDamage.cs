@@ -4,9 +4,9 @@ using UnityEngine;
 
 public interface IDamage
 {
-    void TakeDamage(int amount,int knockback,int dir);
+    void TakeDamage(int amount, int knockback, int dir, string audioname);
 
-    void TakeElectDamage(int amout,float electtime,string name);
+    void TakeElectDamage(int amout,int knockback, int dir,float electtime, string audioname);
     void Heal(int amount);
     void Die();
 }

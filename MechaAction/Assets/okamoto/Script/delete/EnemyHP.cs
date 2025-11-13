@@ -19,7 +19,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     void Start()
     {
         currentHP = maxHP;
-        Debug.Log("<color=red>" + gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
+        //Debug.Log("<color=red>" + gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
         _player = GameObject.FindWithTag("Player").transform;
         _ienemy = GetComponent<IEnemy>();
     }
@@ -30,7 +30,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     }
 
     //ダメージを受け、HPを減少させる処理
-    public void TakeDamage(int damage, int knockback, int dir)
+    public void TakeDamage(int damage, int knockback, int dir, string audioname)
     {
         if (currentHP <= 0) return;
 
@@ -38,13 +38,6 @@ public class EnemyHP : MonoBehaviour,IDamage
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
         GManager.Instance.OnPlayerHit();
 
-
-        //var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
-        //if (attackData != null && attackData.HitEffect != null)
-        //{
-        //    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-        //    Destroy(effect,0.2f);
-        //}
         if (damage >= 10)
         {
             if (knockback >= 0 && knockback < 5)
@@ -66,13 +59,16 @@ public class EnemyHP : MonoBehaviour,IDamage
         }
     }
 
-    public void TakeElectDamage(int damage, float electtime, string name)
+    public void TakeElectDamage(int damage,int knockback,int dir, float electtime, string audioname)
     {
         if (currentHP <= 0) return;
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
+        GManager.Instance.OnPlayerHit();
 
+        _ienemy.ElectStun(dir, knockback, electtime);
+  
 
         var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
         if (attackData != null && attackData.HitEffect != null)

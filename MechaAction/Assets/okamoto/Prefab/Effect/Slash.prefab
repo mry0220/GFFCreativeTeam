@@ -107,10 +107,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
+  m_Radius: 5
+  m_Height: 20
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &7513468674719941830
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -152,8 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageEffectSO: {fileID: 11400000, guid: f82563ad8995a4d4398439183de62b42, type: 2}
   _speed: 18
-  _damage: 40
-  _knockback: 5
 --- !u!95 &5834213184006807434
 Animator:
   serializedVersion: 7

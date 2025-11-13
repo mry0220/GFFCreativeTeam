@@ -26,16 +26,16 @@ public class SkillBlock : MonoBehaviour
         //Debug.Log("d");
 
         // 習得済みなら何もしない
-        if (SkillManager.instance.HasSkill(this.skillType))
+        if (SkillManager.Instance.HasSkill(this.skillType))
         {
             Debug.Log("習得済み");
             return;
         }
             // 習得可能？
-        if (SkillManager.instance.CanLearnSkill(cost, skillType))
+        if (SkillManager.Instance.CanLearnSkill(cost, skillType))
         {
             // 習得可能なら習得する：スキルポイントが足りている & 必要スキルを持っている
-            SkillManager.instance.LearnSkill(cost, this.skillType);
+            SkillManager.Instance.LearnSkill(cost, this.skillType);
             Debug.Log("習得");
             ChangeLearnedBlock(Color.blue);
         }
@@ -48,7 +48,7 @@ public class SkillBlock : MonoBehaviour
 
     public void CheckActiveBlock()
     {
-        if (SkillManager.instance.CanLearnSkill(cost, skillType))
+        if (SkillManager.Instance.CanLearnSkill(cost, skillType))
         {
             hidePanel.SetActive(false);
         }
@@ -66,6 +66,7 @@ public class SkillBlock : MonoBehaviour
 
     public void OnCursor()
     {
-        SkillManager.instance.UpdateSkillInfoText(info);
+        SkillManager.Instance.UpdateSkillInfoText(info);
+        SkillManager.Instance.UpdateSkillnameText(name);
     }
 }

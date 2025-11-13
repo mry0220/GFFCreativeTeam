@@ -19,6 +19,7 @@ public class EnemyAttackSO : ScriptableObject
         [SerializeField] float electtime;
         [SerializeField] float bantime;
         [SerializeField] string effectname;
+        [SerializeField] string audioname;
 
         public string Enemyname { get => enemyname; }
         public int Damage { get => damage; }
@@ -28,6 +29,7 @@ public class EnemyAttackSO : ScriptableObject
         public float Electtime { get => electtime; }
         public float Bantime { get => bantime; }
         public string EffectName { get => effectname; }
+        public string AudioName { get => audioname; }
     }
     private void OnEnable()
     {
