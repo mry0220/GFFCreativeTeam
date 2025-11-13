@@ -233,7 +233,7 @@ public class Player_Attack : MonoBehaviour
     {
         _sword.enabled = false;
         _sword.ColliderEnabled();//collider false
-        Debug.Log("falswe");
+        //Debug.Log("falswe");
         _player._ReturnNormal();//ç≈å„Ç…åƒÇ‘
     }
 

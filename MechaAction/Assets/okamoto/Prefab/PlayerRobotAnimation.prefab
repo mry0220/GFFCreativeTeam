@@ -187,7 +187,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1, y: 10, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6098833339876250402
 MonoBehaviour:
@@ -208,7 +208,6 @@ MonoBehaviour:
   _groundpoint: {fileID: 3597979737226755592}
   _groundeffect: {fileID: 5017123816435258828, guid: e5b6293746fefda40a4ae5aa8b780a53, type: 3}
   _slashPosition: {fileID: 6349929765364647169}
-  _update: 1
 --- !u!1 &3001661504091451620
 GameObject:
   m_ObjectHideFlags: 0

@@ -49,3 +49,30 @@ MonoBehaviour:
     bantime: 0
     effectname: DamageEffect
     audioname: 
+  - enemyname: StunEnemy
+    damage: 0
+    knockback: 0
+    hitdamage: 0
+    hitknockback: 0
+    electtime: 0
+    bantime: 5
+    effectname: DamageEffect
+    audioname: 
+  - enemyname: Tire
+    damage: 0
+    knockback: 0
+    hitdamage: 5
+    hitknockback: 5
+    electtime: 0
+    bantime: 0
+    effectname: DamageEffect
+    audioname: 
+  - enemyname: DogEnemy
+    damage: 40
+    knockback: 5
+    hitdamage: 20
+    hitknockback: 0
+    electtime: 0
+    bantime: 0
+    effectname: DamageEffect
+    audioname: 

@@ -21,7 +21,6 @@ public class StunEnemy : MonoBehaviour
     //}
 
     [SerializeField] private GameObject energyBallPrefab;
-    [SerializeField] private GameObject _player;
     private GameObject _myEnergyBall;   
 
     // private EnemyState _state = EnemyState.DITECTION;
@@ -30,10 +29,32 @@ public class StunEnemy : MonoBehaviour
     private bool _ATTACK;
 
     private float _attackTime;
+
+    [SerializeField] EnemyAttackSO _enemyattackSO;
+
+    private int _clear;
+    private float _bantime;
+    private string _effectname;
+    private string _audioname;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _playerTransform = _player.transform;
+        _playerTransform = GameObject.FindWithTag("Player").transform;;
+    }
+
+    private void Start()
+    {
+        _clear = GManager.Instance.clear;
+        //Debug.Log(_clear);
+        var attackData = _enemyattackSO.GetEffect("StunEnemy");
+        if (attackData != null)
+        {
+
+            _bantime = attackData.Bantime;
+            _effectname = attackData.EffectName;
+            _audioname = attackData.AudioName;
+        }
     }
 
     private void FixedUpdate()
@@ -47,9 +68,10 @@ public class StunEnemy : MonoBehaviour
             _attackTime = 0f;
         }
 
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
 
     }
-   
+
     private void Look()
     {
         _attackTime += Time.deltaTime;
@@ -69,7 +91,7 @@ public class StunEnemy : MonoBehaviour
     private void Attack()
     {
         _myEnergyBall = Instantiate(energyBallPrefab,transform.position,transform.rotation);
-      
+        _myEnergyBall.GetComponent<StunEnergy>().Initialize(_bantime, _effectname, _audioname);
     }
 
     float GetAngle(Vector3 my,Vector3 target)

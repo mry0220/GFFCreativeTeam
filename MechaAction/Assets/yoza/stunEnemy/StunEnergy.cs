@@ -6,13 +6,36 @@ using UnityEngine;
 public class StunEnergy : MonoBehaviour
 {
     private Rigidbody _rb;
-    [SerializeField] private float _speed;
+    private float _speed = 3f;
+
+    private float _bantime;
+    private string _effectname;
+    private string _audioname;
 
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-      _rb.velocity = transform.right * _speed;
+        _rb.velocity = transform.right * _speed;
+
+        
     }
 
+    public void Initialize(float bantime, string effectname, string audioname)
+    {
+        _bantime = bantime;
+        _effectname = effectname;
+        _audioname = audioname;
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            var Interface = other.gameObject.GetComponent<IPlayerDamage>();
+            if (Interface != null)
+            {
+                Interface.TakeBanDamage(_bantime, _effectname, _audioname);//敵のインターフェース<IDamage>取得
+            }
+        }
+    }
 }

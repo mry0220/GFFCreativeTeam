@@ -4,60 +4,43 @@ using UnityEngine;
 
 public class Tire : MonoBehaviour
 {
-    private float _moveSpeed = 5f;  // 右への移動速度
-
-    private Rigidbody _rb;
-
-    private bool _isGrounded;
-
-    private float _FallTime = 0f;
-    private float _fallSpeed = 1f;
-    private int dir;
-    Vector3 velocity;
+    private int _hitdamage;
+    private int _hitknockback;
+    private int _dir;
+    private string _effectname;
+    private string _audioname;
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+
     }
 
-    private void FixedUpdate()
+    public void _FallStart(int hitdamage, int hitknockback, int dir, string effectname, string audioname)
     {
-        //velocity = _rb.velocity;
+        _hitdamage = hitdamage;
+        _hitknockback = hitknockback;
+        _dir = dir;
+        _effectname = effectname;
+        _audioname = audioname;
 
-        //velocity.x = _moveSpeed * dir;
-
-        //if(!_isGrounded )
-        //{
-        //    _FallTime += Time.deltaTime;
-
-        //    _fallSpeed = Physics.gravity.y * _FallTime * 2f * 2f;
-
-        //    velocity.y += _fallSpeed * Time.fixedDeltaTime;
-        //}
-
-        //    _rb.velocity = velocity;
+        StartCoroutine(Destroy());
     }
 
-    public void _FallStart(int _dir)
+    private IEnumerator Destroy()
     {
-        _FallTime = 0;
-        dir = _dir;
+        yield return new WaitForSeconds(3.0f);
+        Destroy(gameObject);
+        yield break;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Grounded"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            _FallTime = 0;
-            _isGrounded = true;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Grounded"))
-        {
-            _FallTime = 0;
-            _isGrounded = false;
+            var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
+            if (Interface != null)
+            {
+                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
+            }
         }
     }
 }

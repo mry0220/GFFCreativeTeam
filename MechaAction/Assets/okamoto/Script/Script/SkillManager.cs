@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum SkillType
 {
@@ -20,11 +21,11 @@ public enum SkillType
 public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance;
-    [SerializeField] TextMeshProUGUI skillPointText;
-    [SerializeField] TextMeshProUGUI skillnameText;
-    [SerializeField] TextMeshProUGUI skillInfoText;
-    [SerializeField] GameObject skillBlockPanel;
-    int skillPoint = 10;
+    private TextMeshProUGUI skillPointText;
+    private TextMeshProUGUI skillnameText;
+    private TextMeshProUGUI skillInfoText;
+    private GameObject skillBlockPanel;
+    public int skillPoint;
 
     [SerializeField] List<SkillType> skillList = new List<SkillType>();//購入済みを把握するlist
     SkillBlock[] skillBlocks;
@@ -40,13 +41,53 @@ public class SkillManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        skillBlocks = skillBlockPanel.GetComponentsInChildren<SkillBlock>();
+        
+        SceneManager.sceneLoaded += SceneLoaded;
+
+    }
+
+    void SceneLoaded(Scene nextScene, LoadSceneMode mode)//シーンがロードされると呼ばれる
+    {
+        skillPointText = GameObject.Find("SkillPointText")?.GetComponent<TextMeshProUGUI>();
+        skillnameText = GameObject.Find("SkillnameText")?.GetComponent<TextMeshProUGUI>();
+        skillInfoText = GameObject.Find("SkillinfoText")?.GetComponent<TextMeshProUGUI>();
+        skillBlockPanel = GameObject.Find("SkillBlock");
+
+        
+        if(skillBlockPanel != null)
+        {
+            skillBlocks = skillBlockPanel.GetComponentsInChildren<SkillBlock>();
+
+            foreach (var block in skillBlocks)
+            {
+                if (HasSkill(block.SkillType)) // ← SkillBlock に SkillType の public getter を作っておく
+                {
+                    block.SetLearnedColor();
+                }
+                else
+                {
+                    block.CheckActiveBlock();
+                }
+            }
+        }
+        if (skillBlockPanel == null) Debug.Log("skillBlockPanel null");
+        if (skillPointText == null) Debug.Log("pointtext null");
+        if (skillnameText == null) Debug.Log("nametext null");
+        if (skillInfoText == null) Debug.Log("infotext null");
+        if (skillBlockPanel == null) Debug.Log("Blockpanel null");
+
+        
     }
 
     private void Start()
     {
-        UpdateSkillPointText();
-        UpdateSkillInfoText();
+        if (skillInfoText != null) UpdateSkillInfoText();
+        if (skillnameText != null) UpdateSkillnameText();
+    }
+
+    private void Update()
+    {
+        if (skillPointText != null) UpdateSkillPointText();
     }
 
     void UpdateSkillPointText()
@@ -62,6 +103,22 @@ public class SkillManager : MonoBehaviour
     public void UpdateSkillInfoText(string text ="")
     {
         skillInfoText.text = text;
+    }
+
+    public void Point(int score)
+    {
+        skillPoint += score;
+        foreach (var block in skillBlocks)
+        {
+            if (HasSkill(block.SkillType)) // ← SkillBlock に SkillType の public getter を作っておく
+            {
+                block.SetLearnedColor();
+            }
+            else
+            {
+                block.CheckActiveBlock();
+            }
+        }
     }
 
     public bool HasSkill(SkillType skillType)//listのなかにあるかどうか
@@ -95,7 +152,7 @@ public class SkillManager : MonoBehaviour
         if (skillType == SkillType.SKILL3) return HasSkill(SkillType.SKILL2);
 
         if (skillType == SkillType.SPEED2) return HasSkill(SkillType.SPEED1);
-        if (skillType == SkillType.SPEED3) return HasSkill(SkillType.SPEED3);
+        if (skillType == SkillType.SPEED3) return HasSkill(SkillType.SPEED2);
         if (skillType == SkillType.RIFLE) return HasSkill(SkillType.SPEED1);
         if (skillType == SkillType.KNOCKS1) return HasSkill(SkillType.SPEED3) && HasSkill(SkillType.RIFLE);
         if (skillType == SkillType.KNOCKS2) return HasSkill(SkillType.KNOCKS1);

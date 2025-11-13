@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,11 @@ using UnityEngine.SceneManagement;
 
 public class GManager : MonoBehaviour
 {
+    private TextMeshProUGUI scorePointText;
+    private TextMeshProUGUI lifeText;
+    private TextMeshProUGUI TimeText;
+    private TextMeshProUGUI BestTimeText;
+
     public static GManager Instance;
 　　private CameraManager _mainCamera;
     private UIController _ui;
@@ -15,15 +21,19 @@ public class GManager : MonoBehaviour
     private Transform _playerposition;
     private Player _player;
     private PlayerHP _playerhp;
-    [SerializeField] PowerUpSO _powerup;
-    public bool _isAttack;
 
-    private int life = 1;
-    public int clear = 1;
-    public int score = 0;
+    private float currentTime = 0f; // 現在のタイム
+    private float targetTime = 180f; //基準タイム
+    private float baseScore = 1000f;
+    private float rate = 1.5f;       //スコア差
+    private bool _isTiming = false;
+    public int life = 2;
+    public int clear = 0;
+    public float score = 0;
 
     public Vector3 currentpoint;
     private Vector3 _startPosition = new Vector3(0f,3.5f,0f);
+
     void Awake()
     {
         if (Instance == null)
@@ -48,20 +58,45 @@ public class GManager : MonoBehaviour
         
     }
 
+    void UpdateScorePointText()
+    {
+        scorePointText.text = string.Format("Score : {0}", score);
+    }
+
+    void UpdateTimeText()
+    {
+        TimeText.text = "Time: " + currentTime.ToString("F2") + "s";
+    }
+
+    public void UpdateLifeText()
+    {
+        lifeText.text = string.Format("Life : {0}", life);
+    }
+
+    public void DisplayBestTime()
+    {
+        float bestTime = SaveManager.Instance.Load().ClearTime;
+        if (bestTime < float.MaxValue)
+            BestTimeText.text = "Best Time: " + bestTime.ToString("F2") + "s";
+        else
+            BestTimeText.text = "Best Time: --";
+    }
+
+    public void ScoreUP(float _score)
+    {
+        score += _score;
+    }
+
     private void Update()
     {
-        //if(_isAttack)
-        //{
-        //    _sword._update = _powerup.DamageMult;
-        //}
-        //else
-        //{
-        //    _sword._update = 1.0f;
-        //}
-
-        //Debug.Log(life);
-        //Debug.Log(clear);
-
+        if (_isTiming)
+        {
+            currentTime += Time.deltaTime;
+        }
+        if(scorePointText != null) UpdateScorePointText();
+        if (lifeText != null) UpdateLifeText();
+        if (TimeText != null) UpdateTimeText();
+        if (BestTimeText != null) DisplayBestTime();
     }
 
     // Clamp値を変更
@@ -82,6 +117,7 @@ public class GManager : MonoBehaviour
         _player.Dead();//Vector3.zeroにするため　後消す
         if (life == 0)
         {
+            _isTiming = false;
             _ui.GameOver();
             Debug.Log("gameover");
             yield break;
@@ -115,7 +151,7 @@ public class GManager : MonoBehaviour
     public void Reset()//gameoverのRetry
     {
         life = 2;
-        score = 0;//一応
+        score = 0;
         currentpoint = _startPosition;
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
          LayerMask.NameToLayer("Enemy"), false);//一応
@@ -125,20 +161,42 @@ public class GManager : MonoBehaviour
 
     public void Clear()
     {
+        _isTiming = false;
+        score +=baseScore * Mathf.Pow(targetTime / currentTime, rate);//(a,b) aのb乗
+        score = Mathf.Round(score * 100f) / 100f;
+        score += life * 1000;
+        SkillManager.Instance.Point((int)score);
         //スコアを保存
-        score = 0;
+
+        GameData data = new GameData { ClearStage = clear, ClearTime = currentTime };
+        SaveManager.Instance.Save(data);
+        //score = 0;
         //強化UIを出す
         _ui.Shop();
+    }
+
+    public void Title()
+    {
+        score = 0;
+        life = 2;
+        clear = 0;
+        currentTime = 0;
+        currentpoint = _startPosition;
     }
 
     public void NextStage()
     {
         clear++;
+        currentTime = 0;
         Reset();
     }
 
     void SceneLoaded(Scene nextScene, LoadSceneMode mode)//シーンがロードされると呼ばれる
     {
+        scorePointText = GameObject.Find("ScoreText")?.GetComponent<TextMeshProUGUI>();
+        lifeText = GameObject.Find("LifeText")?.GetComponent<TextMeshProUGUI>();
+        TimeText = GameObject.Find("TimeText")?.GetComponent<TextMeshProUGUI>();
+        BestTimeText = GameObject.Find("BestTime")?.GetComponent<TextMeshProUGUI>();
         _mainCamera = FindFirstObjectByType<CameraManager>();
         _playerobj = GameObject.FindWithTag("Player");
         if (_playerobj != null)
@@ -152,12 +210,21 @@ public class GManager : MonoBehaviour
 
         if (nextScene.name == "StageScene")
         {
+            score = 0;
             _playerposition.position = currentpoint;
-            life = 0;
+            _isTiming = true;
+            currentTime = 0;
+            life = 2;
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
           LayerMask.NameToLayer("Enemy"), false);
         }
 
-        
+        if (scorePointText == null) Debug.Log("scorePointText null");
+        if (lifeText == null) Debug.Log("lifeText null");
+        if (TimeText == null) Debug.Log("TimeText null");
+        if (BestTimeText == null) Debug.Log("BestTimeText null");
+
+
+
     }
 }

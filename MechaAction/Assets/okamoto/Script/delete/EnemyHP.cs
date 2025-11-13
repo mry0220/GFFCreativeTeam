@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class EnemyHP : MonoBehaviour,IDamage
 {
-    [SerializeField] private float maxHP = 50f; // HP
+    [SerializeField] private int maxHP = 50; // HP
+    [SerializeField] private float score;
     [SerializeField] DamageEffectSO _damageEffectSO;
     private IEnemy _ienemy;
 
     private Transform _player;
-    private float currentHP;
+    private int currentHP;
     //[SerializeField] private float currentHealth; // デバッグ用にInspectorで確認可能になる
 
     // IHealthインターフェースの実装（読み取り専用プロパティ）
-    public float MaxHP => maxHP;
-    public float CurrentHP => currentHP;
+    public int MaxHP => maxHP;
+    public int CurrentHP => currentHP;
 
     void Start()
     {
@@ -108,6 +109,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     {
         Debug.Log("<color=red>" + gameObject.name + " (敵) は倒されました！");
 
+        GManager.Instance.ScoreUP(score);
         // 独自の敵の死亡処理を記述
         // 例1: スコアを加算する処理
         // GameManager.Instance.AddScore(100); 

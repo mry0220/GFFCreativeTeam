@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 
 public class SkillBlock : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class SkillBlock : MonoBehaviour
     [SerializeField] new string name;
     [SerializeField] string info;
     [SerializeField] GameObject hidePanel;
-    
+    public SkillType SkillType => skillType;
+
     void Start()
     {
         nameText.text = name;
@@ -62,6 +64,11 @@ public class SkillBlock : MonoBehaviour
     {
         Image image = GetComponent<Image>();
         image.color = color;
+    }
+
+    public void SetLearnedColor()
+    {
+        GetComponent<Image>().color = Color.blue;
     }
 
     public void OnCursor()

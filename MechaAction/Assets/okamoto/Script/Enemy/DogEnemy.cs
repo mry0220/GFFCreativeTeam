@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class DogEnemy : MonoBehaviour
+public class DogEnemy : MonoBehaviour, IEnemy
 {
     private enum EnemyState
     {
         Look,          //íTÇ∑
         Move,          //í«ê’
         Wait,          //î≠éÀópà”(Ç¢ÇÁÇ»Ç¢)
-        Attack         //î≠éÀ
+        Attack,         //î≠éÀ
+        Damage
     }
 
     private EnemyState _state = EnemyState.Look;
 
-    private Vector3 _spawnPos;//Ç‡Ç∆Ç…Ç‡Ç«ÇÈÇΩÇﬂ
     private Transform _player;
     private Rigidbody _rb;
     private Dog_Attack _attack;
@@ -42,11 +42,6 @@ public class DogEnemy : MonoBehaviour
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
         _attack = GetComponent<Dog_Attack>();
-    }
-
-    private void Start()
-    {
-        _spawnPos = transform.position;
     }
 
     private void FixedUpdate()
@@ -245,5 +240,38 @@ public class DogEnemy : MonoBehaviour
             _fallTime = 0f;
             _isGrounded = false;
         }
+    }
+
+    public IEnumerator _ReturnNormal(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _state = EnemyState.Look;
+        yield break;
+    }
+
+    public void SKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(0.5f));
+        //anim
+    }
+
+    public void BKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(1.0f));
+        //anim
+    }
+
+    public void ElectStun(int dir, int knockback, float electtime)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(electtime));
     }
 }

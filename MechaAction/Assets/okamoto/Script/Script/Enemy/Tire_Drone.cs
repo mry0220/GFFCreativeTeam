@@ -1,9 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Metadata;
 
-public class Tire_Drone : MonoBehaviour
+public class Tire_Drone : MonoBehaviour, IEnemy
 {
+    private enum EnemyState
+    {
+        Move,
+        Damage
+    }
+
+    private EnemyState _state = EnemyState.Move;
+    public bool CanMove => _state == EnemyState.Move;
+
+    [SerializeField] EnemyAttackSO _enemyattackSO;
+
+    private int _clear;
+    private int _hitdamage;
+    private int _hitknockback;
+    private string _effectname;
+    private string _audioname;
 
     [SerializeField] private Transform _tireObj;
     private Tire _tire;
@@ -12,6 +29,7 @@ public class Tire_Drone : MonoBehaviour
     private Transform _player;
 
     private float _moveSpeed = 10f;  // 右への移動速度
+    private bool _isdrop = false;
     public int dir;
 
     Vector3 velocity;
@@ -25,6 +43,17 @@ public class Tire_Drone : MonoBehaviour
 
     private void Start()
     {
+        _clear = GManager.Instance.clear;
+        //Debug.Log(_clear);
+        var attackData = _enemyattackSO.GetEffect("StunEnemy");
+        if (attackData != null)
+        {
+            _hitdamage = attackData.Hitdamage;
+            _hitknockback = attackData.Hitknockback;
+            _effectname = attackData.EffectName;
+            _audioname = attackData.AudioName;
+        }
+
         if (_rb.position.x < _player.position.x)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);//右
@@ -40,6 +69,7 @@ public class Tire_Drone : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(!CanMove) return;
         velocity = _rb.velocity;
 
         velocity.x = _moveSpeed * dir;
@@ -49,17 +79,51 @@ public class Tire_Drone : MonoBehaviour
 
     private void Update()
     {
-        if(Vector3.Distance(transform.position, _player.transform.position) < 7f)
+        if(!_isdrop && Vector3.Distance(transform.position, _player.transform.position) < 10f)
         {
-            _tire._FallStart(dir);
-            _childrb.isKinematic = false;
-            _childrb.AddForce(transform.forward * 0.1f,ForceMode.Impulse);
-
+            Drop();
         }
-        /*float xDistance = Mathf.Abs(transform.position.x);
-        if (xDistance <= 25f)
-        {
-            Debug.Log("タイヤ落下");
-        }*/
+    }
+
+    private void Drop()
+    {
+        _isdrop = true;
+        _childrb.transform.parent = null;
+        _tire._FallStart(_hitdamage, _hitknockback, dir, _effectname, _audioname);
+        _childrb.isKinematic = false;
+        _childrb.AddForce(transform.forward * 6f, ForceMode.Impulse);
+    }
+
+    public IEnumerator _ReturnNormal(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _state = EnemyState.Move;
+        yield break;
+    }
+
+    public void SKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(0.5f));
+        //anim
+    }
+
+    public void BKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(1.0f));
+        //anim
+    }
+
+    public void ElectStun(int dir, int knockback, float electtime)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(electtime));
     }
 }

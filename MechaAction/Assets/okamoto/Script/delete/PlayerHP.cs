@@ -21,14 +21,16 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     public void Awake()
     {
         _player = GetComponent<Player>();
+        
+        
     }
 
     private void Start()
     {
-        Debug.Log("<color=yellow>" + gameObject.name + "‚ÌHP‚ª‰Šú‰»‚³‚ê‚Ü‚µ‚½: " + currentHP);
         ApplySkillUpgrades();
         maxHP += _HP;
         currentHP = maxHP;
+        Debug.Log("<color=yellow>" + gameObject.name + "‚ÌHP‚ª‰Šú‰»‚³‚ê‚Ü‚µ‚½: " + currentHP);
     }
 
     private void ApplySkillUpgrades()
@@ -93,7 +95,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         currentHP = Mathf.Max(currentHP, 0);
         knockback -= _KNOCKS;
         knockback = Mathf.Max(knockback, 0);
-        AudioManager.Instance.PlaySound(audioname);
+        //AudioManager.Instance.PlaySound(audioname);
 
         var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ƒ‰ƒ€ƒ_Œ`®AI‚Å’m‚Á‚½
         if (attackData != null && attackData.HitEffect != null)
