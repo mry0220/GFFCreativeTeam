@@ -154,8 +154,9 @@ public class SwordHitbox : MonoBehaviour
                 var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ƒ‰ƒ€ƒ_Œ`Ž®AI‚Å’m‚Á‚½
                 if (attackData != null && attackData.HitEffect != null)
                 {
-                    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-                    Destroy(effect, 0.2f);
+                    var rot = (_dir < 0) ? 180f : 0f;
+                    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.Euler(0, 0, rot));
+                    //Destroy(effect, 0.2f);
                 }
             }
         }

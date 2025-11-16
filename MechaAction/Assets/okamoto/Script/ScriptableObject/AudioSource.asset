@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSourceList:
   - audiosource: 
+    clip: {fileID: 8300000, guid: 4c80e2dac6d368147805ae1ef6b13e7b, type: 3}
+    volum: 0
+    loop: 0
+  - audiosource: 
     clip: {fileID: 0}
     volum: 0
     loop: 0

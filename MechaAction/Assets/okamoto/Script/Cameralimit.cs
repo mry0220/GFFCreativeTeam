@@ -11,13 +11,6 @@ public class Cameralimit : MonoBehaviour
     public Vector2 cameraMax;
     public Vector2 cameraMinRE;
     public Vector2 cameraMaxRE;
-    
-
-    [SerializeField]
-    public bool lockX;
-
-    [SerializeField]
-    public bool oneTimeTrigger = false;
 
     [SerializeField]
     public GameObject invisibleWall;
@@ -30,30 +23,21 @@ public class Cameralimit : MonoBehaviour
 
         if (invisibleWall != null)
             invisibleWall.SetActive(false);
+
+        GManager.Instance.AreaTrigger(this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
 
-        // 一度きりモードなら再発動しない
-        if (oneTimeTrigger && activated) return;
+        if (activated) return;
 
         // カメラ制限を設定
         GManager.Instance.SetCameraBounds(cameraMin, cameraMax);
         _spawn.StartSpawn();
 
         invisibleWall.SetActive(true);
-
-        if (lockX && invisibleWall != null)
-        {
-            
-
-
-            Debug.Log("敵全滅で解除される予定"); //敵のスポーン処理をつくってから考える
-
-
-        }
 
         activated = true;
     }
@@ -62,5 +46,10 @@ public class Cameralimit : MonoBehaviour
     {
         invisibleWall.SetActive(false);
         GManager.Instance.SetCameraBounds(cameraMinRE,cameraMaxRE);
+    }
+
+    public void DeadClear()
+    {
+        activated = false;
     }
 }

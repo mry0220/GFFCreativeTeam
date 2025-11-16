@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageEffectList:
   - effectname: DamageEffect
-    hiteffect: {fileID: 6337179615656127380, guid: 008ce45250b94ac4fad3cea12e8bc7a7, type: 3}
+    hiteffect: {fileID: 624572720210033647, guid: 2df45b15d8b496f4aa44887b1f0db223, type: 3}

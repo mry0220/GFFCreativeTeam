@@ -59,12 +59,12 @@ public class Slash : MonoBehaviour
                 {
                     Interface_E.TakeElectDamage(_damage, _knockback, _dir,5f, _audioname);//敵のインターフェース<IDamage>取得
 
-                    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                    if (attackData != null && attackData.HitEffect != null)
-                    {
-                        var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-                        Destroy(effect, 0.2f);
-                    }
+                    //var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+                    //if (attackData != null && attackData.HitEffect != null)
+                    //{
+                    //    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+                    //    Destroy(effect, 0.2f);
+                    //}
                 }
 
                 return;
@@ -79,7 +79,7 @@ public class Slash : MonoBehaviour
                 if (attackData != null && attackData.HitEffect != null)
                 {
                     var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-                    Destroy(effect, 0.2f);
+                    //Destroy(effect, 0.2f);
                 }
             }
         }

@@ -21,6 +21,7 @@ public class GManager : MonoBehaviour
     private Transform _playerposition;
     private Player _player;
     private PlayerHP _playerhp;
+    private List<Cameralimit> _areaTriggers = new List<Cameralimit>(); 
 
     private float currentTime = 0f; // 現在のタイム
     private float targetTime = 180f; //基準タイム
@@ -30,9 +31,14 @@ public class GManager : MonoBehaviour
     public int life = 2;
     public int clear = 0;
     public float score = 0;
+    private bool _isOpen = false;
+    private bool _isPlaying = false;
 
     public Vector3 currentpoint;
     private Vector3 _startPosition = new Vector3(0f,3.5f,0f);
+    private Vector2 _respawnmin;
+    private Vector2 _respawnmax;
+
 
     void Awake()
     {
@@ -49,7 +55,6 @@ public class GManager : MonoBehaviour
         currentpoint = _startPosition;
         SceneManager.sceneLoaded += SceneLoaded;
         //参照をここにもってくる
-
 
     }
 
@@ -97,6 +102,25 @@ public class GManager : MonoBehaviour
         if (lifeText != null) UpdateLifeText();
         if (TimeText != null) UpdateTimeText();
         if (BestTimeText != null) DisplayBestTime();
+
+        if (Input.GetKeyDown(KeyCode.Escape) && _isPlaying)
+        {
+            Menu();
+        }
+    }
+
+    private void Menu()
+    {
+        _isOpen = !_isOpen;
+        _ui.Menu(_isOpen);
+        if(_isOpen )
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     // Clamp値を変更
@@ -112,6 +136,19 @@ public class GManager : MonoBehaviour
             _mainCamera.ShakeCamera();   // カメラ揺らす
     }
 
+    public void AreaTrigger(Cameralimit area)
+    {
+        if(!_areaTriggers.Contains(area)) _areaTriggers.Add(area);
+    }
+
+    private void DeadAreaTrigger()
+    {
+        foreach(var area in _areaTriggers)
+        {
+            area.DeadClear();
+        }
+    }
+
     public IEnumerator DiePlayer()
     {
         _player.Dead();//Vector3.zeroにするため　後消す
@@ -123,12 +160,14 @@ public class GManager : MonoBehaviour
             yield break;
         }
 
+        DeadAreaTrigger();//AreaEnemyのリセット
+
         _ui.FadeIn();                                                  //フェードインさせる
         yield return new WaitForSeconds(1.5f);
 
         _player._ChangeState(PlayerState.Respawn);                     //一旦respawnに
         life--;                                                        //life-1
-        SetCameraBounds(new Vector2(0,3), new Vector2(1000,5));
+        SetCameraBounds(_respawnmin, _respawnmax);
         _playerposition.position = currentpoint;
         StartCoroutine(_playerhp.ResetHP());
         _ui.FadeOut();
@@ -143,9 +182,11 @@ public class GManager : MonoBehaviour
         yield break;
     }
 
-    public void CheckPoint(Vector3 newPos)
+    public void CheckPoint(Vector3 newPos,Vector2 newmin,Vector2 newmax)
     {
         currentpoint = newPos;
+        _respawnmin = newmin;
+        _respawnmax = newmax;
     }
 
     public void Reset()//gameoverのRetry
@@ -210,13 +251,32 @@ public class GManager : MonoBehaviour
 
         if (nextScene.name == "StageScene")
         {
+            Time.timeScale = 1f;//menuの時止め解除保険
+            AudioManager.Instance.StartGameMusic();
+            if(clear == 0)
+            {
+                _ui.Tutorial();
+                Debug.Log("チュートリアル");
+
+            }
+            
             score = 0;
             _playerposition.position = currentpoint;
+            _respawnmax = new Vector2(0, 3f);
+            _respawnmax = new Vector2(1000, 5f);
             _isTiming = true;
             currentTime = 0;
             life = 2;
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
           LayerMask.NameToLayer("Enemy"), false);
+          _isPlaying = true;
+        }
+
+        if(nextScene.name == "Title")
+        {
+            AudioManager.Instance.StartTitleMusic();
+            _isPlaying = false;
+            Time.timeScale = 1f;//menuの時止め解除保険
         }
 
         if (scorePointText == null) Debug.Log("scorePointText null");
