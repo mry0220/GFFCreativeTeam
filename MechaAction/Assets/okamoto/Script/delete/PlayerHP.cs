@@ -92,11 +92,12 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             return;
         }
 
+        AudioManager.Instance.PlaySound(audioname);
+
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0);
         knockback -= _KNOCKS;
         knockback = Mathf.Max(knockback, 0);
-        //AudioManager.Instance.PlaySound(audioname);
 
         var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
         if (attackData != null && attackData.HitEffect != null)
@@ -121,14 +122,14 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
                 _player._ChangeState(PlayerState.Knockback);
                 _player.SKnockBack(dir, knockback);
                 StartCoroutine(_DamageTime(1f));
-                StartCoroutine(_StateNormal(0.5f));
+                //StartCoroutine(_StateNormal(0.5f));//しぐなる
             }
             if (knockback >= 5)
             {
                 _player._ChangeState(PlayerState.Knockback);
                 _player.BKnockBack(dir, knockback);
                 StartCoroutine(_DamageTime(1.5f));
-                StartCoroutine(_StateNormal(1f));
+                //StartCoroutine(_StateNormal(1f));
             }
         }
         
@@ -141,6 +142,8 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             // 既に死亡している場合は処理をスキップ
             return;
         }
+
+        AudioManager.Instance.PlaySound(audioname);
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0);
@@ -173,6 +176,8 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             // 既に死亡している場合は処理をスキップ
             return;
         }
+
+        AudioManager.Instance.PlaySound(audioname);
 
         var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
         if (attackData != null && attackData.HitEffect != null)
@@ -215,6 +220,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     // HPを回復させる。
     public void Heal(int healAmount, string effectname, string audioname)
     {
+        AudioManager.Instance.PlaySound("recover");
         currentHP += healAmount;
 
         currentHP = Mathf.Min(currentHP, maxHP);
@@ -254,6 +260,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     {
         _isDeadArea = false;
         currentHP = MaxHP;
+        _player.Respawn();
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
         //   LayerMask.NameToLayer("Enemy"), false);
         //yield return new WaitForSeconds(1f);

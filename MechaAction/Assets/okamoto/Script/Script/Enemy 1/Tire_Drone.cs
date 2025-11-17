@@ -16,7 +16,6 @@ public class Tire_Drone : MonoBehaviour, IEnemy
 
     [SerializeField] EnemyAttackSO _enemyattackSO;
 
-    private int _clear;
     private int _hitdamage;
     private int _hitknockback;
     private string _effectname;
@@ -28,6 +27,7 @@ public class Tire_Drone : MonoBehaviour, IEnemy
     private Rigidbody _rb;
     private Transform _player;
 
+    private int _clear;
     private float _moveSpeed = 10f;  // ‰E‚Ö‚ÌˆÚ“®‘¬“x
     private bool _isdrop = false;
     public int dir;
@@ -45,11 +45,11 @@ public class Tire_Drone : MonoBehaviour, IEnemy
     {
         _clear = GManager.Instance.clear;
         //Debug.Log(_clear);
-        var attackData = _enemyattackSO.GetEffect("StunEnemy");
+        var attackData = _enemyattackSO.GetEffect("Tire");
         if (attackData != null)
         {
-            _hitdamage = attackData.Hitdamage;
-            _hitknockback = attackData.Hitknockback;
+            _hitdamage = attackData.Hitdamage + (_clear * 10);
+            _hitknockback = attackData.Hitknockback + (_clear * 2);
             _effectname = attackData.EffectName;
             _audioname = attackData.AudioName;
         }

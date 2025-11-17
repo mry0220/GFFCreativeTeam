@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Quit : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void QuitGame()
     {
-        
-    }
+        AudioManager.Instance.PlaySound("click");
+        Debug.Log("ゲーム終了");
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // ビルド後ならゲーム終了
+        Application.Quit();
+
+        // エディタで止めるため（便利）
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }

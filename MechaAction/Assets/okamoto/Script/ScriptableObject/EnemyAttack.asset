@@ -21,7 +21,7 @@ MonoBehaviour:
     electtime: 0
     bantime: 0
     effectname: DamageEffect
-    audioname: 
+    audioname: hit_player_b
   - enemyname: BoxDrone_Normal
     damage: 0
     knockback: 0
@@ -30,7 +30,7 @@ MonoBehaviour:
     electtime: 0
     bantime: 0
     effectname: DamageEffect
-    audioname: 
+    audioname: hit_player_s
   - enemyname: BoxDrone_Move
     damage: 0
     knockback: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
     electtime: 0
     bantime: 0
     effectname: DamageEffect
-    audioname: 
+    audioname: hit_player_s
   - enemyname: StunEnemy
     damage: 0
     knockback: 0
@@ -57,7 +57,7 @@ MonoBehaviour:
     electtime: 0
     bantime: 5
     effectname: DamageEffect
-    audioname: 
+    audioname: hit_player_s
   - enemyname: Tire
     damage: 0
     knockback: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
     electtime: 0
     bantime: 0
     effectname: DamageEffect
-    audioname: 
+    audioname: hit_player_b
   - enemyname: DogEnemy
     damage: 40
     knockback: 5
@@ -75,7 +75,7 @@ MonoBehaviour:
     electtime: 0
     bantime: 0
     effectname: DamageEffect
-    audioname: 
+    audioname: hit_player_s
   - enemyname: Child_spider
     damage: 15
     knockback: 3

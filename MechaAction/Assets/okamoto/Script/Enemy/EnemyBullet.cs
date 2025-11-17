@@ -53,13 +53,10 @@ public class EnemyBullet : MonoBehaviour
     {
         //Debug.Log("当たった");
 
-        if (other.CompareTag("Player"))
+        var Interface = other.GetComponent<IPlayerDamage>();
+        if (Interface != null)
         {
-            var Interface = other.GetComponent<IPlayerDamage>();
-            if (Interface != null)
-            {
-                Interface.TakeDamage(_damage, _knockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
-            }
+            Interface.TakeDamage(_damage, _knockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
         }
     }
 }

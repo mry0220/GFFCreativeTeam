@@ -29,12 +29,7 @@ public class SpiderMother : MonoBehaviour
     [SerializeField]private float _ditection;       //索敵範囲が確定したらconstに変更
     [SerializeField] private float _stiffTime;      //硬直時間が確定したらconstに変更
 
-
-
     private float _generateTime;
-    private GameObject _Bombspider;
-
-    
 
     private void Awake()
     {
@@ -94,7 +89,7 @@ public class SpiderMother : MonoBehaviour
     private void Generate()
     {
         _rb.velocity = Vector3.zero;
-        _Bombspider = Instantiate(Bombspider, transform.position, transform.rotation);
+        var _Bombspider = Instantiate(Bombspider, transform.position, transform.rotation);
         GenerateCount++;
     }
    

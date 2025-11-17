@@ -45,8 +45,8 @@ public class BoxDrone_Normal : MonoBehaviour, IEnemy
         var attackData = _enemyattackSO.GetEffect("BoxDrone_Normal");
         if (attackData != null)
         {
-            _hitdamage = (int)(attackData.Hitdamage * (_clear * 1.5));
-            _hitknockback = (int)(attackData.Hitknockback * (_clear * 1.5));
+            _hitdamage = (int)(attackData.Hitdamage + (_clear * 10));
+            _hitknockback = (int)(attackData.Hitknockback + (_clear * 2));
             _effectname = attackData.EffectName;
             _audioname = attackData.AudioName;
         }
@@ -100,7 +100,7 @@ public class BoxDrone_Normal : MonoBehaviour, IEnemy
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(0.5f));
+        StartCoroutine(_ReturnNormal(1f));
         //anim
     }
 
@@ -109,7 +109,7 @@ public class BoxDrone_Normal : MonoBehaviour, IEnemy
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(1.0f));
+        StartCoroutine(_ReturnNormal(2f));
         //anim
     }
 

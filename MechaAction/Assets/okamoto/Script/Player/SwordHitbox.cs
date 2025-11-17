@@ -109,6 +109,8 @@ public class SwordHitbox : MonoBehaviour
         _effectname = _playerAttackSO.playerAttackList[0].EffectName;
         _audioname = _playerAttackSO.playerAttackList[0].AudioName;
         _dir = dir;
+
+        AudioManager.Instance.PlaySound("leftattack");
     }
 
     //問題　連続した攻撃の際、アニメーションのシグナルか何かでClear();を呼ぶ必要あり
@@ -121,6 +123,7 @@ public class SwordHitbox : MonoBehaviour
         _audioname = _playerAttackSO.playerAttackList[1].AudioName;
         _dir = dir;
         _groundattack = true;
+        AudioManager.Instance.PlaySound("groundattack");//音がおそいから
 
     }
 
@@ -130,7 +133,8 @@ public class SwordHitbox : MonoBehaviour
         _knockback = _playerAttackSO.playerAttackList[2].Knockback + _KNOCKP;
         _effectname = _playerAttackSO.playerAttackList[2].EffectName;
         _audioname = _playerAttackSO.playerAttackList[2].AudioName;
-        
+        AudioManager.Instance.PlaySound("slash");
+
         _dir = dir;
 
         var slash = Instantiate(_slashPrefab, _slashPosition.position, Quaternion.identity);
@@ -195,6 +199,8 @@ public class SwordHitbox : MonoBehaviour
     public void GroundAttackSignal()//グラウンドアタックをPlayerAttackシグナルでよぶ
     {
         Debug.Log("地面");
+        
+
         var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
         if (_dir < 0)
         {

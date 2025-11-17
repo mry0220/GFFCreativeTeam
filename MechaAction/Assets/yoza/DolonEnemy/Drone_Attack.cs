@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class Drone_Attack : MonoBehaviour
 {
@@ -31,10 +32,10 @@ public class Drone_Attack : MonoBehaviour
         var attackData = _enemyattackSO.GetEffect("BurstEnemy");
         if (attackData != null)
         {
-            _damage = (int)(attackData.Damage * (_clear * 1.5));
-            _knockback = (int)(attackData.Knockback * (_clear * 1.5));
-            _hitdamage = (int)(attackData.Hitdamage * (_clear * 1.5));
-            _hitknockback = (int)(attackData.Hitknockback * (_clear * 1.5));
+            _damage = (int)(attackData.Damage + (_clear * 10));
+            _knockback = (int)(attackData.Knockback + (_clear * 2));
+            _hitdamage = (int)(attackData.Hitdamage + (_clear * 10));
+            _hitknockback = (int)(attackData.Hitknockback + (_clear * 2));
             _effectname = attackData.EffectName;
             _audioname = attackData.AudioName;
         }
@@ -46,14 +47,14 @@ public class Drone_Attack : MonoBehaviour
 
     public IEnumerator Attack()
     {
-
+        Debug.Log("beem");
         var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
         Destroy(G_effect, 2f); // アニメーションの長さに合わせて
 
         yield return new WaitForSeconds(2f);
 
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
-        if (Physics.BoxCast(transform.position, Vector3.one * 0.5f, transform.forward, out RaycastHit hit, Quaternion.identity, 10f))
+        if (Physics.BoxCast(transform.position, Vector3.one * 0.5f, transform.forward, out RaycastHit hit, Quaternion.identity, 30f))
         {
             if (hit.collider.CompareTag("Player"))
             {
@@ -66,6 +67,12 @@ public class Drone_Attack : MonoBehaviour
         }
 
         yield break;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, 0.5f);
+        Gizmos.DrawWireSphere(transform.position + Vector3.one * 30f, 0.5f);
     }
 
     private void OnCollisionEnter(Collision collision)

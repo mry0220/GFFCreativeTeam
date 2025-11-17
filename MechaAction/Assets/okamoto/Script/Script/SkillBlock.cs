@@ -7,10 +7,12 @@ using Unity.Collections.LowLevel.Unsafe;
 
 public class SkillBlock : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI pointText;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI infoText;
     [SerializeField] SkillType skillType;
     [SerializeField] int cost;
+    [SerializeField] string costtext;
     [SerializeField] new string name;
     [SerializeField] string info;
     [SerializeField] GameObject hidePanel;
@@ -18,6 +20,7 @@ public class SkillBlock : MonoBehaviour
 
     void Start()
     {
+        pointText.text = costtext;
         nameText.text = name;
         infoText.text = info;
         CheckActiveBlock();

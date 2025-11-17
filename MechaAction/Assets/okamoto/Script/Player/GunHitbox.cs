@@ -13,6 +13,7 @@ public class GunHitbox : MonoBehaviour
     public Transform _bulletPosition;
     [SerializeField] private Transform _muzzlepoint;
     public GameObject _guneffect;
+    public LayerMask ignoreLayer;
 
     private int _damage;
     private int _knockback;
@@ -91,10 +92,12 @@ public class GunHitbox : MonoBehaviour
         var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
+        AudioManager.Instance.PlaySound("leftgun");
+
         float dis = 10f + _RAY;
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
         Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, dis))
+        if (Physics.Raycast(ray, out RaycastHit hit, dis,~ignoreLayer))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
@@ -125,9 +128,11 @@ public class GunHitbox : MonoBehaviour
         var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
+        AudioManager.Instance.PlaySound("shotgun");
+
         float dis = 3f + _RAY;
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
-        if (Physics.BoxCast(transform.position, Vector3.one * (0.5f + _SHOTGUNRADIUS), transform.forward, out RaycastHit hit,Quaternion.identity, dis))
+        if (Physics.BoxCast(transform.position, Vector3.one * (0.5f + _SHOTGUNRADIUS), transform.forward, out RaycastHit hit,Quaternion.identity, dis,~ignoreLayer))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
@@ -171,6 +176,9 @@ public class GunHitbox : MonoBehaviour
         _effectname = _playerAttackSO.playerAttackList[5].EffectName;
         _audioname = _playerAttackSO.playerAttackList[5].AudioName;
         _dir = dir;
+
+        AudioManager.Instance.PlaySound("rifle");
+
 
         GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
         bullet.GetComponent<Bullet>().Initialize(_damage, _knockback, _dir, _effectname, _audioname);

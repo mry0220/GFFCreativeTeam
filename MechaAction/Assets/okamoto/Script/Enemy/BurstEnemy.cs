@@ -21,10 +21,11 @@ public class BurstEnemy : MonoBehaviour, IEnemy
     private Transform _player;
     private CapsuleCollider _col;
     private Rigidbody _rb;
+    private Animator _anim;
     private Burst_Attack _attack;
     private float _moveSpeed = 1.0f;
     private bool _moveStop = false;
-    public int _direction = 0;
+    public int _direction = -1;
     private float _attacktime = 0;
     private float _fallTime;
     Vector3 velocity;
@@ -32,12 +33,13 @@ public class BurstEnemy : MonoBehaviour, IEnemy
     private bool _isGrounded;
 
     private bool _isRight = false;
-    private bool _isLeft = false;
+    private bool _isLeft = true;
 
     private void Awake()
     {
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
+        _anim = GetComponent<Animator>();
         _col = GetComponent<CapsuleCollider>();
         _attack = GetComponent<Burst_Attack>();
     }
@@ -81,7 +83,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy
             case EnemyState.Look:
                 Look();
                 _attacktime = 0.0f;
-                if (Vector3.Distance(transform.position, _player.position) < 8f)
+                if (Vector3.Distance(transform.position, _player.position) < 15f)
                 {
                     _state = EnemyState.Move;
                 }
@@ -91,7 +93,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy
                 _attacktime += Time.deltaTime;
                 Move();
                 
-                if (Vector3.Distance(transform.position, _player.position) > 9f)
+                if (Vector3.Distance(transform.position, _player.position) > 20f)
                 {
                     _state = EnemyState.Look;
                 }
@@ -124,7 +126,8 @@ public class BurstEnemy : MonoBehaviour, IEnemy
 
     private void Look()
     {
-        _direction = 0;
+        _anim.SetInteger("Speed", 0);
+
     }
 
     private void Move()
@@ -155,7 +158,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy
             }
             _direction = -1;
         }
-
+        _anim.SetInteger("Speed", 1);
         velocity.x = _direction * _moveSpeed;
 
         _rb.velocity = velocity;

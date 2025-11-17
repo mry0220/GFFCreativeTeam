@@ -163,7 +163,7 @@ public class Player : MonoBehaviour
         #region　歩きアニメーション
         if(_isGrounded)
         {
-            Debug.Log("moveanimation");
+            //Debug.Log("moveanimation");
             if (velocity.x >= -1 && velocity.x <= 1)
             {
                 _anim.SetFloat("Speed", 0);
@@ -182,14 +182,14 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if(velocity.y > 0)
-            {
-                _anim.SetInteger("JumpSpeed", 0);
-            }
-            else
-            {
-                _anim.SetInteger("JumpSpeed", 1);
-            }
+            //if(velocity.y > 0)
+            //{
+            //    _anim.SetInteger("JumpSpeed", 0);
+            //}
+            //else
+            //{
+            //    _anim.SetInteger("JumpSpeed", 1);
+            //}
         }
 
         #endregion
@@ -397,14 +397,14 @@ public class Player : MonoBehaviour
     {
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
-        //anim
+        _anim.SetTrigger("SKnock");
     }
 
     public void BKnockBack(int dir, int knockback)
     {
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
-        //anim
+        _anim.SetTrigger("BKnock");
     }
 
     public void Stun()//電撃ダメージで呼ぶ
@@ -416,7 +416,13 @@ public class Player : MonoBehaviour
     public void Dead()
     {
         _rb.velocity = Vector3.zero;
-        //anim
+        _anim.SetInteger("Dead", 1);
+    }
+
+    public void Respawn()
+    {
+        _anim.SetInteger("Dead", 0);
+
     }
 
     private IEnumerator Gimmick()

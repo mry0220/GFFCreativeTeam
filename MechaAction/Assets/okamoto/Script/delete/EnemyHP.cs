@@ -10,6 +10,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     [SerializeField] DamageEffectSO _damageEffectSO;
     private IEnemy _ienemy;
 
+    private int _clear;
     private Transform _player;
     private int currentHP;
     //[SerializeField] private float currentHealth; // デバッグ用にInspectorで確認可能になる
@@ -20,7 +21,8 @@ public class EnemyHP : MonoBehaviour,IDamage
 
     void Start()
     {
-        currentHP = maxHP;
+        _clear = GManager.Instance.clear;
+        currentHP = maxHP + (_clear * 50);
         //Debug.Log("<color=red>" + gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
         _player = GameObject.FindWithTag("Player").transform;
         _ienemy = GetComponent<IEnemy>();
@@ -36,6 +38,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     {
         if (currentHP <= 0) return;
 
+        AudioManager.Instance.PlaySound(audioname);
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
         GManager.Instance.OnPlayerHit();
@@ -64,6 +67,8 @@ public class EnemyHP : MonoBehaviour,IDamage
     public void TakeElectDamage(int damage,int knockback,int dir, float electtime, string audioname)
     {
         if (currentHP <= 0) return;
+
+        AudioManager.Instance.PlaySound(audioname);
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ

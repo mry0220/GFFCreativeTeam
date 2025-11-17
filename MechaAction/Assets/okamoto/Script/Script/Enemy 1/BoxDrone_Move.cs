@@ -19,17 +19,16 @@ public class BoxDrone_Move : MonoBehaviour, IEnemy
     private int _clear;
     private int _hitdamage;
     private int _hitknockback;
-    private int _dir;
     private string _effectname;
     private string _audioname;
 
 
     private Transform _player;
     private Rigidbody _rb;
-    private float chaseRange = 10f;          // 視認距離
-    private float moveSpeed = 5f;           // 追跡速度
-    private float velocitySmoothTime = 0.3f; // 加速・減速の滑らかさ
-    private int dir;
+    private float chaseRange = 15f;          // 視認距離
+    private float moveSpeed = 8f;           // 追跡速度
+    private float velocitySmoothTime = 0.9f; // 加速・減速の滑らかさ
+    private int _dir;
 
     private Vector3 currentVelocity = Vector3.zero;
 
@@ -43,8 +42,8 @@ public class BoxDrone_Move : MonoBehaviour, IEnemy
         var attackData = _enemyattackSO.GetEffect("BoxDrone_Move");
         if (attackData != null)
         {
-            _hitdamage = (int)(attackData.Hitdamage * (_clear * 1.5));
-            _hitknockback = (int)(attackData.Hitknockback * (_clear * 1.5));
+            _hitdamage = (int)(attackData.Hitdamage + (_clear * 10));
+            _hitknockback = (int)(attackData.Hitknockback + (_clear * 2));
             _effectname = attackData.EffectName;
             _audioname = attackData.AudioName;
         }
@@ -55,12 +54,12 @@ public class BoxDrone_Move : MonoBehaviour, IEnemy
         if (_rb.position.x < _player.position.x)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);//右
-            dir = 1;
+            _dir = 1;
         }
         else
         {
             transform.rotation = Quaternion.Euler(0, 270, 0);//左
-            dir = -1;
+            _dir = -1;
         }
 
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
@@ -115,7 +114,7 @@ public class BoxDrone_Move : MonoBehaviour, IEnemy
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(0.5f));
+        StartCoroutine(_ReturnNormal(1f));
         //anim
     }
 
@@ -124,7 +123,7 @@ public class BoxDrone_Move : MonoBehaviour, IEnemy
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(1.0f));
+        StartCoroutine(_ReturnNormal(2f));
         //anim
     }
 

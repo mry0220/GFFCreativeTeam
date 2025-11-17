@@ -24,6 +24,7 @@ public class SkillManager : MonoBehaviour
     private TextMeshProUGUI skillPointText;
     private TextMeshProUGUI skillnameText;
     private TextMeshProUGUI skillInfoText;
+    private TextMeshProUGUI pointText;
     private GameObject skillBlockPanel;
     public int skillPoint;
 
@@ -51,6 +52,7 @@ public class SkillManager : MonoBehaviour
         skillPointText = GameObject.Find("SkillPointText")?.GetComponent<TextMeshProUGUI>();
         skillnameText = GameObject.Find("SkillnameText")?.GetComponent<TextMeshProUGUI>();
         skillInfoText = GameObject.Find("SkillinfoText")?.GetComponent<TextMeshProUGUI>();
+        pointText = GameObject.Find("PointText")?.GetComponent<TextMeshProUGUI>();
         skillBlockPanel = GameObject.Find("SkillBlock");
 
         
@@ -74,6 +76,7 @@ public class SkillManager : MonoBehaviour
         if (skillPointText == null) Debug.Log("pointtext null");
         if (skillnameText == null) Debug.Log("nametext null");
         if (skillInfoText == null) Debug.Log("infotext null");
+        if (pointText == null) Debug.Log("infotext null");
         if (skillBlockPanel == null) Debug.Log("Blockpanel null");
 
         
@@ -83,6 +86,7 @@ public class SkillManager : MonoBehaviour
     {
         if (skillInfoText != null) UpdateSkillInfoText();
         if (skillnameText != null) UpdateSkillnameText();
+        if (pointText != null) UpdatePointText();
     }
 
     private void Update()
@@ -105,6 +109,10 @@ public class SkillManager : MonoBehaviour
         skillInfoText.text = text;
     }
 
+    public void UpdatePointText(string text = "")
+    {
+        pointText.text = text;
+    }
     public void Point(int score)
     {
         skillPoint += score;

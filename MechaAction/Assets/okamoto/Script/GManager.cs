@@ -106,6 +106,7 @@ public class GManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && _isPlaying)
         {
             Menu();
+            AudioManager.Instance.PlaySound("menu");
         }
     }
 
@@ -152,7 +153,8 @@ public class GManager : MonoBehaviour
     public IEnumerator DiePlayer()
     {
         _player.Dead();//Vector3.zeroにするため　後消す
-        if (life == 0)
+        AudioManager.Instance.PlaySound("dead");
+        if (life <= 0)
         {
             _isTiming = false;
             _ui.GameOver();
@@ -203,6 +205,8 @@ public class GManager : MonoBehaviour
 
     public void Clear()
     {
+        AudioManager.Instance.PlaySound("clear");
+        _player._ChangeState(PlayerState.Other);
         _isTiming = false;
         score +=baseScore * Mathf.Pow(targetTime / currentTime, rate);//(a,b) aのb乗
         score = Mathf.Round(score * 100f) / 100f;
@@ -212,6 +216,14 @@ public class GManager : MonoBehaviour
 
         GameData data = new GameData { ClearStage = clear, ClearTime = currentTime };
         SaveManager.Instance.Save(data);
+
+        if(clear >= 4)
+        {
+            Title();
+            SceneManager.LoadScene("Title");
+
+            return;
+        }
         //score = 0;
         //強化UIを出す
         _ui.Shop();
@@ -257,14 +269,15 @@ public class GManager : MonoBehaviour
             if(clear == 0)
             {
                 _ui.Tutorial();
-                Debug.Log("チュートリアル");
+                //Debug.Log("チュートリアル");
 
             }
             
             score = 0;
+            _player._ReturnNormal();
             _playerposition.position = currentpoint;
-            _respawnmax = new Vector2(0, 3f);
-            _respawnmax = new Vector2(1000, 5f);
+            _respawnmax = new Vector2(0, 5f);//カメラ初期化
+            _respawnmax = new Vector2(1000, 7f);
             _isTiming = true;
             currentTime = 0;
             life = 2;

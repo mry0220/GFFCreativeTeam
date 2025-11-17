@@ -103,7 +103,7 @@ public class DroneEnemy : MonoBehaviour, IEnemy
 
     private void Attack()
     {
-        //Debug.Log("Attack");
+        Debug.Log("Attack");
         StartCoroutine(_attack.Attack());
         _state = EnemyState.STIFFNESS;
     }
