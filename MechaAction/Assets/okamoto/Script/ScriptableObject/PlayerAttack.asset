@@ -15,37 +15,37 @@ MonoBehaviour:
   playerAttackList:
   - Attackname: LeftAttack
     type: 0
-    damage: 20
-    knockback: 0
+    damage: 10
+    knockback: 1
     effectname: DamageEffect
-    critical: 5
+    audioname: 
   - Attackname: GroundAttack
     type: 0
-    damage: 50
-    knockback: 5
-    effectname: DamageEffect
-    critical: 20
-  - Attackname: Slash
-    type: 0
-    damage: 40
-    knockback: 2
-    effectname: DamageEffect
-    critical: 20
-  - Attackname: leftAttack
-    type: 1
-    damage: 20
-    knockback: 0
-    effectname: DamageEffect
-    critical: 5
-  - Attackname: ShotGun
-    type: 1
-    damage: 50
-    knockback: 7
-    effectname: DamageEffect
-    critical: 5
-  - Attackname: Rifle
-    type: 1
-    damage: 80
+    damage: 30
     knockback: 4
     effectname: DamageEffect
-    critical: 40
+    audioname: 
+  - Attackname: Slash
+    type: 0
+    damage: 20
+    knockback: 3
+    effectname: DamageEffect
+    audioname: 
+  - Attackname: leftAttack
+    type: 1
+    damage: 10
+    knockback: 1
+    effectname: DamageEffect
+    audioname: 
+  - Attackname: ShotGun
+    type: 1
+    damage: 40
+    knockback: 4
+    effectname: DamageEffect
+    audioname: 
+  - Attackname: Rifle
+    type: 1
+    damage: 20
+    knockback: 2
+    effectname: DamageEffect
+    audioname: 

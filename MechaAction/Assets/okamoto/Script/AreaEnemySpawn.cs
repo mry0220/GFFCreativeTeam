@@ -37,8 +37,10 @@ public class AreaEnemySpawn : MonoBehaviour
     // Cameralimitから呼び出して最初のWaveを開始
     public void StartSpawn()
     {
+       // Debug.Log($"isSpawning : {spawning}");
         if (spawning) return;
         spawning = true;
+        //Debug.Log($"Spawn");
         currentWaveIndex = 0;
         SpawnWave(currentWaveIndex);
     }
@@ -51,6 +53,7 @@ public class AreaEnemySpawn : MonoBehaviour
             Debug.Log("全てのWaveが終了しました！");
             // Cameralimitに通知してエリア解放
             _limit.Clear();
+            spawning = false;
             //if (limit != null) limit.OnEnemiesCleared();
             return;
         }

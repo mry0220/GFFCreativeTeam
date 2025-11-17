@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyAttackList:
   - enemyname: BurstEnemy
-    damage: 20
+    damage: 10
     knockback: 2
-    hitdamage: 10
-    hitknockback: 3
+    hitdamage: 5
+    hitknockback: 2
     electtime: 0
     bantime: 0
     effectname: DamageEffect
@@ -25,8 +25,8 @@ MonoBehaviour:
   - enemyname: BoxDrone_Normal
     damage: 0
     knockback: 0
-    hitdamage: 5
-    hitknockback: 0
+    hitdamage: 10
+    hitknockback: 4
     electtime: 0
     bantime: 0
     effectname: DamageEffect
@@ -34,17 +34,17 @@ MonoBehaviour:
   - enemyname: BoxDrone_Move
     damage: 0
     knockback: 0
-    hitdamage: 5
-    hitknockback: 0
+    hitdamage: 10
+    hitknockback: 5
     electtime: 0
     bantime: 0
     effectname: DamageEffect
     audioname: 
   - enemyname: Drone
-    damage: 20
-    knockback: 5
+    damage: 10
+    knockback: 1
     hitdamage: 5
-    hitknockback: 0
+    hitknockback: 2
     electtime: 0
     bantime: 0
     effectname: DamageEffect
@@ -61,8 +61,8 @@ MonoBehaviour:
   - enemyname: Tire
     damage: 0
     knockback: 0
-    hitdamage: 5
-    hitknockback: 5
+    hitdamage: 10
+    hitknockback: 4
     electtime: 0
     bantime: 0
     effectname: DamageEffect
@@ -72,6 +72,24 @@ MonoBehaviour:
     knockback: 5
     hitdamage: 20
     hitknockback: 0
+    electtime: 0
+    bantime: 0
+    effectname: DamageEffect
+    audioname: 
+  - enemyname: Child_spider
+    damage: 15
+    knockback: 3
+    hitdamage: 5
+    hitknockback: 1
+    electtime: 0
+    bantime: 0
+    effectname: DamageEffect
+    audioname: 
+  - enemyname: Mother_spider
+    damage: 0
+    knockback: 0
+    hitdamage: 5
+    hitknockback: 3
     electtime: 0
     bantime: 0
     effectname: DamageEffect

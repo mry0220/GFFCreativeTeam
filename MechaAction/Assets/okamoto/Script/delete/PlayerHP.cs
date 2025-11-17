@@ -7,6 +7,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 {
     private Player _player;
     [SerializeField] DamageEffectSO _damageEffectSO;
+    private bool _isDeadArea = false;
 
     private int maxHP = 100;
     private int currentHP;
@@ -37,32 +38,32 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     {
         if (SkillManager.Instance.HasSkill(SkillType.HP1))
         {
-            _HP += 50;
+            _HP += 20;
             Debug.Log("HPアップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.HP2))
         {
-            _HP += 70;
+            _HP += 30;
             Debug.Log("HPアップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.HP3))
         {
-            _HP += 80;
+            _HP += 50;
             Debug.Log("HPアップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKS1))
         {
-            _KNOCKS += 1;
+            _KNOCKS += 2;
             Debug.Log("ノック減アップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKS2))
         {
-            _KNOCKS += 1;
+            _KNOCKS += 2;
             Debug.Log("ノック減アップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKS3))
         {
-            _KNOCKS += 1;
+            _KNOCKS += 2;
             Debug.Log("ノック減アップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.GUN1))
@@ -239,9 +240,11 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("DeadArea"))//落下死亡isTrigger
+        if (other.gameObject.CompareTag("DeadArea") && !_isDeadArea)//落下死亡isTrigger
         {
-            GManager.Instance.OnPlayerHit();//カメラ揺らす
+            _isDeadArea = true;//死亡判定2回チェック防止
+            Debug.Log("Die");
+            GManager.Instance.OnPlayerHit();//カメラ揺らす　GMでもどす
             currentHP = 0;
             Die();
         }
@@ -249,6 +252,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
 
     public IEnumerator ResetHP()//GManagerから復活の命令
     {
+        _isDeadArea = false;
         currentHP = MaxHP;
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
         //   LayerMask.NameToLayer("Enemy"), false);

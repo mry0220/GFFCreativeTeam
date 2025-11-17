@@ -6,6 +6,7 @@ public class EnemyHP : MonoBehaviour,IDamage
 {
     [SerializeField] private int maxHP = 50; // HP
     [SerializeField] private float score;
+    [SerializeField] private GameObject _recover;
     [SerializeField] DamageEffectSO _damageEffectSO;
     private IEnemy _ienemy;
 
@@ -110,6 +111,12 @@ public class EnemyHP : MonoBehaviour,IDamage
         Debug.Log("<color=red>" + gameObject.name + " (“G) ‚Í“|‚³‚ê‚Ü‚µ‚½I");
 
         GManager.Instance.ScoreUP(score);
+        int number = Random.Range(0, 100);
+        if(number >= 0&&number < 30)
+        {
+            var recover = Instantiate(_recover, transform.position, Quaternion.identity);
+        }
+        
         // “ÆŽ©‚Ì“G‚ÌŽ€–Sˆ—‚ð‹Lq
         // —á1: ƒXƒRƒA‚ð‰ÁŽZ‚·‚éˆ—
         // GameManager.Instance.AddScore(100); 

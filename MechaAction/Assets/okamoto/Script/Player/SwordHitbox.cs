@@ -57,7 +57,7 @@ public class SwordHitbox : MonoBehaviour
         }
         if (SkillManager.Instance.HasSkill(SkillType.ATTACK3))
         {
-            _ATTACK += 20;
+            _ATTACK += 30;
             Debug.Log("攻撃力アップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.GROUND))
@@ -74,17 +74,17 @@ public class SwordHitbox : MonoBehaviour
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
         {
-            _KNOCKP += 20;
+            _KNOCKP += 2;
             Debug.Log("ノックバックアップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKP2))
         {
-            _KNOCKP += 20;
+            _KNOCKP += 2;
             Debug.Log("ノックバックアップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKP3))
         {
-            _KNOCKP += 20;
+            _KNOCKP += 2;
             Debug.Log("ノックバックアップ！");
         }
     }
@@ -115,8 +115,8 @@ public class SwordHitbox : MonoBehaviour
 
     public void tatakitukeAttack(int dir)
     {
-        _damage = _playerAttackSO.playerAttackList[1].Damage + _ATTACK + _GROUND;
-        _knockback = _playerAttackSO.playerAttackList[1].Knockback + _KNOCKP + _GROUND;
+        _damage = _playerAttackSO.playerAttackList[1].Damage  + _GROUND;
+        _knockback = _playerAttackSO.playerAttackList[1].Knockback + _KNOCKP;
         _effectname = _playerAttackSO.playerAttackList[1].EffectName;
         _audioname = _playerAttackSO.playerAttackList[1].AudioName;
         _dir = dir;
@@ -126,7 +126,7 @@ public class SwordHitbox : MonoBehaviour
 
     public void slashAttack(int dir)
     {
-        _damage = _playerAttackSO.playerAttackList[2].Damage + _ATTACK + _SLASH;
+        _damage = _playerAttackSO.playerAttackList[2].Damage  + _SLASH;
         _knockback = _playerAttackSO.playerAttackList[2].Knockback + _KNOCKP;
         _effectname = _playerAttackSO.playerAttackList[2].EffectName;
         _audioname = _playerAttackSO.playerAttackList[2].AudioName;

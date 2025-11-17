@@ -277,6 +277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 50
   score: 100
+  _recover: {fileID: 5706645259647368609, guid: 755c596c7d4104c428a57f8f3098261c, type: 3}
   _damageEffectSO: {fileID: 11400000, guid: f82563ad8995a4d4398439183de62b42, type: 2}
 --- !u!4 &4380156626296042739 stripped
 Transform:

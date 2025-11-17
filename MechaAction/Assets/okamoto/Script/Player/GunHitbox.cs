@@ -48,7 +48,7 @@ public class GunHitbox : MonoBehaviour
         }
         if (SkillManager.Instance.HasSkill(SkillType.GUN3))
         {
-            _GUN += 20;
+            _GUN += 30;
             _RAY += 1f;
             Debug.Log("銃アップ！");
         }
@@ -65,17 +65,17 @@ public class GunHitbox : MonoBehaviour
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
         {
-            _KNOCKP += 20;
+            _KNOCKP += 2;
             Debug.Log("ノックバックアップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKP2))
         {
-            _KNOCKP += 20;
+            _KNOCKP += 2;
             Debug.Log("ノックバックアップ！");
         }
         if (SkillManager.Instance.HasSkill(SkillType.KNOCKP3))
         {
-            _KNOCKP += 20;
+            _KNOCKP += 2;
             Debug.Log("ノックバックアップ！");
         }
     }
@@ -116,8 +116,8 @@ public class GunHitbox : MonoBehaviour
 
     public void ShotGun(int dir)
     {
-        _damage = _playerAttackSO.playerAttackList[4].Damage + _GUN + _SHOTGUN;
-        _knockback = _playerAttackSO.playerAttackList[4].Knockback + _KNOCKP + _SHOTGUN;
+        _damage = _playerAttackSO.playerAttackList[4].Damage  + _SHOTGUN;
+        _knockback = _playerAttackSO.playerAttackList[4].Knockback + _KNOCKP;
         _effectname = _playerAttackSO.playerAttackList[4].EffectName;
         _audioname = _playerAttackSO.playerAttackList[4].AudioName;
         _dir = dir;
@@ -166,8 +166,8 @@ public class GunHitbox : MonoBehaviour
 
     public void Rifle(int dir)
     {
-        _damage = _playerAttackSO.playerAttackList[5].Damage + _GUN + _RIFLE;
-        _knockback = _playerAttackSO.playerAttackList[5].Knockback + _KNOCKP+ _RIFLE;
+        _damage = _playerAttackSO.playerAttackList[5].Damage  + _RIFLE;
+        _knockback = _playerAttackSO.playerAttackList[5].Knockback + _KNOCKP;
         _effectname = _playerAttackSO.playerAttackList[5].EffectName;
         _audioname = _playerAttackSO.playerAttackList[5].AudioName;
         _dir = dir;

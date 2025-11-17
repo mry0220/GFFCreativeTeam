@@ -194,9 +194,10 @@ public class GManager : MonoBehaviour
         life = 2;
         score = 0;
         currentpoint = _startPosition;
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-         LayerMask.NameToLayer("Enemy"), false);//ˆê‰
-        Debug.Log("Reset");//ŒÄ‚Î‚ê‚½
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+        // LayerMask.NameToLayer("Enemy"), false);//ˆê‰
+
+        //Debug.Log("Reset");//ŒÄ‚Î‚ê‚½
         //ƒ[ƒh‚µ‚È‚¨‚·
     }
 
@@ -269,7 +270,7 @@ public class GManager : MonoBehaviour
             life = 2;
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
           LayerMask.NameToLayer("Enemy"), false);
-          _isPlaying = true;
+            _isPlaying = true;
         }
 
         if(nextScene.name == "Title")

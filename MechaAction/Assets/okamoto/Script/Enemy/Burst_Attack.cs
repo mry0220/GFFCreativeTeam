@@ -31,10 +31,10 @@ public class Burst_Attack : MonoBehaviour
         var attackData = _enemyattackSO.GetEffect("BurstEnemy");
         if (attackData != null)
         {
-            _damage = (int)(attackData.Damage + (_clear * 1.5));
-            _knockback = (int)(attackData.Knockback + (_clear * 1.5));
-            _hitdamage = (int)(attackData.Hitdamage + (_clear * 1.5));
-            _hitknockback = (int)(attackData.Hitknockback + (_clear * 1.5));
+            _damage = (int)(attackData.Damage + (_clear * 10));
+            _knockback = (int)(attackData.Knockback + (_clear * 2));
+            _hitdamage = (int)(attackData.Hitdamage + (_clear * 10));
+            _hitknockback = (int)(attackData.Hitknockback + (_clear * 2));
             _effectname = attackData.EffectName;
             _audioname = attackData.AudioName;
         }
