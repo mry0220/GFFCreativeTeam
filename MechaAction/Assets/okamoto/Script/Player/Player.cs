@@ -133,7 +133,7 @@ public class Player : MonoBehaviour
         Vector2 bounds = _col.bounds.size;
         RaycastHit hit;
         origin = transform.position + Vector3.down * (bounds.y / 2);
-        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
+        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1.5f, LayerMask.GetMask("Grounded"));
 
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
         //Debug.Log(velocity.x);
@@ -143,7 +143,7 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(origin, 0.4f);
-        Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
+        Gizmos.DrawWireSphere(origin + Vector3.down * 1.5f, 0.4f);
     }
 
     private void FixedUpdate()
@@ -161,9 +161,9 @@ public class Player : MonoBehaviour
         _Jump();
 
         #region　歩きアニメーション
-
         if(_isGrounded)
         {
+            Debug.Log("moveanimation");
             if (velocity.x >= -1 && velocity.x <= 1)
             {
                 _anim.SetFloat("Speed", 0);

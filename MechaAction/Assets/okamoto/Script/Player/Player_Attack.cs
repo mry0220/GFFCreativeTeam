@@ -7,6 +7,9 @@ using Cooltime;
 
 public class Player_Attack : MonoBehaviour
 {
+    [SerializeField] private GameObject Sword;
+    [SerializeField] private GameObject HandGun;
+    [SerializeField] private GameObject ShotGun;
     [SerializeField] private SwordHitbox _sword;
     [SerializeField] private GunHitbox _gun;
     private SkillCoolTimeUI _ui;
@@ -74,6 +77,8 @@ public class Player_Attack : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.G))
                 {
                     _state = PlayerAttackType.Gun;
+                    HandGun.SetActive(true);
+                    Sword.SetActive(false);
                     //Debug.Log("GunMode");
                 }
 
@@ -82,6 +87,9 @@ public class Player_Attack : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.G))
                 {
                     _state = PlayerAttackType.Sowd;
+                    Sword.SetActive(true);
+                    HandGun.SetActive(false);
+                    ShotGun.SetActive(false);
                     //Debug.Log("SowdMode");
                 }
 
@@ -126,8 +134,14 @@ public class Player_Attack : MonoBehaviour
         }
         else if(_state == PlayerAttackType.Gun)
         {
+            HandGun.SetActive(true);
+            ShotGun.SetActive(false);
+
+            _anim.SetInteger("AttackType", 3);
+            _anim.SetTrigger("Attack");
             _gun.leftAttack(_dir);
-            _player._ReturnNormal();
+
+            _player._ReturnNormal();//シグナルできなかった...
         }
     }
 
@@ -163,9 +177,14 @@ public class Player_Attack : MonoBehaviour
         {
             if (!_player.CanMove || _shotguncoroutine != null) return;
             _player._ChangeState(PlayerState.Attack);
+            HandGun.SetActive(false);
+            ShotGun.SetActive(true);
 
             float cooltime = 3f - _SKILL;
             _ui.ShotgunSkillCoolTime(cooltime);
+
+            _anim.SetInteger("AttackType", 3);
+            _anim.SetTrigger("Attack");
 
             _shotguncoroutine = StartCoroutine(
                coolDown.Skill(callback => { _shotguncoroutine = callback; },
@@ -206,9 +225,14 @@ public class Player_Attack : MonoBehaviour
         {
             if (!_player.CanMove || _riflecoroutine != null) return;
             _player._ChangeState(PlayerState.Attack);
+            HandGun.SetActive(false);
+            ShotGun.SetActive(true);
 
             float cooltime = 3f - _SKILL;
             _ui.RifleSkillCoolTime(cooltime);
+
+            _anim.SetInteger("AttackType", 3);
+            _anim.SetTrigger("Attack");
 
             _riflecoroutine = StartCoroutine(
                coolDown.Skill(callback => { _riflecoroutine= callback; },
@@ -231,9 +255,10 @@ public class Player_Attack : MonoBehaviour
     }*/
     public void _Enabletfalse()//animationシグナルで呼ぶ
     {
-        _sword.enabled = false;
         _sword.ColliderEnabled();//collider false
         //Debug.Log("falswe");
+        _sword.enabled = false;
+
         _player._ReturnNormal();//最後に呼ぶ
     }
 
