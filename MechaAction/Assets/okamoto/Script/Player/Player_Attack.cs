@@ -74,7 +74,7 @@ public class Player_Attack : MonoBehaviour
         switch (_state)
         {
             case PlayerAttackType.Sowd:
-                if (Input.GetKeyDown(KeyCode.G))
+                if (Input.GetKeyDown(KeyCode.F))
                 {
                     _state = PlayerAttackType.Gun;
                     HandGun.SetActive(true);
@@ -84,7 +84,7 @@ public class Player_Attack : MonoBehaviour
 
                 break;
             case PlayerAttackType.Gun:
-                if (Input.GetKeyDown(KeyCode.G))
+                if (Input.GetKeyDown(KeyCode.F))
                 {
                     _state = PlayerAttackType.Sowd;
                     Sword.SetActive(true);

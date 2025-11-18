@@ -1,6 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
+
 using UnityEngine;
 
 public class PlayerHP : MonoBehaviour ,IPlayerDamage
@@ -31,7 +30,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         ApplySkillUpgrades();
         maxHP += _HP;
         currentHP = maxHP;
-        Debug.Log("<color=yellow>" + gameObject.name + "のHPが初期化されました: " + currentHP);
+        Debug.Log("<color=green>" + gameObject.name + "のHPが初期化されました: " + currentHP);
     }
 
     private void ApplySkillUpgrades()
@@ -106,7 +105,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             Destroy(effect, 0.2f);
         }
 
-        Debug.Log("<color=yellow>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+        Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
         // HPが0以下になったかチェック
         if (currentHP <= 0)
@@ -155,7 +154,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             Destroy(effect, electtime);
         }
 
-        Debug.Log("<color=yellow>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP:" + currentHP);
+        Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP:" + currentHP);
 
         if (currentHP <= 0)
         {
@@ -232,7 +231,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     // HPが0になったときの死亡処理。（プレイヤー専用）
     public void Die()
     {
-        Debug.Log("<color=yellow>" + gameObject.name + "は倒されました。ゲームオーバー！");
+        Debug.Log("<color=green>" + gameObject.name + "は倒されました。ゲームオーバー！");
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), true);
         _player._ChangeState(PlayerState.Dead);

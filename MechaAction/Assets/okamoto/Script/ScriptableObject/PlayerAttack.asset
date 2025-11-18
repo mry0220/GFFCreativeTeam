@@ -21,13 +21,13 @@ MonoBehaviour:
     audioname: hit_s
   - Attackname: GroundAttack
     type: 0
-    damage: 40
+    damage: 60
     knockback: 4
     effectname: DamageEffect
     audioname: hit_b
   - Attackname: Slash
     type: 0
-    damage: 30
+    damage: 40
     knockback: 3
     effectname: DamageEffect
     audioname: hit_s

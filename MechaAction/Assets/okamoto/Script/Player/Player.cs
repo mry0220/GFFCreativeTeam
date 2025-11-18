@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
+
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
-using static UnityEngine.UI.Image;
+
 
 public enum PlayerState
 {

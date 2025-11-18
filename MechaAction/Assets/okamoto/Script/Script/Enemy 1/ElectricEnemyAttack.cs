@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ElectricEnemyAttack : MonoBehaviour
 {
-    private int _damage = 20;
-    private int _knockback = 0;
+    //private int _damage = 20;
+    //private int _knockback = 0;
 
     private void Update()
 
