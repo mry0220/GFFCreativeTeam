@@ -33,7 +33,7 @@ public class SpiderChild : MonoBehaviour
 
     private void FixedUpdate()
     {
-        coolDown.DiraySkill(1f);
+        //coolDown.DiraySkill(1f);
             Move();
         if (Vector3.Distance(_rb.position, _PerentPos) >= 10)
             Boom();

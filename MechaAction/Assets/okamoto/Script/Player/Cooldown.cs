@@ -16,9 +16,9 @@ namespace Cooltime
 
         public void DiraySkill(float coolTime = 0, Action<int> dirskill = null, Action skill = null, int dir = 0)
         {
-            Thread.Sleep((int)(coolTime * MS));
-            skill();
-            dirskill(dir);
+            //Thread.Sleep((int)(coolTime * MS));
+            if (skill != null) skill();
+            if (dirskill != null) dirskill(dir);
             return;
         }
 

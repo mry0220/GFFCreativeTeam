@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using Unity.VisualScripting.FullSerializer;
+
 using UnityEngine;
 using Cooltime;
 
+[RequireComponent(typeof(Rigidbody))]
 public class SpiderMother : MonoBehaviour
 {
     const float GENERATETIME = 5f;
@@ -35,7 +34,7 @@ public class SpiderMother : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _player = GameObject.FindWithTag("Player").transform;
-        _coolDown.DiraySkill(5f);
+      //  _coolDown.DiraySkill(5f);
     }
 
     private void FixedUpdate()

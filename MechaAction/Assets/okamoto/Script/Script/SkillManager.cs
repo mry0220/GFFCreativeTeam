@@ -96,7 +96,7 @@ public class SkillManager : MonoBehaviour
 
     void UpdateSkillPointText()
     {
-        skillPointText.text = string.Format("Poin : {0}", skillPoint);
+        skillPointText.text = string.Format("Point : {0}", skillPoint);
     }
 
     public void UpdateSkillnameText(string text = "")
