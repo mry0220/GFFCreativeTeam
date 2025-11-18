@@ -33,6 +33,7 @@ public class CommandManager : MonoBehaviour
             this.maxFrameGap = maxFrameGap;
         }
     }
+    [System.Serializable]
     private struct InputData
     {
         public string Input; //@“ü—Í“à—e
@@ -51,7 +52,7 @@ public class CommandManager : MonoBehaviour
     [SerializeField] private float Frametest;
     private float _frameTime;
     [SerializeField] private List<Command> commandList = new(); //‹Z’è‹`‚ğ•ÒW‚·‚é‰Â”\«A•¡”‰ÓŠ‚Ìg—p‚ª‚ ‚é‚½‚ßclass 
-    private List<InputData> _inputBuffer = new(); //—š—ğ‚ğ•Û‚·‚é‚¾‚¯‚¾‚©‚çstruct
+    [SerializeField]private List<InputData> _inputBuffer = new(); //—š—ğ‚ğ•Û‚·‚é‚¾‚¯‚¾‚©‚çstruct
     private int _currentFrame = 0; //“ü—Í‚ªs‚í‚ê‚½ƒtƒŒ[ƒ€”Ô†‚ğ‹L˜^‚·‚é‚½‚ß‚ÌŠî€
     private float _frameTimer = 0f; //Time.deltatime‚ğ‰ÁZ‚µframeDuration‚ğ’´‚¦‚½‚ç_currentframe‚É‰ÁZ
 
@@ -76,8 +77,8 @@ public class CommandManager : MonoBehaviour
         _strongPunchAction.performed += ctx => AddInput("StrongPunch");
         _strongKickAction.performed += ctx => AddInput("StrongKick");
 
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+     //   QualitySettings.vSyncCount = 0;
+     //   Application.targetFrameRate = 60;
     }
 
     private void OnEnable()
@@ -129,14 +130,14 @@ public class CommandManager : MonoBehaviour
         int y = dir.y > 0.5f ? 3 : dir.y < -0.5f ? -3 : 0;
         int num = 5+x+y;
        // Debug.Log(_currentFrame);
-        if(num >= 1 && num <= 9)
+        if(num >= 1 && num <= 9 && num !=5)
         AddInput(num.ToString());
     }//“ü—Í•ûŒü‚ÌŠÇ—
 
     private void AddInput(string input) //“ü—Í—š—ğ‚ÌŠÇ—
     {
         _inputBuffer.Add(new InputData(input, _currentFrame));
-        Debug.Log($"“ü—Í:{input}");
+        Debug.Log($"“ü—Í:{input} Frame: {_currentFrame}");
 
         if(_inputBuffer.Count > bufferLimit)
             _inputBuffer.RemoveAt(0);
@@ -145,7 +146,15 @@ public class CommandManager : MonoBehaviour
     private void RegisterCommands() //ƒRƒ}ƒ“ƒh‹Z‚Ì“o˜^
     {
         commandList.Add(new Command("Hadouken", new List<string> { "2", "3", "6", "Punch"}, 100));
-        commandList.Add(new Command("Reload", new List<string> { "2","5", "2", "Kick" }, 100));
+        commandList.Add(new Command("Reload", new List<string> { "2","5", "2", "Kick" }, 10));
+        commandList.Add(new Command("Shouryuken", new List<string> { "6", "2", "3", "Punch" }, 10));
+        commandList.Add(new Command("Tatsumakisenpukyaku", new List<string> { "2", "1", "4", "Kick" }, 10));
+        commandList.Add(new Command("TyrantRave", new List<string> { "6", "3", "2","1","4","6", "StrongPunch" }, 10));
+        commandList.Add(new Command("Shinkuuhadouken", new List<string> { "2", "3", "6","2","3","6", "StrongPunch" }, 10));
+        commandList.Add(new Command("Shinkuutatumakisenpukyaku", new List<string> { "2", "1", "4","2","1","4", "StrongKick" }, 10));
+        commandList.Add(new Command("GyakuyogaFlame", new List<string> { "6", "3", "2","1","4", "StrongPunch" }, 10));
+        commandList.Add(new Command("irukasan", new List<string> { "4", "4", "4","4","6", "StrongPunch" }, 10));
+       
     }
 
     private void CheckCommands() // ‹Zo—Í“à—e‚ğŠÇ—
@@ -154,44 +163,53 @@ public class CommandManager : MonoBehaviour
         {
             if (MatchCommand(cmd))
             {
-                Debug.Log($"‹Z”­“®:{cmd.Name}");
-                _inputBuffer.Clear();
+                Debug.Log($"‹Z”­“®:{cmd.Name} Frame: {_currentFrame}");
+                _inputBuffer.Clear(); //—š—ğ‚Ì‰Šú‰»
                 break;
             }
         }
     }
 
-    private bool MatchCommand(Command cmd) //“ü—Í‡˜‚ğŠÇ—
+    private bool MatchCommand(Command cmd)
     {
-        int requiredLength = cmd.Sequence.Count;
+        int step = 0;
+        int lastFrame = -1;
 
-        for (int start = 0; start <= _inputBuffer.Count - requiredLength; start++)
+        for (int i = 0; i < _inputBuffer.Count; i++)
         {
-            bool match = true;
-            int lastFrame = -1;
+            var data = _inputBuffer[i];
+            string expected = cmd.Sequence[step];
 
-            for (int i = 0; i < requiredLength; i++) 
+            if (data.Input == expected)
             {
-                var data = _inputBuffer[start + i];
-                string expected = cmd.Sequence[i];
-
-                if(data.Input != expected)
+                if (step > 0)
                 {
-                    match = false;
-                    break;
+                    int frameGap = data.Frame - lastFrame;
+                    if (frameGap > cmd.MaxFrameGap)
+                    {
+                        step = 0;
+                        lastFrame = -1;
+                        continue;
+                    }
                 }
 
-                if(i> 0 && data.Frame - lastFrame > cmd.MaxFrameGap)
-                {
-                    match = false;
-                    break;
-                }
                 lastFrame = data.Frame;
-            }
-            if(match)
-                return true;
+                step++;
+                      //  Debug.Log($"“ü—Í: Input: {data.Input},Fame: {data.Frame} step: {step}");
 
+                if (step >= cmd.Sequence.Count)
+                {
+                      //  Debug.Log($"“ü—Í: Input: {data.Input},Fame: {data.Frame} step: {step}");
+                    return true;
+                }
+            }
+            else
+            {
+                continue;
+            }
         }
+
         return false;
     }
+
 }

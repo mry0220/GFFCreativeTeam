@@ -560,8 +560,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: ef24843de1d159b458b54350abe9e55a, type: 3}
-  bufferLimit: 30
+  bufferLimit: 60
   frameDuration: 60
+  Frametest: 0
   commandList: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
