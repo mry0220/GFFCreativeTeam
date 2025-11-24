@@ -1,10 +1,5 @@
-using JetBrains.Annotations;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.Animations;
-using static UnityEngine.UI.Image;
 
 public class BurstEnemy : MonoBehaviour, IEnemy
 {
@@ -12,28 +7,28 @@ public class BurstEnemy : MonoBehaviour, IEnemy
         Look,          //íTÇ∑
         Move,          //í«ê’
         Wait,          //î≠éÀópà”(Ç¢ÇÁÇ»Ç¢)
-        Attack,         //î≠éÀ
+        Attack,        //î≠éÀ
         Damage
     }
 
     private EnemyState _state = EnemyState.Look;
 
     private Transform _player;
-    private CapsuleCollider _col;
     private Rigidbody _rb;
     private Animator _anim;
+    private CapsuleCollider _col;
     private Burst_Attack _attack;
+
+    public int Dir => _dir;
+    private int _dir = -1;//èâä˙ç∂å¸Ç´
     private float _moveSpeed = 1.0f;
     private bool _moveStop = false;
-    public int _direction = -1;
     private float _attacktime = 0;
+
     private float _fallTime;
     Vector3 velocity;
     Vector3 origin;
     private bool _isGrounded;
-
-    private bool _isRight = false;
-    private bool _isLeft = true;
 
     private void Awake()
     {
@@ -46,20 +41,18 @@ public class BurstEnemy : MonoBehaviour, IEnemy
 
     private void Start()
     {
-        _isLeft = true;
+        
     }
 
     private void Update()
     {
-        if (_isRight)
+        if (_dir == 1)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);
-            _isRight = false;
         }
-        else if (_isLeft)
+        else if (_dir == -1)
         {
             transform.rotation = Quaternion.Euler(0, 270, 0);
-            _isLeft = false;
         }
 
         Vector2 bounds = _col.bounds.size;
@@ -83,7 +76,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy
             case EnemyState.Look:
                 Look();
                 _attacktime = 0.0f;
-                if (Vector3.Distance(transform.position, _player.position) < 15f)
+                if (Vector3.Distance(transform.position, _player.position) < 10f)
                 {
                     _state = EnemyState.Move;
                 }
@@ -127,7 +120,6 @@ public class BurstEnemy : MonoBehaviour, IEnemy
     private void Look()
     {
         _anim.SetInteger("Speed", 0);
-
     }
 
     private void Move()
@@ -136,32 +128,43 @@ public class BurstEnemy : MonoBehaviour, IEnemy
 
         if (_moveStop)
         {
-            _rb.velocity = new Vector3(0f, _rb.velocity.y, _rb.velocity.z);
+            velocity.x = 0f;
+            _rb.velocity = velocity;
             return;
         }
 
         if (_rb.position.x < _player.position.x)
         {
-            if(_direction == -1)
+            if(_dir == -1)
             {
-                _isRight = true;
                 StartCoroutine(Waitturn(1));
             }
-            _direction = 1;
+            _dir = 1;
         }
         else
         {
-            if (_direction == 1)
+            if (_dir == 1)
             {
-                _isLeft = true;
                 StartCoroutine(Waitturn(-1));
             }
-            _direction = -1;
+            _dir = -1;
         }
         _anim.SetInteger("Speed", 1);
-        velocity.x = _direction * _moveSpeed;
+        velocity.x = _dir * _moveSpeed;
 
         _rb.velocity = velocity;
+    }
+
+    //êUÇËï‘ÇÈÇ∆Ç´è≠ÇµóØÇ‹ÇÈ
+    private IEnumerator Waitturn(int _newdirection)
+    {
+        _moveStop = true;
+        yield return new WaitForSeconds(0.5f);
+
+        _dir = _newdirection;
+        _moveStop = false;
+
+        yield break;
     }
 
     private void _Gravity()
@@ -178,18 +181,6 @@ public class BurstEnemy : MonoBehaviour, IEnemy
         }
     }
 
-    //êUÇËï‘ÇÈÇ∆Ç´è≠ÇµóØÇ‹ÇÈ
-    private IEnumerator Waitturn(int _newdirection)
-    {
-        _moveStop = true;
-        yield return new WaitForSeconds(0.5f);
-
-        _direction = _newdirection;
-        _moveStop = false;
-
-        yield break;
-    }
-
     private void Wait()
     {
 
@@ -197,9 +188,10 @@ public class BurstEnemy : MonoBehaviour, IEnemy
 
     private void Attack()
     {
-        _attack.GunAttack();
+        StartCoroutine(_attack.GunAttack());
     }
 
+    #region îÌÉ_ÉÅèàóù
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -232,4 +224,6 @@ public class BurstEnemy : MonoBehaviour, IEnemy
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));
     }
+    #endregion
+
 }

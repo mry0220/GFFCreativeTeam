@@ -97,7 +97,7 @@ public class GunHitbox : MonoBehaviour
         float dis = 10f + _RAY;
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
         Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, dis,~ignoreLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, dis, Physics.AllLayers, QueryTriggerInteraction.Ignore))
         {
             if (hit.collider.CompareTag("Enemy"))
             {

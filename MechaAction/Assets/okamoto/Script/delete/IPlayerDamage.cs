@@ -4,12 +4,12 @@ using UnityEngine;
 
 public interface IPlayerDamage 
 {
-    void TakeDamage(int amount, int knockback, int dir, string effectname, string audioname);
+    void TakeDamage(int damage, int knockback, int dir, string effectname, string audioname);
 
-    void TakeElectDamage(int amount,float electtime, string effectname, string audioname);
+    void TakeElectDamage(int damage,int knockback,int dir, float electtime, string effectname, string audioname);
 
     void TakeBanDamage(float bantime, string effectname, string audioname);
 
-    void Heal(int amount, string effectname, string audioname);
+    void Heal(int damage, string effectname, string audioname);
     void Die();
 }

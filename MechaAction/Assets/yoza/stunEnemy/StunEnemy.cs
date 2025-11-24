@@ -1,11 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-//using System.Diagnostics;
-using System.Linq;
-//using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Animations;
-using static Enemy;
 
 public class StunEnemy : MonoBehaviour
 {

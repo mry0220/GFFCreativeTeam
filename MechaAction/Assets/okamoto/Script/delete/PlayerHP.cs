@@ -134,7 +134,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         
     }
 
-    public void TakeElectDamage(int damage, float electtime, string effectname, string audioname)
+    public void TakeElectDamage(int damage,int knockback,int dir,float electtime, string effectname, string audioname)
     {
         if (currentHP <= 0)
         {
@@ -161,9 +161,27 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             Die();
         }
 
-        _player._ChangeState(PlayerState.Other);
-        _player.Stun();//vector3.zero
-        StartCoroutine(_StateNormal(electtime));
+        if (damage >= 10)
+        {
+            if (knockback >= 0 && knockback < 5)
+            {
+                _player._ChangeState(PlayerState.Knockback);
+                _player.SKnockBack(dir, knockback);
+                StartCoroutine(_DamageTime(1f));
+                //StartCoroutine(_StateNormal(0.5f));//‚µ‚®‚È‚é
+            }
+            if (knockback >= 5)
+            {
+                _player._ChangeState(PlayerState.Knockback);
+                _player.BKnockBack(dir, knockback);
+                StartCoroutine(_DamageTime(1.5f));
+                //StartCoroutine(_StateNormal(1f));
+            }
+        }
+
+        //_player._ChangeState(PlayerState.Other);
+        //_player.Stun();//vector3.zero
+        //StartCoroutine(_StateNormal(electtime));
 
         
     }

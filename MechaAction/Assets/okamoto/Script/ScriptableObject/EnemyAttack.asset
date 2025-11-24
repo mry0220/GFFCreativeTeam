@@ -68,9 +68,9 @@ MonoBehaviour:
     effectname: DamageEffect
     audioname: hit_player_b
   - enemyname: DogEnemy
-    damage: 40
+    damage: 15
     knockback: 5
-    hitdamage: 20
+    hitdamage: 10
     hitknockback: 0
     electtime: 0
     bantime: 0
@@ -94,3 +94,12 @@ MonoBehaviour:
     bantime: 0
     effectname: DamageEffect
     audioname: 
+  - enemyname: ElectricEnemy
+    damage: 10
+    knockback: 2
+    hitdamage: 5
+    hitknockback: 0
+    electtime: 2
+    bantime: 0
+    effectname: DamageEffect
+    audioname: hit_player_s

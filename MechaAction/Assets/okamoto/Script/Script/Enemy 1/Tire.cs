@@ -6,21 +6,17 @@ public class Tire : MonoBehaviour
 {
     private int _hitdamage;
     private int _hitknockback;
-    private int _dir;
     private string _effectname;
     private string _audioname;
-    private void Awake()
-    {
-
-    }
+    private int _dir;
 
     public void _FallStart(int hitdamage, int hitknockback, int dir, string effectname, string audioname)
     {
         _hitdamage = hitdamage;
         _hitknockback = hitknockback;
-        _dir = dir;
         _effectname = effectname;
         _audioname = audioname;
+        _dir = dir;
 
         StartCoroutine(Destroy());
     }

@@ -2,91 +2,103 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricEnemy : MonoBehaviour
+public class ElectricEnemy : MonoBehaviour, IEnemy
 {
     private enum EnemyState
     {
         Look,
         Move,
         Attack,
-        GroundAttack
+        GroundAttack,
+        Damage
     }
 
     private EnemyState _state = EnemyState.Look;
 
-    private Vector3 _spawnPos;  // もとに戻る
     private Transform _player;
     private Rigidbody _rb;
+    private CapsuleCollider _col;
     private ElectricEnemyAttack _attack;
-    public GameObject _groundattack;
 
-    private bool _isgrounded;
+    public int Dir => _dir;
+    private int _dir = -1;
     private bool _moveStop = false;
-    public int _direction = 0;
-
     private bool _isgroundatack = false;
     private bool _isattack = false;
-
     private float _lapseTime;
 
-    private bool _isRight = false;
-    private bool _isLeft = false;
+    private float _fallTime;
+    Vector3 velocity;
+    Vector3 origin;
+    private bool _isGrounded;
 
     private void Awake()
     {
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
+        _col = GetComponent<CapsuleCollider>();
         _attack = GetComponent<ElectricEnemyAttack>();
     }
 
     private void Start()
     {
-        _spawnPos = transform.position;
         _lapseTime = 0.0f;
+    }
+
+    private void Update()
+    {
+        if (_dir == 1)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+        else if (_dir == -1)
+        {
+            transform.rotation = Quaternion.Euler(0, 270, 0);
+        }
+
+        Vector2 bounds = _col.bounds.size;
+        RaycastHit hit;
+        origin = transform.position + Vector3.down * (bounds.y / 2);
+        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
+
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
     }
 
     private void FixedUpdate()
     {
         _lapseTime += Time.deltaTime;
 
-        if (_isRight)
-        {
-            transform.rotation = Quaternion.Euler(0, 90, 0);
-            _isRight = false;
-        }
-        else if (_isLeft)
-        {
-            transform.rotation = Quaternion.Euler(0, 270, 0);
-            _isLeft = false;
-        }
-
         switch ( _state)
         {
             case EnemyState.Look:
                 Look();
-                if (Vector3.Distance(transform.position, _player.position) < 10f)
+                if (Vector3.Distance(transform.position, _player.position) < 15f)
                 {
-                    Debug.Log("発見");
+                    //Debug.Log("発見");
                     _state = EnemyState.Move;
                 }
                 break;
 
             case EnemyState.Move:
-                if (Vector3.Distance(transform.position, _player.position) > 12f)
+                if (Vector3.Distance(transform.position, _player.position) >20f)
                 {
                     _state = EnemyState.Look;
+                    break;
                 }
-                else if (Vector3.Distance(transform.position, _player.position) < 6f
-                    && _lapseTime >= 5)
+                else if (Vector3.Distance(transform.position, _player.position) < 4f)
                 {
-                    Debug.Log("地面攻撃");
-                    _state = EnemyState.GroundAttack;
-                }
-                else if (Vector3.Distance(transform.position, _player.position) < 3f)
-                {
-                    Debug.Log("攻撃");
+                    //Debug.Log("攻撃");
                     _state = EnemyState.Attack;
+                    break;
                 }
+                else if (Vector3.Distance(transform.position, _player.position) < 7f
+                    && _lapseTime >= 3f)
+                {
+                    //Debug.Log("地面攻撃");
+                    _state = EnemyState.GroundAttack;
+                    break;
+                }
+                
                 Move();
 
                 break;
@@ -101,45 +113,51 @@ public class ElectricEnemy : MonoBehaviour
                     StartCoroutine(GroundAttack());
                 break;
         }
+
+        if (!_isGrounded)
+        {
+            _Gravity();
+        }
+        else
+        {
+            _fallTime = 0f;
+        }
     }
 
     private void Look()
     {
-        _direction = 0;
+        //anim
     }
 
-    
 
     private void Move()
     {
         Vector3 velocity = _rb.velocity;
-        Debug.Log("動いてるよぅ");
 
         if (_moveStop)
         {
-            _rb.velocity = Vector3.zero;
+            velocity.x = 0f;
+            _rb.velocity = velocity;
             return;
         }
 
         if (_rb.position.x < _player.position.x)
         {
-            if (_direction == -1 || _direction == 0)
+            if (_dir == -1 || _dir == 0)
             {
                 StartCoroutine(Waitturn(1));
-                _isRight = true;
             }
-            _direction = 1;
+            _dir = 1;
         }
         else
         {
-            if (_direction == 1 || _direction == 0)
+            if (_dir == 1 || _dir == 0)
             {
                 StartCoroutine(Waitturn(-1));
-                _isLeft = true;
             }
-            _direction = -1;
+            _dir = -1;
         }
-        velocity.x = _direction * 3f;
+        velocity.x = _dir * 3f;
 
         _rb.velocity = velocity;
     }
@@ -148,19 +166,34 @@ public class ElectricEnemy : MonoBehaviour
     {
         _moveStop = true;
         yield return new WaitForSeconds(0.5f);
-        _direction = _newdirection;
+        _dir = _newdirection;
         _moveStop = false;
         yield break;
+    }
+
+    private void _Gravity()
+    {
+        _fallTime += Time.deltaTime;
+
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityの標準重力に任せたいなら fallSpeed は不要
+
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y速度に徐々に加算
+                                                        //Time.fixedDeltaTime 物理演算をフレームレートに依存させないため必須
+        if (velocity.y < -20f)//落下速度の制限
+        {
+            velocity.y = -20f;
+        }
     }
 
     private IEnumerator Attack()
     {
         _isattack = true;
         _rb.velocity = Vector3.zero;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         _attack.ElectricAttack();
         _lapseTime = 0;
 
+        yield return new WaitForSeconds(1f);
         _state = EnemyState.Move;
         _isattack = false;
         yield break;
@@ -170,16 +203,50 @@ public class ElectricEnemy : MonoBehaviour
     {
         _isgroundatack = true;
         _rb.velocity = Vector3.zero;
+        _attack.ElectricGroundAttack();
         yield return new WaitForSeconds(2f);
         //インスタンス化
-        GameObject _attack = Instantiate(_groundattack, transform.position, Quaternion.identity);
-        _attack.GetComponent<GroundBall>().Initialize(this);
-        Debug.Log("deta");
+        
         _lapseTime = 0;
 
         _state = EnemyState.Move;
         _isgroundatack = false;
         yield break;
     }
+
+    #region 被ダメ処理
+    public IEnumerator _ReturnNormal(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _state = EnemyState.Look;
+        yield break;
+    }
+
+    public void SKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(1f));
+        //anim
+    }
+
+    public void BKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(2f));
+        //anim
+    }
+
+    public void ElectStun(int dir, int knockback, float electtime)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(electtime));
+    }
+    #endregion
 
 }

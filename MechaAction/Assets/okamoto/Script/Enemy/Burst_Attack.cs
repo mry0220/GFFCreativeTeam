@@ -4,19 +4,20 @@ using UnityEngine;
 public class Burst_Attack : MonoBehaviour
 {
     [SerializeField] EnemyAttackSO _enemyattackSO;
-    private BurstEnemy _enemy;
-
-    private int _clear;
-    [SerializeField] GameObject _bulletPrefab;
-    public Transform _bulletPosition;
-
     private int _damage;
     private int _knockback;
     private int _hitdamage;
     private int _hitknockback;
-    private int _dir;
     private string _effectname;
     private string _audioname;
+
+    private BurstEnemy _enemy;
+    private int _dir;
+    
+    [SerializeField] private GameObject _bulletPrefab;
+    public Transform _bulletPosition;
+
+    private int _clear;
 
     private void Awake()
     {
@@ -26,7 +27,6 @@ public class Burst_Attack : MonoBehaviour
     private void Start()
     {
         _clear = GManager.Instance.clear;
-        //Debug.Log(_clear);
         var attackData = _enemyattackSO.GetEffect("BurstEnemy");
         if (attackData != null)
         {
@@ -37,21 +37,14 @@ public class Burst_Attack : MonoBehaviour
             _effectname = attackData.EffectName;
             _audioname = attackData.AudioName;
         }
-
-
     }
 
     private void Update()
     {
-        _dir = _enemy._direction;
+        _dir = _enemy.Dir;
     }
 
-    public void GunAttack()
-    {
-        StartCoroutine(Gun());
-    }
-
-    private IEnumerator Gun()
+    public IEnumerator GunAttack()
     {
         for(int i = 0;i < 3; i++)
         {
@@ -69,7 +62,7 @@ public class Burst_Attack : MonoBehaviour
             var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
             }
         }
     }

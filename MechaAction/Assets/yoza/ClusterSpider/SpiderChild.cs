@@ -4,18 +4,33 @@ using Cooltime;
 
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpiderChild : MonoBehaviour
+public class SpiderChild : MonoBehaviour, IEnemy
 {
+    private enum EnemyState
+    {
+        Move,
+        Damage
+    }
+
+    private EnemyState _state = EnemyState.Move;
+    public bool CanMove => _state == EnemyState.Move;
+
     private CoolDown coolDown = new CoolDown();
     private Rigidbody _rb;
     Vector3 _velocity;
     private Transform _player;
     [SerializeField]private Vector3 _PerentPos;
     private int _dir;
-    private float _moveSpeed = 5f;
+    private float _moveSpeed = 2f;
     private float _limittime;
     private int tmp;
+    private float _time;
+    private float _turnTime = 2f;      //d’¼ŽžŠÔ‚ªŠm’è‚µ‚½‚çconst‚É•ÏX
+
     [SerializeField]private bool isbomb;
+
+    private bool _isRight = false;
+    private bool _isLeft = true;
 
     private void Awake()
     {
@@ -26,6 +41,7 @@ public class SpiderChild : MonoBehaviour
     private void Start()
     {
         _limittime = 0.5f;
+        _time = 2f;
     }
 
 
@@ -33,10 +49,27 @@ public class SpiderChild : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_isRight)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+            _isRight = false;
+        }
+        else if (_isLeft)
+        {
+            transform.rotation = Quaternion.Euler(0, 270, 0);
+            _isLeft = false;
+        }
+
         //coolDown.DiraySkill(1f);
+        if ((_time += Time.deltaTime) >= _turnTime)
+        {
+            if (!CanMove) return;
             Move();
-        if (Vector3.Distance(_rb.position, _PerentPos) >= 10)
-            Boom();
+        }
+            
+        //if (Vector3.Distance(_rb.position, _PerentPos) >= 10)
+        //Boom();
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
     }
     private void Move()  
     {
@@ -48,18 +81,26 @@ public class SpiderChild : MonoBehaviour
 
         if (tmp != _dir)
         {
+            if (_dir == 1)
+                _isRight = true;
+            else
+                _isLeft = true;
+
+            _time = 0;
             _velocity.x = 0;
+            _rb.velocity = _velocity;
             return;
         }
         else
         {
             _velocity.x = _dir * _moveSpeed;
         }
-        
-        if (Vector3.Distance(_player.position, _rb.position) < 3f)
+
+        if (Vector3.Distance(_player.position, _rb.position) < 5f)
         {
             if((_limittime -= Time.deltaTime) <0)
             {
+                Debug.Log("boom”­“®");
                 Boom();
             }
         }
@@ -68,9 +109,10 @@ public class SpiderChild : MonoBehaviour
             _limittime = 0.5f;
         }
 
-        if (Vector3.Distance(_player.position, _rb.position) < 1.15f)
+        if (Vector3.Distance(_player.position, _rb.position) < 3.5f)
         {
-            _velocity = Vector3.zero;
+            _velocity.x = 0;
+            _rb.velocity = _velocity;
         }
         _rb.velocity = _velocity;
     }
@@ -81,7 +123,7 @@ public class SpiderChild : MonoBehaviour
         if (_thiscoroutine == null)
         {
             _thiscoroutine =
-            StartCoroutine(coolDown.Skill(callback => { _thiscoroutine = callback; }, 3f,boom));
+            StartCoroutine(coolDown.Skill(callback => { _thiscoroutine = callback; }, 0,boom,null,3f));
         }
         
     }
@@ -101,6 +143,39 @@ public class SpiderChild : MonoBehaviour
 
         SpiderMother.GenerateCount--;
         Destroy(gameObject, 0.5f);
+    }
+
+    public IEnumerator _ReturnNormal(float time)
+    {
+        yield return new WaitForSeconds(time);
+        _state = EnemyState.Move;
+        yield break;
+    }
+
+    public void SKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(0.5f));
+        //anim
+    }
+
+    public void BKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(1.0f));
+        //anim
+    }
+
+    public void ElectStun(int dir, int knockback, float electtime)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(electtime));
     }
 }
     

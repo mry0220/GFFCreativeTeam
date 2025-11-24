@@ -13,12 +13,12 @@ public class BoxDrone_Normal : MonoBehaviour, IEnemy
     private EnemyState _state = EnemyState.Move;
     public bool CanMove => _state == EnemyState.Move;
 
-    [SerializeField] EnemyAttackSO _enemyattackSO;
+    private Transform _player;
+    private Rigidbody _rb;
 
-    private int _clear;
+    [SerializeField] EnemyAttackSO _enemyattackSO;
     private int _hitdamage;
     private int _hitknockback;
-    private int _dir;
     private string _effectname;
     private string _audioname;
 
@@ -26,22 +26,21 @@ public class BoxDrone_Normal : MonoBehaviour, IEnemy
     private float _verticalAmplitude = 5f; // 上下の振れ幅
     private float _verticalSpeed = 3f; // 上下の速さ
 
-    private Transform _player;
-    private Rigidbody _rb;
-    private float _startY;
+    private int _clear;
+
+    private float _PositionY;
     private float _timeOffset;
-    private int dir;
+    private int _dir;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
         _player = GameObject.FindWithTag("Player").transform;
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
         _clear = GManager.Instance.clear;
-        //Debug.Log(_clear);
         var attackData = _enemyattackSO.GetEffect("BoxDrone_Normal");
         if (attackData != null)
         {
@@ -54,16 +53,15 @@ public class BoxDrone_Normal : MonoBehaviour, IEnemy
         if (_rb.position.x < _player.position.x)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);//右
-            dir = 1;
+            _dir = 1;
         }
         else
         {
             transform.rotation = Quaternion.Euler(0, 270, 0);//左
-            dir = -1;
+            _dir = -1;
         }
-
-        _startY = transform.position.y;
         _timeOffset = Random.Range(0f, Mathf.PI * 2f);  // 敵ごとに動きをずらす
+        _PositionY = transform.position.y;
     }
 
     private void FixedUpdate()
@@ -71,23 +69,24 @@ public class BoxDrone_Normal : MonoBehaviour, IEnemy
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
 
         if (!CanMove) return;
-        float newY = _startY + Mathf.Sin(Time.time * _verticalSpeed + _timeOffset) * _verticalAmplitude;
-        Vector3 newVelocity = new Vector3(_horizontalSpeed * dir, (newY - transform.position.y) / Time.fixedDeltaTime, 0f);
+        float newY = _PositionY + Mathf.Sin(Time.time * _verticalSpeed + _timeOffset) * _verticalAmplitude;
+        Vector3 newVelocity = new Vector3(_horizontalSpeed * _dir, (newY - transform.position.y) / Time.fixedDeltaTime, 0f);
         _rb.velocity = newVelocity;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            var Interface = other.gameObject.GetComponent<IPlayerDamage>();
+            var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
             }
         }
     }
 
+    #region 被ダメ処理
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -120,4 +119,6 @@ public class BoxDrone_Normal : MonoBehaviour, IEnemy
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));
     }
+    #endregion
+
 }

@@ -13,37 +13,37 @@ public class Tire_Drone : MonoBehaviour, IEnemy
     private EnemyState _state = EnemyState.Move;
     public bool CanMove => _state == EnemyState.Move;
 
-    [SerializeField] EnemyAttackSO _enemyattackSO;
-
-    private int _hitdamage;
-    private int _hitknockback;
-    private string _effectname;
-    private string _audioname;
-
     [SerializeField] private Transform _tireObj;
     private Tire _tire;
     private Rigidbody _childrb;
     private Rigidbody _rb;
     private Transform _player;
 
-    private int _clear;
+    [SerializeField] EnemyAttackSO _enemyattackSO;
+    private int _hitdamage;
+    private int _hitknockback;
+    private string _effectname;
+    private string _audioname;
+
     private float _moveSpeed = 10f;  // 右への移動速度
     private bool _isdrop = false;
-    public int dir;
+
+    private int _clear;
+    
+    private int _dir;
 
     Vector3 velocity;
     private void Awake()
     {
+        _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
         _childrb = _tireObj.GetComponent<Rigidbody>();
         _tire = _tireObj.GetComponent<Tire>();
-        _player = GameObject.FindWithTag("Player").transform;
     }
 
     private void Start()
     {
         _clear = GManager.Instance.clear;
-        //Debug.Log(_clear);
         var attackData = _enemyattackSO.GetEffect("Tire");
         if (attackData != null)
         {
@@ -56,12 +56,12 @@ public class Tire_Drone : MonoBehaviour, IEnemy
         if (_rb.position.x < _player.position.x)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);//右
-            dir = 1;
+            _dir = 1;
         }
         else
         {
             transform.rotation = Quaternion.Euler(0, 270, 0);//左
-            dir = -1;
+            _dir = -1;
         }
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
     }
@@ -71,7 +71,7 @@ public class Tire_Drone : MonoBehaviour, IEnemy
         if(!CanMove) return;
         velocity = _rb.velocity;
 
-        velocity.x = _moveSpeed * dir;
+        velocity.x = _moveSpeed * _dir;
 
         _rb.velocity = velocity;
     }
@@ -88,11 +88,12 @@ public class Tire_Drone : MonoBehaviour, IEnemy
     {
         _isdrop = true;
         _childrb.transform.parent = null;
-        _tire._FallStart(_hitdamage, _hitknockback, dir, _effectname, _audioname);
+        _tire._FallStart(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
         _childrb.isKinematic = false;
         _childrb.AddForce(transform.forward * 6f, ForceMode.Impulse);
     }
 
+    #region 被ダメ処理
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -125,4 +126,6 @@ public class Tire_Drone : MonoBehaviour, IEnemy
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));
     }
+    #endregion
+
 }

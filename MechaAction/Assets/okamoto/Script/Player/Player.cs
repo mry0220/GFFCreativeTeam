@@ -49,7 +49,9 @@ public class Player : MonoBehaviour
     private bool _isSecondJump;
     private bool _isRun = false;
     private int _Runcount = 0;
-    public int _lookDir;
+    private int _lookDir;
+    public int LookDir => _lookDir;
+
     private float prevHorizontal = 0f;
     private bool _isDash = false;//ダッシュ中向きが変わらないように
     private bool _canDash = true;//空中で２回目ダッシュを防ぐため

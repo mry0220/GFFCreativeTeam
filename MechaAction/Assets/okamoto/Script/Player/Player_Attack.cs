@@ -96,7 +96,7 @@ public class Player_Attack : MonoBehaviour
                 break;
         }
 
-        _dir = _player._lookDir;
+        _dir = _player.LookDir;
 
         if(Input.GetMouseButtonDown(0))
         {

@@ -5,21 +5,20 @@ public class EnemyBullet : MonoBehaviour
 {
     private Rigidbody _rb;
 
-    [SerializeField] private float _speed;
-
     private int _damage;
     private int _knockback;
     private string _effectname;
     private string _audioname;
     private int _dir;
 
+    private float _speed = 20f;
     Vector3 velocity;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
 
-    public void Initialize(int damage ,int knockback ,int dir,string effectname,string audioname)
+    public void Initialize(int damage ,int knockback ,int dir ,string effectname ,string audioname)
     {
         _damage = damage;
         _knockback = knockback;
@@ -38,7 +37,6 @@ public class EnemyBullet : MonoBehaviour
         velocity = _rb.velocity;
         velocity.x = _dir * _speed;
         _rb.velocity = velocity;
-        //Debug.Log(_dir);
     }
 
     private IEnumerator _Destroy()
@@ -50,12 +48,14 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("当たった");
+        if (!other.gameObject.CompareTag("Player") ||
+            !other.gameObject.CompareTag("PlayerWeapon") ||
+            !other.gameObject.CompareTag("Enemy")) Destroy(gameObject);
 
         var Interface = other.GetComponent<IPlayerDamage>();
         if (Interface != null)
         {
-            Interface.TakeDamage(_damage, _knockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
+            Interface.TakeDamage(_damage, _knockback, _dir, _effectname, _audioname);
         }
     }
 }

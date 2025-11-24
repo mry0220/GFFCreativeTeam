@@ -14,31 +14,33 @@ public class BoxDrone_Move : MonoBehaviour, IEnemy
     private EnemyState _state = EnemyState.Move;
     public bool CanMove => _state == EnemyState.Move;
 
-    [SerializeField] EnemyAttackSO _enemyattackSO;
+    private Transform _player;
+    private Rigidbody _rb;
 
-    private int _clear;
+    [SerializeField] EnemyAttackSO _enemyattackSO;
     private int _hitdamage;
     private int _hitknockback;
     private string _effectname;
     private string _audioname;
-
-
-    private Transform _player;
-    private Rigidbody _rb;
+    
     private float chaseRange = 15f;          // 視認距離
     private float moveSpeed = 8f;           // 追跡速度
     private float velocitySmoothTime = 0.9f; // 加速・減速の滑らかさ
+    private Vector3 currentVelocity = Vector3.zero;
+
+    private int _clear;
+
     private int _dir;
 
-    private Vector3 currentVelocity = Vector3.zero;
+    private void Awake()
+    {
+        _player = GameObject.FindWithTag("Player").transform;
+        _rb = GetComponent<Rigidbody>();
+    }
 
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
-        _player = GameObject.FindWithTag("Player").transform;
-
         _clear = GManager.Instance.clear;
-        //Debug.Log(_clear);
         var attackData = _enemyattackSO.GetEffect("BoxDrone_Move");
         if (attackData != null)
         {
@@ -87,21 +89,23 @@ public class BoxDrone_Move : MonoBehaviour, IEnemy
         Vector3 targetVelocity = direction * moveSpeed;
 
         // 滑らかに速度を変化させる
+        
         _rb.velocity = Vector3.SmoothDamp(_rb.velocity, targetVelocity, ref currentVelocity, velocitySmoothTime);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            var Interface = other.gameObject.GetComponent<IPlayerDamage>();
+            var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
             }
         }
     }
 
+    #region 被ダメ処理
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -134,4 +138,6 @@ public class BoxDrone_Move : MonoBehaviour, IEnemy
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));
     }
+    #endregion
+
 }
