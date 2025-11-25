@@ -230,7 +230,7 @@ public class SwordHitbox : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 1.5f);
+        //Gizmos.color = Color.yellow;
+        //Gizmos.DrawWireSphere(transform.position, 1.5f);
     }
 }
