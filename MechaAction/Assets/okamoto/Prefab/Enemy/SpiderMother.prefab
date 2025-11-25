@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6249527134430944616}
   - component: {fileID: 6204542313725673319}
   - component: {fileID: 8933870170407495964}
+  - component: {fileID: -1074972690060505468}
   - component: {fileID: 1815324782807438467}
   m_Layer: 7
   m_Name: SpiderMother
@@ -150,7 +151,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Bombspider: {fileID: 1902969202296828663, guid: 2998d590cd7b7ed42bb4671dd846271d, type: 3}
-  _ditection: 13
+--- !u!114 &-1074972690060505468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262643014682570208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee29161ee1d7b704c902f9aa27572351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyattackSO: {fileID: 11400000, guid: 0cfcbf6313351a24e8996898f0cd9710, type: 2}
 --- !u!114 &1815324782807438467
 MonoBehaviour:
   m_ObjectHideFlags: 0

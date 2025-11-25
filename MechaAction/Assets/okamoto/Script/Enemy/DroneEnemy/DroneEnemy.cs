@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using static UnityEditor.Experimental.GraphView.GraphView;
-
 
 [RequireComponent(typeof(Rigidbody))]
 public class DroneEnemy : MonoBehaviour, IEnemy
@@ -15,21 +13,25 @@ public class DroneEnemy : MonoBehaviour, IEnemy
         STIFFNESS,
         DAMAGE//“®‚©‚È‚¢
     };
+    private EnemyState _state = EnemyState.DITECTION;
 
     private Drone_Attack _attack;
     private Rigidbody _rb;
     private Transform _playerTransform;
-    private EnemyState _state;
+
+    public int Dir => _dir;
+    private int _dir;
    [SerializeField] private float _distance;
-    private Vector3 _velocity;
+    private float stifftime;
     private float _moveSpeed = 5f;
-    public int dir;
+
+    private Vector3 _velocity;
+
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
         _playerTransform = GameObject.FindWithTag("Player").transform;
+        _rb = GetComponent<Rigidbody>();
         _attack = GetComponent<Drone_Attack>();
-        _state = EnemyState.DITECTION;
     }
 
     private void Update()
@@ -37,12 +39,12 @@ public class DroneEnemy : MonoBehaviour, IEnemy
         if (_rb.position.x < _playerTransform.position.x)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);//‰E
-            dir = 1;
+            _dir = 1;
         }
         else
         {
             transform.rotation = Quaternion.Euler(0, 270, 0);//¶
-            dir = -1;
+            _dir = -1;
         }
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
     }
@@ -90,6 +92,7 @@ public class DroneEnemy : MonoBehaviour, IEnemy
 
     private void Move()
     {
+        _velocity = _rb.velocity;
         if(_distance <= 10f)
         {
             
@@ -108,7 +111,6 @@ public class DroneEnemy : MonoBehaviour, IEnemy
         _state = EnemyState.STIFFNESS;
     }
 
-    private float stifftime;
     private bool Stiffness()
     {
         stifftime += Time.deltaTime;
@@ -121,6 +123,7 @@ public class DroneEnemy : MonoBehaviour, IEnemy
             return true;
     }
 
+    #region ”íƒ_ƒˆ—
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -153,4 +156,6 @@ public class DroneEnemy : MonoBehaviour, IEnemy
         _state = EnemyState.DAMAGE;
         StartCoroutine(_ReturnNormal(electtime));
     }
+    #endregion
+
 }

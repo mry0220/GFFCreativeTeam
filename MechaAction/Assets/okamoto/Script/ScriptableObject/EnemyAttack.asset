@@ -76,7 +76,7 @@ MonoBehaviour:
     bantime: 0
     effectname: DamageEffect
     audioname: hit_player_s
-  - enemyname: Child_spider
+  - enemyname: SpiderChild
     damage: 15
     knockback: 3
     hitdamage: 5
@@ -84,8 +84,8 @@ MonoBehaviour:
     electtime: 0
     bantime: 0
     effectname: DamageEffect
-    audioname: 
-  - enemyname: Mother_spider
+    audioname: hit_player_s
+  - enemyname: SpiderMother
     damage: 0
     knockback: 0
     hitdamage: 5
@@ -93,7 +93,7 @@ MonoBehaviour:
     electtime: 0
     bantime: 0
     effectname: DamageEffect
-    audioname: 
+    audioname: hit_player_s
   - enemyname: ElectricEnemy
     damage: 10
     knockback: 2

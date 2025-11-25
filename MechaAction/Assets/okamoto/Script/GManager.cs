@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -276,8 +273,8 @@ public class GManager : MonoBehaviour
             score = 0;
             _player._ReturnNormal();
             _playerposition.position = currentpoint;
-            _respawnmax = new Vector2(0, 5f);//ƒJƒƒ‰‰Šú‰»
-            _respawnmax = new Vector2(1000, 7f);
+            _respawnmax = new Vector2(0, 2f);//ƒJƒƒ‰‰Šú‰»//5‚Æ7
+            _respawnmax = new Vector2(1000, 4f);
             _isTiming = true;
             currentTime = 0;
             life = 2;

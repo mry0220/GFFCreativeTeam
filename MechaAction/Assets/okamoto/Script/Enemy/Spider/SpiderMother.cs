@@ -1,5 +1,4 @@
 using System.Collections;
-
 using UnityEngine;
 using Cooltime;
 
@@ -15,39 +14,33 @@ public class SpiderMother : MonoBehaviour, IEnemy
     private EnemyState _state = EnemyState.Move;
     public bool CanMove => _state == EnemyState.Move;
 
-    const float GENERATETIME = 5f;
-    const int GENERATECOUNT = 3;
-
-    CoolDown _coolDown = new CoolDown();
-    
-    
-    static public int GenerateCount = 0;
-
     [SerializeField] private GameObject Bombspider;
-    
     private Rigidbody _rb;
     private Transform _player;
-    private CapsuleCollider _col;
-    Vector3 _velocity;
-
+    
+    public int Dir => _dir;
     private int _dir;
-
-    private bool _isRight = false;
-    private bool _isLeft = true;
-
+    const float GENERATETIME = 5f;
+    const int GENERATECOUNT = 3;
+    static public int GenerateCount = 0;
     private float _moveSpeed = 2f;
     private float _time;
     private float _distance;
-    [SerializeField]private float _ditection;       //索敵範囲が確定したらconstに変更
-    private float _turnTime = 2f;      //硬直時間が確定したらconstに変更
+    const float _ditection = 13;       //索敵範囲が確定したらconstに変更
+    const float _turnTime = 2f;      //硬直時間が確定したらconstに変更
 
     private float _generateTime;
 
+    Vector3 _velocity;
+
+    private float _fallTime;
+    Vector3 origin;
+    private bool _isGrounded;
+
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
         _player = GameObject.FindWithTag("Player").transform;
-      //  _coolDown.DiraySkill(5f);
+        _rb = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -55,19 +48,27 @@ public class SpiderMother : MonoBehaviour, IEnemy
         _time = 2f;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (_isRight)
+        if (_dir == 1)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);
-            _isRight = false;
         }
-        else if (_isLeft)
+        else if (_dir == -1)
         {
             transform.rotation = Quaternion.Euler(0, 270, 0);
-            _isLeft = false;
         }
 
+        RaycastHit hit;
+        origin = transform.position + Vector3.down;
+        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
+        //Debug.Log(_isGrounded);
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+    }
+
+    private void FixedUpdate()
+    {
+        _velocity = _rb.velocity;
         _distance = Vector3.Distance(_rb.position, _player.position);
         
         if (_distance<= _ditection)
@@ -78,12 +79,19 @@ public class SpiderMother : MonoBehaviour, IEnemy
                 Move();
             }
         }
-        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+        if (!_isGrounded)
+        {
+            _Gravity();
+        }
+        else
+        {
+            _fallTime = 0f;
+        }
+        _rb.velocity = _velocity;
     }
+
     private void Move()
     {
-
-        _velocity = _rb.velocity;
         _generateTime +=Time.deltaTime;
 
         int dirBefore = _dir;
@@ -92,28 +100,20 @@ public class SpiderMother : MonoBehaviour, IEnemy
 
         if (dirBefore != _dir)
         {
-            if(_dir == 1)
-                _isRight = true;
-            else
-                _isLeft = true;
-
             _velocity.x = 0;
             _time = 0;
             _rb.velocity = _velocity;
             return;
         }
-
         else
         {
             _velocity.x = _dir * _moveSpeed;
         }
-        
-        _rb.velocity = _velocity;
 
-        if (_generateTime>=GENERATETIME)
+        if (_generateTime >= GENERATETIME)
         {
             _generateTime = 0f;
-            
+
             if (GenerateCount < GENERATECOUNT)
             {
                 Generate();
@@ -122,6 +122,21 @@ public class SpiderMother : MonoBehaviour, IEnemy
             }
         }
     }
+
+    private void _Gravity()
+    {
+        _fallTime += Time.deltaTime;
+
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityの標準重力に任せたいなら fallSpeed は不要
+
+        _velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y速度に徐々に加算
+                                                         //Time.fixedDeltaTime 物理演算をフレームレートに依存させないため必須
+        if (_velocity.y < -20f)//落下速度の制限
+        {
+            _velocity.y = -20f;
+        }
+    }
+
     private void Generate()
     {
         _rb.velocity = Vector3.zero;
@@ -129,6 +144,7 @@ public class SpiderMother : MonoBehaviour, IEnemy
         GenerateCount++;
     }
 
+    #region 被ダメ処理
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -161,4 +177,6 @@ public class SpiderMother : MonoBehaviour, IEnemy
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));
     }
+    #endregion
+
 }

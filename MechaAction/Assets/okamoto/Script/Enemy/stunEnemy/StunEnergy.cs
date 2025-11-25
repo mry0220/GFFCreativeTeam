@@ -6,6 +6,7 @@ using UnityEngine;
 public class StunEnergy : MonoBehaviour
 {
     private Rigidbody _rb;
+
     private float _speed = 3f;
 
     private float _bantime;
@@ -15,9 +16,11 @@ public class StunEnergy : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _rb.velocity = transform.right * _speed;
+    }
 
-        
+    private void FixedUpdate()
+    {
+        _rb.velocity = transform.right * _speed;
     }
 
     public void Initialize(float bantime, string effectname, string audioname)

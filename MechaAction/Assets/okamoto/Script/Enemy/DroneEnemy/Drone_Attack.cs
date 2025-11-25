@@ -1,24 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class Drone_Attack : MonoBehaviour
 {
     [SerializeField] EnemyAttackSO _enemyattackSO;
-    private DroneEnemy _enemy;
-
-    private int _clear;
-    [SerializeField] private Transform _muzzlepoint;
-    public GameObject _guneffect;
-
     private int _damage;
     private int _knockback;
     private int _hitdamage;
     private int _hitknockback;
-    private int _dir;
     private string _effectname;
     private string _audioname;
+
+    private DroneEnemy _enemy;
+    private int _dir;
+
+    [SerializeField] private Transform _muzzlepoint;
+    public GameObject _guneffect;
+
+    public LayerMask ignoreLayer;
+
+    private int _clear;
 
     private void Awake()
     {
@@ -28,8 +30,7 @@ public class Drone_Attack : MonoBehaviour
     private void Start()
     {
         _clear = GManager.Instance.clear;
-        //Debug.Log(_clear);
-        var attackData = _enemyattackSO.GetEffect("BurstEnemy");
+        var attackData = _enemyattackSO.GetEffect("Drone");
         if (attackData != null)
         {
             _damage = (int)(attackData.Damage + (_clear * 10));
@@ -42,22 +43,26 @@ public class Drone_Attack : MonoBehaviour
     }
     private void Update()
     {
-        _dir = _enemy.dir;
+        _dir = _enemy.Dir;
     }
 
     public IEnumerator Attack()
     {
-        Debug.Log("beem");
+        Debug.Log("beem準備");
         var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
         Destroy(G_effect, 2f); // アニメーションの長さに合わせて
 
         yield return new WaitForSeconds(2f);
 
+        Debug.Log("beemgo!");
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
-        if (Physics.BoxCast(transform.position, Vector3.one * 0.5f, transform.forward, out RaycastHit hit, Quaternion.identity, 30f))
+        if (Physics.BoxCast(transform.position, Vector3.one * 0.5f, transform.forward * 0.5f, out RaycastHit hit, 
+            Quaternion.identity, 30f,~ignoreLayer))
         {
+            Debug.Log("beemray");
             if (hit.collider.CompareTag("Player"))
             {
+                Debug.Log("Player!");
                 var Interface = hit.collider.GetComponent<IPlayerDamage>();
                 if (Interface != null)
                 {

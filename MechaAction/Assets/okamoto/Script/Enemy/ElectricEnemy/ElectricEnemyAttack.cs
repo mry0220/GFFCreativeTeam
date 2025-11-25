@@ -18,9 +18,9 @@ public class ElectricEnemyAttack : MonoBehaviour
 
     [SerializeField] private GameObject _groundattack;
 
-    private int _clear;
-
     public LayerMask ignoreLayer;
+
+    private int _clear;
 
     private void Awake()
     {

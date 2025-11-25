@@ -150,7 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _distance: 0
-  dir: 0
 --- !u!114 &7266050157297048669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +165,9 @@ MonoBehaviour:
   _enemyattackSO: {fileID: 11400000, guid: 0cfcbf6313351a24e8996898f0cd9710, type: 2}
   _muzzlepoint: {fileID: 4084925444149684995}
   _guneffect: {fileID: 8096601808299530320, guid: 3ce882b87da1e2e45b35256a6ec89a92, type: 3}
+  ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 640
 --- !u!114 &1313493848681232672
 MonoBehaviour:
   m_ObjectHideFlags: 0

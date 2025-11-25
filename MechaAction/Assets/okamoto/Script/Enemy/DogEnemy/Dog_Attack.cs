@@ -5,8 +5,6 @@ using UnityEngine;
 public class Dog_Attack : MonoBehaviour
 {
     [SerializeField] EnemyAttackSO _enemyattackSO;
-
-    private int _clear;
     private int _damage;
     private int _knockback;
     private int _hitdamage;
@@ -15,9 +13,11 @@ public class Dog_Attack : MonoBehaviour
     private string _audioname;
 
     private DogEnemy _enemy;
+    private int _dir;
+
     public LayerMask ignoreLayer;
 
-    private int _dir;
+    private int _clear;
 
     private void Awake()
     {
@@ -27,7 +27,6 @@ public class Dog_Attack : MonoBehaviour
     private void Start()
     {
         _clear = GManager.Instance.clear;
-        //Debug.Log(_clear);
         var attackData = _enemyattackSO.GetEffect("DogEnemy");
         if (attackData != null)
         {
@@ -42,9 +41,7 @@ public class Dog_Attack : MonoBehaviour
 
     private void Update()
     {
-        //transform.position += transform.forward * 3f * Time.deltaTime;
-        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
-        _dir = _enemy._direction;
+        _dir = _enemy.Dir;
     }
 
     public void GunAttack()
@@ -57,7 +54,7 @@ public class Dog_Attack : MonoBehaviour
                 var Interface = hit.collider.GetComponent<IPlayerDamage>();
                 if (Interface != null)
                 {
-                    Interface.TakeDamage(_damage, _knockback, _dir,_effectname, _audioname);//敵のインターフェース<IDamage>取得
+                    Interface.TakeDamage(_damage, _knockback, _dir,_effectname, _audioname);
 
                 }
             }
@@ -71,7 +68,7 @@ public class Dog_Attack : MonoBehaviour
             var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
             }
         }
     }

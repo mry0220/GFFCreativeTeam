@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations;
 
 public class DogEnemy : MonoBehaviour, IEnemy
 {
@@ -20,23 +19,19 @@ public class DogEnemy : MonoBehaviour, IEnemy
     private Rigidbody _rb;
     private Dog_Attack _attack;
 
+    public int Dir => _dir;
+    private int _dir = -1;
     private float _jumpPower = 7f;
-
-    private bool _isGrounded;
     private bool _moveStop = false;
-
-    public int _direction = 0;
-
     private bool _iswait;//waitコルーチンの重複を防ぐ
     private bool _ismove;//moveコルーチンの重複を防ぐ
     private bool _isattack;//attackコルーチンの重複を防ぐ
 
     private float _fallTime;
-    private float _fallSpeed;
+    Vector3 origin;
+    private bool _isGrounded;
 
-    private bool _isRight = false;
-    private bool _isLeft = false;
-
+    Vector3 velocity;
     private void Awake()
     {
         _player = GameObject.FindWithTag("Player").transform;
@@ -44,21 +39,34 @@ public class DogEnemy : MonoBehaviour, IEnemy
         _attack = GetComponent<Dog_Attack>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if(_isRight)
+        if (_dir == 1)
         {
             transform.rotation = Quaternion.Euler(0, 90, 0);
-            _isRight = false;
         }
-        else if(_isLeft)
+        else if (_dir == -1)
         {
             transform.rotation = Quaternion.Euler(0, 270, 0);
-            _isLeft = false;
         }
-        
 
-        Vector3 velocity = _rb.velocity;
+        RaycastHit hit;
+        origin = transform.position + Vector3.down;
+        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
+        //Debug.Log(_isGrounded);
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(origin, 0.4f);
+        Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
+    }
+
+    private void FixedUpdate()
+    {
+        velocity = _rb.velocity;
+
         switch (_state)
         {
             case EnemyState.Look:
@@ -95,22 +103,18 @@ public class DogEnemy : MonoBehaviour, IEnemy
 
         if (!_isGrounded)
         {
-            _fallTime += Time.deltaTime;
-
-            _fallSpeed = Physics.gravity.y * _fallTime * 5f * 5f; //Unityの標準重力に任せたいなら fallSpeed は不要
-
-            velocity.y += _fallSpeed * Time.fixedDeltaTime;
+            _Gravity();
         }
         else
         {
-            //velocity.x = 0f;
+            _fallTime = 0;
         }
-            _rb.velocity = velocity;
+        _rb.velocity = velocity;
     }
 
     private void Look()
     {
-        _direction = 0;
+        //anim
     }
 
     private void Direction()
@@ -122,30 +126,29 @@ public class DogEnemy : MonoBehaviour, IEnemy
 
         if (_moveStop)
         {
-            _rb.velocity = Vector3.zero;
+            velocity.x = 0f;
+            _rb.velocity = velocity;
             return;
         }
 
         if (_rb.position.x < _player.position.x)
         {
-            if (_direction == -1 || _direction == 0)
+            if (_dir == -1)
             {
-                _isRight = true;
                 Debug.Log("right");
                 StartCoroutine(Waitturn(1));
             }
-            _direction = 1;
+            _dir = 1;
         }
         else
         {
-            if (_direction == 1 || _direction == 0)
+            if (_dir == 1)
             {
-                _isLeft = true;
                 Debug.Log("left");
                 StartCoroutine(Waitturn(-1));
             }
             
-            _direction = -1;
+            _dir = -1;
         }
 
     }
@@ -155,7 +158,7 @@ public class DogEnemy : MonoBehaviour, IEnemy
     {
         _moveStop = true;
         yield return new WaitForSeconds(0.5f);
-        _direction = _newdirection;
+        _dir = _newdirection;
         _moveStop = false;
 
         yield break;
@@ -168,9 +171,9 @@ public class DogEnemy : MonoBehaviour, IEnemy
         if (Vector3.Distance(transform.position, _player.position) > 7f)
         {
             Debug.Log("frontjump");
-            _rb.AddForce(_direction * 13f, _jumpPower, 0f, ForceMode.Impulse);
+            _rb.AddForce(_dir * 13f, _jumpPower, 0f, ForceMode.Impulse);
 
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.5f);
 
             
             Debug.Log("ぴた");
@@ -189,7 +192,7 @@ public class DogEnemy : MonoBehaviour, IEnemy
         else
         {
             Debug.Log("backjump");
-            _rb.AddForce(_direction * -9f, _jumpPower, 0f, ForceMode.Impulse);
+            _rb.AddForce(_dir * -9f, _jumpPower, 0f, ForceMode.Impulse);
 
             yield return new WaitForSeconds(0.4f);
 
@@ -202,6 +205,20 @@ public class DogEnemy : MonoBehaviour, IEnemy
 
         _ismove = false;
         yield break;
+    }
+
+    private void _Gravity()
+    {
+        _fallTime += Time.deltaTime;
+
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityの標準重力に任せたいなら fallSpeed は不要
+
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y速度に徐々に加算
+                                                        //Time.fixedDeltaTime 物理演算をフレームレートに依存させないため必須
+        if (velocity.y < -20f)//落下速度の制限
+        {
+            velocity.y = -20f;
+        }
     }
 
     private IEnumerator Wait()
@@ -224,24 +241,7 @@ public class DogEnemy : MonoBehaviour, IEnemy
         yield break;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Grounded"))
-        {
-            _fallTime = 0f;
-            _isGrounded = true;
-        }
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Grounded"))
-        {
-            _fallTime = 0f;
-            _isGrounded = false;
-        }
-    }
-
+    #region 被ダメ処理
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -274,4 +274,6 @@ public class DogEnemy : MonoBehaviour, IEnemy
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));
     }
+    #endregion
+
 }

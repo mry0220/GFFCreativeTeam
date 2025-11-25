@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 996242625942222508}
   - component: {fileID: 5515256978820615706}
   - component: {fileID: 6681013423153574243}
+  - component: {fileID: 3590393878468259100}
   - component: {fileID: 1130614713681786853}
   m_Layer: 7
   m_Name: SpiderChild
@@ -149,8 +150,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 539da2eadb9f0454a90a9add7f1cca78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _PerentPos: {x: 0, y: 0, z: 0}
-  isbomb: 0
+--- !u!114 &3590393878468259100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902969202296828663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a10ef9420c02a14cb52dd674a74b2b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageEffectSO: {fileID: 11400000, guid: f82563ad8995a4d4398439183de62b42, type: 2}
+  _enemyattackSO: {fileID: 11400000, guid: 0cfcbf6313351a24e8996898f0cd9710, type: 2}
 --- !u!114 &1130614713681786853
 MonoBehaviour:
   m_ObjectHideFlags: 0

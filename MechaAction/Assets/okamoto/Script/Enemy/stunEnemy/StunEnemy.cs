@@ -4,52 +4,43 @@ using UnityEngine;
 
 public class StunEnemy : MonoBehaviour
 {
-    const float ATTACKTIME = 5f;
-
-   // [SerializeField] private float test;
-    //private enum EnemyState
-    //{ 
-    //DITECTION,
-    //LOOK,
-    // //WAIT,
-    //ATTACK
-    //}
-
-    [SerializeField] private GameObject energyBallPrefab;
-    private GameObject _myEnergyBall;   
-
-    // private EnemyState _state = EnemyState.DITECTION;
-    private Rigidbody _rb;
+    private GameObject _myEnergyBall;
     private Transform _playerTransform;
-    private bool _ATTACK;
+    private Rigidbody _rb;
+    [SerializeField] private GameObject energyBallPrefab;
 
+    const float ATTACKTIME = 5f;
     private float _attackTime;
 
     [SerializeField] EnemyAttackSO _enemyattackSO;
-
-    private int _clear;
     private float _bantime;
     private string _effectname;
     private string _audioname;
 
+    private int _clear;
+
     private void Awake()
     {
+        _playerTransform = GameObject.FindWithTag("Player").transform; ;
         _rb = GetComponent<Rigidbody>();
-        _playerTransform = GameObject.FindWithTag("Player").transform;;
     }
 
     private void Start()
     {
         _clear = GManager.Instance.clear;
-        //Debug.Log(_clear);
         var attackData = _enemyattackSO.GetEffect("StunEnemy");
         if (attackData != null)
         {
-
-            _bantime = attackData.Bantime;
+            _bantime = attackData.Bantime + _clear;
             _effectname = attackData.EffectName;
             _audioname = attackData.AudioName;
         }
+    }
+
+    private void Update()
+    {
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+
     }
 
     private void FixedUpdate()
@@ -62,9 +53,6 @@ public class StunEnemy : MonoBehaviour
         {
             _attackTime = 0f;
         }
-
-        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
-
     }
 
     private void Look()
@@ -80,7 +68,6 @@ public class StunEnemy : MonoBehaviour
             _attackTime = 0f;
             Attack();
         }
-        
     }
 
     private void Attack()

@@ -1,15 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricEnemy : MonoBehaviour, IEnemy
+public class BurstEnemy : MonoBehaviour, IEnemy
 {
-    private enum EnemyState
-    {
-        Look,
-        Move,
-        Attack,
-        GroundAttack,
+    private enum EnemyState { 
+        Look,          //íTÇ∑
+        Move,          //í«ê’
+        Wait,          //î≠éÀópà”(Ç¢ÇÁÇ»Ç¢)
+        Attack,        //î≠éÀ
         Damage
     }
 
@@ -17,18 +15,18 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
 
     private Transform _player;
     private Rigidbody _rb;
-    private CapsuleCollider _col;
-    private ElectricEnemyAttack _attack;
+    private Animator _anim;
+    private Burst_Attack _attack;
 
     public int Dir => _dir;
-    private int _dir = -1;
+    private int _dir = -1;//èâä˙ç∂å¸Ç´
+    private float _moveSpeed = 1.0f;
     private bool _moveStop = false;
-    private bool _isgroundatack = false;
-    private bool _isattack = false;
-    private float _lapseTime;
+    private float _attacktime = 0;
+
+    Vector3 velocity;
 
     private float _fallTime;
-    Vector3 velocity;
     Vector3 origin;
     private bool _isGrounded;
 
@@ -36,13 +34,13 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
     {
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
-        _col = GetComponent<CapsuleCollider>();
-        _attack = GetComponent<ElectricEnemyAttack>();
+        _anim = GetComponent<Animator>();
+        _attack = GetComponent<Burst_Attack>();
     }
 
     private void Start()
     {
-        _lapseTime = 0.0f;
+        
     }
 
     private void Update()
@@ -56,61 +54,56 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
             transform.rotation = Quaternion.Euler(0, 270, 0);
         }
 
-        Vector2 bounds = _col.bounds.size;
         RaycastHit hit;
-        origin = transform.position + Vector3.down * (bounds.y / 2);
+        origin = transform.position + Vector3.down;
         _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
-
+        //Debug.Log(_isGrounded);
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(origin, 0.4f);
+        Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
     }
 
     private void FixedUpdate()
     {
-        _lapseTime += Time.deltaTime;
+        velocity = _rb.velocity;
 
-        switch ( _state)
+        switch (_state)
         {
             case EnemyState.Look:
                 Look();
-                if (Vector3.Distance(transform.position, _player.position) < 15f)
+                _attacktime = 0.0f;
+                if (Vector3.Distance(transform.position, _player.position) < 10f)
                 {
-                    //Debug.Log("î≠å©");
                     _state = EnemyState.Move;
                 }
                 break;
 
             case EnemyState.Move:
-                if (Vector3.Distance(transform.position, _player.position) >20f)
+                _attacktime += Time.deltaTime;
+                Move();
+                
+                if (Vector3.Distance(transform.position, _player.position) > 20f)
                 {
                     _state = EnemyState.Look;
-                    break;
                 }
-                else if (Vector3.Distance(transform.position, _player.position) < 4f)
+                else if (_attacktime > 2f)
                 {
-                    //Debug.Log("çUåÇ");
                     _state = EnemyState.Attack;
-                    break;
                 }
-                else if (Vector3.Distance(transform.position, _player.position) < 7f
-                    && _lapseTime >= 3f)
-                {
-                    //Debug.Log("ínñ çUåÇ");
-                    _state = EnemyState.GroundAttack;
-                    break;
-                }
-                
-                Move();
+                break;
 
+            case EnemyState.Wait:
+                Wait();
                 break;
 
             case EnemyState.Attack:
-                if (!_isattack)
-                    StartCoroutine(Attack());
-                break;
-
-            case EnemyState.GroundAttack:
-                if(!_isgroundatack)
-                    StartCoroutine(GroundAttack());
+                Attack();
+                _attacktime = 0.0f;
+                _state = EnemyState.Move;
                 break;
         }
 
@@ -122,17 +115,17 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
         {
             _fallTime = 0f;
         }
+        _rb.velocity = velocity;
+
     }
 
     private void Look()
     {
-        //anim
+        _anim.SetInteger("Speed", 0);
     }
-
 
     private void Move()
     {
-        Vector3 velocity = _rb.velocity;
 
         if (_moveStop)
         {
@@ -143,7 +136,7 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
 
         if (_rb.position.x < _player.position.x)
         {
-            if (_dir == -1 || _dir == 0)
+            if(_dir == -1)
             {
                 StartCoroutine(Waitturn(1));
             }
@@ -151,23 +144,26 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
         }
         else
         {
-            if (_dir == 1 || _dir == 0)
+            if (_dir == 1)
             {
                 StartCoroutine(Waitturn(-1));
             }
             _dir = -1;
         }
-        velocity.x = _dir * 3f;
+        _anim.SetInteger("Speed", 1);
+        velocity.x = _dir * _moveSpeed;
 
-        _rb.velocity = velocity;
     }
 
+    //êUÇËï‘ÇÈÇ∆Ç´è≠ÇµóØÇ‹ÇÈ
     private IEnumerator Waitturn(int _newdirection)
     {
         _moveStop = true;
         yield return new WaitForSeconds(0.5f);
+
         _dir = _newdirection;
         _moveStop = false;
+
         yield break;
     }
 
@@ -185,33 +181,14 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
         }
     }
 
-    private IEnumerator Attack()
+    private void Wait()
     {
-        _isattack = true;
-        _rb.velocity = Vector3.zero;
-        yield return new WaitForSeconds(1f);
-        _attack.ElectricAttack();
-        _lapseTime = 0;
 
-        yield return new WaitForSeconds(1f);
-        _state = EnemyState.Move;
-        _isattack = false;
-        yield break;
     }
 
-    private IEnumerator GroundAttack()
+    private void Attack()
     {
-        _isgroundatack = true;
-        _rb.velocity = Vector3.zero;
-        _attack.ElectricGroundAttack();
-        yield return new WaitForSeconds(2f);
-        //ÉCÉìÉXÉ^ÉìÉXâª
-        
-        _lapseTime = 0;
-
-        _state = EnemyState.Move;
-        _isgroundatack = false;
-        yield break;
+        StartCoroutine(_attack.GunAttack());
     }
 
     #region îÌÉ_ÉÅèàóù
@@ -219,15 +196,15 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
     {
         yield return new WaitForSeconds(time);
         _state = EnemyState.Look;
-        yield break;
+        yield break ;
     }
 
-    public void SKnockBack(int dir, int knockback)
+    public void SKnockBack(int dir,int knockback)
     {
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(1f));
+        StartCoroutine(_ReturnNormal(0.5f));
         //anim
     }
 
@@ -236,7 +213,7 @@ public class ElectricEnemy : MonoBehaviour, IEnemy
         _rb.velocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(2f));
+        StartCoroutine(_ReturnNormal(1.0f));
         //anim
     }
 
