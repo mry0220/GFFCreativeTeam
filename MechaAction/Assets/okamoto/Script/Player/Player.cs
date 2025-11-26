@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     private Rigidbody _rb;
     private CapsuleCollider _col;
     private Animator _anim;
+    private DirectionTarget _dirtarget;
 
     private Vector2 _moveVector;
     private Vector2 _inputVector;
@@ -73,6 +74,7 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _col = GetComponent<CapsuleCollider>();
         _anim = GetComponent<Animator>();
+        _dirtarget = GetComponent<DirectionTarget>();
     }
 
     private void Start()
@@ -232,17 +234,29 @@ public class Player : MonoBehaviour
             new Vector3(mousePos.x, mousePos.y, 10f)//Camera.main.nearClipPlane
         );
 
+        Vector3 currentPos;
 
-        if (transform.position.x < worldPos.x && !_isDash)
+        if(_dirtarget.CurrentTarget != null)
         {
-            _lookDir = 1;
-            _isRight = true;
+            currentPos = _dirtarget.CurrentTarget.position;
+            Debug.Log("target");
         }
-        else if (transform.position.x > worldPos.x && !_isDash)
+        else
         {
-            _lookDir = -1;
-            _isLeft = true;
+            currentPos = worldPos;
         }
+            
+
+        if (transform.position.x < currentPos.x && !_isDash)
+                {
+                    _lookDir = 1;
+                    _isRight = true;
+                }
+                else if (transform.position.x > currentPos.x && !_isDash)
+                {
+                    _lookDir = -1;
+                    _isLeft = true;
+                }
     }
 
     private void _InputDetection()

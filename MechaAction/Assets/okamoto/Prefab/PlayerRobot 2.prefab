@@ -1401,6 +1401,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3b54dc83e4e22ae43b4b8aae6c65b99d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7478448549912387922}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3b54dc83e4e22ae43b4b8aae6c65b99d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6643987783968606152}
   m_SourcePrefab: {fileID: 100100000, guid: 3b54dc83e4e22ae43b4b8aae6c65b99d, type: 3}
 --- !u!4 &7730646539912941338 stripped
 Transform:
@@ -1501,7 +1504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf74aa860bb9fa4d9ac54fa108dcb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lookDir: 0
   _isBan: 0
   _moveSpeed: 7
   _jumpPower: 13
@@ -1535,6 +1537,20 @@ MonoBehaviour:
   ShotGun: {fileID: 5403542779400824609}
   _sword: {fileID: 5505920910884964314}
   _gun: {fileID: 3853982430810986503}
+--- !u!114 &6643987783968606152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9164812986825758788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d194645bd43d649af4bf411d1393b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1368975774404563219, guid: 0faeca8a4cd5bee4d8a6e719db6308b3, type: 3}
+  rectTransform: {fileID: 198027087210186268, guid: 0faeca8a4cd5bee4d8a6e719db6308b3, type: 3}
 --- !u!1001 &8741220152380840397
 PrefabInstance:
   m_ObjectHideFlags: 0

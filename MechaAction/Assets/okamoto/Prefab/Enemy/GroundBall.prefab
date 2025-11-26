@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3952410604824938409}
   m_Layer: 7
   m_Name: GroundBall
-  m_TagString: Enemy
+  m_TagString: EnemyWeapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
