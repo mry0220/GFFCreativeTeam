@@ -68,17 +68,14 @@ public class DroneEnemy : MonoBehaviour, IEnemy
                 break;
 
             case EnemyState.STIFFNESS:
+                IsStiff = Stiffness();
+                if (IsStiff == false)
                 {
-                    IsStiff = Stiffness();
-                    if (IsStiff == false)
-                    {
-                        _state = EnemyState.DITECTION;
-                        //Debug.Log("false");
-                    }
-                    break;
+                    _state = EnemyState.DITECTION;
+                    //Debug.Log("false");
                 }
+                break;
         }
-
     }
 
     private bool IsStiff = true;
@@ -106,7 +103,6 @@ public class DroneEnemy : MonoBehaviour, IEnemy
 
     private void Attack()
     {
-        Debug.Log("Attack");
         StartCoroutine(_attack.Attack());
         _state = EnemyState.STIFFNESS;
     }

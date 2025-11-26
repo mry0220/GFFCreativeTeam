@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 2d383d55b073e8b4ba81cbe2f72afea2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -212,7 +212,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d3d443eb465686a4898d25576ea5f718, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -294,9 +294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4f795b481b74444bbe484c699b3302d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyattackSO: {fileID: 11400000, guid: 0cfcbf6313351a24e8996898f0cd9710, type: 2}
   _tireObj: {fileID: 6048664269891403861}
-  dir: 0
+  _enemyattackSO: {fileID: 11400000, guid: 0cfcbf6313351a24e8996898f0cd9710, type: 2}
 --- !u!114 &3717380765187867001
 MonoBehaviour:
   m_ObjectHideFlags: 0

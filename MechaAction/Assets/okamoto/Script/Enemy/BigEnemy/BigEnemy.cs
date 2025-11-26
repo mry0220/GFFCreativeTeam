@@ -1,5 +1,4 @@
 using System.Collections;
-
 using UnityEngine;
 
 public class BigEnemy : MonoBehaviour
@@ -12,23 +11,23 @@ public class BigEnemy : MonoBehaviour
         Jump,　　　　　//ジャンプ
         BigJump,       //大ジャンプ
         Wait,          //乱数
-        Attack         //近接攻撃
+        Attack,        //近接攻撃
+        Damage
     }
 
     private EnemyState _state = EnemyState.Look;
 
-    private Vector3 _spawnPos;//もとにもどるため
     private Transform _player;
     private Rigidbody _rb;
+    private Big_Attack _attack;
 
+
+    public int Dir => _dir;
+    private int _dir;
     private float _jumpPower = 13f;
     private float _bigjumpPower = 18f;
     private float _moveSpeed = 5f;
-
-    private bool _isGrounded;
     private bool _moveStop = false;
-    private int _direction = 0;
-
     private bool _iswait = false;//waitコルーチンの重複を防ぐ
     private bool _ismove = false;//moveコルーチンの重複を防ぐ
     private bool _ischarge = false;//chargeコルーチンの重複を防ぐ
@@ -36,23 +35,51 @@ public class BigEnemy : MonoBehaviour
     private bool _isbigjump = false;//bigjumpコルーチンの重複を防ぐ
     private bool _isattack = false;//attackコルーチンの重複を防ぐ
 
+    Vector3 velocity;
+
     private float _fallTime;
-    private float _fallSpeed;
+    Vector3 origin;
+    private bool _isGrounded;
 
     private void Awake()
     {
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
+        _attack = GetComponent<Big_Attack>();
     }
 
     private void Start()
     {
-        _spawnPos = transform.position;
+        
+    }
+
+    private void Update()
+    {
+        if (_dir == 1)
+        {
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+        else if (_dir == -1)
+        {
+            transform.rotation = Quaternion.Euler(0, 270, 0);
+        }
+
+        RaycastHit hit;
+        origin = transform.position + Vector3.down;
+        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
+        //Debug.Log(_isGrounded);
+        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(origin, 0.4f);
+        Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
     }
 
     private void FixedUpdate()
     {
-        Vector3 velocity = _rb.velocity;
+        velocity = _rb.velocity;
         switch (_state)
         {
             case EnemyState.Look:
@@ -65,13 +92,9 @@ public class BigEnemy : MonoBehaviour
                 break;
 
             case EnemyState.Move:
-                
-                //if (Vector3.Distance(transform.position, _player.position) > 17f)
-               // {
-               //     _state = EnemyState.Look;
-               // }
+               
                 Direction();
-                velocity.x = _direction * _moveSpeed;
+                velocity.x = _dir * _moveSpeed;
 
                 if (!_ismove)//コルーチンの重複防ぐ
                     StartCoroutine(MoveTimelimit());
@@ -106,22 +129,18 @@ public class BigEnemy : MonoBehaviour
 
         if (!_isGrounded)
         {
-            _fallTime += Time.deltaTime;
-
-            _fallSpeed = Physics.gravity.y * _fallTime * 3f * 3f; //Unityの標準重力に任せたいなら fallSpeed は不要
-
-            velocity.y += _fallSpeed * Time.fixedDeltaTime;
+            _Gravity();
         }
         else
         {
-            //velocity.x = 0f;
+            _fallTime = 0;
         }
         _rb.velocity = velocity;
     }
 
     private void Look()
     {
-        _direction = 0;
+        
     }
 
     private void Direction()
@@ -133,26 +152,39 @@ public class BigEnemy : MonoBehaviour
 
         if (_moveStop)
         {
-            _direction = 0;
             _rb.velocity = Vector3.zero;
             return;
         }
 
         if (_rb.position.x < _player.position.x)
         {
-            if (_direction == -1)
+            if (_dir == -1)
             {
                 StartCoroutine(Waitturn(1));
             }
-            _direction = 1;
+            _dir = 1;
         }
         else
         {
-            if (_direction == 1)
+            if (_dir == 1)
             {
                 StartCoroutine(Waitturn(-1));
             }
-            _direction = -1;
+            _dir = -1;
+        }
+    }
+
+    private void _Gravity()
+    {
+        _fallTime += Time.deltaTime;
+
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityの標準重力に任せたいなら fallSpeed は不要
+
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y速度に徐々に加算
+                                                        //Time.fixedDeltaTime 物理演算をフレームレートに依存させないため必須
+        if (velocity.y < -20f)//落下速度の制限
+        {
+            velocity.y = -20f;
         }
     }
 
@@ -162,7 +194,7 @@ public class BigEnemy : MonoBehaviour
         _moveStop = true;
         yield return new WaitForSeconds(0.5f);
 
-        _direction = _newdirection;
+        _dir = _newdirection;
         _moveStop = false;
 
         yield break;
@@ -185,7 +217,7 @@ public class BigEnemy : MonoBehaviour
         Debug.Log("Charge準備");
         yield return new WaitForSeconds(0.2f);
 
-        _rb.AddForce(_direction * 20f, 0f, 0f, ForceMode.Impulse);
+        _rb.AddForce(_dir * 20f, 0f, 0f, ForceMode.Impulse);
         yield return new WaitForSeconds(0.8f);
         _ischarge = false;
         _state = EnemyState.Wait;
@@ -199,7 +231,7 @@ public class BigEnemy : MonoBehaviour
         if (Vector3.Distance(transform.position, _player.position) < 5f)
         {
             Debug.Log("backjump");
-            _rb.AddForce(_direction * -7f, _jumpPower, 0f, ForceMode.Impulse);
+            _rb.AddForce(_dir * -7f, _jumpPower, 0f, ForceMode.Impulse);
             yield return new WaitForSeconds(0.8f);
 
             yield return new WaitForFixedUpdate(); //コルーチン内だとFixedUpdate(Update?)で
@@ -213,7 +245,7 @@ public class BigEnemy : MonoBehaviour
         else
         {
             Debug.Log("frontjump");
-            _rb.AddForce(_direction * 9f, _jumpPower, 0f, ForceMode.Impulse);
+            _rb.AddForce(_dir * 9f, _jumpPower, 0f, ForceMode.Impulse);
             yield return new WaitForSeconds(0.4f);
             if (_rand == 1)
             {
@@ -240,7 +272,7 @@ public class BigEnemy : MonoBehaviour
         Debug.Log("bigjump");
         //int _rand = Random.Range(1, 4);//1以上4未満
         
-        _rb.AddForce(_direction * 20f, _bigjumpPower, 0f, ForceMode.Impulse);
+        _rb.AddForce(_dir * 20f, _bigjumpPower, 0f, ForceMode.Impulse);
 
         yield return new WaitForSeconds(0.8f);
 
@@ -317,7 +349,7 @@ public class BigEnemy : MonoBehaviour
         _isattack = true;
         yield return new WaitForSeconds(0.5f);
 
-        Debug.Log("Attack");
+        _attack.Attack();
         _state = EnemyState.Wait;
         _isattack = false;
         yield break;
@@ -328,27 +360,46 @@ public class BigEnemy : MonoBehaviour
         yield return new WaitForFixedUpdate(); //コルーチン内だとFixedUpdate(Update?)で
                                                //上書きされnew Vector3が使えなため(AI参照)
         _rb.velocity = new Vector3(0f, -50f, 0f);
-        Debug.Log("JumpAttack");
+        _attack.JumpAttack();
         _state = EnemyState.Wait;
 
         yield break;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    #region 被ダメ処理
+    public IEnumerator _ReturnNormal(float time)
     {
-        if (collision.gameObject.CompareTag("Grounded"))
-        {
-            _fallTime = 0f;
-            _isGrounded = true;
-        }
+        yield return new WaitForSeconds(time);
+        _state = EnemyState.Look;
+        yield break;
     }
 
-    private void OnCollisionExit(Collision collision)
+    public void SKnockBack(int dir, int knockback)
     {
-        if (collision.gameObject.CompareTag("Grounded"))
-        {
-            _fallTime = 0f;
-            _isGrounded = false;
-        }
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(0.5f));
+        //anim
     }
+
+    public void BKnockBack(int dir, int knockback)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(1.0f));
+        //anim
+    }
+
+    public void ElectStun(int dir, int knockback, float electtime)
+    {
+        _rb.velocity = Vector3.zero;
+        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        _state = EnemyState.Damage;
+        StartCoroutine(_ReturnNormal(electtime));
+    }
+    #endregion
+
+
 }

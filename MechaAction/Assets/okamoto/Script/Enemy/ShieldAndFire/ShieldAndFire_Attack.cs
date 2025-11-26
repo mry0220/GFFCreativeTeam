@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Drone_Attack : MonoBehaviour
+public class ShieldAndFire_Attack : MonoBehaviour
 {
     [SerializeField] EnemyAttackSO _enemyattackSO;
     private int _damage;
@@ -12,11 +12,10 @@ public class Drone_Attack : MonoBehaviour
     private string _effectname;
     private string _audioname;
 
-    private DroneEnemy _enemy;
+    private ShieldAndFire _enemy;
     private int _dir;
 
-    [SerializeField] private Transform _muzzlepoint;
-    public GameObject _guneffect;
+    //public Transform _bulletPosition;
 
     public LayerMask ignoreLayer;
 
@@ -24,13 +23,13 @@ public class Drone_Attack : MonoBehaviour
 
     private void Awake()
     {
-        _enemy = GetComponent<DroneEnemy>();
+        _enemy = GetComponent<ShieldAndFire>();
     }
 
     private void Start()
     {
         _clear = GManager.Instance.clear;
-        var attackData = _enemyattackSO.GetEffect("Drone");
+        var attackData = _enemyattackSO.GetEffect("ShieldAndFire");
         if (attackData != null)
         {
             _damage = (int)(attackData.Damage + (_clear * 10));
@@ -41,20 +40,16 @@ public class Drone_Attack : MonoBehaviour
             _audioname = attackData.AudioName;
         }
     }
+
     private void Update()
     {
         _dir = _enemy.Dir;
     }
 
-    public IEnumerator Attack()
+    public void Fire()
     {
-        var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
-        Destroy(G_effect, 2f); // アニメーションの長さに合わせて
-
-        yield return new WaitForSeconds(2f);
-
-        if (Physics.BoxCast(transform.position, Vector3.one * 0.5f, transform.forward * 0.5f, out RaycastHit hit, 
-            Quaternion.identity, 30f,~ignoreLayer))
+        if (Physics.BoxCast(transform.position, Vector3.one * 2f, transform.forward * 0.5f, out RaycastHit hit,
+            Quaternion.identity, 7f, ~ignoreLayer))
         {
             if (hit.collider.CompareTag("Player"))
             {
@@ -65,14 +60,6 @@ public class Drone_Attack : MonoBehaviour
                 }
             }
         }
-
-        yield break;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, 0.5f);
-        Gizmos.DrawWireSphere(transform.position + Vector3.one * 30f, 0.5f);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -82,7 +69,7 @@ public class Drone_Attack : MonoBehaviour
             var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);//敵のインターフェース<IDamage>取得
+                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
             }
         }
     }

@@ -10,6 +10,7 @@ TagManager:
   - JumpGimmick
   - DeadArea
   - UI
+  - Shield
   layers:
   - Default
   - TransparentFX

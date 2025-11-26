@@ -103,3 +103,21 @@ MonoBehaviour:
     bantime: 0
     effectname: DamageEffect
     audioname: hit_player_s
+  - enemyname: ShieldAndFire
+    damage: 1
+    knockback: 0
+    hitdamage: 9
+    hitknockback: 0
+    electtime: 0
+    bantime: 0
+    effectname: DamageEffect
+    audioname: hit_player_s
+  - enemyname: BigEnemy
+    damage: 1
+    knockback: 0
+    hitdamage: 9
+    hitknockback: 0
+    electtime: 0
+    bantime: 0
+    effectname: DamageEffect
+    audioname: hit_player_s
