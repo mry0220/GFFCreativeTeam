@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject _UIMenu;
     [SerializeField] private GameObject _UITutorial;
     [SerializeField] private GameObject _Tutorial;
+    [SerializeField] private GameObject _UIOption;
     private Fade _fade;
 
     private void Awake()
@@ -26,6 +27,7 @@ public class UIController : MonoBehaviour
         _UIGameOver.SetActive(false);//Awake‚¾‚Æ‘¼‚©‚çŽæ“¾‚Å‚«‚È‚¢
         _UIShop.SetActive(false);
         _UIMenu.SetActive(false);
+        _UIOption.SetActive(false);
        
     }
 
@@ -42,6 +44,11 @@ public class UIController : MonoBehaviour
     public void Menu(bool _open)
     {
         _UIMenu.SetActive(_open);
+    }
+
+    public void Option(bool _open)
+    {
+        _UIOption.SetActive(_open);
     }
 
     public void Tutorial()

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Quit : MonoBehaviour
 {
+    public void Option()
+    {
+        GManager.Instance.Option();
+    }
+
     public void QuitGame()
     {
         AudioManager.Instance.PlaySound("click");

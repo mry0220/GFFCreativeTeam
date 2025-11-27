@@ -8,11 +8,15 @@ public class CommandManager : MonoBehaviour
     private class Command
     {
         [SerializeField]
+        private int skillNumber;
+        [SerializeField]
         private string name; //‹Z–¼
         [SerializeField]
         private List<string> sequence; // “ü—Íè‡
         [SerializeField]
         private int maxFrameGap; //“ü—Í—P—\
+
+        public int SkillNumber => skillNumber;
         
         public string Name => name; //Name‚ğŒÄ‚Ño‚µ‚½‚Æ‚«name‚Ì’l‚ğ•Ô‚·
 
@@ -26,8 +30,9 @@ public class CommandManager : MonoBehaviour
         public int MaxFrameGap => maxFrameGap;
 
 
-        public Command(string name, List<string> sequence, int maxFrameGap)
+        public Command(int skillNumber ,string name, List<string> sequence, int maxFrameGap)
         {
+            this.skillNumber = skillNumber;
             this.name = name;
             this.sequence = sequence;
             this.maxFrameGap = maxFrameGap;
@@ -62,6 +67,8 @@ public class CommandManager : MonoBehaviour
     private InputAction _strongPunchAction;
     private InputAction _strongKickAction;
 
+    private Player_Attack _attack;
+
     private void Awake()
     {
         var map = inputActions.FindActionMap("Player"); //inputActionsAsset‚ÉŠÜ‚Ü‚ê‚éActionMap Player‚ğ‘ã“ü
@@ -77,6 +84,7 @@ public class CommandManager : MonoBehaviour
         _strongPunchAction.performed += ctx => AddInput("StrongPunch");
         _strongKickAction.performed += ctx => AddInput("StrongKick");
 
+        _attack = GetComponent<Player_Attack>();
      //   QualitySettings.vSyncCount = 0;
      //   Application.targetFrameRate = 60;
     }
@@ -130,13 +138,14 @@ public class CommandManager : MonoBehaviour
         int y = dir.y > 0.5f ? 3 : dir.y < -0.5f ? -3 : 0;
         int num = 5+x+y;
        // Debug.Log(_currentFrame);
-        if(num >= 1 && num <= 9 && num !=5)
+        if(num >= 1 && num <= 9 )//&& num != 5
         AddInput(num.ToString());
     }//“ü—Í•ûŒü‚ÌŠÇ—
 
     private void AddInput(string input) //“ü—Í—š—ğ‚ÌŠÇ—
     {
         _inputBuffer.Add(new InputData(input, _currentFrame));
+        if(input != "5")
         Debug.Log($"“ü—Í:{input} Frame: {_currentFrame}");
 
         if(_inputBuffer.Count > bufferLimit)
@@ -145,16 +154,17 @@ public class CommandManager : MonoBehaviour
 
     private void RegisterCommands() //ƒRƒ}ƒ“ƒh‹Z‚Ì“o˜^
     {
-        commandList.Add(new Command("Hadouken", new List<string> { "2", "3", "6", "Punch"}, 100));
-        commandList.Add(new Command("Reload", new List<string> { "2","5", "2", "Kick" }, 10));
-        commandList.Add(new Command("Shouryuken", new List<string> { "6", "2", "3", "Punch" }, 10));
-        commandList.Add(new Command("Tatsumakisenpukyaku", new List<string> { "2", "1", "4", "Kick" }, 10));
-        commandList.Add(new Command("TyrantRave", new List<string> { "6", "3", "2","1","4","6", "StrongPunch" }, 10));
-        commandList.Add(new Command("Shinkuuhadouken", new List<string> { "2", "3", "6","2","3","6", "StrongPunch" }, 10));
-        commandList.Add(new Command("Shinkuutatumakisenpukyaku", new List<string> { "2", "1", "4","2","1","4", "StrongKick" }, 10));
-        commandList.Add(new Command("GyakuyogaFlame", new List<string> { "6", "3", "2","1","4", "StrongPunch" }, 10));
-        commandList.Add(new Command("irukasan", new List<string> { "4", "4", "4","4","6", "StrongPunch" }, 10));
-       
+        commandList.Add(new Command(1,"Hadouken", new List<string> { "2", "3", "6", "Punch"}, 10));
+        commandList.Add(new Command(2,"Reload", new List<string> { "2","5", "2", "Kick" }, 10));
+        commandList.Add(new Command(3,"Shouryuken", new List<string> { "6", "2", "3", "Punch" }, 10));
+        commandList.Add(new Command(4,"Tatsumakisenpukyaku", new List<string> { "2", "1", "4", "Kick" }, 10));
+        commandList.Add(new Command(5,"TyrantRave", new List<string> { "6", "3", "2","1","4","6", "Punch" }, 10));
+        commandList.Add(new Command(6,"Shinkuuhadouken", new List<string> { "2", "3", "6","2","3","6", "StrongPunch" }, 10));
+        commandList.Add(new Command(7,"Shinkuutatumakisenpukyaku", new List<string> { "2", "1", "4","2","1","4", "StrongKick" }, 10));
+        commandList.Add(new Command(8,"GyakuyogaFlame", new List<string> { "6", "3", "2","1","4", "StrongPunch" }, 10));
+        commandList.Add(new Command(9,"irukasan", new List<string> { "4", "4", "4","4","6", "StrongPunch" }, 10));
+        commandList.Add(new Command(10,"Attack", new List<string> { "Punch" }, 10));
+
     }
 
     private void CheckCommands() // ‹Zo—Í“à—e‚ğŠÇ—
@@ -163,6 +173,18 @@ public class CommandManager : MonoBehaviour
         {
             if (MatchCommand(cmd))
             {
+                switch(cmd.SkillNumber)
+                {
+                    case 1: //”g“®Œ
+                        _attack.CallSlash();
+                        break;
+                    case 5:
+                        _attack.Calltatakituke();
+                        break;
+                    case 10:
+                        _attack.CallLeftAttack();
+                        break;
+                }
                 Debug.Log($"‹Z”­“®:{cmd.Name} Frame: {_currentFrame}");
                 _inputBuffer.Clear(); //—š—ğ‚Ì‰Šú‰»
                 break;

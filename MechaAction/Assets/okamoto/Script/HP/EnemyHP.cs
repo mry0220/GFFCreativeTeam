@@ -1,6 +1,7 @@
 
 using UnityEngine;
 
+using Critical;
 public class EnemyHP : MonoBehaviour,IDamage
 {
     [SerializeField] private int maxHP = 50; // HP
@@ -11,6 +12,7 @@ public class EnemyHP : MonoBehaviour,IDamage
 
     private int _clear;
     private Transform _player;
+    private CriticalDamage _criticaldamage = new CriticalDamage();
     private int currentHP;
     //[SerializeField] private float currentHealth; // デバッグ用にInspectorで確認可能になる
 
@@ -36,8 +38,12 @@ public class EnemyHP : MonoBehaviour,IDamage
     public void TakeDamage(int damage, int knockback, int dir, string audioname)
     {
         if (currentHP <= 0) return;
-
+        bool iscritical = false;
         AudioManager.Instance.PlaySound(audioname);
+        //クリティカル
+        damage = _criticaldamage.damage(ref iscritical, damage,50f);
+        if (iscritical) Debug.Log("クリティカル!");
+
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
         GManager.Instance.OnPlayerHit();

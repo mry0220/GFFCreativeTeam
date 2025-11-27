@@ -29,6 +29,7 @@ public class GManager : MonoBehaviour
     public int clear = 0;
     public float score = 0;
     private bool _isOpen = false;
+    private bool _isOption = false;
     private bool _isPlaying = false;
 
     public Vector3 currentpoint;
@@ -119,6 +120,12 @@ public class GManager : MonoBehaviour
         {
             Time.timeScale = 1f;
         }
+    }
+
+    public void Option()
+    {
+        _isOption =!_isOption;
+        _ui.Option(_isOption);
     }
 
     // ClampílÇïœçX

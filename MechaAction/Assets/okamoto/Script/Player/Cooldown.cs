@@ -32,22 +32,24 @@ namespace Cooltime
         }
     }
 }
-
-namespace Critical
+ namespace Critical
 {
 
     class CriticalDamage
     {
         const float PERCENT = 0.01f;
-        public double damage(int ATK = 0, float critical = 5f, float criticalDamage = 50f)
+
+        public int damage(ref bool isCritical,int ATK = 0, float critical = 5f, float criticalDamage = 50f)
         {
             float Crit = UnityEngine.Random.Range(1f, 100f);
 
-            return (Crit < critical) ? ATK + (ATK * (criticalDamage * PERCENT)) : ATK;
+            isCritical =  Crit < critical ? true : false;
+            return (Crit < critical) ?(int) (ATK + (ATK * (criticalDamage * PERCENT)) ): ATK;
 
         }
-
     }
+
+    
 
 }
 

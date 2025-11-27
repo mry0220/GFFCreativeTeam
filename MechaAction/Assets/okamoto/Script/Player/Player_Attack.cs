@@ -98,20 +98,34 @@ public class Player_Attack : MonoBehaviour
 
         _dir = _player.LookDir;
 
-        if(Input.GetMouseButtonDown(0))
-        {
-            LeftAttack();
-        }
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    LeftAttack();
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            tatakituke();
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    tatakituke();
+        //}
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            slash();
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    slash();
+        //}
+    }
+    public void CallLeftAttack()
+    {
+        LeftAttack();
+    }
+
+    public void Calltatakituke()
+    {
+        tatakituke();
+    }
+
+    public void CallSlash()
+    {
+        slash();
     }
 
     public void LeftAttack()
