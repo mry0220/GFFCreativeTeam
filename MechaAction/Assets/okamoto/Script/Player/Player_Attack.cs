@@ -17,6 +17,7 @@ public class Player_Attack : MonoBehaviour
     private Animator _anim;
     private Player _player;
     private int _dir;
+    private int _ammo = 10;
 
     private CoolDown coolDown = new CoolDown();
 
@@ -142,9 +143,7 @@ public class Player_Attack : MonoBehaviour
             _anim.SetInteger("AttackType", 0);
             _anim.SetTrigger("Attack");
             //_anim.ResetTrigger("Attack");
-
             _sword.leftAttack(_dir);
-
         }
         else if(_state == PlayerAttackType.Gun)
         {
@@ -153,10 +152,25 @@ public class Player_Attack : MonoBehaviour
 
             _anim.SetInteger("AttackType", 3);
             _anim.SetTrigger("Attack");
-            _gun.leftAttack(_dir);
+            if (_ammo > 0)
+            {
+                _gun.leftAttack(_dir);
+                _ammo -= 1;
+            }
+                
 
             _player._ReturnNormal();//ƒVƒOƒiƒ‹‚Å‚«‚È‚©‚Á‚½...
         }
+    }
+
+    public void Relod()
+    {
+        if(_state == PlayerAttackType.Gun)
+        {
+            _ammo = 10;
+            Debug.Log("relod");
+        }
+       
     }
 
     //[SerializeField]bool test = false;
@@ -169,7 +183,7 @@ public class Player_Attack : MonoBehaviour
             if (!_player.CanMove || _tatakitukecoroutine != null) return;
             _player._ChangeState(PlayerState.Attack);
 
-            float cooltime = 3f - _SKILL;
+            float cooltime = 0f;//3f - _SKILL;
             _ui.GroundSkillCoolTime(cooltime);
 
             //test = false;
@@ -194,7 +208,7 @@ public class Player_Attack : MonoBehaviour
             HandGun.SetActive(false);
             ShotGun.SetActive(true);
 
-            float cooltime = 3f - _SKILL;
+            float cooltime = 0f;//3f - _SKILL;
             _ui.ShotgunSkillCoolTime(cooltime);
 
             _anim.SetInteger("AttackType", 3);
@@ -220,7 +234,7 @@ public class Player_Attack : MonoBehaviour
             if (!_player.CanMove || _slashcoroutine != null) return;
             _player._ChangeState(PlayerState.Attack);
 
-            float cooltime = 3f - _SKILL;
+            float cooltime = 0f;
             _ui.SlashSkillCoolTime(cooltime);
 
             _sword.enabled = true;
@@ -242,7 +256,7 @@ public class Player_Attack : MonoBehaviour
             HandGun.SetActive(false);
             ShotGun.SetActive(true);
 
-            float cooltime = 3f - _SKILL;
+            float cooltime = 0f;
             _ui.RifleSkillCoolTime(cooltime);
 
             _anim.SetInteger("AttackType", 3);

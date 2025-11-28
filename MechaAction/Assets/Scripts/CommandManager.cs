@@ -155,7 +155,7 @@ public class CommandManager : MonoBehaviour
     private void RegisterCommands() //ƒRƒ}ƒ“ƒh‹Z‚Ì“o˜^
     {
         commandList.Add(new Command(1,"Hadouken", new List<string> { "2", "3", "6", "Punch"}, 10));
-        commandList.Add(new Command(2,"Reload", new List<string> { "2","5", "2", "Kick" }, 10));
+        commandList.Add(new Command(2,"Reload", new List<string> { "2","5", "2", "Punch" }, 10));
         commandList.Add(new Command(3,"Shouryuken", new List<string> { "6", "2", "3", "Punch" }, 10));
         commandList.Add(new Command(4,"Tatsumakisenpukyaku", new List<string> { "2", "1", "4", "Kick" }, 10));
         commandList.Add(new Command(5,"TyrantRave", new List<string> { "6", "3", "2","1","4","6", "Punch" }, 10));
@@ -177,6 +177,8 @@ public class CommandManager : MonoBehaviour
                 {
                     case 1: //”g“®Œ
                         _attack.CallSlash();
+                        break;
+                    case 2: _attack.Relod();
                         break;
                     case 5:
                         _attack.Calltatakituke();
