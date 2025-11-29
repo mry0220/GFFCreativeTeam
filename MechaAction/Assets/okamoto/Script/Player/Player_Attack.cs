@@ -26,7 +26,6 @@ public class Player_Attack : MonoBehaviour
     private Coroutine _slashcoroutine;
     private Coroutine _riflecoroutine;
 
-
     private enum PlayerAttackType {
         Sowd,
         Gun
@@ -99,20 +98,24 @@ public class Player_Attack : MonoBehaviour
 
         _dir = _player.LookDir;
 
-        //if(Input.GetMouseButtonDown(0))
-        //{
-        //    LeftAttack();
-        //}
+        if(GManager.Instance.IsCommandEasy)
+        {
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    LeftAttack();
+            //}
 
-        //if (Input.GetKeyDown(KeyCode.Q))
-        //{
-        //    tatakituke();
-        //}
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                tatakituke();
+            }
 
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    slash();
-        //}
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                slash();
+            }
+        }
+
     }
     public void CallLeftAttack()
     {

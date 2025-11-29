@@ -39,7 +39,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     {
         if (currentHP <= 0) return;
         bool iscritical = false;
-        AudioManager.Instance.PlaySound(audioname);
+        //AudioManager.Instance.PlaySound(audioname);
         //クリティカル
         damage = _criticaldamage.damage(ref iscritical, damage,50f);
         if (iscritical) Debug.Log("クリティカル!");
@@ -73,7 +73,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     {
         if (currentHP <= 0) return;
 
-        AudioManager.Instance.PlaySound(audioname);
+        //AudioManager.Instance.PlaySound(audioname);
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ

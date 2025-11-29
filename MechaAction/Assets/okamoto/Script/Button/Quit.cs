@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class Quit : MonoBehaviour
 {
-    public void Option()
-    {
-        GManager.Instance.Option();
-    }
-
     public void QuitGame()
     {
-        AudioManager.Instance.PlaySound("click");
+        //AudioManager.Instance.PlaySound("click");
         Debug.Log("ゲーム終了");
 
         // ビルド後ならゲーム終了

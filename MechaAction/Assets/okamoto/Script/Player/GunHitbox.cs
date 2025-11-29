@@ -89,7 +89,7 @@ public class GunHitbox : MonoBehaviour
         var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
-        AudioManager.Instance.PlaySound("leftgun");
+        //AudioManager.Instance.PlaySound("leftgun");
 
         float dis = 10f + _RAY;
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
@@ -125,7 +125,7 @@ public class GunHitbox : MonoBehaviour
         var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
-        AudioManager.Instance.PlaySound("shotgun");
+        //AudioManager.Instance.PlaySound("shotgun");
 
         float dis = 3f + _RAY;
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
@@ -174,7 +174,7 @@ public class GunHitbox : MonoBehaviour
         _audioname = _playerAttackSO.playerAttackList[5].AudioName;
         _dir = dir;
 
-        AudioManager.Instance.PlaySound("rifle");
+        //AudioManager.Instance.PlaySound("rifle");
 
 
         GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);

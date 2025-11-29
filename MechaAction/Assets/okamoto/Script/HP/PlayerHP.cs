@@ -91,7 +91,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             return;
         }
 
-        AudioManager.Instance.PlaySound(audioname);
+        //AudioManager.Instance.PlaySound(audioname);
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0);
@@ -142,7 +142,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             return;
         }
 
-        AudioManager.Instance.PlaySound(audioname);
+        //AudioManager.Instance.PlaySound(audioname);
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0);
@@ -194,7 +194,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
             return;
         }
 
-        AudioManager.Instance.PlaySound(audioname);
+        //AudioManager.Instance.PlaySound(audioname);
 
         var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
         if (attackData != null && attackData.HitEffect != null)
@@ -237,7 +237,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     // HPを回復させる。
     public void Heal(int healAmount, string effectname, string audioname)
     {
-        AudioManager.Instance.PlaySound("recover");
+        //AudioManager.Instance.PlaySound("recover");
         currentHP += healAmount;
 
         currentHP = Mathf.Min(currentHP, maxHP);

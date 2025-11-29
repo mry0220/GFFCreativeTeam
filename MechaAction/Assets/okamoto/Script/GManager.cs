@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GManager : MonoBehaviour
@@ -28,8 +29,10 @@ public class GManager : MonoBehaviour
     public int life = 2;
     public int clear = 0;
     public float score = 0;
-    private bool _isOpen = false;
+    private bool _isMenu = false;
     private bool _isOption = false;
+    public bool IsCommandEasy => _isCommandcheck;
+    private bool _isCommandcheck = false;
     private bool _isPlaying = false;
 
     public Vector3 currentpoint;
@@ -78,11 +81,20 @@ public class GManager : MonoBehaviour
 
     public void DisplayBestTime()
     {
-        float bestTime = SaveManager.Instance.Load().ClearTime;
-        if (bestTime < float.MaxValue)
-            BestTimeText.text = "Best Time: " + bestTime.ToString("F2") + "s";
-        else
+        var RecordData = SaveManager.Instance.Load();
+
+        if(RecordData.Records == null || RecordData.Records.Count == 0)
+        {
             BestTimeText.text = "Best Time: --";
+        }
+        else
+        {
+            float bestTime = RecordData.Records[0].ClearTime;
+            int Stage = RecordData.Records[0].ClearStage;
+
+            BestTimeText.text = "Best Time: " + bestTime.ToString("F2") + "s  STAGE:" 
+                + Stage;
+        }
     }
 
     public void ScoreUP(float _score)
@@ -104,15 +116,17 @@ public class GManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && _isPlaying)
         {
             Menu();
-            AudioManager.Instance.PlaySound("menu");
+            //AudioManager.Instance.PlaySound("menu");
         }
     }
 
     private void Menu()
     {
-        _isOpen = !_isOpen;
-        _ui.Menu(_isOpen);
-        if(_isOpen )
+        if (_isOption) return;
+
+        _isMenu = !_isMenu;
+        _ui.Menu(_isMenu);
+        if(_isMenu )
         {
             Time.timeScale = 0f;
         }
@@ -126,6 +140,11 @@ public class GManager : MonoBehaviour
     {
         _isOption =!_isOption;
         _ui.Option(_isOption);
+    }
+
+    public void CommandCheck(bool ischeck)
+    {
+        _isCommandcheck = ischeck;
     }
 
     // Clamp’l‚ð•ÏX
@@ -157,7 +176,7 @@ public class GManager : MonoBehaviour
     public IEnumerator DiePlayer()
     {
         _player.Dead();//Vector3.zero‚É‚·‚é‚½‚ß@ŒãÁ‚·
-        AudioManager.Instance.PlaySound("dead");
+        //AudioManager.Instance.PlaySound("dead");
         if (life <= 0)
         {
             _isTiming = false;
@@ -209,7 +228,7 @@ public class GManager : MonoBehaviour
 
     public void Clear()
     {
-        AudioManager.Instance.PlaySound("clear");
+        //AudioManager.Instance.PlaySound("clear");
         _player._ChangeState(PlayerState.Other);
         _isTiming = false;
         score +=baseScore * Mathf.Pow(targetTime / currentTime, rate);//(a,b) a‚Ìbæ
@@ -269,7 +288,7 @@ public class GManager : MonoBehaviour
         if (nextScene.name == "StageScene")
         {
             Time.timeScale = 1f;//menu‚ÌŽžŽ~‚ß‰ðœ•ÛŒ¯
-            AudioManager.Instance.StartGameMusic();
+            //AudioManager.Instance.StartGameMusic();
             if(clear == 0)
             {
                 _ui.Tutorial();
@@ -292,7 +311,7 @@ public class GManager : MonoBehaviour
 
         if(nextScene.name == "Title")
         {
-            AudioManager.Instance.StartTitleMusic();
+            //AudioManager.Instance.StartTitleMusic();
             _isPlaying = false;
             Time.timeScale = 1f;//menu‚ÌŽžŽ~‚ß‰ðœ•ÛŒ¯
         }
