@@ -11,6 +11,8 @@ public class GManager : MonoBehaviour
     private TextMeshProUGUI lifeText;
     private TextMeshProUGUI TimeText;
     private TextMeshProUGUI BestTimeText;
+    private Slider bgmSlider;
+    private Slider seSlider;
 
     public static GManager Instance;
 Å@Å@private CameraManager _mainCamera;
@@ -320,8 +322,5 @@ public class GManager : MonoBehaviour
         if (lifeText == null) Debug.Log("lifeText null");
         if (TimeText == null) Debug.Log("TimeText null");
         if (BestTimeText == null) Debug.Log("BestTimeText null");
-
-
-
     }
 }
