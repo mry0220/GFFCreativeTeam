@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,6 +52,11 @@ public class EnemySpawn : MonoBehaviour
     private void SpawnEnemy()
     {
         _currentEnemy = Instantiate(_enemy, transform.position, Quaternion.identity);
+    }
+
+    public void DeadClear()
+    {
+        _canspawn = true;
     }
 
     private void DespawnEnemy()

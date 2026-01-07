@@ -5,6 +5,7 @@ using UnityEngine;
 public class Cameralimit : MonoBehaviour
 {
     private AreaEnemySpawn _spawn;
+    private BossSpawn _bossSpawn;
 
     [SerializeField]
     public Vector2 cameraMin;
@@ -17,9 +18,14 @@ public class Cameralimit : MonoBehaviour
 
     private bool activated = false;
 
+    public bool _bosscheck;
+
     private void Start()
     {
-        _spawn = GetComponent<AreaEnemySpawn>();
+        if (_bosscheck == false)
+            _spawn = GetComponent<AreaEnemySpawn>();
+        else
+            _bossSpawn = GetComponent<BossSpawn>();
 
         if (invisibleWall != null)
             invisibleWall.SetActive(false);
@@ -35,7 +41,10 @@ public class Cameralimit : MonoBehaviour
 
         // ÉJÉÅÉâêßå¿Çê›íË
         GManager.Instance.SetCameraBounds(cameraMin, cameraMax);
-        _spawn.StartSpawn();
+        if (_bosscheck == false)
+            _spawn.StartSpawn();
+        else
+            _bossSpawn.StartSpawn();
 
         invisibleWall.SetActive(true);
 

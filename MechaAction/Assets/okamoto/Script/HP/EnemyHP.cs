@@ -1,10 +1,11 @@
 
-using UnityEngine;
-
 using Critical;
+using TMPro;
+using UnityEngine;
 public class EnemyHP : MonoBehaviour,IDamage
 {
-    [SerializeField] private int maxHP = 50; // HP
+    [SerializeField] private int maxHP; // HP
+    [SerializeField] private float skillgauge;
     [SerializeField] private float score;
     [SerializeField] private GameObject _recover;
     [SerializeField] DamageEffectSO _damageEffectSO;
@@ -16,17 +17,32 @@ public class EnemyHP : MonoBehaviour,IDamage
     private int currentHP;
     //[SerializeField] private float currentHealth; // デバッグ用にInspectorで確認可能になる
 
+    //[SerializeField]
+    //private GameObject _targets;
+    private GameObject _canvas;
+
+    [SerializeField]
+    private GameObject _damageUI;
+    [SerializeField]
+    private GameObject _criticaldamageUI;
+
     // IHealthインターフェースの実装（読み取り専用プロパティ）
     public int MaxHP => maxHP;
     public int CurrentHP => currentHP;
 
+    private void Awake()
+    {
+        _player = GameObject.FindWithTag("Player").transform;
+        _ienemy = GetComponent<IEnemy>();
+        _canvas = GameObject.Find("Canvas");
+    }
+
     void Start()
     {
         _clear = GManager.Instance.clear;
-        currentHP = maxHP + (_clear * 50);
+        maxHP = maxHP + (_clear * 50);
+        currentHP = maxHP;
         //Debug.Log("<color=red>" + gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
-        _player = GameObject.FindWithTag("Player").transform;
-        _ienemy = GetComponent<IEnemy>();
     }
 
     private void Update()
@@ -42,7 +58,15 @@ public class EnemyHP : MonoBehaviour,IDamage
         //AudioManager.Instance.PlaySound(audioname);
         //クリティカル
         damage = _criticaldamage.damage(ref iscritical, damage,50f);
-        if (iscritical) Debug.Log("クリティカル!");
+        if (iscritical)
+        {
+            Debug.Log("クリティカル!");
+            CriticalDamageUI(damage);
+        }
+        else
+        {
+            PopDamageUI(damage);
+        }
 
         currentHP -= damage;
         currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
@@ -119,7 +143,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     public void Die()
     {
         Debug.Log("<color=blue>" + gameObject.name + " (敵) は倒されました！");
-
+        GManager.Instance.SkillGauge(skillgauge);
         GManager.Instance.ScoreUP(score);
         int number = Random.Range(0, 100);
         if(number >= 0&&number < 30)
@@ -136,5 +160,59 @@ public class EnemyHP : MonoBehaviour,IDamage
 
         // 例3: オブジェクトをシーンから破壊
         Destroy(gameObject);
+    }
+
+    private void PopDamageUI(int damage)
+    {
+        var obj = new GameObject("Target");
+        var ui = Instantiate(_damageUI);
+
+        //obj.transform.SetParent(_targets.transform);
+        ui.transform.SetParent(_canvas.transform);
+
+        UIPosControl pos = ui.GetComponent<UIPosControl>();
+        pos.SetDamage(damage);
+
+        //pos.Initialize(transform.position + Vector3.up * 1.5f);
+
+        //null検知
+        ui.GetComponent<UIPosControl>().target = obj.transform;
+
+        //ui.transform.GetComponent<TextMeshPro>().text = damage.ToString();
+        ui.SetActive(true);
+
+        var circlePos = Random.insideUnitCircle * 1.2f;
+        obj.transform.position = transform.position + Vector3.up * Random.Range(3.0f, 4.0f) + new Vector3(circlePos.x, 0, circlePos.y);
+        ui.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, obj.transform.position);
+
+        Destroy(obj, 2.0f);
+        Destroy(ui, 2.0f);
+    }
+
+    private void CriticalDamageUI(int damage)
+    {
+        var obj = new GameObject("Target");
+        var ui = Instantiate(_criticaldamageUI);
+
+        //obj.transform.SetParent(_targets.transform);
+        ui.transform.SetParent(_canvas.transform);
+
+        UIPosControl pos = ui.GetComponent<UIPosControl>();
+        pos.SetDamage(damage);
+
+        //pos.Initialize(transform.position + Vector3.up * 1.5f);
+
+        //null検知
+        ui.GetComponent<UIPosControl>().target = obj.transform;
+
+        //ui.transform.GetComponent<TextMeshPro>().text = damage.ToString();
+        ui.SetActive(true);
+
+        var circlePos = Random.insideUnitCircle * 1.2f;
+        obj.transform.position = transform.position + Vector3.up * Random.Range(3.0f, 4.0f) + new Vector3(circlePos.x, 0, circlePos.y);
+        ui.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, obj.transform.position);
+
+        Destroy(obj, 2.0f);
+        Destroy(ui, 2.0f);
     }
 }

@@ -15,6 +15,7 @@ public class Burst_Attack : MonoBehaviour
     private int _dir;
     
     [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private GameObject _boundbulletPrefab;
     public Transform _bulletPosition;
 
     private int _clear;
@@ -46,11 +47,23 @@ public class Burst_Attack : MonoBehaviour
 
     public IEnumerator GunAttack()
     {
-        for(int i = 0;i < 3; i++)
+        if(_clear >= 2)
         {
-            GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
-            bullet.GetComponent<EnemyBullet>().Initialize(_damage ,_knockback,_dir,_effectname , _audioname);
-            yield return new WaitForSeconds(0.2f);
+            for (int i = 0; i < 3; i++)
+            {
+                GameObject bullet = Instantiate(_boundbulletPrefab, _bulletPosition.position, Quaternion.identity);
+                bullet.GetComponent<EnemyBoundBullet>().Initialize(_damage, _knockback, _dir, _effectname, _audioname);
+                yield return new WaitForSeconds(0.2f);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
+                bullet.GetComponent<EnemyBullet>().Initialize(_damage, _knockback, _dir, _effectname, _audioname);
+                yield return new WaitForSeconds(0.2f);
+            }
         }
         yield break;
     }

@@ -239,7 +239,7 @@ public class Player : MonoBehaviour
         if(_dirtarget.CurrentTarget != null)
         {
             currentPos = _dirtarget.CurrentTarget.position;
-            Debug.Log("target");
+            //Debug.Log("target");
         }
         else
         {
@@ -248,15 +248,15 @@ public class Player : MonoBehaviour
             
 
         if (transform.position.x < currentPos.x && !_isDash)
-                {
-                    _lookDir = 1;
-                    _isRight = true;
-                }
-                else if (transform.position.x > currentPos.x && !_isDash)
-                {
-                    _lookDir = -1;
-                    _isLeft = true;
-                }
+        {
+            _lookDir = 1;
+            _isRight = true;
+        }
+        else if (transform.position.x > currentPos.x && !_isDash)
+        {
+            _lookDir = -1;
+            _isLeft = true;
+        }
     }
 
     private void _InputDetection()

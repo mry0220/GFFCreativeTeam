@@ -1558,6 +1558,8 @@ MonoBehaviour:
   ShotGun: {fileID: 5403542779400824609}
   _sword: {fileID: 5505920910884964314}
   _gun: {fileID: 3853982430810986503}
+  ammoIconPrefab: {fileID: 5864573124106418277, guid: f1f687a8bc053134baa8a9ef6703918e, type: 3}
+  ammoParent: {fileID: 0}
 --- !u!114 &6643987783968606152
 MonoBehaviour:
   m_ObjectHideFlags: 0

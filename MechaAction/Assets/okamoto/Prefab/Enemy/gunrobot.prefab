@@ -568,6 +568,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyattackSO: {fileID: 11400000, guid: 0cfcbf6313351a24e8996898f0cd9710, type: 2}
   _bulletPrefab: {fileID: 6861717528325547553, guid: c763292e764631b47b1f6e728f1779b3, type: 3}
+  _boundbulletPrefab: {fileID: 6861717528325547553, guid: 517f4fea15653df4caecbcf4da6cb5a2, type: 3}
   _bulletPosition: {fileID: 6553791719920349512}
 --- !u!114 &-348296136037445994
 MonoBehaviour:
@@ -582,9 +583,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 100
+  skillgauge: 40
   score: 500
   _recover: {fileID: 5706645259647368609, guid: 755c596c7d4104c428a57f8f3098261c, type: 3}
   _damageEffectSO: {fileID: 11400000, guid: f82563ad8995a4d4398439183de62b42, type: 2}
+  _targets: {fileID: 2345407026311542380}
+  _damageUI: {fileID: 3893075969583050472, guid: d678dabc5aee90a459f1be8564ceac04, type: 3}
+  _criticaldamageUI: {fileID: 3893075969583050472, guid: 68aa95728cecad8409e47e9b4a4ea341, type: 3}
 --- !u!4 &3154595544294321366 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 36903cbac5712dd46ae32312a7ee4108, type: 3}

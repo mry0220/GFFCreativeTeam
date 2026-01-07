@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using Unity.VisualScripting;
 using UnityEngine;
 using Cooltime;
 
@@ -16,8 +14,26 @@ public class Player_Attack : MonoBehaviour
 
     private Animator _anim;
     private Player _player;
+    private DirectionTarget _dirtarget;
     private int _dir;
-    private int _ammo = 10;
+
+    [Header("UI")]
+    [SerializeField] private GameObject ammoIconPrefab;
+
+    private Transform ammoParent;
+    private int _currentammo;
+    private int _Maxammo = 10;
+    private List<GameObject> ammoIcons = new List<GameObject>();
+
+    private float _skillMax = 100;
+    private float _currectskill = 20;
+    private float _skilltime;
+
+    public float SkillMax => _skillMax;
+
+    public float Currentskill => _currectskill;
+
+    public bool _iselect = false;
 
     private CoolDown coolDown = new CoolDown();
 
@@ -40,12 +56,24 @@ public class Player_Attack : MonoBehaviour
         _anim = GetComponent<Animator>();
         _player = GetComponent<Player>();
         _ui = FindFirstObjectByType<SkillCoolTimeUI>();
+        _dirtarget = GetComponent<DirectionTarget>();
+
+        ammoParent = GameObject.Find("AmmoParent")?.transform;
     }
 
     private void Start()
     {
         _sword.enabled = false;
         ApplySkillUpgrades();
+
+        _currentammo = _Maxammo;
+
+        // 初期化
+        for (int i = 0; i < _Maxammo; i++)
+        {
+            GameObject icon = Instantiate(ammoIconPrefab, ammoParent);
+            ammoIcons.Add(icon);
+        }
     }
 
     private void ApplySkillUpgrades()
@@ -65,6 +93,11 @@ public class Player_Attack : MonoBehaviour
             _SKILL += 0.3f;
             Debug.Log("スキルアップ！");
         }
+    }
+
+    public void Skillgauge(float gauge)
+    {
+        _currectskill += gauge;
     }
 
     private void Update()
@@ -98,12 +131,21 @@ public class Player_Attack : MonoBehaviour
 
         _dir = _player.LookDir;
 
-        if(GManager.Instance.IsCommandEasy)
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if(_dirtarget._ischeck == false)
+                _dirtarget._ischeck = true;
+            else
+                _dirtarget._ischeck = false;
+        }
+
+        if (GManager.Instance.IsCommandEasy)//Optionで変更
         {
             //if (Input.GetMouseButtonDown(0))
             //{
             //    LeftAttack();
             //}
+            
 
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -114,6 +156,13 @@ public class Player_Attack : MonoBehaviour
             {
                 slash();
             }
+        }
+
+        _skilltime += Time.deltaTime;
+        if(_skilltime > 0.1)
+        {
+            _skilltime = 0;
+            _currectskill += 5f;
         }
 
     }
@@ -153,12 +202,15 @@ public class Player_Attack : MonoBehaviour
             HandGun.SetActive(true);
             ShotGun.SetActive(false);
 
-            _anim.SetInteger("AttackType", 3);
-            _anim.SetTrigger("Attack");
-            if (_ammo > 0)
+            
+            if (_currentammo > 0)
             {
+                _anim.SetInteger("AttackType", 3);
+                _anim.SetTrigger("Attack");
                 _gun.leftAttack(_dir);
-                _ammo -= 1;
+                _currentammo -= 1;
+                // 右端の弾を消す
+                ammoIcons[_currentammo].SetActive(false);
             }
                 
 
@@ -170,7 +222,12 @@ public class Player_Attack : MonoBehaviour
     {
         if(_state == PlayerAttackType.Gun)
         {
-            _ammo = 10;
+            _currentammo = _Maxammo;
+
+            foreach (var icon in ammoIcons)
+            {
+                icon.SetActive(true);
+            }
             Debug.Log("relod");
         }
        
@@ -181,6 +238,11 @@ public class Player_Attack : MonoBehaviour
 
     public void tatakituke()
     {
+        if (_iselect) return;//PlayerHPで管理したbool
+
+        if (_currectskill < 10) return;
+        _currectskill -= 10;
+
         if (_state == PlayerAttackType.Sowd)
         {
             if (!_player.CanMove || _tatakitukecoroutine != null) return;
@@ -232,6 +294,11 @@ public class Player_Attack : MonoBehaviour
 
     public void slash()
     {
+        if (_iselect) return;//PlayerHPで管理したbool
+
+        if (_currectskill < 10) return;
+        _currectskill -= 10;
+
         if (_state == PlayerAttackType.Sowd)
         {
             if (!_player.CanMove || _slashcoroutine != null) return;

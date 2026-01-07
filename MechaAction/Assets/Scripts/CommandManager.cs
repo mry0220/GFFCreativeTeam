@@ -146,7 +146,7 @@ public class CommandManager : MonoBehaviour
     {
         _inputBuffer.Add(new InputData(input, _currentFrame));
         if(input != "5")
-        Debug.Log($"“ü—Í:{input} Frame: {_currentFrame}");
+        //Debug.Log($"“ü—Í:{input} Frame: {_currentFrame}");
 
         if(_inputBuffer.Count > bufferLimit)
             _inputBuffer.RemoveAt(0);
@@ -187,7 +187,7 @@ public class CommandManager : MonoBehaviour
                         _attack.CallLeftAttack();
                         break;
                 }
-                Debug.Log($"‹Z”­“®:{cmd.Name} Frame: {_currentFrame}");
+                //Debug.Log($"‹Z”­“®:{cmd.Name} Frame: {_currentFrame}");
                 _inputBuffer.Clear(); //—š—ğ‚Ì‰Šú‰»
                 break;
             }

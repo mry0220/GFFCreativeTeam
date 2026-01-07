@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerHP : MonoBehaviour ,IPlayerDamage
 {
     private Player _player;
+    private Player_Attack _attack;
     [SerializeField] DamageEffectSO _damageEffectSO;
     private bool _isDeadArea = false;
 
@@ -21,7 +22,7 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
     public void Awake()
     {
         _player = GetComponent<Player>();
-        
+        _attack = GetComponent<Player_Attack>();
         
     }
 
@@ -182,8 +183,9 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         //_player._ChangeState(PlayerState.Other);
         //_player.Stun();//vector3.zero
         //StartCoroutine(_StateNormal(electtime));
+        StartCoroutine(_ElectTime(electtime));
 
-        
+
     }
 
     public void TakeBanDamage(float bantime, string effectname, string audioname)
@@ -218,6 +220,14 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         _player._isBan = true;
         yield return new WaitForSeconds(bantime);
         _player._isBan = false;
+        yield break;
+    }
+
+    private IEnumerator _ElectTime(float electtime)//ÉRÉ}ÉìÉhêßå¿
+    {
+        _attack._iselect = true;
+        yield return new WaitForSeconds(electtime);
+        _attack._iselect = false;
         yield break;
     }
 

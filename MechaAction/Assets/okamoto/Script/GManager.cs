@@ -11,8 +11,6 @@ public class GManager : MonoBehaviour
     private TextMeshProUGUI lifeText;
     private TextMeshProUGUI TimeText;
     private TextMeshProUGUI BestTimeText;
-    private Slider bgmSlider;
-    private Slider seSlider;
 
     public static GManager Instance;
 　　private CameraManager _mainCamera;
@@ -21,7 +19,9 @@ public class GManager : MonoBehaviour
     private Transform _playerposition;
     private Player _player;
     private PlayerHP _playerhp;
+    private Player_Attack _playerattack;
     private List<Cameralimit> _areaTriggers = new List<Cameralimit>(); 
+    private List<EnemySpawn> _enemySpawn = new List<EnemySpawn>();
 
     private float currentTime = 0f; // 現在のタイム
     private float targetTime = 180f; //基準タイム
@@ -104,6 +104,11 @@ public class GManager : MonoBehaviour
         score += _score;
     }
 
+    public void SkillGauge(float _gauge)
+    {
+        _playerattack.Skillgauge(_gauge);//とりあえず一回GMを経由させてる
+    }
+
     private void Update()
     {
         if (_isTiming)
@@ -119,6 +124,12 @@ public class GManager : MonoBehaviour
         {
             Menu();
             //AudioManager.Instance.PlaySound("menu");
+        }
+
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            clear++;
+            Debug.Log(clear);
         }
     }
 
@@ -175,6 +186,19 @@ public class GManager : MonoBehaviour
         }
     }
 
+    public void EnemySpawn(EnemySpawn area)
+    {
+        if(!_enemySpawn.Contains(area)) _enemySpawn.Add(area);
+    }
+
+    private void DeadEnemySpawn()
+    {
+        foreach(var area in _enemySpawn)
+        {
+            area.DeadClear();
+        }
+    }
+
     public IEnumerator DiePlayer()
     {
         _player.Dead();//Vector3.zeroにするため　後消す
@@ -188,6 +212,7 @@ public class GManager : MonoBehaviour
         }
 
         DeadAreaTrigger();//AreaEnemyのリセット
+        DeadEnemySpawn();//EnemySpawnのリセット
 
         _ui.FadeIn();                                                  //フェードインさせる
         yield return new WaitForSeconds(1.5f);
@@ -283,6 +308,7 @@ public class GManager : MonoBehaviour
             _player = _playerobj.GetComponent<Player>();
             _playerposition = _playerobj.transform;
             _playerhp = _playerobj.GetComponent<PlayerHP>();
+            _playerattack = _playerobj.GetComponent<Player_Attack>();
             currentpoint = _playerobj.transform.position;
         }
         _ui = FindFirstObjectByType<UIController>();
@@ -290,7 +316,7 @@ public class GManager : MonoBehaviour
         if (nextScene.name == "StageScene")
         {
             Time.timeScale = 1f;//menuの時止め解除保険
-            //AudioManager.Instance.StartGameMusic();
+            AudioManager.Instance.PlayBGM("244_BPM184");
             if(clear == 0)
             {
                 _ui.Tutorial();

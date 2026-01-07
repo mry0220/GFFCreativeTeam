@@ -16,6 +16,8 @@ public class DirectionTarget : MonoBehaviour
     private float _switchmouse = 3f;
     private Vector3 lastMousePos;
 
+    public bool _ischeck = true;
+
     private void Start()
     {
         TargetUI = GameObject.Find("Target");
@@ -36,11 +38,19 @@ public class DirectionTarget : MonoBehaviour
 
     private void Update()
     {
+        LockonTarget();
+
+        if (_ischeck == false)
+        {
+            currentTarget = null;
+            return;
+        }
+
         if (currentTarget == null)
             FindTarget();
         if (PlayerMovedMouse())
             SwitchTarget();
-        LockonTarget();
+       
     }
 
     private bool PlayerMovedMouse() //AI
@@ -121,7 +131,7 @@ public class DirectionTarget : MonoBehaviour
         if( bestTarget != null && bestDot > 0f) currentTarget = bestTarget;
     }
 
-    void LockonTarget()
+    private void LockonTarget()
     {
         if (currentTarget != null)
         {

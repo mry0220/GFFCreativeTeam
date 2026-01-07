@@ -158,8 +158,9 @@ public class BurstEnemy : MonoBehaviour, IEnemy
     //U‚è•Ô‚é‚Æ‚«­‚µ—¯‚Ü‚é
     private IEnumerator Waitturn(int _newdirection)
     {
+
         _moveStop = true;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
 
         _dir = _newdirection;
         _moveStop = false;
