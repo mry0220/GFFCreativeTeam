@@ -23,7 +23,7 @@ public class BigEnemy : MonoBehaviour
 
 
     public int Dir => _dir;
-    private int _dir;
+    private int _dir = -1;
     private float _jumpPower = 13f;
     private float _bigjumpPower = 18f;
     private float _moveSpeed = 5f;
@@ -66,7 +66,7 @@ public class BigEnemy : MonoBehaviour
 
         RaycastHit hit;
         origin = transform.position + Vector3.down;
-        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
+        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 2f, LayerMask.GetMask("Grounded"));
         //Debug.Log(_isGrounded);
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
     }
@@ -74,7 +74,7 @@ public class BigEnemy : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(origin, 0.4f);
-        Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
+        Gizmos.DrawWireSphere(origin + Vector3.down * 2f, 0.4f);
     }
 
     private void FixedUpdate()
@@ -232,7 +232,7 @@ public class BigEnemy : MonoBehaviour
         {
             Debug.Log("backjump");
             _rb.AddForce(_dir * -7f, _jumpPower, 0f, ForceMode.Impulse);
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(1f);
 
             yield return new WaitForFixedUpdate(); //コルーチン内だとFixedUpdate(Update?)で
                                                    //上書きされnew Vector3が使えなため(AI参照)
@@ -253,7 +253,7 @@ public class BigEnemy : MonoBehaviour
                 _isjump = false;
                 yield break;
             }
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.6f);
 
             yield return new WaitForFixedUpdate(); //コルーチン内だとFixedUpdate(Update?)で
                                                    //上書きされnew Vector3が使えなため(AI参照)
@@ -274,7 +274,7 @@ public class BigEnemy : MonoBehaviour
         
         _rb.AddForce(_dir * 20f, _bigjumpPower, 0f, ForceMode.Impulse);
 
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1f);
 
         yield return new WaitForFixedUpdate(); //コルーチン内だとFixedUpdate(Update?)で
                                                //上書きされnew Vector3が使えなため(AI参照)

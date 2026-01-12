@@ -9533,13 +9533,13 @@ GameObject:
   - component: {fileID: 784294950}
   - component: {fileID: 784294949}
   - component: {fileID: 784294948}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BigEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &784294948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19291,7 +19291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3154595544294321366, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
       propertyPath: m_LocalPosition.x

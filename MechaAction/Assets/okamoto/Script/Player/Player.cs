@@ -291,29 +291,38 @@ public class Player : MonoBehaviour
     {
         if(!CanMove) return;
 
-        if (_lookDir == 1)
+        if (_isRun)
         {
-            if (_isRun && _moveVector.x > 0f)
-            {
-                velocity.x = _moveVector.x * (_moveSpeed + _SPEED);
-            }
-            else
-            {
-                velocity.x = _moveVector.x * (_moveSpeed + _SPEED) * 0.5f;
-            }
+            velocity.x = _moveVector.x * (_moveSpeed + _SPEED);
         }
-        else if (_lookDir == -1)
+        else
         {
-            if (_isRun && _moveVector.x < 0f)
-            {
-                velocity.x = _moveVector.x * (_moveSpeed + _SPEED);
-            }
-            else
-            {
-                velocity.x = _moveVector.x * (_moveSpeed + _SPEED) * 0.5f;
-            }
+            velocity.x = _moveVector.x * (_moveSpeed + _SPEED) * 0.5f;
         }
-        
+
+        //if (_lookDir == 1)
+        //{
+        //    if (_isRun && _moveVector.x > 0f)
+        //    {
+        //        velocity.x = _moveVector.x * (_moveSpeed + _SPEED);
+        //    }
+        //    else
+        //    {
+        //        velocity.x = _moveVector.x * (_moveSpeed + _SPEED) * 0.5f;
+        //    }
+        //}
+        //else if (_lookDir == -1)
+        //{
+        //    if (_isRun && _moveVector.x < 0f)
+        //    {
+        //        velocity.x = _moveVector.x * (_moveSpeed + _SPEED);
+        //    }
+        //    else
+        //    {
+        //        velocity.x = _moveVector.x * (_moveSpeed + _SPEED) * 0.5f;
+        //    }
+        //}
+
     }
 
     private void _Jump()
@@ -379,18 +388,18 @@ public class Player : MonoBehaviour
         _fallTime = 0f;
 
         float t = 0f;
-        float duration = 0.2f;
+        float duration = 0.3f;
         while (t < duration)
         {
             velocity = _rb.velocity;
             if (_lookDir == 1)
             {
-                velocity.x = _lookDir * 15f;
+                velocity.x = _lookDir * 30f;
                 velocity.y = 0f;
             }
             else if (_lookDir == -1)
             {
-                velocity.x = _lookDir * 15f;
+                velocity.x = _lookDir * 30f;
                 velocity.y = 0f;
             }
             //Debug.Log(velocity.x);
