@@ -10,6 +10,8 @@ TagManager:
   - JumpGimmick
   - DeadArea
   - UI
+  - Shield
+  - EnemyWeapon
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - UI
   - 
   - Enemy
-  - 
+  - IgnoreEnemy
   - PlayerWeapon
   - Grounded
   - 
