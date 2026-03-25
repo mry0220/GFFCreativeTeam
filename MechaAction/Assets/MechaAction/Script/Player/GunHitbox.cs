@@ -7,8 +7,9 @@ public class GunHitbox : MonoBehaviour
     [SerializeField] DamageEffectSO _damageEffectSO;
 
     [SerializeField] GameObject _bulletPrefab;
-    public Transform _bulletPosition;
-    [SerializeField] private Transform _muzzlepoint;
+    //public Transform _bulletPosition;
+    [SerializeField] private Vector3 _bulletPos;
+    //[SerializeField] private Transform _muzzlepoint;
     public GameObject _guneffect;
     public LayerMask ignoreLayer;
 
@@ -86,7 +87,9 @@ public class GunHitbox : MonoBehaviour
         _audioname = _playerAttackSO.playerAttackList[3].AudioName;
         _dir = dir;
 
-        var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
+        Vector3 _muzzlePos = transform.position + transform.forward * 3f;
+
+        var G_effect = Instantiate(_guneffect, _muzzlePos, Quaternion.identity);
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
         //AudioManager.Instance.PlaySound("leftgun");
@@ -122,7 +125,9 @@ public class GunHitbox : MonoBehaviour
         _audioname = _playerAttackSO.playerAttackList[4].AudioName;
         _dir = dir;
 
-        var G_effect = Instantiate(_guneffect, _muzzlepoint.position, Quaternion.identity);
+        Vector3 _muzzlePos = transform.position + transform.forward * 3f;
+
+        var G_effect = Instantiate(_guneffect, _muzzlePos, Quaternion.identity);
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
         //AudioManager.Instance.PlaySound("shotgun");
@@ -177,7 +182,7 @@ public class GunHitbox : MonoBehaviour
         //AudioManager.Instance.PlaySound("rifle");
 
 
-        GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
+        GameObject bullet = Instantiate(_bulletPrefab, _bulletPos, Quaternion.identity);
         bullet.GetComponent<Bullet>().Initialize(_damage, _knockback, _dir, _effectname, _audioname);
     }
 }

@@ -153,8 +153,8 @@ MonoBehaviour:
   _playerAttackSO: {fileID: 11400000, guid: e6919714f96cfcb4f83a64fd53c778aa, type: 2}
   _damageEffectSO: {fileID: 11400000, guid: f82563ad8995a4d4398439183de62b42, type: 2}
   _bulletPrefab: {fileID: 2955127634465797261, guid: c7e0a928d10818f489ba7cbf1b30fc9b, type: 3}
-  _bulletPosition: {fileID: 179992864802700081}
-  _muzzlepoint: {fileID: 3949001100002691245}
+  _bulletPos: {x: 0, y: -4, z: 0}
+  _muzzlePos: {x: 0, y: -3, z: 7}
   _guneffect: {fileID: 8096601808299530320, guid: 3ce882b87da1e2e45b35256a6ec89a92, type: 3}
   ignoreLayer:
     serializedVersion: 2
@@ -484,9 +484,9 @@ MonoBehaviour:
   _damageEffectSO: {fileID: 11400000, guid: f82563ad8995a4d4398439183de62b42, type: 2}
   _player: {fileID: 8386868496001303294}
   _slashPrefab: {fileID: 3958505048665104201, guid: 5b52b2916934bf847a2db5e162b074e2, type: 3}
-  _groundpoint: {fileID: 6391799158130696752}
+  _groundPos: {x: 0, y: -5, z: 10}
   _groundeffect: {fileID: 5017123816435258828, guid: e5b6293746fefda40a4ae5aa8b780a53, type: 3}
-  _slashPosition: {fileID: 179992864802700081}
+  _slashPos: {x: 0, y: -4, z: 0}
 --- !u!65 &2356736610971707424
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1559,7 +1559,7 @@ MonoBehaviour:
   _sword: {fileID: 5505920910884964314}
   _gun: {fileID: 3853982430810986503}
   ammoIconPrefab: {fileID: 5864573124106418277, guid: f1f687a8bc053134baa8a9ef6703918e, type: 3}
-  ammoParent: {fileID: 0}
+  _iselect: 0
 --- !u!114 &6643987783968606152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1572,6 +1572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d194645bd43d649af4bf411d1393b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ischeck: 1
 --- !u!1001 &8741220152380840397
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -72,8 +72,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _col = GetComponent<CapsuleCollider>();
-        _anim = GetComponent<Animator>();
+        _col = GetComponentInChildren<CapsuleCollider>();
+        _anim = GetComponentInChildren<Animator>();
         _dirtarget = GetComponent<DirectionTarget>();
     }
 

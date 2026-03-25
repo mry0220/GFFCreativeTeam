@@ -10,13 +10,14 @@ public class SwordHitbox : MonoBehaviour
     [SerializeField] PlayerAttackSO _playerAttackSO;
     [SerializeField] DamageEffectSO _damageEffectSO;
 
-    [SerializeField] private Transform _player;
     [SerializeField] private GameObject _slashPrefab;
-    [SerializeField] private Transform _groundpoint;
+    //[SerializeField] private Transform _groundpoint;
+    [SerializeField] private Vector3 _groundPos;
     public GameObject _groundeffect;
 
     private Collider _collider;
-    public Transform _slashPosition;
+    //[SerializeField] private Transform _slashPosition;
+    [SerializeField] private Vector3 _slashPos;
     private int _damage;
     private int _knockback;
     private string _effectname;
@@ -137,7 +138,9 @@ public class SwordHitbox : MonoBehaviour
 
         _dir = dir;
 
-        var slash = Instantiate(_slashPrefab, _slashPosition.position, Quaternion.identity);
+        var worldPos = transform.TransformPoint(_slashPos);
+
+        var slash = Instantiate(_slashPrefab, worldPos, Quaternion.identity);
         if(_dir < 0)
         {
             slash.transform.localScale = new Vector3(_dir*0.1f, 0.1f, 0.1f);
@@ -199,9 +202,10 @@ public class SwordHitbox : MonoBehaviour
     public void GroundAttackSignal()//グラウンドアタックをPlayerAttackシグナルでよぶ
     {
         Debug.Log("地面");
-        
 
-        var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
+        var worldPos = transform.TransformPoint(_groundPos);
+
+        var G_effect = Instantiate(_groundeffect, worldPos, Quaternion.identity);
         if (_dir < 0)
         {
             G_effect.transform.localScale = new Vector3(_dir * 0.1f, 0.1f, 0.1f);
