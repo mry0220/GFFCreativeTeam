@@ -15,7 +15,7 @@ public class SwordHitbox : MonoBehaviour
     [SerializeField] private Vector3 _groundPos;
     public GameObject _groundeffect;
 
-    private Collider _collider;
+    //private Collider _collider;
     //[SerializeField] private Transform _slashPosition;
     [SerializeField] private Vector3 _slashPos;
     private int _damage;
@@ -35,12 +35,12 @@ public class SwordHitbox : MonoBehaviour
 
     private void Awake()
     {
-        _collider = GetComponent<Collider>();
+        //_collider = GetComponent<Collider>();
     }
 
     private void Start()
     {
-        _collider.enabled = false; // スクリプトより先に物理無効化
+        //_collider.enabled = false; // スクリプトより先に物理無効化
         ApplySkillUpgrades();
     }
 
@@ -94,13 +94,13 @@ public class SwordHitbox : MonoBehaviour
     {
         // 攻撃開始時にリストをリセット
         hitTargets.Clear();
-        _collider.enabled = true;
+        //_collider.enabled = true;
         _groundattack = false;
     }
 
     public void ColliderEnabled()
     {
-        _collider.enabled = false;
+        //_collider.enabled = false;
     }
 
     public void leftAttack(int dir)
@@ -110,6 +110,8 @@ public class SwordHitbox : MonoBehaviour
         _effectname = _playerAttackSO.playerAttackList[0].EffectName;
         _audioname = _playerAttackSO.playerAttackList[0].AudioName;
         _dir = dir;
+
+
 
         //AudioManager.Instance.PlaySound("leftattack");
     }
@@ -148,57 +150,57 @@ public class SwordHitbox : MonoBehaviour
         slash.GetComponent<Slash>().Initialize(_damage, _knockback, _dir, _effectname,_audioname,_ELECTSLASH);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Enemy") && !hitTargets.Contains(other.gameObject))
-        {
-            var Interface = other.GetComponent<IDamage>();
-            if (Interface != null)
-            {
-                Interface.TakeDamage(_damage, _knockback, _dir , _audioname);//敵のインターフェース<IDamage>取得
-                hitTargets.Add(other.gameObject);
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Enemy") && !hitTargets.Contains(other.gameObject))
+    //    {
+    //        var Interface = other.GetComponent<IDamage>();
+    //        if (Interface != null)
+    //        {
+    //            Interface.TakeDamage(_damage, _knockback, _dir , _audioname);//敵のインターフェース<IDamage>取得
+    //            hitTargets.Add(other.gameObject);
 
-                var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                if (attackData != null && attackData.HitEffect != null)
-                {
-                    var rot = (_dir < 0) ? 180f : 0f;
-                    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.Euler(0, 0, rot));
-                    //Destroy(effect, 0.2f);
-                }
-            }
-        }
+    //            var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+    //            if (attackData != null && attackData.HitEffect != null)
+    //            {
+    //                var rot = (_dir < 0) ? 180f : 0f;
+    //                var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.Euler(0, 0, rot));
+    //                //Destroy(effect, 0.2f);
+    //            }
+    //        }
+    //    }
 
-        if (other.CompareTag("Grounded") && _groundattack)
-        {
-            //Debug.Log("地面");
-            //var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
-            //if (_dir < 0)
-            //{
-            //    G_effect.transform.localScale = new Vector3(_dir * 0.1f, 0.1f, 0.1f);
-            //}
-            //Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
+        
+    //}
+    //if (other.CompareTag("Grounded") && _groundattack)
+    //{
+    //    //Debug.Log("地面");
+    //    //var G_effect = Instantiate(_groundeffect, _groundpoint.position, Quaternion.identity);
+    //    //if (_dir < 0)
+    //    //{
+    //    //    G_effect.transform.localScale = new Vector3(_dir * 0.1f, 0.1f, 0.1f);
+    //    //}
+    //    //Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
-            //Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f + _GROUNDRADIUS);
-            //foreach (var hit in hits)
-            //{
-            //    if (hit.CompareTag("Enemy"))
-            //    {
-            //        // IDamageable 実装クラスへダメージ
-            //        var Interface = hit.GetComponent<IDamage>();
-            //        if (Interface != null) Interface.TakeDamage(_damage,_knockback,_dir, _audioname);
+    //    //Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f + _GROUNDRADIUS);
+    //    //foreach (var hit in hits)
+    //    //{
+    //    //    if (hit.CompareTag("Enemy"))
+    //    //    {
+    //    //        // IDamageable 実装クラスへダメージ
+    //    //        var Interface = hit.GetComponent<IDamage>();
+    //    //        if (Interface != null) Interface.TakeDamage(_damage,_knockback,_dir, _audioname);
 
-            //        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-            //        if (attackData != null && attackData.HitEffect != null)
-            //        {
-            //            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-            //            Destroy(effect, 0.2f);
-            //        }
-            //    }
-            //}
-            //_groundattack = false;
-        }
-    }
-
+    //    //        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+    //    //        if (attackData != null && attackData.HitEffect != null)
+    //    //        {
+    //    //            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+    //    //            Destroy(effect, 0.2f);
+    //    //        }
+    //    //    }
+    //    //}
+    //    //_groundattack = false;
+    //}
     public void GroundAttackSignal()//グラウンドアタックをPlayerAttackシグナルでよぶ
     {
         Debug.Log("地面");
@@ -212,23 +214,23 @@ public class SwordHitbox : MonoBehaviour
         }
         Destroy(G_effect, 0.2f); // アニメーションの長さに合わせて
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f + _GROUNDRADIUS);
-        foreach (var hit in hits)
-        {
-            if (hit.CompareTag("Enemy"))
-            {
-                // IDamageable 実装クラスへダメージ
-                var Interface = hit.GetComponent<IDamage>();
-                if (Interface != null) Interface.TakeDamage(_damage, _knockback, _dir, _audioname);
+        //Collider[] hits = Physics.OverlapSphere(transform.position, 1.5f + _GROUNDRADIUS);
+        //foreach (var hit in hits)
+        //{
+        //    if (hit.CompareTag("Enemy"))
+        //    {
+        //        // IDamageable 実装クラスへダメージ
+        //        var Interface = hit.GetComponent<IDamage>();
+        //        if (Interface != null) Interface.TakeDamage(_damage, _knockback, _dir, _audioname);
 
-                var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                if (attackData != null && attackData.HitEffect != null)
-                {
-                    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-                    Destroy(effect, 0.2f);
-                }
-            }
-        }
+        //        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+        //        if (attackData != null && attackData.HitEffect != null)
+        //        {
+        //            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+        //            Destroy(effect, 0.2f);
+        //        }
+        //    }
+        //}
         _groundattack = false;
     }
 
