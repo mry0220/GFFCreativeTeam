@@ -45,43 +45,43 @@ public class Slash : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        //Debug.Log("当たった");
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    //Debug.Log("当たった");
 
-        if (other.CompareTag("Enemy"))
-        {
-            if(_electslash)//audioは後に直接
-            {
-                var Interface_E = other.GetComponent<IDamage>();
-                if (Interface_E != null)
-                {
-                    Interface_E.TakeElectDamage(_damage, _knockback, _dir,5f, _audioname);//敵のインターフェース<IDamage>取得
+    //    if (other.CompareTag("Enemy"))
+    //    {
+    //        if(_electslash)//audioは後に直接
+    //        {
+    //            var Interface_E = other.GetComponent<IDamage>();
+    //            if (Interface_E != null)
+    //            {
+    //                Interface_E.TakeElectDamage(_damage, _knockback, _dir,5f, _audioname);//敵のインターフェース<IDamage>取得
 
-                    //var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                    //if (attackData != null && attackData.HitEffect != null)
-                    //{
-                    //    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-                    //    Destroy(effect, 0.2f);
-                    //}
-                }
+    //                //var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+    //                //if (attackData != null && attackData.HitEffect != null)
+    //                //{
+    //                //    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+    //                //    Destroy(effect, 0.2f);
+    //                //}
+    //            }
 
-                return;
-            }
+    //            return;
+    //        }
 
-            var Interface = other.GetComponent<IDamage>();
-            if (Interface != null)
-            {
-                Interface.TakeDamage(_damage, _knockback, _dir,_audioname);//敵のインターフェース<IDamage>取得
+    //        var Interface = other.GetComponent<IDamage>();
+    //        if (Interface != null)
+    //        {
+    //            Interface.TakeDamage(_damage, _knockback, _dir,_audioname);//敵のインターフェース<IDamage>取得
 
-                var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                if (attackData != null && attackData.HitEffect != null)
-                {
-                    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-                    //Destroy(effect, 0.2f);
-                }
-            }
-        }
-    }
+    //            var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+    //            if (attackData != null && attackData.HitEffect != null)
+    //            {
+    //                var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+    //                //Destroy(effect, 0.2f);
+    //            }
+    //        }
+    //    }
+    //}
 
 }

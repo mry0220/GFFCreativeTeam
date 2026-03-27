@@ -63,8 +63,8 @@ public class BurstEnemy : MonoBehaviour, IEnemy
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(origin, 0.4f);
-        Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
+        //Gizmos.DrawWireSphere(origin, 0.4f);
+        //Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
     }
 
     private void FixedUpdate()

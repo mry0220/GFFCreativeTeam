@@ -50,85 +50,90 @@ public class EnemyHP : MonoBehaviour,IDamage
         DistanceDead();
     }
 
-    //ダメージを受け、HPを減少させる処理
-    public void TakeDamage(int damage, int knockback, int dir, string audioname)
+    public void TakeDamage(DamageData data,DamageResult result)
     {
-        if (currentHP <= 0) return;
-        bool iscritical = false;
-        //AudioManager.Instance.PlaySound(audioname);
-        //クリティカル
-        damage = _criticaldamage.damage(ref iscritical, damage,50f);
-        if (iscritical)
-        {
-            Debug.Log("クリティカル!");
-            CriticalDamageUI(damage);
-        }
-        else
-        {
-            PopDamageUI(damage);
-        }
 
-        currentHP -= damage;
-        currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
-        GManager.Instance.OnPlayerHit();
-
-        if (damage >= 10)
-        {
-            if (knockback >= 0 && knockback < 5)
-            {
-                _ienemy.SKnockBack(dir, knockback);
-            }
-            if (knockback >= 5)
-            {
-                Debug.Log("Bkock");
-                _ienemy.BKnockBack(dir, knockback);
-            }
-        }
-
-        Debug.Log("<color=blue>" + gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
-
-        if (currentHP <= 0)
-        {
-            Die();
-        }
     }
 
-    public void TakeElectDamage(int damage,int knockback,int dir, float electtime, string audioname)
-    {
-        if (currentHP <= 0) return;
+    //ダメージを受け、HPを減少させる処理
+    //public void TakeDamage(int damage, int knockback, int dir, string audioname)
+    //{
+    //    if (currentHP <= 0) return;
+    //    bool iscritical = false;
+    //    //AudioManager.Instance.PlaySound(audioname);
+    //    //クリティカル
+    //    damage = _criticaldamage.damage(ref iscritical, damage,50f);
+    //    if (iscritical)
+    //    {
+    //        Debug.Log("クリティカル!");
+    //        CriticalDamageUI(damage);
+    //    }
+    //    else
+    //    {
+    //        PopDamageUI(damage);
+    //    }
 
-        //AudioManager.Instance.PlaySound(audioname);
+    //    currentHP -= damage;
+    //    currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
+    //    GManager.Instance.OnPlayerHit();
 
-        currentHP -= damage;
-        currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
-        GManager.Instance.OnPlayerHit();
+    //    if (damage >= 10)
+    //    {
+    //        if (knockback >= 0 && knockback < 5)
+    //        {
+    //            _ienemy.SKnockBack(dir, knockback);
+    //        }
+    //        if (knockback >= 5)
+    //        {
+    //            Debug.Log("Bkock");
+    //            _ienemy.BKnockBack(dir, knockback);
+    //        }
+    //    }
 
-        _ienemy.ElectStun(dir, knockback, electtime);
+    //    Debug.Log("<color=blue>" + gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+
+    //    if (currentHP <= 0)
+    //    {
+    //        Die();
+    //    }
+    //}
+
+    //public void TakeElectDamage(int damage,int knockback,int dir, float electtime, string audioname)
+    //{
+    //    if (currentHP <= 0) return;
+
+    //    //AudioManager.Instance.PlaySound(audioname);
+
+    //    currentHP -= damage;
+    //    currentHP = Mathf.Max(currentHP, 0); // 0未満にならないようにクランプ
+    //    GManager.Instance.OnPlayerHit();
+
+    //    _ienemy.ElectStun(dir, knockback, electtime);
   
 
-        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
-        if (attackData != null && attackData.HitEffect != null)
-        {
-            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-            Destroy(effect, 0.2f);
-        }
+    //    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
+    //    if (attackData != null && attackData.HitEffect != null)
+    //    {
+    //        var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+    //        Destroy(effect, 0.2f);
+    //    }
 
-        Debug.Log("<color=blue>" + gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+    //    Debug.Log("<color=blue>" + gameObject.name + " (敵) が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
-        if (currentHP <= 0)
-        {
-            Die();
-        }
-    }
+    //    if (currentHP <= 0)
+    //    {
+    //        Die();
+    //    }
+    //}
 
     // HPを回復させる処理 (敵にはあまり使わないかもしれないが、インターフェースの契約として実装)
-    public void Heal(int amount)
-    {
-        currentHP += amount;
-        currentHP = Mathf.Min(currentHP, maxHP); // 最大HPを超えないようにクランプ
+    //public void Heal(int amount)
+    //{
+    //    currentHP += amount;
+    //    currentHP = Mathf.Min(currentHP, maxHP); // 最大HPを超えないようにクランプ
 
-        Debug.Log(gameObject.name + " (敵) のHPが" + amount + "回復しました。残りHP: " + currentHP);
-    }
+    //    Debug.Log(gameObject.name + " (敵) のHPが" + amount + "回復しました。残りHP: " + currentHP);
+    //}
 
 
     private void DistanceDead()

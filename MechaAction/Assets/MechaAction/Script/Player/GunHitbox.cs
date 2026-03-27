@@ -97,24 +97,24 @@ public class GunHitbox : MonoBehaviour
         float dis = 10f + _RAY;
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
         Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, dis, Physics.AllLayers, QueryTriggerInteraction.Ignore))
-        {
-            if (hit.collider.CompareTag("Enemy"))
-            {
-                var Interface = hit.collider.GetComponent<IDamage>();
-                if (Interface != null)
-                {
-                    Interface.TakeDamage(_damage, _knockback, _dir, _audioname);//敵のインターフェース<IDamage>取得
+        //if (Physics.Raycast(ray, out RaycastHit hit, dis, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+        //{
+        //    if (hit.collider.CompareTag("Enemy"))
+        //    {
+        //        var Interface = hit.collider.GetComponent<IDamage>();
+        //        if (Interface != null)
+        //        {
+        //            Interface.TakeDamage(_damage, _knockback, _dir, _audioname);//敵のインターフェース<IDamage>取得
 
-                    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                    if (attackData != null && attackData.HitEffect != null)
-                    {
-                        var effect = Instantiate(attackData.HitEffect, hit.transform.position, Quaternion.identity);
-                        Destroy(effect, 0.2f);
-                    }
-                }
-            }
-        }
+        //            var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+        //            if (attackData != null && attackData.HitEffect != null)
+        //            {
+        //                var effect = Instantiate(attackData.HitEffect, hit.transform.position, Quaternion.identity);
+        //                Destroy(effect, 0.2f);
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     public void ShotGun(int dir)
@@ -134,41 +134,41 @@ public class GunHitbox : MonoBehaviour
 
         float dis = 3f + _RAY;
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.red);
-        if (Physics.BoxCast(transform.position, Vector3.one * (0.5f + _SHOTGUNRADIUS), transform.forward, out RaycastHit hit,Quaternion.identity, dis,~ignoreLayer))
-        {
-            if (hit.collider.CompareTag("Enemy"))
-            {
-                var Interface = hit.collider.GetComponent<IDamage>();
-                if (Interface != null)
-                {
-                    Interface.TakeDamage(_damage, _knockback, _dir, _audioname);//敵のインターフェース<IDamage>取得
+        //if (Physics.BoxCast(transform.position, Vector3.one * (0.5f + _SHOTGUNRADIUS), transform.forward, out RaycastHit hit,Quaternion.identity, dis,~ignoreLayer))
+        //{
+        //    if (hit.collider.CompareTag("Enemy"))
+        //    {
+        //        var Interface = hit.collider.GetComponent<IDamage>();
+        //        if (Interface != null)
+        //        {
+        //            Interface.TakeDamage(_damage, _knockback, _dir, _audioname);//敵のインターフェース<IDamage>取得
 
-                    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                    if (attackData != null && attackData.HitEffect != null)
-                    {
-                        var effect = Instantiate(attackData.HitEffect, hit.transform.position, Quaternion.identity);
-                        Destroy(effect, 0.2f);
-                    }
-                }
-            }
-        }
+        //            var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+        //            if (attackData != null && attackData.HitEffect != null)
+        //            {
+        //                var effect = Instantiate(attackData.HitEffect, hit.transform.position, Quaternion.identity);
+        //                Destroy(effect, 0.2f);
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     private void OnDrawGizmos()
     {
-        Vector3 halfExtents = Vector3.one * (0.5f + _SHOTGUNRADIUS);
-        float dis = 3f + _RAY; // ← BoxCastのdisと合わせる
-        Vector3 direction = transform.forward;
+        //Vector3 halfExtents = Vector3.one * (0.5f + _SHOTGUNRADIUS);
+        //float dis = 3f + _RAY; // ← BoxCastのdisと合わせる
+        //Vector3 direction = transform.forward;
 
-        // 始点と終点の中心を描画
-        Vector3 start = transform.position;
-        Vector3 end = start + direction * dis;
+        //// 始点と終点の中心を描画
+        //Vector3 start = transform.position;
+        //Vector3 end = start + direction * dis;
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(start, halfExtents * 2); // 始点（Boxのサイズ）
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawWireCube(start, halfExtents * 2); // 始点（Boxのサイズ）
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(end, halfExtents * 2);   // 終点（Boxのサイズ）
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawWireCube(end, halfExtents * 2);   // 終点（Boxのサイズ）
     }
 
     public void Rifle(int dir)

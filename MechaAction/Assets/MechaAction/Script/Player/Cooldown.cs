@@ -9,10 +9,6 @@ namespace Cooltime
     {
         const int MS = 1000;
 
-
-
-       
-
         public void DiraySkill(float coolTime = 0, Action<int> dirskill = null, Action skill = null, int dir = 0)
         {
             //Thread.Sleep((int)(coolTime * MS));

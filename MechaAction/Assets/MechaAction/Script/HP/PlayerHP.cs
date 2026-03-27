@@ -2,7 +2,7 @@ using System.Collections;
 
 using UnityEngine;
 
-public class PlayerHP : MonoBehaviour ,IPlayerDamage
+public class PlayerHP : MonoBehaviour ,IDamage
 {
     private Player _player;
     private Player_Attack _attack;
@@ -83,130 +83,192 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         }
     }
 
+    [SerializeField] private DamageEventSO m_damageEventSO;
+    [SerializeField] private EffectDataSO m_normalEffect;
+    [SerializeField] private EffectDataSO m_criticalEffect;
+    [SerializeField] private AudioDataSO m_audio;
+
+    public void TakeDamage(DamageData data, DamageResult result)
+    {
+        var defaultEffect = data.isCritical ? m_criticalEffect : m_normalEffect;
+
+        var effect = result.overrideEffect != null ? result.overrideEffect : defaultEffect;
+        var audio = result.overrideAudio != null ? result.overrideAudio : m_audio;
+
+        switch(data.type)
+        {
+            case DamageType.Normal:
+                ApplyDamage(data.damage);
+                break;
+            case DamageType.Electric:
+                ApplyDamage(data.damage);
+                ApplyElect(data.duration);
+                break;
+            case DamageType.Ban:
+                ApplyBan(data.duration);
+                break;
+            case DamageType.Heal:
+                ApplyHeal(data.damage);
+                break;
+        }
+
+        m_damageEventSO.Raise(new ApplyDamageEvent
+        {
+            hitPoint = transform.position,
+            effect = effect,
+            audio = audio,
+        });
+    }
+
+    private void ApplyDamage(int damage)
+    {
+
+    }
+
+    private void ApplyKnockBack(int damage,Vector3 dir)
+    {
+
+    }
+
+    private void ApplyElect(float duration)
+    {
+
+    }
+
+    private void ApplyBan(float duration)
+    {
+
+    }
+
+    private void ApplyHeal(int damage)
+    {
+
+    }
+
     //ダメージを受け、HPを減少させる。
-    public void TakeDamage(int damage, int knockback, int dir, string effectname, string audioname)
-    {
-        if (currentHP <= 0)
-        {
-            // 既に死亡している場合は処理をスキップ
-            return;
-        }
+    //public void TakeDamage(int damage, int knockback, int dir, string effectname, string audioname)
+    //{
+    //    if (currentHP <= 0)
+    //    {
+    //        // 既に死亡している場合は処理をスキップ
+    //        return;
+    //    }
 
-        //AudioManager.Instance.PlaySound(audioname);
+    //    //AudioManager.Instance.PlaySound(audioname);
 
-        currentHP -= damage;
-        currentHP = Mathf.Max(currentHP, 0);
-        knockback -= _KNOCKS;
-        knockback = Mathf.Max(knockback, 0);
+    //    currentHP -= damage;
+    //    currentHP = Mathf.Max(currentHP, 0);
+    //    knockback -= _KNOCKS;
+    //    knockback = Mathf.Max(knockback, 0);
 
-        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
-        if (attackData != null && attackData.HitEffect != null)
-        {
-            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-            Destroy(effect, 0.2f);
-        }
+    //    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
+    //    if (attackData != null && attackData.HitEffect != null)
+    //    {
+    //        var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+    //        Destroy(effect, 0.2f);
+    //    }
 
-        Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+    //    Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
 
-        // HPが0以下になったかチェック
-        if (currentHP <= 0)
-        {
-            Die();
-            return;
-        }
+    //    // HPが0以下になったかチェック
+    //    if (currentHP <= 0)
+    //    {
+    //        Die();
+    //        return;
+    //    }
 
-        if (damage >= 10)
-        {
-            if (knockback >= 0 && knockback < 5)
-            {
-                _player._ChangeState(PlayerState.Knockback);
-                _player.SKnockBack(dir, knockback);
-                StartCoroutine(_DamageTime(1f));
-                //StartCoroutine(_StateNormal(0.5f));//しぐなる
-            }
-            if (knockback >= 5)
-            {
-                _player._ChangeState(PlayerState.Knockback);
-                _player.BKnockBack(dir, knockback);
-                StartCoroutine(_DamageTime(1.5f));
-                //StartCoroutine(_StateNormal(1f));
-            }
-        }
+    //    if (damage >= 10)
+    //    {
+    //        if (knockback >= 0 && knockback < 5)
+    //        {
+    //            _player._ChangeState(PlayerState.Knockback);
+    //            _player.SKnockBack(dir, knockback);
+    //            StartCoroutine(_DamageTime(1f));
+    //            //StartCoroutine(_StateNormal(0.5f));//しぐなる
+    //        }
+    //        if (knockback >= 5)
+    //        {
+    //            _player._ChangeState(PlayerState.Knockback);
+    //            _player.BKnockBack(dir, knockback);
+    //            StartCoroutine(_DamageTime(1.5f));
+    //            //StartCoroutine(_StateNormal(1f));
+    //        }
+    //    }
         
-    }
+    //}
 
-    public void TakeElectDamage(int damage,int knockback,int dir,float electtime, string effectname, string audioname)
-    {
-        if (currentHP <= 0)
-        {
-            // 既に死亡している場合は処理をスキップ
-            return;
-        }
+    //public void TakeElectDamage(int damage,int knockback,int dir,float electtime, string effectname, string audioname)
+    //{
+    //    if (currentHP <= 0)
+    //    {
+    //        // 既に死亡している場合は処理をスキップ
+    //        return;
+    //    }
 
-        //AudioManager.Instance.PlaySound(audioname);
+    //    //AudioManager.Instance.PlaySound(audioname);
 
-        currentHP -= damage;
-        currentHP = Mathf.Max(currentHP, 0);
+    //    currentHP -= damage;
+    //    currentHP = Mathf.Max(currentHP, 0);
 
-        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
-        if (attackData != null && attackData.HitEffect != null)
-        {
-            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-            Destroy(effect, electtime);
-        }
+    //    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
+    //    if (attackData != null && attackData.HitEffect != null)
+    //    {
+    //        var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+    //        Destroy(effect, electtime);
+    //    }
 
-        Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP:" + currentHP);
+    //    Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP:" + currentHP);
 
-        if (currentHP <= 0)
-        {
-            Die();
-        }
+    //    if (currentHP <= 0)
+    //    {
+    //        Die();
+    //    }
 
-        if (damage >= 10)
-        {
-            if (knockback >= 0 && knockback < 5)
-            {
-                _player._ChangeState(PlayerState.Knockback);
-                _player.SKnockBack(dir, knockback);
-                StartCoroutine(_DamageTime(1f));
-                //StartCoroutine(_StateNormal(0.5f));//しぐなる
-            }
-            if (knockback >= 5)
-            {
-                _player._ChangeState(PlayerState.Knockback);
-                _player.BKnockBack(dir, knockback);
-                StartCoroutine(_DamageTime(1.5f));
-                //StartCoroutine(_StateNormal(1f));
-            }
-        }
+    //    if (damage >= 10)
+    //    {
+    //        if (knockback >= 0 && knockback < 5)
+    //        {
+    //            _player._ChangeState(PlayerState.Knockback);
+    //            _player.SKnockBack(dir, knockback);
+    //            StartCoroutine(_DamageTime(1f));
+    //            //StartCoroutine(_StateNormal(0.5f));//しぐなる
+    //        }
+    //        if (knockback >= 5)
+    //        {
+    //            _player._ChangeState(PlayerState.Knockback);
+    //            _player.BKnockBack(dir, knockback);
+    //            StartCoroutine(_DamageTime(1.5f));
+    //            //StartCoroutine(_StateNormal(1f));
+    //        }
+    //    }
 
-        //_player._ChangeState(PlayerState.Other);
-        //_player.Stun();//vector3.zero
-        //StartCoroutine(_StateNormal(electtime));
-        StartCoroutine(_ElectTime(electtime));
+    //    //_player._ChangeState(PlayerState.Other);
+    //    //_player.Stun();//vector3.zero
+    //    //StartCoroutine(_StateNormal(electtime));
+    //    StartCoroutine(_ElectTime(electtime));
 
 
-    }
+    //}
 
-    public void TakeBanDamage(float bantime, string effectname, string audioname)
-    {
-        if (currentHP <= 0)
-        {
-            // 既に死亡している場合は処理をスキップ
-            return;
-        }
+    //public void TakeBanDamage(float bantime, string effectname, string audioname)
+    //{
+    //    if (currentHP <= 0)
+    //    {
+    //        // 既に死亡している場合は処理をスキップ
+    //        return;
+    //    }
 
-        //AudioManager.Instance.PlaySound(audioname);
+    //    //AudioManager.Instance.PlaySound(audioname);
 
-        var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
-        if (attackData != null && attackData.HitEffect != null)
-        {
-            var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-            Destroy(effect, bantime);
-        }
+    //    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == effectname);//ラムダ形式AIで知った
+    //    if (attackData != null && attackData.HitEffect != null)
+    //    {
+    //        var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+    //        Destroy(effect, bantime);
+    //    }
 
-        StartCoroutine(_BanTime(bantime));
-    }
+    //    StartCoroutine(_BanTime(bantime));
+    //}
 
     private IEnumerator _StateNormal(float time)
     {
@@ -271,17 +333,17 @@ public class PlayerHP : MonoBehaviour ,IPlayerDamage
         //gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("DeadArea") && !_isDeadArea)//落下死亡isTrigger
-        {
-            _isDeadArea = true;//死亡判定2回チェック防止
-            Debug.Log("Die");
-            GManager.Instance.OnPlayerHit();//カメラ揺らす　GMでもどす
-            currentHP = 0;
-            Die();
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("DeadArea") && !_isDeadArea)//落下死亡isTrigger
+    //    {
+    //        _isDeadArea = true;//死亡判定2回チェック防止
+    //        Debug.Log("Die");
+    //        GManager.Instance.OnPlayerHit();//カメラ揺らす　GMでもどす
+    //        currentHP = 0;
+    //        Die();
+    //    }
+    //}
 
     public IEnumerator ResetHP()//GManagerから復活の命令
     {

@@ -49,24 +49,24 @@ public class Bullet : MonoBehaviour
         yield break;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        //Debug.Log("当たった");
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    //Debug.Log("当たった");
 
-        if (other.CompareTag("Enemy"))
-        {
-            var Interface = other.GetComponent<IDamage>();
-            if (Interface != null)
-            {
-                Interface.TakeDamage(_damage, _knockback, _dir, _audioname);//敵のインターフェース<IDamage>取得
+    //    if (other.CompareTag("Enemy"))
+    //    {
+    //        var Interface = other.GetComponent<IDamage>();
+    //        if (Interface != null)
+    //        {
+    //            Interface.TakeDamage(_damage, _knockback, _dir, _audioname);//敵のインターフェース<IDamage>取得
 
-                var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
-                if (attackData != null && attackData.HitEffect != null)
-                {
-                    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
-                    Destroy(effect, 0.2f);
-                }
-            }
-        }
-    }
+    //            var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ラムダ形式AIで知った
+    //            if (attackData != null && attackData.HitEffect != null)
+    //            {
+    //                var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
+    //                Destroy(effect, 0.2f);
+    //            }
+    //        }
+    //    }
+    //}
 }

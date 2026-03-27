@@ -17,18 +17,18 @@ public class Player : MonoBehaviour
 {
 
     private PlayerState _state = PlayerState.Standing;
-    private PlayerState state
-    {
-        get => _state;
-        set
-        {
-            if (IsDead　&& value != PlayerState.Respawn)//DeadかつRespawn以外
-            {
-                return;
-            }
-                _state = value;
-        }
-    }
+    //private PlayerState state
+    //{
+    //    get => _state;
+    //    set
+    //    {
+    //        if (IsDead　&& value != PlayerState.Respawn)//DeadかつRespawn以外
+    //        {
+    //            return;
+    //        }
+    //            _state = value;
+    //    }
+    //}
 
     public bool IsDead => _state == PlayerState.Dead;
 
@@ -130,20 +130,57 @@ public class Player : MonoBehaviour
             _canDash = false;
         }
 
-        Vector2 bounds = _col.bounds.size;
-        RaycastHit hit;
-        origin = transform.position + Vector3.down * (bounds.y / 2);
-        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1.5f, LayerMask.GetMask("Grounded"));
+        _isGrounded = IsGrounded();
+
+        //Vector2 bounds = _col.bounds.size;
+        //RaycastHit hit;
+        //origin = transform.position + Vector3.down * (bounds.y / 2);
+        //_isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1.5f, LayerMask.GetMask("Grounded"));
 
         //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
         //Debug.Log(velocity.x);
         //Debug.Log(_isGrounded);
     }
 
+    [SerializeField] private Transform m_groundCheck;
+    [SerializeField] private float m_radius = 0.3f;
+    [SerializeField] private float m_checkDistance = 0.5f;
+    [SerializeField] private LayerMask m_groundLayer;
+
+    private bool m_isGrounded;
+
+    bool IsGrounded()
+    {
+        return Physics.SphereCast(
+            m_groundCheck.position,
+            m_radius,
+            Vector3.down,
+            out RaycastHit hit,
+            m_checkDistance,
+            m_groundLayer
+        );
+    }
+
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(origin, 0.4f);
-        Gizmos.DrawWireSphere(origin + Vector3.down * 1.5f, 0.4f);
+
+        if (m_groundCheck == null) return;
+
+        Gizmos.color = Color.yellow;
+
+        // 開始地点
+        Gizmos.DrawWireSphere(m_groundCheck.position, m_radius);
+
+        // 終点
+        Vector3 end = m_groundCheck.position + Vector3.down * m_checkDistance;
+        Gizmos.DrawWireSphere(end, m_radius);
+
+        // 間を線でつなぐ
+        Gizmos.DrawLine(m_groundCheck.position, end);
+
+
+        //Gizmos.DrawWireSphere(origin, 0.4f);
+        //Gizmos.DrawWireSphere(origin + Vector3.down * 1.5f, 0.4f);
     }
 
     private void FixedUpdate()
@@ -208,7 +245,7 @@ public class Player : MonoBehaviour
 
     public void _ChangeState(PlayerState newState)
     {
-        state = newState;
+        _state = newState;
         //Debug.Log("stateが" + newState + "に変わった");
         if(newState == PlayerState.Attack && _isGrounded)
         {
@@ -219,7 +256,7 @@ public class Player : MonoBehaviour
 
     public void _ReturnNormal()
     {
-        state = PlayerState.Standing;
+        _state = PlayerState.Standing;
     }
 
     private void _MousePosition()
