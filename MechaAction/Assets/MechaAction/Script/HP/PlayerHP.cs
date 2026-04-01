@@ -1,11 +1,9 @@
 using System.Collections;
-
 using UnityEngine;
 
 public class PlayerHP : MonoBehaviour ,IDamage
 {
-    private Player _player;
-    private Player_Attack _attack;
+    [SerializeField] private Player m_player;
     [SerializeField] DamageEffectSO _damageEffectSO;
     private bool _isDeadArea = false;
 
@@ -21,8 +19,6 @@ public class PlayerHP : MonoBehaviour ,IDamage
     private float _UNB = 0f;
     public void Awake()
     {
-        _player = GetComponent<Player>();
-        _attack = GetComponent<Player_Attack>();
         
     }
 
@@ -31,7 +27,6 @@ public class PlayerHP : MonoBehaviour ,IDamage
         ApplySkillUpgrades();
         maxHP += _HP;
         currentHP = maxHP;
-        Debug.Log("<color=green>" + gameObject.name + "のHPが初期化されました: " + currentHP);
     }
 
     private void ApplySkillUpgrades()
@@ -83,6 +78,14 @@ public class PlayerHP : MonoBehaviour ,IDamage
         }
     }
 
+    private void Update()
+    {
+
+
+        Die();
+
+    }
+
     [SerializeField] private DamageEventSO m_damageEventSO;
     [SerializeField] private EffectDataSO m_normalEffect;
     [SerializeField] private EffectDataSO m_criticalEffect;
@@ -90,6 +93,9 @@ public class PlayerHP : MonoBehaviour ,IDamage
 
     public void TakeDamage(DamageData data, DamageResult result)
     {
+        //if (m_player.State == PlayerState.Invincible) return;
+        //m_player.ChangeState(PlayerState )
+
         var defaultEffect = data.isCritical ? m_criticalEffect : m_normalEffect;
 
         var effect = result.overrideEffect != null ? result.overrideEffect : defaultEffect;
@@ -99,6 +105,7 @@ public class PlayerHP : MonoBehaviour ,IDamage
         {
             case DamageType.Normal:
                 ApplyDamage(data.damage);
+                ApplyKnockBack(data.knockback,result.attackDir);
                 break;
             case DamageType.Electric:
                 ApplyDamage(data.damage);
@@ -122,10 +129,19 @@ public class PlayerHP : MonoBehaviour ,IDamage
 
     private void ApplyDamage(int damage)
     {
+        if (currentHP <= 0)
+        {
+            // 既に死亡している場合は処理をスキップ
+            return;
+        }
 
+        currentHP -= damage;
+        currentHP = Mathf.Max(currentHP, 0);
+
+        Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
     }
 
-    private void ApplyKnockBack(int damage,Vector3 dir)
+    private void ApplyKnockBack(int knockback,Vector3 dir)
     {
 
     }
@@ -168,7 +184,7 @@ public class PlayerHP : MonoBehaviour ,IDamage
     //        Destroy(effect, 0.2f);
     //    }
 
-    //    Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+    //    
 
     //    // HPが0以下になったかチェック
     //    if (currentHP <= 0)
@@ -273,25 +289,25 @@ public class PlayerHP : MonoBehaviour ,IDamage
     private IEnumerator _StateNormal(float time)
     {
         yield return new WaitForSeconds(time);
-        _player._ReturnNormal();
+        m_player._ReturnNormal();
         yield break;
     }
 
     private IEnumerator _BanTime(float bantime)//ジャンプ制限
     {
-        _player._isBan = true;
+        m_player._isBan = true;
         yield return new WaitForSeconds(bantime);
-        _player._isBan = false;
+        m_player._isBan = false;
         yield break;
     }
 
-    private IEnumerator _ElectTime(float electtime)//コマンド制限
-    {
-        _attack._iselect = true;
-        yield return new WaitForSeconds(electtime);
-        _attack._iselect = false;
-        yield break;
-    }
+    //private IEnumerator _ElectTime(float electtime)//コマンド制限
+    //{
+    //    _attack._iselect = true;
+    //    yield return new WaitForSeconds(electtime);
+    //    _attack._iselect = false;
+    //    yield break;
+    //}
 
     private IEnumerator _DamageTime(float time)
     {
@@ -321,11 +337,15 @@ public class PlayerHP : MonoBehaviour ,IDamage
     // HPが0になったときの死亡処理。（プレイヤー専用）
     public void Die()
     {
+        if (CurrentHP > 0) return;//死んでいるか
+
+        //プレイヤーのステータスがDeadか
+
         Debug.Log("<color=green>" + gameObject.name + "は倒されました。ゲームオーバー！");
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), true);
-        _player._ChangeState(PlayerState.Dead);
-        _player.Dead();//animとか
+        m_player.ChangeState(PlayerState.Dead);
+        m_player.Dead();//animとか
         StartCoroutine(GManager.Instance.DiePlayer());
 
         // ここにプレイヤー入力の無効化などの処理を追加
@@ -349,7 +369,7 @@ public class PlayerHP : MonoBehaviour ,IDamage
     {
         _isDeadArea = false;
         currentHP = MaxHP;
-        _player.Respawn();
+        m_player.Respawn();
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
         //   LayerMask.NameToLayer("Enemy"), false);
         //yield return new WaitForSeconds(1f);

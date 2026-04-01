@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-
 public enum PlayerState
 {
     Standing,    //立ち、動く、ジャンプ
@@ -13,42 +12,36 @@ public enum PlayerState
     Respawn     //唯一Deadをすり抜ける
 }
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ITeam
 {
+    private PlayerState m_state;
+    public PlayerState State { get => m_state; }
 
-    private PlayerState _state = PlayerState.Standing;
-    //private PlayerState state
-    //{
-    //    get => _state;
-    //    set
-    //    {
-    //        if (IsDead　&& value != PlayerState.Respawn)//DeadかつRespawn以外
-    //        {
-    //            return;
-    //        }
-    //            _state = value;
-    //    }
-    //}
+    [SerializeField] private TeamType m_team;
+    public TeamType Team { get => m_team; }
 
-    public bool IsDead => _state == PlayerState.Dead;
+    public bool IsDead => m_state == PlayerState.Dead;
 
-    public bool CanMove => _state == PlayerState.Standing;
+    public bool CanMove => m_state == PlayerState.Standing;
 
-    private Rigidbody _rb;
-    private CapsuleCollider _col;
-    private Animator _anim;
-    private DirectionTarget _dirtarget;
+    private Rigidbody m_rb;
+    private Animator m_anim;
+    private DirectionTarget m_dirtarget;
 
     private Vector2 _moveVector;
     private Vector2 _inputVector;
 
     private Vector3 velocity;
 
-    private bool _isGrounded;
+    private bool m_isGrounded;
     private bool _isJump = false;
     private bool _isSecondJump;
     private bool _isRun = false;
     private int _Runcount = 0;
+
+    private Vector3 m_forward;
+    public Vector3 Forward { get => m_forward; }
+
     private int _lookDir;
     public int LookDir => _lookDir;
 
@@ -64,21 +57,19 @@ public class Player : MonoBehaviour
 
     private float _fallTime;
 
-    private bool _isRight = false;
-    private bool _isLeft = false;
-
     private float _SPEED = 0f;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
-        _col = GetComponentInChildren<CapsuleCollider>();
-        _anim = GetComponentInChildren<Animator>();
-        _dirtarget = GetComponent<DirectionTarget>();
+        m_rb = GetComponent<Rigidbody>();
+        m_anim = GetComponentInChildren<Animator>();
+        m_dirtarget = GetComponent<DirectionTarget>();
     }
 
     private void Start()
     {
+        m_state = PlayerState.Standing;
+
         ApplySkillUpgrades();
     }
     private void ApplySkillUpgrades()
@@ -103,19 +94,14 @@ public class Player : MonoBehaviour
     private void Update()
     {
         _MousePosition();//マウスの位置取得
+
+        if(m_forward.x != 0)
+        {
+            float Yrot = m_forward.x > 0 ? 90f : 270f;
+            transform.rotation = Quaternion.Euler(0, Yrot, 0);
+        }
         
         _InputDetection();//ダッシュの２回入力検知
-
-        if (_isRight)
-        {
-            transform.rotation = Quaternion.Euler(0, 90, 0);
-            _isRight = false;
-        }
-        else if (_isLeft)
-        {
-            transform.rotation = Quaternion.Euler(0, 270, 0);
-            _isLeft = false;
-        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -125,29 +111,18 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1) && _canDash)
         {
-            _anim.SetFloat("Speed", 3);
+            m_anim.SetFloat("Speed", 3);
             StartCoroutine(_Dash());
             _canDash = false;
         }
 
-        _isGrounded = IsGrounded();
-
-        //Vector2 bounds = _col.bounds.size;
-        //RaycastHit hit;
-        //origin = transform.position + Vector3.down * (bounds.y / 2);
-        //_isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1.5f, LayerMask.GetMask("Grounded"));
-
-        //Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
-        //Debug.Log(velocity.x);
-        //Debug.Log(_isGrounded);
+        m_isGrounded = IsGrounded();
     }
 
     [SerializeField] private Transform m_groundCheck;
     [SerializeField] private float m_radius = 0.3f;
     [SerializeField] private float m_checkDistance = 0.5f;
     [SerializeField] private LayerMask m_groundLayer;
-
-    private bool m_isGrounded;
 
     bool IsGrounded()
     {
@@ -163,7 +138,6 @@ public class Player : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-
         if (m_groundCheck == null) return;
 
         Gizmos.color = Color.yellow;
@@ -177,10 +151,6 @@ public class Player : MonoBehaviour
 
         // 間を線でつなぐ
         Gizmos.DrawLine(m_groundCheck.position, end);
-
-
-        //Gizmos.DrawWireSphere(origin, 0.4f);
-        //Gizmos.DrawWireSphere(origin + Vector3.down * 1.5f, 0.4f);
     }
 
     private void FixedUpdate()
@@ -188,32 +158,32 @@ public class Player : MonoBehaviour
         _inputVector.x = Input.GetAxisRaw("Horizontal");
         _inputVector.y = Input.GetAxisRaw("Vertical");
 
-        if (_state == PlayerState.Dash) return;
+        if (m_state == PlayerState.Dash) return;
 
-        velocity = _rb.velocity; //一度変数にコピーしてから編集
+        velocity = m_rb.velocity; //一度変数にコピーしてから編集
         _moveVector.x = _inputVector.x; //ここに書くことで空中で左右に移動可能
 
-        _Move();
+        Move();
 
         _Jump();
 
         #region　歩きアニメーション
-        if(_isGrounded)
+        if(m_isGrounded)
         {
             //Debug.Log("moveanimation");
             if (velocity.x >= -1 && velocity.x <= 1)
             {
-                _anim.SetFloat("Speed", 0);
+                m_anim.SetFloat("Speed", 0);
                 //Debug.Log("Speed0");
             }
             else if ((velocity.x > 1 && velocity.x <= 4) || (velocity.x < 1 && velocity.x >= -4))
             {
-                _anim.SetFloat("Speed", 1);
+                m_anim.SetFloat("Speed", 1);
                 //Debug.Log("Speed1");
             }
             else
             {
-                _anim.SetFloat("Speed", 2);
+                m_anim.SetFloat("Speed", 2);
                 //Debug.Log("Speed2");
             }
         }
@@ -231,7 +201,7 @@ public class Player : MonoBehaviour
 
         #endregion
 
-        if (!_isGrounded)
+        if (!m_isGrounded)
         {
             _Gravity();
         }
@@ -240,23 +210,21 @@ public class Player : MonoBehaviour
             _fallTime = 0f;
         }
 
-        _rb.velocity = velocity; //編集した値を戻してrigidbodyで実行
+        m_rb.velocity = velocity; //編集した値を戻してrigidbodyで実行
     }
 
-    public void _ChangeState(PlayerState newState)
+    public void ChangeState(PlayerState newState)
     {
-        _state = newState;
-        //Debug.Log("stateが" + newState + "に変わった");
-        if(newState == PlayerState.Attack && _isGrounded)
+        m_state = newState;
+        if(newState == PlayerState.Attack && m_isGrounded)
         {
-            //Debug.Log("chengestate動きを止める");
-            _rb.velocity = Vector3.zero;
+            m_rb.velocity = Vector3.zero;
         }
     }
 
     public void _ReturnNormal()
     {
-        _state = PlayerState.Standing;
+        m_state = PlayerState.Standing;
     }
 
     private void _MousePosition()
@@ -273,26 +241,23 @@ public class Player : MonoBehaviour
 
         Vector3 currentPos;
 
-        if(_dirtarget.CurrentTarget != null)
+        if(m_dirtarget.CurrentTarget != null)
         {
-            currentPos = _dirtarget.CurrentTarget.position;
+            currentPos = m_dirtarget.CurrentTarget.position;
             //Debug.Log("target");
         }
         else
         {
             currentPos = worldPos;
         }
-            
 
-        if (transform.position.x < currentPos.x && !_isDash)
+        if (m_state == PlayerState.Dash) return;
+
+        Vector3 dir = currentPos - transform.position;
+
+        if(Mathf.Abs(dir.x) > 0.01f)
         {
-            _lookDir = 1;
-            _isRight = true;
-        }
-        else if (transform.position.x > currentPos.x && !_isDash)
-        {
-            _lookDir = -1;
-            _isLeft = true;
+            m_forward = new Vector3(Mathf.Sign(dir.x), 0, 0);
         }
     }
 
@@ -324,7 +289,7 @@ public class Player : MonoBehaviour
         prevHorizontal = _inputVector.x;
     }
 
-    private void _Move()
+    private void Move()
     {
         if(!CanMove) return;
 
@@ -367,13 +332,13 @@ public class Player : MonoBehaviour
         if (!CanMove) return;
         if (_isBan) return;//PlayerHPで管理したbool
 
-        if (_isGrounded)
+        if (m_isGrounded)
         {
             if (_isJump)
             {
-                _anim.SetTrigger("Jump");
+                m_anim.SetTrigger("Jump");
                 _fallTime = 0f;
-                _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
+                m_rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
                 _isJump = false;
             }
             _isSecondJump = true;
@@ -385,8 +350,8 @@ public class Player : MonoBehaviour
             {
                 velocity.y = 0f;//二段目で跳ね上がり防ぎ
                 _fallTime = 0f;
-                _anim.SetTrigger("Jump");
-                _rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
+                m_anim.SetTrigger("Jump");
+                m_rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
                 _isSecondJump = false;
             }
             if (_isJump)
@@ -417,30 +382,24 @@ public class Player : MonoBehaviour
     {
         if(!CanMove) yield break;
 
-        _ChangeState(PlayerState.Dash);
+        ChangeState(PlayerState.Dash);
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), true);
         _isDash = true;
-        Vector3 velocity = _rb.velocity;
+        Vector3 velocity = m_rb.velocity;
         _fallTime = 0f;
 
         float t = 0f;
         float duration = 0.3f;
         while (t < duration)
         {
-            velocity = _rb.velocity;
-            if (_lookDir == 1)
-            {
-                velocity.x = _lookDir * 30f;
-                velocity.y = 0f;
-            }
-            else if (_lookDir == -1)
-            {
-                velocity.x = _lookDir * 30f;
-                velocity.y = 0f;
-            }
+            velocity = m_rb.velocity;
+
+            velocity.x = m_forward.x * 30f;
+            velocity.y = 0f;
+
             //Debug.Log(velocity.x);
-            _rb.velocity = velocity;
+            m_rb.velocity = velocity;
             t += Time.deltaTime;
             yield return new WaitForFixedUpdate();  //コルーチン内でFixedUpdateできるのAIで知った
         }
@@ -453,33 +412,33 @@ public class Player : MonoBehaviour
 
     public void SKnockBack(int dir,int knockback)
     {
-        _rb.velocity = Vector3.zero;
-        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
-        _anim.SetTrigger("SKnock");
+        m_rb.velocity = Vector3.zero;
+        m_rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        m_anim.SetTrigger("SKnock");
     }
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
-        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
-        _anim.SetTrigger("BKnock");
+        m_rb.velocity = Vector3.zero;
+        m_rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+        m_anim.SetTrigger("BKnock");
     }
 
     public void Stun()//電撃ダメージで呼ぶ
     {
-        _rb.velocity = Vector3.zero;
+        m_rb.velocity = Vector3.zero;
     }
 
 
     public void Dead()
     {
-        _rb.velocity = Vector3.zero;
-        _anim.SetInteger("Dead", 1);
+        m_rb.velocity = Vector3.zero;
+        m_anim.SetInteger("Dead", 1);
     }
 
     public void Respawn()
     {
-        _anim.SetInteger("Dead", 0);
+        m_anim.SetInteger("Dead", 0);
 
     }
 
@@ -496,10 +455,10 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("JumpGimmick"))
         {
             _fallTime = 0f;
-            _rb.velocity = Vector3.zero;
-            _ChangeState(PlayerState.Other);
+            m_rb.velocity = Vector3.zero;
+            ChangeState(PlayerState.Other);
             StartCoroutine(Gimmick());
-            _rb.AddForce(0f,23f,0f, ForceMode.Impulse);
+            m_rb.AddForce(0f,23f,0f, ForceMode.Impulse);
         }
 
         //if (collision.gameObject.CompareTag("Grounded"))

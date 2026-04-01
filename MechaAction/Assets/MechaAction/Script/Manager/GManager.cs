@@ -104,11 +104,6 @@ public class GManager : MonoBehaviour
         score += _score;
     }
 
-    public void SkillGauge(float _gauge)
-    {
-        _playerattack.Skillgauge(_gauge);//とりあえず一回GMを経由させてる
-    }
-
     private void Update()
     {
         if (_isTiming)
@@ -217,7 +212,7 @@ public class GManager : MonoBehaviour
         _ui.FadeIn();                                                  //フェードインさせる
         yield return new WaitForSeconds(1.5f);
 
-        _player._ChangeState(PlayerState.Respawn);                     //一旦respawnに
+        _player.ChangeState(PlayerState.Respawn);                     //一旦respawnに
         life--;                                                        //life-1
         SetCameraBounds(_respawnmin, _respawnmax);
         _playerposition.position = currentpoint;
@@ -256,7 +251,7 @@ public class GManager : MonoBehaviour
     public void Clear()
     {
         //AudioManager.Instance.PlaySound("clear");
-        _player._ChangeState(PlayerState.Other);
+        _player.ChangeState(PlayerState.Other);
         _isTiming = false;
         score +=baseScore * Mathf.Pow(targetTime / currentTime, rate);//(a,b) aのb乗
         score = Mathf.Round(score * 100f) / 100f;

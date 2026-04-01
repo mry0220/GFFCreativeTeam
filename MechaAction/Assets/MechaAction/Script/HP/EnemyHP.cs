@@ -144,11 +144,15 @@ public class EnemyHP : MonoBehaviour,IDamage
         }
     }
 
+    [SerializeField] private FloatEvent m_skillevent;//PlayerAttack‚Ìskillgage‰ñ•œ
+
     // “G“Æ©‚Ì€–Sˆ—
     public void Die()
     {
         Debug.Log("<color=blue>" + gameObject.name + " (“G) ‚Í“|‚³‚ê‚Ü‚µ‚½I");
-        GManager.Instance.SkillGauge(skillgauge);
+        var skillpoint = 20;
+
+        m_skillevent.Raise(skillpoint);
         GManager.Instance.ScoreUP(score);
         int number = Random.Range(0, 100);
         if(number >= 0&&number < 30)

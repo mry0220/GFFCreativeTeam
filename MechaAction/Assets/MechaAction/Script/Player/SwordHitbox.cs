@@ -116,6 +116,32 @@ public class SwordHitbox : MonoBehaviour
         //AudioManager.Instance.PlaySound("leftattack");
     }
 
+    private Transform m_attackPos;
+    private Vector3 m_viewattackPos;
+    private float radius;
+
+    public void AttackCollider(DamageData data,Transform Pos)
+    {
+        Vector3 attackPos = Pos.position;
+
+        Collider[] hits = Physics.OverlapSphere(attackPos, radius);
+
+        foreach (var col in hits)
+        {
+            var damageable = col.GetComponent<IDamage>();
+            if (damageable == null) continue;
+
+            Vector3 hitPoint = col.ClosestPoint(attackPos);
+            Vector3 hitNormal = (hitPoint - attackPos).normalized;
+
+            DamageResult result = new DamageResult
+            {
+                hitPoint = hitPoint,
+                hitNormal = hitNormal
+            };
+        }
+    }
+
     //問題　連続した攻撃の際、アニメーションのシグナルか何かでClear();を呼ぶ必要あり
 
     public void tatakitukeAttack(int dir)
@@ -234,9 +260,12 @@ public class SwordHitbox : MonoBehaviour
         _groundattack = false;
     }
 
-    void OnDrawGizmosSelected()
-    {
-        //Gizmos.color = Color.yellow;
-        //Gizmos.DrawWireSphere(transform.position, 1.5f);
-    }
+    //アニメーションのシグナルでboolを切り替えて　攻撃アニメーション中に見れるようにしよう
+    //void OnDrawGizmosSelected()
+    //{
+    //    if (attackPoint == null) return;
+
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(attackPoint.position, radius);
+    //}
 }
