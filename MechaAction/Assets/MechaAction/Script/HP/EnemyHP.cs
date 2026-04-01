@@ -48,11 +48,90 @@ public class EnemyHP : MonoBehaviour,IDamage
     private void Update()
     {
         DistanceDead();
+        Die();
     }
 
-    public void TakeDamage(DamageData data,DamageResult result)
-    {
+    [SerializeField] private DamageEventSO m_damageEventSO;
+    [SerializeField] private EffectDataSO m_normalEffect;
+    [SerializeField] private EffectDataSO m_criticalEffect;
+    [SerializeField] private AudioDataSO m_audio;
 
+    public void TakeDamage(DamageData data, DamageResult result)
+    {
+        //if (m_player.State == PlayerState.Invincible) return;
+        //m_player.ChangeState(PlayerState )
+
+        var defaultEffect = data.isCritical ? m_criticalEffect : m_normalEffect;
+
+        var effect = result.overrideEffect != null ? result.overrideEffect : defaultEffect;
+        var audio = result.overrideAudio != null ? result.overrideAudio : m_audio;
+
+        switch (data.type)
+        {
+            case DamageType.Normal:
+                ApplyDamage(data.damage, data.isCritical, data.criticalRate);
+                ApplyKnockBack(data.knockback, data.attackDir);
+                break;
+            case DamageType.Electric:
+                ApplyDamage(data.damage, data.isCritical, data.criticalRate);
+                ApplyElect(data.duration);
+                break;
+            case DamageType.Ban:
+                ApplyBan(data.duration);
+                break;
+            case DamageType.Heal:
+                ApplyHeal(data.damage);
+                break;
+        }
+
+        m_damageEventSO.Raise(new ApplyDamageEvent
+        {
+            hitPoint = transform.position,
+            effect = effect,
+            audio = audio,
+        });
+    }
+
+    private void ApplyDamage(int damage, bool isCtitical, float criticalRate)
+    {
+        if (currentHP <= 0)
+        {
+            // 既に死亡している場合は処理をスキップ
+            return;
+        }
+
+        if (isCtitical)
+        {
+            damage = (int)(damage * criticalRate);
+        }
+
+        currentHP = Mathf.Clamp(currentHP - damage, 0, maxHP);
+
+        Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
+    }
+
+    private void ApplyKnockBack(int knockback, Vector3 dir)
+    {
+        //プレイヤーがノックバック中に操作を受け付けるのかどうか
+        //プレイヤーのステートを整理
+        //これらができてないと難しい
+    }
+
+    private void ApplyElect(float duration)
+    {
+        Debug.Log("Enemy is ElectAttack");
+    }
+
+    private void ApplyBan(float duration)
+    {
+        Debug.Log("Enemy is BanAttack");
+    }
+
+    private void ApplyHeal(int damage)
+    {
+        currentHP = Mathf.Clamp(currentHP + damage, 0, maxHP);
+
+        Debug.Log(gameObject.name + "のHPが" + damage + "回復しました。残りHP: " + currentHP);
     }
 
     //ダメージを受け、HPを減少させる処理
@@ -109,7 +188,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     //    GManager.Instance.OnPlayerHit();
 
     //    _ienemy.ElectStun(dir, knockback, electtime);
-  
+
 
     //    var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == "DamageEffect");//ラムダ形式AIで知った
     //    if (attackData != null && attackData.HitEffect != null)
@@ -147,18 +226,19 @@ public class EnemyHP : MonoBehaviour,IDamage
     [SerializeField] private FloatEvent m_skillevent;//PlayerAttackのskillgage回復
 
     // 敵独自の死亡処理
-    public void Die()
+    private void Die()
     {
         Debug.Log("<color=blue>" + gameObject.name + " (敵) は倒されました！");
         var skillpoint = 20;
 
         m_skillevent.Raise(skillpoint);
-        GManager.Instance.ScoreUP(score);
-        int number = Random.Range(0, 100);
-        if(number >= 0&&number < 30)
-        {
-            var recover = Instantiate(_recover, transform.position, Quaternion.identity);
-        }
+
+        //GManager.Instance.ScoreUP(score);
+        //int number = Random.Range(0, 100);
+        //if(number >= 0&&number < 30)
+        //{
+        //    var recover = Instantiate(_recover, transform.position, Quaternion.identity);
+        //}
         
         // 独自の敵の死亡処理を記述
         // 例1: スコアを加算する処理

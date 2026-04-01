@@ -1,15 +1,14 @@
+using Critical;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cooltime;
 
 public class Player_Attack : MonoBehaviour
 {
-    [SerializeField] private GameObject Sword;
-    [SerializeField] private GameObject HandGun;
-    [SerializeField] private GameObject ShotGun;
-    [SerializeField] private SwordHitbox _sword;
-    [SerializeField] private GunHitbox _gun;
+    [SerializeField] private GameObject m_swordObj;
+    [SerializeField] private GameObject m_handGunObj;
+    [SerializeField] private GameObject m_shotGunObj;
+
 
     private Animator _anim;
     [SerializeField] private Player m_player;
@@ -47,6 +46,13 @@ public class Player_Attack : MonoBehaviour
     private PlayerAttackType m_state = PlayerAttackType.Sowd;
 
     [SerializeField] private FloatEvent m_skillevent;
+    private CriticalDamage _criticaldamage = new CriticalDamage();
+
+    private int m_damage;
+    private float m_criticalRate;
+    private int m_knockback;
+    private DamageType m_type;
+    private float m_duration;
 
     private float _SKILL = 0f;
 
@@ -116,8 +122,8 @@ public class Player_Attack : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     m_state = PlayerAttackType.Gun;
-                    HandGun.SetActive(true);
-                    Sword.SetActive(false);
+                    m_handGunObj.SetActive(true);
+                    m_swordObj.SetActive(false);
                     //Debug.Log("GunMode");
                 }
 
@@ -126,9 +132,9 @@ public class Player_Attack : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     m_state = PlayerAttackType.Sowd;
-                    Sword.SetActive(true);
-                    HandGun.SetActive(false);
-                    ShotGun.SetActive(false);
+                    m_swordObj.SetActive(true);
+                    m_handGunObj.SetActive(false);
+                    m_shotGunObj.SetActive(false);
                     //Debug.Log("SowdMode");
                 }
 
@@ -205,18 +211,18 @@ public class Player_Attack : MonoBehaviour
         {
             _anim.SetInteger("AttackType", 0);
             _anim.SetTrigger("Attack");
-            _sword.leftAttack(_dir);
+            DefaultAttack();
         }
         else if(m_state == PlayerAttackType.Gun)
         {
-            HandGun.SetActive(true);
-            ShotGun.SetActive(false);
+            m_handGunObj.SetActive(true);
+            m_shotGunObj.SetActive(false);
 
             if (_currentammo > 0)
             {
                 _anim.SetInteger("AttackType", 3);
                 _anim.SetTrigger("Attack");
-                _gun.leftAttack(_dir);
+                DefaultGun();
                 _currentammo -= 1;
                 // 右端の弾を消す
                 ammoIcons[_currentammo].SetActive(false);
@@ -224,7 +230,6 @@ public class Player_Attack : MonoBehaviour
 
             m_player._ReturnNormal();//シグナルで呼べないから
         }
-       
     }
 
     public void Relod()
@@ -249,21 +254,20 @@ public class Player_Attack : MonoBehaviour
         {
             _anim.SetInteger("AttackType", 1);
             _anim.SetTrigger("Attack");
-         
-            _sword.tatakitukeAttack(_dir);
+
+            GroundAttack();
         }
         else if(m_state == PlayerAttackType.Gun)
         {
-            HandGun.SetActive(false);
-            ShotGun.SetActive(true);
+            m_handGunObj.SetActive(false);
+            m_shotGunObj.SetActive(true);
 
             _anim.SetInteger("AttackType", 3);
             _anim.SetTrigger("Attack");
 
-            _gun.ShotGun(_dir);
+            ShotGun();
 
             m_player._ReturnNormal();//シグナルで呼べないから
-
         }
     }
 
@@ -286,24 +290,22 @@ public class Player_Attack : MonoBehaviour
 
         if (m_state == PlayerAttackType.Sowd)
         {
-            _sword.enabled = true;
             _anim.SetTrigger("Attack");
             _anim.SetInteger("AttackType", 2);
 
-            _sword.slashAttack(_dir);
+            ElectAttack();
         }
         else if (m_state == PlayerAttackType.Gun)
         {
-            HandGun.SetActive(false);
-            ShotGun.SetActive(true);
+            m_handGunObj.SetActive(false);
+            m_shotGunObj.SetActive(true);
 
             _anim.SetInteger("AttackType", 3);
             _anim.SetTrigger("Attack");
 
-            _gun.Rifle(_dir);
+            RifleGun();
 
             m_player._ReturnNormal();//シグナルで呼べないから
-
         }
     }
 
@@ -312,16 +314,178 @@ public class Player_Attack : MonoBehaviour
         m_player._ReturnNormal();//最後に呼ぶ
     }
 
+    public void DataApply(AttackDataSO data)
+    {
+        m_damage = data.Damage;
+        m_criticalRate = data.CriticalRate;
+        m_knockback = data.Knockback;
+        m_type = data.Type;
+        m_duration = data.Duration;
+    }
+
+    //=============== Swod Attack =================
+
+    [SerializeField] private HitCollider m_DAttack;
+    [SerializeField] private AttackDataSO m_DAttackData;
+
+    public void DefaultAttack()
+    {
+        DataApply(m_DAttackData);
+
+        bool iscritical = false;
+        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+
+        if (iscritical) Debug.Log("クリティカル!");
+
+        DamageData data = new DamageData
+        {
+            damage = m_damage,
+            isCritical = iscritical,
+            criticalRate = m_criticalRate,
+            knockback = m_knockback,
+            type = m_type,
+            duration = m_duration,
+            attackDir = m_player.Forward
+        };
+
+        m_DAttack.AttackCollider(data, m_player.Team);
+        //effect.Play
+    }
+
+    [SerializeField] private AttackDataSO m_EAttackData;
+
+    public void ElectAttack()
+    {
+        DataApply(m_EAttackData);
+
+        bool iscritical = false;
+        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+
+        if (iscritical) Debug.Log("クリティカル!");
+
+        DamageData data = new DamageData
+        {
+            damage = m_damage,
+            isCritical = iscritical,
+            criticalRate = m_criticalRate,
+            knockback = m_knockback,
+            type = m_type,
+            duration = m_duration,
+            attackDir = m_player.Forward
+        };
+
+        //攻撃オブジェクトに関数を渡す
+        //effect.Play(プレイヤーについたエフェクトオブジェクトを動かす
+    }
+
     [SerializeField] private HitCollider m_GAttack;
+    [SerializeField] private AttackDataSO m_GAttackData;
 
     public void GroundAttack()
     {
+        DataApply(m_GAttackData);
+
+        bool iscritical = false;
+        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+
+        if (iscritical) Debug.Log("クリティカル!");
+
         DamageData data = new DamageData
         {
-            damage = 0
+            damage = m_damage,
+            isCritical = iscritical,
+            criticalRate = m_criticalRate,
+            knockback = m_knockback,
+            type = m_type,
+            duration = m_duration,
+            attackDir = m_player.Forward
         };
 
-        m_GAttack.AttackCollider(data,m_player.Team,m_player.Forward);
+        m_GAttack.AttackCollider(data, m_player.Team);
+        //effect.Play
+    }
+
+    //=============== Gun Attack =================
+
+    [SerializeField] private HitRay m_DGun;
+    [SerializeField] private AttackDataSO m_DGunData;
+
+    public void DefaultGun()
+    {
+        DataApply(m_DGunData);
+
+        bool iscritical = false;
+        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+
+        if (iscritical) Debug.Log("クリティカル!");
+
+        DamageData data = new DamageData
+        {
+            damage = m_damage,
+            isCritical = iscritical,
+            criticalRate = m_criticalRate,
+            knockback = m_knockback,
+            type = m_type,
+            duration = m_duration,
+            attackDir = m_player.Forward
+        };
+
+        m_DGun.AttackCast(data, m_player.Team);
+        //effect.Play
+    }
+
+    [SerializeField] private HitRay m_SGun;
+    [SerializeField] private AttackDataSO m_SGunData;
+
+    public void ShotGun()
+    {
+        DataApply(m_SGunData);
+
+        bool iscritical = false;
+        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+
+        if (iscritical) Debug.Log("クリティカル!");
+
+        DamageData data = new DamageData
+        {
+            damage = m_damage,
+            isCritical = iscritical,
+            criticalRate = m_criticalRate,
+            knockback = m_knockback,
+            type = m_type,
+            duration = m_duration,
+            attackDir = m_player.Forward
+        };
+
+        m_SGun.AttackCastPenetration(data, m_player.Team);
+        //effect.Play
+    }
+
+    [SerializeField] private HitRay m_RGun;
+    [SerializeField] private AttackDataSO m_RGunData;
+
+    public void RifleGun()
+    {
+        DataApply(m_RGunData);
+
+        bool iscritical = false;
+        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+
+        if (iscritical) Debug.Log("クリティカル!");
+
+        DamageData data = new DamageData
+        {
+            damage = m_damage,
+            isCritical = iscritical,
+            criticalRate = m_criticalRate,
+            knockback = m_knockback,
+            type = m_type,
+            duration = m_duration,
+            attackDir = m_player.Forward
+        };
+
+        m_RGun.AttackCastPenetration(data, m_player.Team);
+        //effect.Play
     }
 
 }

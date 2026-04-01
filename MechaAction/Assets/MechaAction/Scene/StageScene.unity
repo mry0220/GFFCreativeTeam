@@ -2984,13 +2984,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9628a19554af9e439293e9bcf00ae7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sword: {fileID: 1292915268}
-  HandGun: {fileID: 1094459525}
-  ShotGun: {fileID: 327982278}
-  _sword: {fileID: 260267888}
-  _gun: {fileID: 260267887}
+  m_swordObj: {fileID: 0}
+  m_handGunObj: {fileID: 0}
+  m_shotGunObj: {fileID: 0}
+  m_player: {fileID: 0}
   ammoIconPrefab: {fileID: 5864573124106418277, guid: f1f687a8bc053134baa8a9ef6703918e, type: 3}
-  _iselect: 0
+  m_skillevent: {fileID: 0}
+  m_DAttack: {fileID: 0}
+  m_DAttackData: {fileID: 0}
+  m_EAttackData: {fileID: 0}
+  m_GAttack: {fileID: 0}
+  m_GAttackData: {fileID: 0}
+  m_DGun: {fileID: 0}
+  m_DGunData: {fileID: 0}
+  m_SGun: {fileID: 0}
+  m_SGunData: {fileID: 0}
+  m_RGun: {fileID: 0}
+  m_RGunData: {fileID: 0}
 --- !u!114 &260267891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3004,7 +3014,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_player: {fileID: 0}
-  _damageEffectSO: {fileID: 11400000, guid: f82563ad8995a4d4398439183de62b42, type: 2}
   m_damageEventSO: {fileID: 0}
   m_normalEffect: {fileID: 0}
   m_criticalEffect: {fileID: 0}
@@ -3021,6 +3030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf74aa860bb9fa4d9ac54fa108dcb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_team: 0
   _isBan: 0
   _moveSpeed: 7
   _jumpPower: 13
@@ -3757,11 +3767,6 @@ RectTransform:
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &327982278 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 018072f3a3839794ea317c24a35e7f74, type: 3}
-  m_PrefabInstance: {fileID: 145854516}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &327982279 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 018072f3a3839794ea317c24a35e7f74, type: 3}
@@ -9952,6 +9957,11 @@ MonoBehaviour:
   _damageEffectSO: {fileID: 11400000, guid: f82563ad8995a4d4398439183de62b42, type: 2}
   _damageUI: {fileID: 0}
   _criticaldamageUI: {fileID: 0}
+  m_damageEventSO: {fileID: 0}
+  m_normalEffect: {fileID: 0}
+  m_criticalEffect: {fileID: 0}
+  m_audio: {fileID: 0}
+  m_skillevent: {fileID: 0}
 --- !u!114 &784294949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13598,11 +13608,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092372814}
   m_CullTransparentMesh: 1
---- !u!1 &1094459525 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c42cebc4662122149bc10da67c332667, type: 3}
-  m_PrefabInstance: {fileID: 1185058206}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1094459526 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c42cebc4662122149bc10da67c332667, type: 3}
@@ -16611,11 +16616,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _commandtoggle: {fileID: 0}
---- !u!1 &1292915268 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4f0f5a1453ed63647b5a1b614b6b9235, type: 3}
-  m_PrefabInstance: {fileID: 169006827}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1292915269 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4f0f5a1453ed63647b5a1b614b6b9235, type: 3}
@@ -19840,7 +19840,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3154595544294321366, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
       propertyPath: m_LocalPosition.x

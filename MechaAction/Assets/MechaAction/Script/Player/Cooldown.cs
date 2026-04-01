@@ -34,17 +34,26 @@ namespace Cooltime
     {
         const float PERCENT = 0.01f;
 
-        public int damage(ref bool isCritical,int ATK = 0, float critical = 5f, float criticalDamage = 50f)
+        public bool IsCritical(ref bool isCritical, float critical = 5f)
         {
             float Crit = UnityEngine.Random.Range(1f, 100f);
 
-            isCritical =  Crit < critical ? true : false;
-            return (Crit < critical) ?(int) (ATK + (ATK * (criticalDamage * PERCENT)) ): ATK;
+            isCritical = Crit < critical ? true : false;
+            return isCritical;
 
         }
+
+        //public int damage(ref bool isCritical,int ATK = 0, float critical = 5f, float criticalDamage = 50f)
+        //{
+        //    float Crit = UnityEngine.Random.Range(1f, 100f);
+
+        //    isCritical =  Crit < critical ? true : false;
+        //    return (Crit < critical) ?(int) (ATK + (ATK * (criticalDamage * PERCENT)) ): ATK;
+
+        //}
     }
 
-    
+
 
 }
 

@@ -14,6 +14,7 @@ public struct DamageData
 {
     public int damage;
     public bool isCritical;
+    public float criticalRate;
     public int knockback;
     public Vector3 attackDir;
 

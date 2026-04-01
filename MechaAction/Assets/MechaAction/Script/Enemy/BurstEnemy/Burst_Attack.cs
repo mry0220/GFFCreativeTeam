@@ -68,15 +68,15 @@ public class Burst_Attack : MonoBehaviour
         yield break;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
-            if (Interface != null)
-            {
-                Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
-            }
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
+    //        if (Interface != null)
+    //        {
+    //            Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
+    //        }
+    //    }
+    //}
 }

@@ -18,7 +18,7 @@ public class HitCollider : MonoBehaviour
     [SerializeField] private EffectDataSO m_overrideEffect;
     [SerializeField] private AudioDataSO m_overrideAudio;
 
-    public void AttackCollider(DamageData data,TeamType myteam,Vector3 dir)
+    public void AttackCollider(DamageData data,TeamType myteam)
     {
         HashSet<IDamage> hitSet = new HashSet<IDamage>();
 
@@ -89,7 +89,7 @@ public class HitCollider : MonoBehaviour
 
         foreach (var hitBox in hitBoxes)
         {
-            if (hitBox == null) continue;
+            if (hitBox.m_Pos == null) continue;
             Gizmos.DrawWireSphere(
                 hitBox.m_Pos.position,
                 hitBox.m_radius);

@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerHP : MonoBehaviour ,IDamage
 {
     [SerializeField] private Player m_player;
-    [SerializeField] DamageEffectSO _damageEffectSO;
     private bool _isDeadArea = false;
 
     private int maxHP = 100;
@@ -80,8 +79,6 @@ public class PlayerHP : MonoBehaviour ,IDamage
 
     private void Update()
     {
-
-
         Die();
 
     }
@@ -104,11 +101,11 @@ public class PlayerHP : MonoBehaviour ,IDamage
         switch(data.type)
         {
             case DamageType.Normal:
-                ApplyDamage(data.damage);
-                ApplyKnockBack(data.knockback,result.attackDir);
+                ApplyDamage(data.damage, data.isCritical, data.criticalRate);
+                ApplyKnockBack(data.knockback,data.attackDir);
                 break;
             case DamageType.Electric:
-                ApplyDamage(data.damage);
+                ApplyDamage(data.damage, data.isCritical, data.criticalRate);
                 ApplyElect(data.duration);
                 break;
             case DamageType.Ban:
@@ -127,7 +124,7 @@ public class PlayerHP : MonoBehaviour ,IDamage
         });
     }
 
-    private void ApplyDamage(int damage)
+    private void ApplyDamage(int damage,bool isCtitical,float criticalRate)
     {
         if (currentHP <= 0)
         {
@@ -135,30 +132,38 @@ public class PlayerHP : MonoBehaviour ,IDamage
             return;
         }
 
-        currentHP -= damage;
-        currentHP = Mathf.Max(currentHP, 0);
+        if(isCtitical)
+        {
+            damage = (int)(damage * criticalRate);
+        }
+
+        currentHP = Mathf.Clamp(currentHP -  damage, 0, maxHP);
 
         Debug.Log("<color=green>" + gameObject.name + "が" + damage + "ダメージ受けました。残りHP: " + currentHP);
     }
 
     private void ApplyKnockBack(int knockback,Vector3 dir)
     {
-
+        //プレイヤーがノックバック中に操作を受け付けるのかどうか
+        //プレイヤーのステートを整理
+        //これらができてないと難しい
     }
 
     private void ApplyElect(float duration)
     {
-
+        Debug.Log("Player is ElectAttack");
     }
 
     private void ApplyBan(float duration)
     {
-
+        Debug.Log("Player is BanAttack");
     }
 
     private void ApplyHeal(int damage)
     {
+        currentHP = Mathf.Clamp(currentHP + damage, 0, maxHP);
 
+        Debug.Log(gameObject.name + "のHPが" + damage + "回復しました。残りHP: " + currentHP);
     }
 
     //ダメージを受け、HPを減少させる。

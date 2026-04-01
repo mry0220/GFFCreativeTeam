@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BurstEnemy : MonoBehaviour, IEnemy
+public class BurstEnemy : MonoBehaviour, IEnemy,ITeam
 {
     private enum EnemyState { 
         Look,          //’T‚·
@@ -12,6 +12,9 @@ public class BurstEnemy : MonoBehaviour, IEnemy
     }
 
     private EnemyState _state = EnemyState.Look;
+
+    [SerializeField] private TeamType m_team;
+    public TeamType Team { get => m_team; }
 
     private Transform _player;
     private Rigidbody _rb;
@@ -189,7 +192,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy
 
     private void Attack()
     {
-        StartCoroutine(_attack.GunAttack());
+        //StartCoroutine(_attack.GunAttack());
     }
 
     #region ”íƒ_ƒˆ—

@@ -98,10 +98,6 @@ public class SwordHitbox : MonoBehaviour
         _groundattack = false;
     }
 
-    public void ColliderEnabled()
-    {
-        //_collider.enabled = false;
-    }
 
     public void leftAttack(int dir)
     {
