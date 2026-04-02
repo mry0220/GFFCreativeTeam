@@ -13,7 +13,6 @@ public class Player_Attack : MonoBehaviour
     private Animator _anim;
     [SerializeField] private Player m_player;
     private DirectionTarget _dirtarget;
-    private int _dir;
 
     [Header("UI")]
     [SerializeField] private GameObject ammoIconPrefab;
@@ -46,10 +45,11 @@ public class Player_Attack : MonoBehaviour
     private PlayerAttackType m_state = PlayerAttackType.Sowd;
 
     [SerializeField] private FloatEvent m_skillevent;
-    private CriticalDamage _criticaldamage = new CriticalDamage();
+    private CriticalDamage m_criticaldamage = new CriticalDamage();
 
     private int m_damage;
     private float m_criticalRate;
+    private float m_criticalChance;
     private int m_knockback;
     private DamageType m_type;
     private float m_duration;
@@ -140,8 +140,6 @@ public class Player_Attack : MonoBehaviour
 
                 break;
         }
-
-        _dir = m_player.LookDir;
 
         if (Input.GetKeyDown(KeyCode.G))
         {
@@ -318,13 +316,14 @@ public class Player_Attack : MonoBehaviour
     {
         m_damage = data.Damage;
         m_criticalRate = data.CriticalRate;
+        m_criticalChance = data.CriticalChance;
         m_knockback = data.Knockback;
         m_type = data.Type;
         m_duration = data.Duration;
     }
 
     //=============== Swod Attack =================
-
+    [Header("DefaultAttack")]
     [SerializeField] private HitCollider m_DAttack;
     [SerializeField] private AttackDataSO m_DAttackData;
 
@@ -333,7 +332,7 @@ public class Player_Attack : MonoBehaviour
         DataApply(m_DAttackData);
 
         bool iscritical = false;
-        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+        iscritical = m_criticaldamage.IsCritical(ref iscritical, m_criticalChance);
 
         if (iscritical) Debug.Log("クリティカル!");
 
@@ -352,6 +351,8 @@ public class Player_Attack : MonoBehaviour
         //effect.Play
     }
 
+
+    [Header("ElectAttack")]
     [SerializeField] private AttackDataSO m_EAttackData;
 
     public void ElectAttack()
@@ -359,7 +360,7 @@ public class Player_Attack : MonoBehaviour
         DataApply(m_EAttackData);
 
         bool iscritical = false;
-        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+        iscritical = m_criticaldamage.IsCritical(ref iscritical, m_criticalChance);
 
         if (iscritical) Debug.Log("クリティカル!");
 
@@ -378,6 +379,8 @@ public class Player_Attack : MonoBehaviour
         //effect.Play(プレイヤーについたエフェクトオブジェクトを動かす
     }
 
+
+    [Header("GroundAttack")]
     [SerializeField] private HitCollider m_GAttack;
     [SerializeField] private AttackDataSO m_GAttackData;
 
@@ -386,7 +389,7 @@ public class Player_Attack : MonoBehaviour
         DataApply(m_GAttackData);
 
         bool iscritical = false;
-        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+        iscritical = m_criticaldamage.IsCritical(ref iscritical, m_criticalChance);
 
         if (iscritical) Debug.Log("クリティカル!");
 
@@ -405,8 +408,9 @@ public class Player_Attack : MonoBehaviour
         //effect.Play
     }
 
-    //=============== Gun Attack =================
 
+    //=============== Gun Attack =================
+    [Header("DefaultGun")]
     [SerializeField] private HitRay m_DGun;
     [SerializeField] private AttackDataSO m_DGunData;
 
@@ -415,7 +419,7 @@ public class Player_Attack : MonoBehaviour
         DataApply(m_DGunData);
 
         bool iscritical = false;
-        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+        iscritical = m_criticaldamage.IsCritical(ref iscritical, m_criticalChance);
 
         if (iscritical) Debug.Log("クリティカル!");
 
@@ -434,6 +438,8 @@ public class Player_Attack : MonoBehaviour
         //effect.Play
     }
 
+
+    [Header("ShotGun")]
     [SerializeField] private HitRay m_SGun;
     [SerializeField] private AttackDataSO m_SGunData;
 
@@ -442,7 +448,7 @@ public class Player_Attack : MonoBehaviour
         DataApply(m_SGunData);
 
         bool iscritical = false;
-        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+        iscritical = m_criticaldamage.IsCritical(ref iscritical, m_criticalChance);
 
         if (iscritical) Debug.Log("クリティカル!");
 
@@ -461,6 +467,8 @@ public class Player_Attack : MonoBehaviour
         //effect.Play
     }
 
+
+    [Header("RifleGun")]
     [SerializeField] private HitRay m_RGun;
     [SerializeField] private AttackDataSO m_RGunData;
 
@@ -469,7 +477,7 @@ public class Player_Attack : MonoBehaviour
         DataApply(m_RGunData);
 
         bool iscritical = false;
-        iscritical = _criticaldamage.IsCritical(ref iscritical, 50f);
+        iscritical = m_criticaldamage.IsCritical(ref iscritical, m_criticalChance);
 
         if (iscritical) Debug.Log("クリティカル!");
 

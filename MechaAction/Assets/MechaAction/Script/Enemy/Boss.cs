@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss : MonoBehaviour, IEnemy
+public class Boss : MonoBehaviour
 {
     private enum EnemyState
     {

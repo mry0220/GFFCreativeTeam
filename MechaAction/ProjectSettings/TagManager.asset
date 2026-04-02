@@ -5,25 +5,23 @@ TagManager:
   serializedVersion: 2
   tags:
   - Grounded
-  - Enemy
-  - PlayerWeapon
-  - JumpGimmick
   - DeadArea
   - UI
-  - Shield
+  - Enemy
   - EnemyWeapon
+  - PlayerWeapon
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - Grounded
   - Water
   - UI
   - 
-  - Enemy
-  - IgnoreEnemy
-  - PlayerWeapon
-  - Grounded
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DogEnemy : MonoBehaviour, IEnemy
+public class DogEnemy : MonoBehaviour
 {
     private enum EnemyState
     {

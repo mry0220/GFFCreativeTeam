@@ -5,10 +5,10 @@ using UnityEngine;
 public class EnemyHP : MonoBehaviour,IDamage
 {
     [SerializeField] private int maxHP; // HP
-    [SerializeField] private float skillgauge;
+    [SerializeField] private float m_skillgauge;
     [SerializeField] private float score;
     [SerializeField] private GameObject _recover;
-    [SerializeField] DamageEffectSO _damageEffectSO;
+    //[SerializeField] DamageEffectSO _damageEffectSO;
     private IEnemy _ienemy;
 
     private int _clear;
@@ -51,6 +51,8 @@ public class EnemyHP : MonoBehaviour,IDamage
         Die();
     }
 
+    [Header("DamageData")]
+
     [SerializeField] private DamageEventSO m_damageEventSO;
     [SerializeField] private EffectDataSO m_normalEffect;
     [SerializeField] private EffectDataSO m_criticalEffect;
@@ -84,12 +86,12 @@ public class EnemyHP : MonoBehaviour,IDamage
                 break;
         }
 
-        m_damageEventSO.Raise(new ApplyDamageEvent
-        {
-            hitPoint = transform.position,
-            effect = effect,
-            audio = audio,
-        });
+        //m_damageEventSO.Raise(new ApplyDamageEvent
+        //{
+        //    hitPoint = transform.position,
+        //    effect = effect,
+        //    audio = audio,
+        //});
     }
 
     private void ApplyDamage(int damage, bool isCtitical, float criticalRate)
@@ -228,10 +230,11 @@ public class EnemyHP : MonoBehaviour,IDamage
     // “G“Æ©‚Ì€–Sˆ—
     private void Die()
     {
-        Debug.Log("<color=blue>" + gameObject.name + " (“G) ‚Í“|‚³‚ê‚Ü‚µ‚½I");
-        var skillpoint = 20;
+        if (CurrentHP > 0) return;//€‚ñ‚Å‚¢‚é‚©
 
-        m_skillevent.Raise(skillpoint);
+        Debug.Log("<color=blue>" + gameObject.name + " (“G) ‚Í“|‚³‚ê‚Ü‚µ‚½I");
+
+        m_skillevent.Raise(m_skillgauge);
 
         //GManager.Instance.ScoreUP(score);
         //int number = Random.Range(0, 100);
@@ -239,7 +242,7 @@ public class EnemyHP : MonoBehaviour,IDamage
         //{
         //    var recover = Instantiate(_recover, transform.position, Quaternion.identity);
         //}
-        
+
         // “Æ©‚Ì“G‚Ì€–Sˆ—‚ğ‹Lq
         // —á1: ƒXƒRƒA‚ğ‰ÁZ‚·‚éˆ—
         // GameManager.Instance.AddScore(100); 

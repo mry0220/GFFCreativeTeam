@@ -327,8 +327,8 @@ public class GManager : MonoBehaviour
             _isTiming = true;
             currentTime = 0;
             life = 2;
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-          LayerMask.NameToLayer("Enemy"), false);
+          //  Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+          //LayerMask.NameToLayer("Enemy"), false);
             _isPlaying = true;
         }
 

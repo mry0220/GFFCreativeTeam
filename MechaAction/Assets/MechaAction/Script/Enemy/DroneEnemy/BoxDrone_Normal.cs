@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxDrone_Normal : MonoBehaviour, IEnemy
+public class BoxDrone_Normal : MonoBehaviour
 {
     private enum EnemyState
     {

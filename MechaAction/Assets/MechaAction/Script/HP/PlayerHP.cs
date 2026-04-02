@@ -116,12 +116,12 @@ public class PlayerHP : MonoBehaviour ,IDamage
                 break;
         }
 
-        m_damageEventSO.Raise(new ApplyDamageEvent
-        {
-            hitPoint = transform.position,
-            effect = effect,
-            audio = audio,
-        });
+        //m_damageEventSO.Raise(new ApplyDamageEvent
+        //{
+        //    hitPoint = transform.position,
+        //    effect = effect,
+        //    audio = audio,
+        //});
     }
 
     private void ApplyDamage(int damage,bool isCtitical,float criticalRate)

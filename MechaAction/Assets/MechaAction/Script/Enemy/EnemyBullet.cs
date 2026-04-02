@@ -5,26 +5,28 @@ public class EnemyBullet : MonoBehaviour
 {
     private Rigidbody _rb;
 
-    private int _damage;
-    private int _knockback;
-    private string _effectname;
-    private string _audioname;
-    private int _dir;
+    private TeamType m_team;
+
+    private DamageData m_data;
+
+    private Vector3 m_attackDir;
 
     private float _speed = 20f;
     Vector3 velocity;
+
+    [SerializeField] private HitCollider m_hitCollider;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
 
-    public void Initialize(int damage ,int knockback ,int dir ,string effectname ,string audioname)
+    public void Initialize(DamageData data,TeamType team)
     {
-        _damage = damage;
-        _knockback = knockback;
-        _effectname = effectname;
-        _audioname = audioname;
-        _dir = dir;
+        m_data = data;
+        m_team = team;
+
+        m_attackDir = data.attackDir;
     }
 
     private void Start()
@@ -32,10 +34,15 @@ public class EnemyBullet : MonoBehaviour
         StartCoroutine(_Destroy());
     }
 
+    private void Update()
+    {
+        m_hitCollider.AttackCollider(m_data, m_team);
+    }
+
     private void FixedUpdate()
     {
         velocity = _rb.velocity;
-        velocity.x = _dir * _speed;
+        velocity.x = m_attackDir.x * _speed;
         _rb.velocity = velocity;
     }
 
@@ -46,16 +53,16 @@ public class EnemyBullet : MonoBehaviour
         yield break;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!other.gameObject.CompareTag("Player") ||
-            !other.gameObject.CompareTag("PlayerWeapon") ||
-            !other.gameObject.CompareTag("Enemy")) Destroy(gameObject);
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (!other.gameObject.CompareTag("Player") ||
+    //        !other.gameObject.CompareTag("PlayerWeapon") ||
+    //        !other.gameObject.CompareTag("Enemy")) Destroy(gameObject);
 
-        var Interface = other.GetComponent<IPlayerDamage>();
-        if (Interface != null)
-        {
-            Interface.TakeDamage(_damage, _knockback, _dir, _effectname, _audioname);
-        }
-    }
+    //    var Interface = other.GetComponent<IPlayerDamage>();
+    //    if (Interface != null)
+    //    {
+    //        Interface.TakeDamage(m_damage, m_knockback, m_attackDir, m_effectname, m_audioname);
+    //    }
+    //}
 }

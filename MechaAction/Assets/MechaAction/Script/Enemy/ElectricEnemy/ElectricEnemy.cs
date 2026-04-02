@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ElectricEnemy : MonoBehaviour, IEnemy
+public class ElectricEnemy : MonoBehaviour
 {
     private enum EnemyState
     {

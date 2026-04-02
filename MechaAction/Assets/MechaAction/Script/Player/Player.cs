@@ -33,6 +33,11 @@ public class Player : MonoBehaviour, ITeam
 
     private Vector3 velocity;
 
+    [SerializeField] private PlayerDataSO m_playerData;
+    private float m_moveSpeed;
+    private float m_jumpPower;
+
+
     private bool m_isGrounded;
     private bool _isJump = false;
     private bool _isSecondJump;
@@ -42,18 +47,10 @@ public class Player : MonoBehaviour, ITeam
     private Vector3 m_forward;
     public Vector3 Forward { get => m_forward; }
 
-    private int _lookDir;
-    public int LookDir => _lookDir;
-
     private float prevHorizontal = 0f;
     private bool _isDash = false;//ダッシュ中向きが変わらないように
     private bool _canDash = true;//空中で２回目ダッシュを防ぐため
     public bool _isBan= false;
-
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _jumpPower;
-
-    Vector3 origin;
 
     private float _fallTime;
 
@@ -64,6 +61,9 @@ public class Player : MonoBehaviour, ITeam
         m_rb = GetComponent<Rigidbody>();
         m_anim = GetComponentInChildren<Animator>();
         m_dirtarget = GetComponent<DirectionTarget>();
+
+        m_moveSpeed = m_playerData.Speed;
+        m_jumpPower = m_playerData.JumpPower;
     }
 
     private void Start()
@@ -295,11 +295,11 @@ public class Player : MonoBehaviour, ITeam
 
         if (_isRun)
         {
-            velocity.x = _moveVector.x * (_moveSpeed + _SPEED);
+            velocity.x = _moveVector.x * (m_moveSpeed + _SPEED);
         }
         else
         {
-            velocity.x = _moveVector.x * (_moveSpeed + _SPEED) * 0.5f;
+            velocity.x = _moveVector.x * (m_moveSpeed + _SPEED) * 0.5f;
         }
 
         //if (_lookDir == 1)
@@ -338,7 +338,7 @@ public class Player : MonoBehaviour, ITeam
             {
                 m_anim.SetTrigger("Jump");
                 _fallTime = 0f;
-                m_rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
+                m_rb.AddForce(0f, m_jumpPower, 0f, ForceMode.Impulse);
                 _isJump = false;
             }
             _isSecondJump = true;
@@ -351,7 +351,7 @@ public class Player : MonoBehaviour, ITeam
                 velocity.y = 0f;//二段目で跳ね上がり防ぎ
                 _fallTime = 0f;
                 m_anim.SetTrigger("Jump");
-                m_rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
+                m_rb.AddForce(0f, m_jumpPower, 0f, ForceMode.Impulse);
                 _isSecondJump = false;
             }
             if (_isJump)
@@ -452,14 +452,14 @@ public class Player : MonoBehaviour, ITeam
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("JumpGimmick"))
-        {
-            _fallTime = 0f;
-            m_rb.velocity = Vector3.zero;
-            ChangeState(PlayerState.Other);
-            StartCoroutine(Gimmick());
-            m_rb.AddForce(0f,23f,0f, ForceMode.Impulse);
-        }
+        //if (collision.gameObject.CompareTag("JumpGimmick"))
+        //{
+        //    _fallTime = 0f;
+        //    m_rb.velocity = Vector3.zero;
+        //    ChangeState(PlayerState.Other);
+        //    StartCoroutine(Gimmick());
+        //    m_rb.AddForce(0f,23f,0f, ForceMode.Impulse);
+        //}
 
         //if (collision.gameObject.CompareTag("Grounded"))
         //{

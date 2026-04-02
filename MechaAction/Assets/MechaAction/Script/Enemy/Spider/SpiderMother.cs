@@ -3,7 +3,7 @@ using UnityEngine;
 using Cooltime;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpiderMother : MonoBehaviour, IEnemy
+public class SpiderMother : MonoBehaviour
 {
     private enum EnemyState
     {

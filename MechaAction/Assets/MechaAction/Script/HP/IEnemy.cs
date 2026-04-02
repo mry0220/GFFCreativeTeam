@@ -4,9 +4,7 @@ using UnityEngine;
 
 public interface IEnemy 
 {
-    void SKnockBack(int dir,int knockback);
+    void KnockBack(Vector3 attackDir, int knockback);
 
-    void BKnockBack(int dir, int knockback);
-
-    void ElectStun(int dir,int knockback,float electtime);
+    void ElectStun(float duration);
 }

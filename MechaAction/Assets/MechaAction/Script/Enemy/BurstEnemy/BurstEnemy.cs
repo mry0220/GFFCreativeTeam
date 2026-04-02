@@ -1,17 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class BurstEnemy : MonoBehaviour, IEnemy,ITeam
+public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
 {
     private enum EnemyState { 
         Look,          //探す
         Move,          //追跡
         Wait,          //発射用意(いらない)
-        Attack,        //発射
-        Damage
+        Attack        //発射
     }
 
     private EnemyState _state = EnemyState.Look;
+
+    private bool m_canMove;
+    private float m_canMoveTime;
+
+    private bool m_isTurn = false;
+    private float m_tuenTime;
 
     [SerializeField] private TeamType m_team;
     public TeamType Team { get => m_team; }
@@ -21,23 +26,26 @@ public class BurstEnemy : MonoBehaviour, IEnemy,ITeam
     private Animator _anim;
     private Burst_Attack _attack;
 
-    public int Dir => _dir;
-    private int _dir = -1;//初期左向き
     private float _moveSpeed = 1.0f;
-    private bool _moveStop = false;
-    private float _attacktime = 0;
+
+    private Vector3 m_forward;
+    public Vector3 Forward { get => m_forward; }
+
+    private int m_moveDir = -1;//初期左向き
+    private int m_nextDir;
+ 
+    private float _attacktime;
 
     Vector3 velocity;
 
     private float _fallTime;
-    Vector3 origin;
     private bool _isGrounded;
 
     private void Awake()
     {
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
-        _anim = GetComponent<Animator>();
+        _anim = GetComponentInChildren<Animator>();
         _attack = GetComponent<Burst_Attack>();
     }
 
@@ -48,31 +56,83 @@ public class BurstEnemy : MonoBehaviour, IEnemy,ITeam
 
     private void Update()
     {
-        if (_dir == 1)
+        #region 時間経過
+        if (m_isTurn)
         {
-            transform.rotation = Quaternion.Euler(0, 90, 0);
-        }
-        else if (_dir == -1)
-        {
-            transform.rotation = Quaternion.Euler(0, 270, 0);
+            m_tuenTime -= Time.deltaTime;
+
+            if(m_tuenTime < 0)
+            {
+                m_moveDir = m_nextDir;
+                m_isTurn = false;
+            }
         }
 
-        RaycastHit hit;
-        origin = transform.position + Vector3.down;
-        _isGrounded = Physics.SphereCast(origin, 0.4f, Vector3.down, out hit, 1f, LayerMask.GetMask("Grounded"));
-        //Debug.Log(_isGrounded);
-        Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
+        if(m_canMove)
+        {
+            m_canMoveTime -= Time.deltaTime;
+
+            if( m_canMoveTime < 0)
+            {
+                m_canMove = true;
+            }
+        }
+        #endregion
+
+        m_forward = new Vector3(m_moveDir, 0, 0);
+
+        float Yrot = m_forward.x > 0 ? 90f : 270f;
+        transform.rotation = Quaternion.Euler(0, Yrot, 0);
+
+        _isGrounded = IsGrounded();
+    }
+    [Header("Ground Check")]
+    [SerializeField] private Transform m_groundCheck;
+    [SerializeField] private float m_radius = 0.3f;
+    [SerializeField] private float m_checkDistance = 0.5f;
+    [SerializeField] private LayerMask m_groundLayer;
+
+    bool IsGrounded()
+    {
+        return Physics.SphereCast(
+            m_groundCheck.position,
+            m_radius,
+            Vector3.down,
+            out RaycastHit hit,
+            m_checkDistance,
+            m_groundLayer
+        );
     }
 
     private void OnDrawGizmos()
     {
-        //Gizmos.DrawWireSphere(origin, 0.4f);
-        //Gizmos.DrawWireSphere(origin + Vector3.down * 1f, 0.4f);
+        if (m_groundCheck == null) return;
+
+        Gizmos.color = Color.yellow;
+
+        // 開始地点
+        Gizmos.DrawWireSphere(m_groundCheck.position, m_radius);
+
+        // 終点
+        Vector3 end = m_groundCheck.position + Vector3.down * m_checkDistance;
+        Gizmos.DrawWireSphere(end, m_radius);
+
+        // 間を線でつなぐ
+        Gizmos.DrawLine(m_groundCheck.position, end);
     }
 
     private void FixedUpdate()
     {
         velocity = _rb.velocity;
+
+        if (!_isGrounded)
+        {
+            Gravity();
+        }
+        else
+        {
+            _fallTime = 0f;
+        }
 
         switch (_state)
         {
@@ -99,10 +159,6 @@ public class BurstEnemy : MonoBehaviour, IEnemy,ITeam
                 }
                 break;
 
-            case EnemyState.Wait:
-                Wait();
-                break;
-
             case EnemyState.Attack:
                 Attack();
                 _attacktime = 0.0f;
@@ -110,16 +166,8 @@ public class BurstEnemy : MonoBehaviour, IEnemy,ITeam
                 break;
         }
 
-        if (!_isGrounded)
-        {
-            _Gravity();
-        }
-        else
-        {
-            _fallTime = 0f;
-        }
+        
         _rb.velocity = velocity;
-
     }
 
     private void Look()
@@ -129,49 +177,35 @@ public class BurstEnemy : MonoBehaviour, IEnemy,ITeam
 
     private void Move()
     {
+        int targetDir = _player.position.x > _rb.position.x ? 1 : -1;
 
-        if (_moveStop)
+        if(!m_isTurn && targetDir != m_moveDir)
         {
-            velocity.x = 0f;
-            _rb.velocity = velocity;
+            Tuen(targetDir);
             return;
         }
 
-        if (_rb.position.x < _player.position.x)
+
+        if(m_isTurn)
         {
-            if(_dir == -1)
-            {
-                StartCoroutine(Waitturn(1));
-            }
-            _dir = 1;
+            velocity.x = 0f;
+            _anim.SetInteger("Speed", 0);
         }
         else
         {
-            if (_dir == 1)
-            {
-                StartCoroutine(Waitturn(-1));
-            }
-            _dir = -1;
+            velocity.x = m_moveDir * _moveSpeed;
+            _anim.SetInteger("Speed", 1);
         }
-        _anim.SetInteger("Speed", 1);
-        velocity.x = _dir * _moveSpeed;
-
     }
 
-    //振り返るとき少し留まる
-    private IEnumerator Waitturn(int _newdirection)
+    private void Tuen(int newDir)
     {
-
-        _moveStop = true;
-        yield return new WaitForSeconds(1f);
-
-        _dir = _newdirection;
-        _moveStop = false;
-
-        yield break;
+        m_isTurn = true;
+        m_tuenTime = 2.0f;
+        m_nextDir = newDir;
     }
 
-    private void _Gravity()
+    private void Gravity()
     {
         _fallTime += Time.deltaTime;
 
@@ -185,48 +219,31 @@ public class BurstEnemy : MonoBehaviour, IEnemy,ITeam
         }
     }
 
-    private void Wait()
-    {
-
-    }
-
     private void Attack()
     {
         //StartCoroutine(_attack.GunAttack());
     }
 
+    public void Stun(float time = 0.5f)
+    {
+        m_canMoveTime = time;
+        m_canMove = false;
+    }
+
+
     #region 被ダメ処理
-    public IEnumerator _ReturnNormal(float time)
-    {
-        yield return new WaitForSeconds(time);
-        _state = EnemyState.Look;
-        yield break ;
-    }
-
-    public void SKnockBack(int dir,int knockback)
+    public void KnockBack(Vector3 attackDir,int knockback)
     {
         _rb.velocity = Vector3.zero;
-        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
-        _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(0.5f));
+        _rb.AddForce(attackDir.x * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
+
+        Stun();
         //anim
     }
 
-    public void BKnockBack(int dir, int knockback)
+    public void ElectStun(float duration)
     {
-        _rb.velocity = Vector3.zero;
-        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
-        _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(1.0f));
-        //anim
-    }
-
-    public void ElectStun(int dir, int knockback, float electtime)
-    {
-        _rb.velocity = Vector3.zero;
-        _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
-        _state = EnemyState.Damage;
-        StartCoroutine(_ReturnNormal(electtime));
+        Stun(duration);
     }
     #endregion
 

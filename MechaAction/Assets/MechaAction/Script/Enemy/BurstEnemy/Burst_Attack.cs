@@ -1,82 +1,102 @@
+using Critical;
 using System.Collections;
 using UnityEngine;
 
 public class Burst_Attack : MonoBehaviour
 {
-    [SerializeField] EnemyAttackSO _enemyattackSO;
-    private int _damage;
-    private int _knockback;
-    private int _hitdamage;
-    private int _hitknockback;
-    private string _effectname;
-    private string _audioname;
+    private int m_damage;
+    private float m_criticalRate;
+    private float m_criticalChance;
+    private int m_knockback;
+    private DamageType m_type;
+    private float m_duration;
 
-    private BurstEnemy _enemy;
-    private int _dir;
-    
+    [SerializeField] private BurstEnemy m_enemy;
+    private Vector3 m_attackDir;
+
+    private CriticalDamage m_criticaldamage = new CriticalDamage();
+
     [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private GameObject _boundbulletPrefab;
+    //[SerializeField] private GameObject _boundbulletPrefab;
     public Transform _bulletPosition;
 
-    private int _clear;
+    private int m_enhance;
 
     private void Awake()
     {
-        _enemy = GetComponent<BurstEnemy>();
+
     }
 
     private void Start()
     {
-        _clear = GManager.Instance.clear;
-        var attackData = _enemyattackSO.GetEffect("BurstEnemy");
-        if (attackData != null)
-        {
-            _damage = (int)(attackData.Damage + (_clear * 10));
-            _knockback = (int)(attackData.Knockback + (_clear * 2));
-            _hitdamage = (int)(attackData.Hitdamage + (_clear * 10));
-            _hitknockback = (int)(attackData.Hitknockback + (_clear * 2));
-            _effectname = attackData.EffectName;
-            _audioname = attackData.AudioName;
-        }
+        m_enhance = GManager.Instance.clear;
     }
 
     private void Update()
     {
-        _dir = _enemy.Dir;
+
     }
 
-    public IEnumerator GunAttack()
+    [SerializeField] private AttackDataSO m_GAttackData;
+    private Coroutine m_shootCoroutine;
+
+    public void GunAttack()
     {
-        if(_clear >= 2)
+        DataApply(m_GAttackData);
+
+        bool iscritical = false;
+        iscritical = m_criticaldamage.IsCritical(ref iscritical, m_criticalChance);
+
+        if (iscritical) Debug.Log("クリティカル!");
+
+        DamageData data = new DamageData
         {
-            for (int i = 0; i < 3; i++)
-            {
-                GameObject bullet = Instantiate(_boundbulletPrefab, _bulletPosition.position, Quaternion.identity);
-                bullet.GetComponent<EnemyBoundBullet>().Initialize(_damage, _knockback, _dir, _effectname, _audioname);
-                yield return new WaitForSeconds(0.2f);
-            }
-        }
-        else
+            damage = m_damage,
+            isCritical = iscritical,
+            criticalRate = m_criticalRate,
+            knockback = m_knockback,
+            type = m_type,
+            duration = m_duration,
+            attackDir = m_enemy.Forward
+        };
+
+        if (m_shootCoroutine != null) return;
+
+        m_shootCoroutine = StartCoroutine(Shoot(data));
+    }
+
+    public IEnumerator Shoot(DamageData data)
+    {
+        for (int i = 0; i < 3; i++)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
-                bullet.GetComponent<EnemyBullet>().Initialize(_damage, _knockback, _dir, _effectname, _audioname);
-                yield return new WaitForSeconds(0.2f);
-            }
+            GameObject bullet = Instantiate(_bulletPrefab, _bulletPosition.position, Quaternion.identity);
+            bullet.GetComponent<EnemyBullet>().Initialize(data, m_enemy.Team);
+            yield return new WaitForSeconds(0.2f);
         }
+
+        //if (m_enhance >= 2)
+        //{
+        //    for (int i = 0; i < 3; i++)
+        //    {
+        //        GameObject bullet = Instantiate(_boundbulletPrefab, _bulletPosition.position, Quaternion.identity);
+        //        bullet.GetComponent<EnemyBoundBullet>().Initialize(data, m_enemy.Team);
+        //        yield return new WaitForSeconds(0.2f);
+        //    }
+        //}
+        //else
+        //{
+        //    
+        //}
         yield break;
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Player"))
-    //    {
-    //        var Interface = collision.gameObject.GetComponent<IPlayerDamage>();
-    //        if (Interface != null)
-    //        {
-    //            Interface.TakeDamage(_hitdamage, _hitknockback, _dir, _effectname, _audioname);
-    //        }
-    //    }
-    //}
+    public void DataApply(AttackDataSO data)
+    {
+        m_damage = data.Damage + (m_enhance * 10);
+        m_criticalRate = data.CriticalRate + (float)(m_enhance * 0.5);
+        m_criticalChance = data.CriticalChance + (float)(m_enhance * 5);
+        m_knockback = data.Knockback + (m_enhance);
+        m_type = data.Type;
+        m_duration = data.Duration + (float)(m_enhance * 0.5);
+    }
 }

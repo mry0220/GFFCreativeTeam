@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tire_Drone : MonoBehaviour, IEnemy
+public class Tire_Drone : MonoBehaviour
 {
     private enum EnemyState
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class DroneEnemy : MonoBehaviour, IEnemy
+public class DroneEnemy : MonoBehaviour
 {
     enum EnemyState
     { 

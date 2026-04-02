@@ -4,7 +4,7 @@ using Cooltime;
 
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpiderChild : MonoBehaviour, IEnemy
+public class SpiderChild : MonoBehaviour
 {
     private enum EnemyState
     {
