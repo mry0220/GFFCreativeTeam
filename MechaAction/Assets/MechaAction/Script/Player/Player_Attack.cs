@@ -253,7 +253,7 @@ public class Player_Attack : MonoBehaviour
             _anim.SetInteger("AttackType", 1);
             _anim.SetTrigger("Attack");
 
-            GroundAttack();
+            //Animation Event
         }
         else if(m_state == PlayerAttackType.Gun)
         {
@@ -305,11 +305,6 @@ public class Player_Attack : MonoBehaviour
 
             m_player._ReturnNormal();//シグナルで呼べないから
         }
-    }
-
-    public void _Enabletfalse()//animationシグナルで呼ぶ
-    {
-        m_player._ReturnNormal();//最後に呼ぶ
     }
 
     public void DataApply(AttackDataSO data)
@@ -406,7 +401,7 @@ public class Player_Attack : MonoBehaviour
 
         m_GAttack.AttackCollider(data, m_player.Team);
         //effect.Play
-    }
+    }//Animation Event
 
 
     //=============== Gun Attack =================

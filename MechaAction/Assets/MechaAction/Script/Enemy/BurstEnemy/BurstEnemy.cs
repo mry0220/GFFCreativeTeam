@@ -24,7 +24,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
     private Transform _player;
     private Rigidbody _rb;
     private Animator _anim;
-    private Burst_Attack _attack;
+    private Burst_Attack m_attack;
 
     private float _moveSpeed = 1.0f;
 
@@ -46,7 +46,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
         _player = GameObject.FindWithTag("Player").transform;
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponentInChildren<Animator>();
-        _attack = GetComponent<Burst_Attack>();
+        m_attack = GetComponent<Burst_Attack>();
     }
 
     private void Start()
@@ -221,7 +221,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
 
     private void Attack()
     {
-        //StartCoroutine(_attack.GunAttack());
+        m_attack.GunAttack();
     }
 
     public void Stun(float time = 0.5f)

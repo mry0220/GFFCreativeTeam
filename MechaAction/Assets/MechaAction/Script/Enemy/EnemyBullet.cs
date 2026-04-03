@@ -11,10 +11,11 @@ public class EnemyBullet : MonoBehaviour
 
     private Vector3 m_attackDir;
 
+    [SerializeField] private EffectDataSO m_effectData;
+    [SerializeField] private AudioDataSO m_audioData;
+
     private float _speed = 20f;
     Vector3 velocity;
-
-    [SerializeField] private HitCollider m_hitCollider;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void Update()
     {
-        m_hitCollider.AttackCollider(m_data, m_team);
+        //m_hitCollider.AttackCollider(m_data, m_team);
     }
 
     private void FixedUpdate()
@@ -53,16 +54,34 @@ public class EnemyBullet : MonoBehaviour
         yield break;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (!other.gameObject.CompareTag("Player") ||
-    //        !other.gameObject.CompareTag("PlayerWeapon") ||
-    //        !other.gameObject.CompareTag("Enemy")) Destroy(gameObject);
+    private void OnTriggerEnter(Collider other)
+    {
+        var damageable = other.GetComponentInParent<IDamage>();
+        if (damageable == null) return;
 
-    //    var Interface = other.GetComponent<IPlayerDamage>();
-    //    if (Interface != null)
-    //    {
-    //        Interface.TakeDamage(m_damage, m_knockback, m_attackDir, m_effectname, m_audioname);
-    //    }
-    //}
+        var team = other.GetComponentInParent<ITeam>();
+        if (team != null)
+        {
+            // ìØÇ∂É`Å[ÉÄÇ»ÇÁñ≥éã
+            if (team.Team == m_team) return;
+        }
+        else
+        {
+            return;
+        }
+
+        DamageResult result = new DamageResult
+        {
+            hitPoint = transform.position,
+            hitNormal = transform.position - 
+            (other.transform.position).normalized,
+
+            overrideEffectData = m_effectData,
+            overrideAudioData = m_audioData
+        };
+
+        damageable.TakeDamage(m_data, result);
+
+        Destroy(gameObject);
+    }
 }

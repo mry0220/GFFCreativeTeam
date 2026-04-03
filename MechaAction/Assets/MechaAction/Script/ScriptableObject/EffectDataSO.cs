@@ -6,7 +6,8 @@ using UnityEngine;
 public class EffectDataSO : ScriptableObject
 {
     [SerializeField] private GameObject m_prefab;
-    [SerializeField] private int m_duration;
+    [SerializeField] private float m_duration;
 
     public GameObject EffectPrefab { get => m_prefab; }
+    public float Duration { get => m_duration; }
 }

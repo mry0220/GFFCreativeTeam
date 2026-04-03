@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dc58e155a9e1a34ba9a88029d8476d9, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: d8f5ed47140bd6349ac271f28520ef95, type: 3}
+  m_Name: NormalHit
   m_EditorClassIdentifier: 
-  m_maxHp: 100
-  m_speed: 5
-  m_jumpPower: 10
+  m_prefab: {fileID: 624572720210033647, guid: 2df45b15d8b496f4aa44887b1f0db223, type: 3}
+  m_duration: 1

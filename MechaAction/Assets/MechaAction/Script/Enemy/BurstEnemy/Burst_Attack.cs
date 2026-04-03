@@ -87,6 +87,8 @@ public class Burst_Attack : MonoBehaviour
         //{
         //    
         //}
+        m_shootCoroutine = null;
+
         yield break;
     }
 

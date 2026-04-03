@@ -84,8 +84,8 @@ public class PlayerHP : MonoBehaviour ,IDamage
     }
 
     [SerializeField] private DamageEventSO m_damageEventSO;
-    [SerializeField] private EffectDataSO m_normalEffect;
-    [SerializeField] private EffectDataSO m_criticalEffect;
+    [SerializeField] private EffectDataSO m_normalEffectData;
+    [SerializeField] private EffectDataSO m_criticalEffectData;
     [SerializeField] private AudioDataSO m_audio;
 
     public void TakeDamage(DamageData data, DamageResult result)
@@ -93,10 +93,10 @@ public class PlayerHP : MonoBehaviour ,IDamage
         //if (m_player.State == PlayerState.Invincible) return;
         //m_player.ChangeState(PlayerState )
 
-        var defaultEffect = data.isCritical ? m_criticalEffect : m_normalEffect;
+        var defaultEffect = data.isCritical ? m_criticalEffectData : m_normalEffectData;
 
-        var effect = result.overrideEffect != null ? result.overrideEffect : defaultEffect;
-        var audio = result.overrideAudio != null ? result.overrideAudio : m_audio;
+        var effect = result.overrideEffectData != null ? result.overrideEffectData : defaultEffect;
+        var audio = result.overrideAudioData != null ? result.overrideAudioData : m_audio;
 
         switch(data.type)
         {
@@ -116,12 +116,12 @@ public class PlayerHP : MonoBehaviour ,IDamage
                 break;
         }
 
-        //m_damageEventSO.Raise(new ApplyDamageEvent
-        //{
-        //    hitPoint = transform.position,
-        //    effect = effect,
-        //    audio = audio,
-        //});
+        m_damageEventSO.Raise(new ApplyDamageEvent
+        {
+            hitPoint = transform.position,
+            effectData = effect,
+            audioData = audio,
+        });
     }
 
     private void ApplyDamage(int damage,bool isCtitical,float criticalRate)
@@ -318,11 +318,11 @@ public class PlayerHP : MonoBehaviour ,IDamage
     {
         GManager.Instance.OnPlayerHit();//カメラ揺らす
 
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-            LayerMask.NameToLayer("Enemy"), true);
-        yield return new WaitForSeconds(time + _UNB);
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-            LayerMask.NameToLayer("Enemy"), false);
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+        //    LayerMask.NameToLayer("Enemy"), true);
+        //yield return new WaitForSeconds(time + _UNB);
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+        //    LayerMask.NameToLayer("Enemy"), false);
 
         yield break;
     }
@@ -347,8 +347,8 @@ public class PlayerHP : MonoBehaviour ,IDamage
         //プレイヤーのステータスがDeadか
 
         Debug.Log("<color=green>" + gameObject.name + "は倒されました。ゲームオーバー！");
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-            LayerMask.NameToLayer("Enemy"), true);
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+        //    LayerMask.NameToLayer("Enemy"), true);
         m_player.ChangeState(PlayerState.Dead);
         m_player.Dead();//animとか
         StartCoroutine(GManager.Instance.DiePlayer());

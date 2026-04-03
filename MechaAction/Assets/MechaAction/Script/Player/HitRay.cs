@@ -22,6 +22,8 @@ public class HitRay : MonoBehaviour
     [SerializeField] private EffectDataSO m_overrideEffect;
     [SerializeField] private AudioDataSO m_overrideAudio;
 
+    private Coroutine m_viewCoroutine;
+
     public void AttackCastAll(DamageData data, TeamType myteam)
     {
         HashSet<IDamage> hitSet = new HashSet<IDamage>();
@@ -40,11 +42,11 @@ public class HitRay : MonoBehaviour
             foreach (var hit in hits)
             {
                 var col = hit.collider;
-                var damageable = col.GetComponent<IDamage>();
+                var damageable = col.GetComponentInParent<IDamage>();
                 if (damageable == null) continue;
                 if (hitSet.Contains(damageable)) continue;
 
-                var team = col.GetComponent<ITeam>();
+                var team = col.GetComponentInParent<ITeam>();
                 if (team != null)
                 {
                     // 同じチームなら無視
@@ -65,8 +67,8 @@ public class HitRay : MonoBehaviour
                     hitPoint = hitPoint,
                     hitNormal = hitNormal,
 
-                    overrideEffect = m_overrideEffect,
-                    overrideAudio = m_overrideAudio
+                    overrideEffectData = m_overrideEffect,
+                    overrideAudioData = m_overrideAudio
                 };
 
                 damageable.TakeDamage(data, result);
@@ -75,7 +77,9 @@ public class HitRay : MonoBehaviour
 
         if (m_isViewCollider)
         {
-            StartCoroutine(ViewColliderTime());
+            if (m_viewCoroutine != null) return;
+
+            m_viewCoroutine = StartCoroutine(ViewColliderTime());
         }
     }
 
@@ -101,10 +105,10 @@ public class HitRay : MonoBehaviour
                     break;
                 }
 
-                var damageable = col.GetComponent<IDamage>();
+                var damageable = col.GetComponentInParent<IDamage>();
                 if (damageable == null) continue;
 
-                var team = col.GetComponent<ITeam>();
+                var team = col.GetComponentInParent<ITeam>();
                 if (team != null)
                 {
                     // 同じチームなら無視
@@ -122,8 +126,8 @@ public class HitRay : MonoBehaviour
                 {
                     hitPoint = hitPoint,
                     hitNormal = hitNormal,
-                    overrideEffect = m_overrideEffect,
-                    overrideAudio = m_overrideAudio
+                    overrideEffectData = m_overrideEffect,
+                    overrideAudioData = m_overrideAudio
                 };
 
                 damageable.TakeDamage(data, result);
@@ -134,7 +138,9 @@ public class HitRay : MonoBehaviour
 
         if (m_isViewCollider)
         {
-            StartCoroutine(ViewColliderTime());
+            if (m_viewCoroutine != null) return;
+
+            m_viewCoroutine = StartCoroutine(ViewColliderTime());
         }
     }
 
@@ -162,10 +168,10 @@ public class HitRay : MonoBehaviour
                     break;
                 }
 
-                var damageable = col.GetComponent<IDamage>();
+                var damageable = col.GetComponentInParent<IDamage>();
                 if (damageable == null) continue;
 
-                var team = col.GetComponent<ITeam>();
+                var team = col.GetComponentInParent<ITeam>();
                 if (team != null)
                 {
                     // 同じチームなら無視
@@ -183,8 +189,8 @@ public class HitRay : MonoBehaviour
                 {
                     hitPoint = hitPoint,
                     hitNormal = hitNormal,
-                    overrideEffect = m_overrideEffect,
-                    overrideAudio = m_overrideAudio
+                    overrideEffectData = m_overrideEffect,
+                    overrideAudioData = m_overrideAudio
                 };
 
                 damageable.TakeDamage(data, result);
@@ -198,15 +204,19 @@ public class HitRay : MonoBehaviour
 
         if (m_isViewCollider)
         {
-            StartCoroutine(ViewColliderTime());
+            if (m_viewCoroutine != null) return;
+
+            m_viewCoroutine = StartCoroutine(ViewColliderTime());
         }
     }
 
     private IEnumerator ViewColliderTime()
     {
         m_isVisible = true;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
         m_isVisible = false;
+
+        m_viewCoroutine = null;
 
         yield break;
     }

@@ -6,6 +6,8 @@ public class EffectManager : MonoBehaviour
 {
     [SerializeField] private DamageEventSO m_DamageEventSO;
 
+    [SerializeField] private PoolManager m_pool;
+
     private void OnEnable()
     {
         m_DamageEventSO.Register(InstantiateEffect);
@@ -18,17 +20,19 @@ public class EffectManager : MonoBehaviour
 
     public void InstantiateEffect(ApplyDamageEvent d_event)
     {
-        if (d_event.effect == null) return;
+        if (d_event.effectData == null) return;
 
         var rot = Quaternion.LookRotation(d_event.hitNormal);
 
-        Instantiate(d_event.effect.EffectPrefab, d_event.hitPoint, rot);
+        var effect = m_pool.Get(
+            d_event.effectData.EffectPrefab,
+            d_event.hitPoint,
+            rot
+        );
 
-
-    }
-
-    public void PlayEffect()
-    {
-
+        effect.GetComponent<AutoReturn>().Init(
+            m_pool, 
+            d_event.effectData.Duration
+        );
     }
 }

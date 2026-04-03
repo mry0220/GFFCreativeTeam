@@ -1,4 +1,3 @@
-
 using Critical;
 using TMPro;
 using UnityEngine;
@@ -54,19 +53,21 @@ public class EnemyHP : MonoBehaviour,IDamage
     [Header("DamageData")]
 
     [SerializeField] private DamageEventSO m_damageEventSO;
-    [SerializeField] private EffectDataSO m_normalEffect;
-    [SerializeField] private EffectDataSO m_criticalEffect;
+    [SerializeField] private EffectDataSO m_normalEffectData;
+    [SerializeField] private EffectDataSO m_criticalEffectData;
     [SerializeField] private AudioDataSO m_audio;
 
     public void TakeDamage(DamageData data, DamageResult result)
     {
+
+        Debug.Log("TakeDamage");
         //if (m_player.State == PlayerState.Invincible) return;
         //m_player.ChangeState(PlayerState )
 
-        var defaultEffect = data.isCritical ? m_criticalEffect : m_normalEffect;
+        var defaultEffect = data.isCritical ? m_criticalEffectData : m_normalEffectData;
 
-        var effect = result.overrideEffect != null ? result.overrideEffect : defaultEffect;
-        var audio = result.overrideAudio != null ? result.overrideAudio : m_audio;
+        var effect = result.overrideEffectData != null ? result.overrideEffectData : defaultEffect;
+        var audio = result.overrideAudioData != null ? result.overrideAudioData : m_audio;
 
         switch (data.type)
         {
@@ -86,12 +87,12 @@ public class EnemyHP : MonoBehaviour,IDamage
                 break;
         }
 
-        //m_damageEventSO.Raise(new ApplyDamageEvent
-        //{
-        //    hitPoint = transform.position,
-        //    effect = effect,
-        //    audio = audio,
-        //});
+        m_damageEventSO.Raise(new ApplyDamageEvent
+        {
+            hitPoint = transform.position,
+            effectData = effect,
+            audioData = audio,
+        });
     }
 
     private void ApplyDamage(int damage, bool isCtitical, float criticalRate)

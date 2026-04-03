@@ -223,8 +223,8 @@ public class GManager : MonoBehaviour
         _player._ReturnNormal();
 
         yield return new WaitForSeconds(2f);
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-           LayerMask.NameToLayer("Enemy"), false);
+        //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+        //   LayerMask.NameToLayer("Enemy"), false);
 
         yield break;
     }

@@ -18,6 +18,8 @@ public class HitCollider : MonoBehaviour
     [SerializeField] private EffectDataSO m_overrideEffect;
     [SerializeField] private AudioDataSO m_overrideAudio;
 
+    private Coroutine m_viewCoroutine;
+
     public void AttackCollider(DamageData data,TeamType myteam)
     {
         HashSet<IDamage> hitSet = new HashSet<IDamage>();
@@ -33,11 +35,11 @@ public class HitCollider : MonoBehaviour
 
             foreach (var col in hits)
             {
-                var damageable = col.GetComponent<IDamage>();
+                var damageable = col.GetComponentInParent<IDamage>();
                 if (damageable == null) continue;
                 if(hitSet.Contains(damageable)) continue;
 
-                var team = col.GetComponent<ITeam>();
+                var team = col.GetComponentInParent<ITeam>();
                 if (team != null)
                 {
                     // ìØÇ∂É`Å[ÉÄÇ»ÇÁñ≥éã
@@ -58,8 +60,8 @@ public class HitCollider : MonoBehaviour
                     hitPoint = hitPoint,
                     hitNormal = hitNormal,
 
-                    overrideEffect = m_overrideEffect,
-                    overrideAudio = m_overrideAudio
+                    overrideEffectData = m_overrideEffect,
+                    overrideAudioData = m_overrideAudio
                 };
 
                 damageable.TakeDamage(data,result);
@@ -68,15 +70,19 @@ public class HitCollider : MonoBehaviour
 
         if (m_isViewCollider)
         {
-            StartCoroutine(ViewColliderTime());
+            if (m_viewCoroutine != null) return;
+
+            m_viewCoroutine = StartCoroutine(ViewColliderTime());
         }
     }
 
     private IEnumerator ViewColliderTime()
     {
         m_isVisible = true;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
         m_isVisible = false;
+
+        m_viewCoroutine = null;
 
         yield break;
     }
