@@ -46,48 +46,48 @@ public class SwordHitbox : MonoBehaviour
 
     private void ApplySkillUpgrades()
     {
-        if (SkillManager.Instance.HasSkill(SkillType.ATTACK1))
-        {
-            _ATTACK += 20;
-            Debug.Log("攻撃力アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.ATTACK2))
-        {
-            _ATTACK += 20;
-            Debug.Log("攻撃力アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.ATTACK3))
-        {
-            _ATTACK += 30;
-            Debug.Log("攻撃力アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.GROUND))
-        {
-            _SLASH += 30;
-            _ELECTSLASH = true;
-            Debug.Log("スラッシュアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.GROUND))
-        {
-            _GROUND += 30;
-            _GROUNDRADIUS += 1f;
-            Debug.Log("グラウンドアタックアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
-        {
-            _KNOCKP += 2;
-            Debug.Log("ノックバックアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP2))
-        {
-            _KNOCKP += 2;
-            Debug.Log("ノックバックアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP3))
-        {
-            _KNOCKP += 2;
-            Debug.Log("ノックバックアップ！");
-        }
+        //if (SkillManager.Instance.HasSkill(SkillType.ATTACK1))
+        //{
+        //    _ATTACK += 20;
+        //    Debug.Log("攻撃力アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.ATTACK2))
+        //{
+        //    _ATTACK += 20;
+        //    Debug.Log("攻撃力アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.ATTACK3))
+        //{
+        //    _ATTACK += 30;
+        //    Debug.Log("攻撃力アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.GROUND))
+        //{
+        //    _SLASH += 30;
+        //    _ELECTSLASH = true;
+        //    Debug.Log("スラッシュアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.GROUND))
+        //{
+        //    _GROUND += 30;
+        //    _GROUNDRADIUS += 1f;
+        //    Debug.Log("グラウンドアタックアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
+        //{
+        //    _KNOCKP += 2;
+        //    Debug.Log("ノックバックアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKP2))
+        //{
+        //    _KNOCKP += 2;
+        //    Debug.Log("ノックバックアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKP3))
+        //{
+        //    _KNOCKP += 2;
+        //    Debug.Log("ノックバックアップ！");
+        //}
     }
 
     void OnEnable()

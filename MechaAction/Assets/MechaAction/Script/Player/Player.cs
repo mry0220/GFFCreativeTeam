@@ -74,21 +74,21 @@ public class Player : MonoBehaviour, ITeam
     }
     private void ApplySkillUpgrades()
     {
-        if (SkillManager.Instance.HasSkill(SkillType.SHOTGUN))
-        {
-            _SPEED += 0.1f;
-            Debug.Log("スピードアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.RIFLE))
-        {
-            _SPEED += 0.2f;
-            Debug.Log("スピードアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
-        {
-            _SPEED += 0.2f;
-            Debug.Log("スピードアップ！");
-        }
+        //if (SkillManager.Instance.HasSkill(SkillType.SHOTGUN))
+        //{
+        //    _SPEED += 0.1f;
+        //    Debug.Log("スピードアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.RIFLE))
+        //{
+        //    _SPEED += 0.2f;
+        //    Debug.Log("スピードアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
+        //{
+        //    _SPEED += 0.2f;
+        //    Debug.Log("スピードアップ！");
+        //}
     }
 
     private void Update()

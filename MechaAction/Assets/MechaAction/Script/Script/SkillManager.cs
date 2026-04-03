@@ -1,188 +1,115 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public enum SkillType
 {
-    ATTACK1,ATTACK2,ATTACK3,
-    HP1, HP2, HP3,
-    GUN1, GUN2, GUN3,
-    SPEED1, SPEED2, SPEED3,
-    UNB1, UNB2, UNB3,
-    SKILL1, SKILL2, SKILL3,
-    KNOCKS1, KNOCKS2, KNOCKS3,
-    KNOCKP1, KNOCKP2, KNOCKP3,
-    SLASH,GROUND,SHOTGUN,RIFLE
+    Attack,//基礎
+    Hp,
+    Gun,//基礎
+    Speed,
+    UNB,
+    Skill,
+    Knockback,
+    //武器ごと
+    Elect,
+    Ground,
+    ShotGun,
+    Rifle
+}
+
+public class SkillState//状態
+{
+    public SkillDataSO data;
+    public bool isUnlocked;
+
+    public SkillState(SkillDataSO data)
+    {
+        this.data = data;
+        isUnlocked = false;
+    }
 }
 
 public class SkillManager : MonoBehaviour
 {
-    public static SkillManager Instance;
-    private TextMeshProUGUI skillPointText;
-    private TextMeshProUGUI skillnameText;
-    private TextMeshProUGUI skillInfoText;
-    private TextMeshProUGUI pointText;
-    private GameObject skillBlockPanel;
-    public int skillPoint;
+    [SerializeField] private SkillDataSO[] m_allSkill;
 
-    [SerializeField] List<SkillType> skillList = new List<SkillType>();//購入済みを把握するlist
-    SkillBlock[] skillBlocks;
+    private Dictionary<SkillDataSO, SkillState> m_skillStates =
+        new Dictionary<SkillDataSO, SkillState>();
+
+    [Header("Event")]
+    [SerializeField] private SkillEventSO m_skillUnlockEvent;//取得したさい
+    [SerializeField] private SkillEventSO m_skillEvent;//関数を入れる
+
+    [Header("AudioEvent")]
+    [SerializeField] private AudioEventSO m_audioEvent;
+    [SerializeField] private AudioDataSO m_audioGetData;
+    [SerializeField] private AudioDataSO m_audioNotData;
+
+    private int m_score;
+
+    private void OnEnable()
+    {
+        m_skillEvent.Register(TryUnlockSkill);
+    }
+
+    private void OnDisable()
+    {
+        m_skillEvent.Unregister(TryUnlockSkill);
+    }
 
     private void Awake()
     {
-        if (Instance == null)
+        m_skillStates = new Dictionary<SkillDataSO, SkillState>();
+
+        foreach(var skill in m_allSkill)
         {
-            Instance = this;   //一応
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        
-        SceneManager.sceneLoaded += SceneLoaded;
-
-    }
-
-    void SceneLoaded(Scene nextScene, LoadSceneMode mode)//シーンがロードされると呼ばれる
-    {
-        skillPointText = GameObject.Find("SkillPointText")?.GetComponent<TextMeshProUGUI>();
-        skillnameText = GameObject.Find("SkillnameText")?.GetComponent<TextMeshProUGUI>();
-        skillInfoText = GameObject.Find("SkillinfoText")?.GetComponent<TextMeshProUGUI>();
-        pointText = GameObject.Find("PointText")?.GetComponent<TextMeshProUGUI>();
-        skillBlockPanel = GameObject.Find("SkillBlock");
-
-        
-        if(skillBlockPanel != null)
-        {
-            skillBlocks = skillBlockPanel.GetComponentsInChildren<SkillBlock>();
-
-            foreach (var block in skillBlocks)
-            {
-                if (HasSkill(block.SkillType)) // ← SkillBlock に SkillType の public getter を作っておく
-                {
-                    block.SetLearnedColor();
-                }
-                else
-                {
-                    block.CheckActiveBlock();
-                }
-            }
-        }
-        if (skillBlockPanel == null) Debug.Log("skillBlockPanel null");
-        if (skillPointText == null) Debug.Log("pointtext null");
-        if (skillnameText == null) Debug.Log("nametext null");
-        if (skillInfoText == null) Debug.Log("infotext null");
-        if (pointText == null) Debug.Log("infotext null");
-        if (skillBlockPanel == null) Debug.Log("Blockpanel null");
-
-        
-    }
-
-    private void Start()
-    {
-        if (skillInfoText != null) UpdateSkillInfoText();
-        if (skillnameText != null) UpdateSkillnameText();
-        if (pointText != null) UpdatePointText();
-    }
-
-    private void Update()
-    {
-        if (skillPointText != null) UpdateSkillPointText();
-    }
-
-    void UpdateSkillPointText()
-    {
-        skillPointText.text = string.Format("Point : {0}", skillPoint);
-    }
-
-    public void UpdateSkillnameText(string text = "")
-    {
-        skillnameText.text = text;
-    }
-
-    public void UpdateSkillInfoText(string text ="")
-    {
-        skillInfoText.text = text;
-    }
-
-    public void UpdatePointText(string text = "")
-    {
-        pointText.text = text;
-    }
-    public void Point(int score)
-    {
-        skillPoint += score;
-        foreach (var block in skillBlocks)
-        {
-            if (HasSkill(block.SkillType)) // ← SkillBlock に SkillType の public getter を作っておく
-            {
-                block.SetLearnedColor();
-            }
-            else
-            {
-                block.CheckActiveBlock();
-            }
+            m_skillStates.Add(skill, new SkillState(skill));
         }
     }
 
-    public bool HasSkill(SkillType skillType)//listのなかにあるかどうか
+    public void TryUnlockSkill(SkillDataSO data)
     {
-        return skillList.Contains(skillType);
+        if (!m_skillStates.ContainsKey(data)) return;
+
+        var state = m_skillStates[data];
+
+        if (!CanUnlock(data)) return;
+
+        state.isUnlocked = true;
+
+        m_skillUnlockEvent.Raise(data);//button animation
+        SkillAudio(m_audioGetData);//取得
     }
 
-    public bool CanLearnSkill(int cost, SkillType skillType)//コストが足りているか
+    private bool CanUnlock(SkillDataSO data)
     {
-        if (skillPoint < cost) return false;
+        var state = m_skillStates[data];
 
-        if (skillType == SkillType.ATTACK2) return HasSkill(SkillType.ATTACK1);
-        if (skillType == SkillType.ATTACK3) return HasSkill(SkillType.ATTACK2);
-        if (skillType == SkillType.GROUND) return HasSkill(SkillType.ATTACK1);
-        if (skillType == SkillType.KNOCKP1) return HasSkill(SkillType.ATTACK3) && HasSkill(SkillType.GROUND);
-        if (skillType == SkillType.KNOCKP2) return HasSkill(SkillType.KNOCKP1);
-        if (skillType == SkillType.KNOCKP3) return HasSkill(SkillType.KNOCKP2);
+        if (state.isUnlocked) return false;//取得済み
 
-        if (skillType == SkillType.HP2) return HasSkill(SkillType.HP1);
-        if (skillType == SkillType.HP3) return HasSkill(SkillType.HP2);
-        if (skillType == SkillType.SLASH) return HasSkill(SkillType.HP1);
-        if (skillType == SkillType.UNB1) return HasSkill(SkillType.HP3) && HasSkill(SkillType.SLASH);
-        if (skillType == SkillType.UNB2) return HasSkill(SkillType.UNB1);
-        if (skillType == SkillType.UNB3) return HasSkill(SkillType.UNB2);
+        foreach(var skill in data.NeedSkill)//前提条件
+        {
+            if (!m_skillStates[skill].isUnlocked) return false;
+        }
 
-        if (skillType == SkillType.GUN2) return HasSkill(SkillType.GUN1);
-        if (skillType == SkillType.GUN3) return HasSkill(SkillType.GUN2);
-        if (skillType == SkillType.SHOTGUN) return HasSkill(SkillType.GUN1);
-        if (skillType == SkillType.SKILL1) return HasSkill(SkillType.GUN3) && HasSkill(SkillType.SHOTGUN);
-        if (skillType == SkillType.SKILL2) return HasSkill(SkillType.SKILL1);
-        if (skillType == SkillType.SKILL3) return HasSkill(SkillType.SKILL2);
-
-        if (skillType == SkillType.SPEED2) return HasSkill(SkillType.SPEED1);
-        if (skillType == SkillType.SPEED3) return HasSkill(SkillType.SPEED2);
-        if (skillType == SkillType.RIFLE) return HasSkill(SkillType.SPEED1);
-        if (skillType == SkillType.KNOCKS1) return HasSkill(SkillType.SPEED3) && HasSkill(SkillType.RIFLE);
-        if (skillType == SkillType.KNOCKS2) return HasSkill(SkillType.KNOCKS1);
-        if (skillType == SkillType.KNOCKS3) return HasSkill(SkillType.KNOCKS2);
-
+        if (m_score < data.Cost)
+        {
+            SkillAudio(m_audioNotData);
+            return false;//コスト不足
+        }
+        m_score -= data.Cost;
 
         return true;
     }
 
-    public void LearnSkill(int cost, SkillType skillType)
+    public SkillState GetState(SkillDataSO data)//loadした後呼ばれる必要
     {
-        skillList.Add(skillType);
-        CheckActiveBlocks();
-        skillPoint -= cost;
-        UpdateSkillPointText();
+        return m_skillStates[data];
     }
 
-    void CheckActiveBlocks()
+    public void SkillAudio(AudioDataSO data)
     {
-        foreach (SkillBlock skillBlock in skillBlocks)
-        {
-            skillBlock.CheckActiveBlock();
-        }
+        m_audioEvent.Raise(data);
     }
 }

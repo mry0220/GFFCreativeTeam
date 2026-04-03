@@ -256,7 +256,7 @@ public class GManager : MonoBehaviour
         score +=baseScore * Mathf.Pow(targetTime / currentTime, rate);//(a,b) a‚Ìbæ
         score = Mathf.Round(score * 100f) / 100f;
         score += life * 1000;
-        SkillManager.Instance.Point((int)score);
+        //SkillManager.Instance.Point((int)score);
         //ƒXƒRƒA‚ğ•Û‘¶
 
         GameData data = new GameData { ClearStage = clear, ClearTime = currentTime };

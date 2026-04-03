@@ -90,21 +90,21 @@ public class Player_Attack : MonoBehaviour
 
     private void ApplySkillUpgrades()
     {
-        if (SkillManager.Instance.HasSkill(SkillType.HP1))
-        {
-            _SKILL += 0.1f;
-            Debug.Log("スキルアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.HP2))
-        {
-            _SKILL += 0.2f;
-            Debug.Log("スキルアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.HP3))
-        {
-            _SKILL += 0.3f;
-            Debug.Log("スキルアップ！");
-        }
+        //if (SkillManager.Instance.HasSkill(SkillType.HP1))
+        //{
+        //    _SKILL += 0.1f;
+        //    Debug.Log("スキルアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.HP2))
+        //{
+        //    _SKILL += 0.2f;
+        //    Debug.Log("スキルアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.HP3))
+        //{
+        //    _SKILL += 0.3f;
+        //    Debug.Log("スキルアップ！");
+        //}
     }
 
     public void Skillgauge(float gauge)//敵を倒したら回復

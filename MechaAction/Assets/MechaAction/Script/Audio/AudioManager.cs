@@ -7,21 +7,24 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
 
     [SerializeField] private DamageEventSO m_damageEventSO;
-    [SerializeField] private BGMEventSO m_bgmEventSO;
+    [SerializeField] private AudioEventSO m_bgmEventSO;
+    [SerializeField] private AudioEventSO m_seEventSO;
 
     [SerializeField] private AudioSource m_BGM;
     [SerializeField] private AudioSource m_SE;
 
     private void OnEnable()
     {
-        m_damageEventSO.Register(AudioSEPlay);
+        m_damageEventSO.Register(AudioDamagePlay);
         m_bgmEventSO.Register(AudioBGMPlay);
+        m_seEventSO.Register(AudioSEPlay);
     }
 
     private void OnDisable()
     {
-        m_damageEventSO.Unregister(AudioSEPlay);
+        m_damageEventSO.Unregister(AudioDamagePlay);
         m_bgmEventSO.Unregister(AudioBGMPlay);
+        m_seEventSO.Register(AudioSEPlay);
     }
 
     private void Awake()
@@ -37,7 +40,7 @@ public class AudioManager : MonoBehaviour
         //}
     }
 
-    public void AudioSEPlay(ApplyDamageEvent d_event)
+    public void AudioDamagePlay(ApplyDamageEvent d_event)
     {
         if(d_event.audioData == null) return;
 
@@ -53,5 +56,12 @@ public class AudioManager : MonoBehaviour
             m_BGM.clip = data.Clip;
             m_BGM.Play();
         }
+    }
+
+    public void AudioSEPlay(AudioDataSO data)
+    {
+        if(data == null) return;
+
+        m_SE.PlayOneShot(data.Clip);
     }
 }

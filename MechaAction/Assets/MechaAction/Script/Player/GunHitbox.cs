@@ -33,50 +33,50 @@ public class GunHitbox : MonoBehaviour
 
     private void ApplySkillUpgrades()
     {
-        if (SkillManager.Instance.HasSkill(SkillType.GUN1))
-        {
-            _GUN += 20;
-            _RAY += 1f;
-            Debug.Log("銃アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.GUN2))
-        {
-            _GUN += 20;
-            _RAY += 1f;
-            Debug.Log("銃アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.GUN3))
-        {
-            _GUN += 30;
-            _RAY += 1f;
-            Debug.Log("銃アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.SHOTGUN))
-        {
-            _SHOTGUN += 30;
-            _SHOTGUNRADIUS += 2f;
-            Debug.Log("ショットガンアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.RIFLE))
-        {
-            _RIFLE += 30;
-            Debug.Log("ライフルアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
-        {
-            _KNOCKP += 2;
-            Debug.Log("ノックバックアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP2))
-        {
-            _KNOCKP += 2;
-            Debug.Log("ノックバックアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKP3))
-        {
-            _KNOCKP += 2;
-            Debug.Log("ノックバックアップ！");
-        }
+        //if (SkillManager.Instance.HasSkill(SkillType.GUN1))
+        //{
+        //    _GUN += 20;
+        //    _RAY += 1f;
+        //    Debug.Log("銃アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.GUN2))
+        //{
+        //    _GUN += 20;
+        //    _RAY += 1f;
+        //    Debug.Log("銃アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.GUN3))
+        //{
+        //    _GUN += 30;
+        //    _RAY += 1f;
+        //    Debug.Log("銃アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.SHOTGUN))
+        //{
+        //    _SHOTGUN += 30;
+        //    _SHOTGUNRADIUS += 2f;
+        //    Debug.Log("ショットガンアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.RIFLE))
+        //{
+        //    _RIFLE += 30;
+        //    Debug.Log("ライフルアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
+        //{
+        //    _KNOCKP += 2;
+        //    Debug.Log("ノックバックアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKP2))
+        //{
+        //    _KNOCKP += 2;
+        //    Debug.Log("ノックバックアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKP3))
+        //{
+        //    _KNOCKP += 2;
+        //    Debug.Log("ノックバックアップ！");
+        //}
     }
 
     public void leftAttack(int dir)

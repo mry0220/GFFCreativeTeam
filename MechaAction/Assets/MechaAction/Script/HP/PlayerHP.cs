@@ -30,51 +30,51 @@ public class PlayerHP : MonoBehaviour ,IDamage
 
     private void ApplySkillUpgrades()
     {
-        if (SkillManager.Instance.HasSkill(SkillType.HP1))
-        {
-            _HP += 20;
-            Debug.Log("HPアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.HP2))
-        {
-            _HP += 30;
-            Debug.Log("HPアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.HP3))
-        {
-            _HP += 50;
-            Debug.Log("HPアップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKS1))
-        {
-            _KNOCKS += 2;
-            Debug.Log("ノック減アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKS2))
-        {
-            _KNOCKS += 2;
-            Debug.Log("ノック減アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.KNOCKS3))
-        {
-            _KNOCKS += 2;
-            Debug.Log("ノック減アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.GUN1))
-        {
-            _UNB += 0.1f;
-            Debug.Log("無敵アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.GUN2))
-        {
-            _UNB += 0.2f;
-            Debug.Log("無敵アップ！");
-        }
-        if (SkillManager.Instance.HasSkill(SkillType.GUN3))
-        {
-            _UNB += 0.2f;
-            Debug.Log("無敵アップ！");
-        }
+        //if (SkillManager.Instance.HasSkill(SkillType.HP1))
+        //{
+        //    _HP += 20;
+        //    Debug.Log("HPアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.HP2))
+        //{
+        //    _HP += 30;
+        //    Debug.Log("HPアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.HP3))
+        //{
+        //    _HP += 50;
+        //    Debug.Log("HPアップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKS1))
+        //{
+        //    _KNOCKS += 2;
+        //    Debug.Log("ノック減アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKS2))
+        //{
+        //    _KNOCKS += 2;
+        //    Debug.Log("ノック減アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.KNOCKS3))
+        //{
+        //    _KNOCKS += 2;
+        //    Debug.Log("ノック減アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.GUN1))
+        //{
+        //    _UNB += 0.1f;
+        //    Debug.Log("無敵アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.GUN2))
+        //{
+        //    _UNB += 0.2f;
+        //    Debug.Log("無敵アップ！");
+        //}
+        //if (SkillManager.Instance.HasSkill(SkillType.GUN3))
+        //{
+        //    _UNB += 0.2f;
+        //    Debug.Log("無敵アップ！");
+        //}
     }
 
     private void Update()

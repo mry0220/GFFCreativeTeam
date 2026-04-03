@@ -15,67 +15,59 @@ public class SkillBlock : MonoBehaviour
     [SerializeField] new string name;
     [SerializeField] string info;
     [SerializeField] GameObject hidePanel;
-    public SkillType SkillType => skillType;
 
-    void Start()
+    [SerializeField] private SkillManager m_skillManager;
+
+    [SerializeField] private SkillDataSO m_skillData;
+
+    [Header("Event")]
+    [SerializeField] private SkillEventSO m_skillEvent;//ボタンを押した際
+    [SerializeField] private SkillEventSO m_skillUnlockEvent;//スキル獲得時の
+
+    private void OnEnable()
     {
-        pointText.text = costtext;
-        nameText.text = name;
-        infoText.text = info;
-        CheckActiveBlock();
+        m_skillUnlockEvent.Register(ChengeColorUI);
+        m_skillUnlockEvent.Register(PlayAnim);
     }
 
-    public void OnClick()
+    private void OnDisable()
     {
-        //Debug.Log("d");
-
-        // 習得済みなら何もしない
-        if (SkillManager.Instance.HasSkill(this.skillType))
-        {
-            Debug.Log("習得済み");
-            return;
-        }
-            // 習得可能？
-        if (SkillManager.Instance.CanLearnSkill(cost, skillType))
-        {
-            // 習得可能なら習得する：スキルポイントが足りている & 必要スキルを持っている
-            SkillManager.Instance.LearnSkill(cost, this.skillType);
-            Debug.Log("習得");
-            ChangeLearnedBlock(Color.blue);
-        }
-        else
-        {
-            // 習得不可能ならログを出す
-            Debug.Log("習得不可");
-        }
+        m_skillUnlockEvent.Unregister(ChengeColorUI);
+        m_skillUnlockEvent.Unregister(PlayAnim);
     }
 
-    public void CheckActiveBlock()
+    private void Start()
     {
-        if (SkillManager.Instance.CanLearnSkill(cost, skillType))
+        var state = m_skillManager.GetState(m_skillData);
+
+        if(state.isUnlocked)
         {
-            hidePanel.SetActive(false);
+
         }
         else
         {
-            hidePanel.SetActive(true);
+
         }
     }
 
-    void ChangeLearnedBlock(Color color)
+    public void OnSkillEvent()
     {
-        Image image = GetComponent<Image>();
-        image.color = color;
+        m_skillEvent.Raise(m_skillData);
     }
 
-    public void SetLearnedColor()
+    private void ChengeColorUI(SkillDataSO skill)
     {
-        GetComponent<Image>().color = Color.blue;
+        if(skill == m_skillData)
+        {
+            
+        }
     }
 
-    public void OnCursor()
+    private void PlayAnim(SkillDataSO skill)
     {
-        SkillManager.Instance.UpdateSkillInfoText(info);
-        SkillManager.Instance.UpdateSkillnameText(name);
+        if(skill == m_skillData)
+        {
+
+        }
     }
 }

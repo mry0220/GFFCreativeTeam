@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Event", menuName = "SctiptableObjects/Events/BGMEvent")]
-public class BGMEventSO : ScriptableObject
+[CreateAssetMenu(fileName = "Event", menuName = "SctiptableObjects/Events/AudioEvent")]
+public class AudioEventSO : ScriptableObject
 {
     public event Action<AudioDataSO> OnEvent;
 
