@@ -17,19 +17,19 @@ public class AudioBer : MonoBehaviour
         seSlider.value = audio.data.SEVolume;
 
         // 初期値を AudioManager にも反映
-        AudioManager.Instance.ChangeVolume(
-            audio.data.BGMVolume,
-            audio.data.SEVolume
-        );
+        //AudioManager.Instance.ChangeVolume(
+        //    audio.data.BGMVolume,
+        //    audio.data.SEVolume
+        //);
     }
 
     // スライダー変更時に呼ぶ
     public void OnValueChanged()
     {
-        AudioManager.Instance.ChangeVolume(
-            bgmSlider.value,
-            seSlider.value
-        );
+        //AudioManager.Instance.ChangeVolume(
+        //    bgmSlider.value,
+        //    seSlider.value
+        //);
     }
 
 }

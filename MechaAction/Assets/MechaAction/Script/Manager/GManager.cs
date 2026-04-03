@@ -311,7 +311,7 @@ public class GManager : MonoBehaviour
         if (nextScene.name == "StageScene")
         {
             Time.timeScale = 1f;//menu‚Ì~‚ß‰ğœ•ÛŒ¯
-            AudioManager.Instance.PlayBGM("244_BPM184");
+            //AudioManager.Instance.PlayBGM("244_BPM184");
             if(clear == 0)
             {
                 _ui.Tutorial();
