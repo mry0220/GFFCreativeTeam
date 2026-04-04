@@ -19,14 +19,14 @@ public class EnemySpawn : MonoBehaviour
         _player = GameObject.FindWithTag("Player")?.transform;
 
         // GManagerなどからプレイヤーTransformを取得（直接FindしてもOK）
-        if (GManager.Instance != null)
-        {
-            //player = GManager.Instance.player.transform;
-        }
-        else
-        {
+        //if (GManager.Instance != null)
+        //{
+        //    //player = GManager.Instance.player.transform;
+        //}
+        //else
+        //{
             
-        }
+        //}
     }
 
     private void Update()

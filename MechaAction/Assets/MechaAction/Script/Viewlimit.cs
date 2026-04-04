@@ -12,7 +12,7 @@ public class Viewlimit : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            GManager.Instance.SetCameraBounds(cameraMin, cameraMax);
+            //GManager.Instance.SetCameraBounds(cameraMin, cameraMax);
         }
     }
 }

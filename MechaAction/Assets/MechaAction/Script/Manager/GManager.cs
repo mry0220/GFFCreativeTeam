@@ -7,19 +7,19 @@ using UnityEngine.SceneManagement;
 
 public class GManager : MonoBehaviour
 {
-    private TextMeshProUGUI scorePointText;
-    private TextMeshProUGUI lifeText;
-    private TextMeshProUGUI TimeText;
-    private TextMeshProUGUI BestTimeText;
+    //private TextMeshProUGUI scorePointText;
+    //private TextMeshProUGUI lifeText;
+    //private TextMeshProUGUI TimeText;
+    //private TextMeshProUGUI BestTimeText;
 
-    public static GManager Instance;
-　　private CameraManager _mainCamera;
-    private UIController _ui;
-    private GameObject _playerobj;
-    private Transform _playerposition;
-    private Player _player;
-    private PlayerHP _playerhp;
-    private Player_Attack _playerattack;
+    //public static GManager Instance;
+　　//private CameraManager _mainCamera;
+    //private UIController _ui;
+    //private GameObject _playerobj;
+    //private Transform _playerposition;
+    //private Player _player;
+    //private PlayerHP _playerhp;
+    //private Player_Attack _playerattack;
     private List<Cameralimit> _areaTriggers = new List<Cameralimit>(); 
     private List<EnemySpawn> _enemySpawn = new List<EnemySpawn>();
 
@@ -45,18 +45,18 @@ public class GManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;   //一応
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //if (Instance == null)
+        //{
+        //    Instance = this;   //一応
+        //    DontDestroyOnLoad(gameObject);
+        //}
+        //else
+        //{
+        //    Destroy(gameObject);
+        //}
         
         currentpoint = _startPosition;
-        SceneManager.sceneLoaded += SceneLoaded;
+        //SceneManager.sceneLoaded += SceneLoaded;
         //参照をここにもってくる
 
     }
@@ -66,20 +66,20 @@ public class GManager : MonoBehaviour
         
     }
 
-    void UpdateScorePointText()
-    {
-        scorePointText.text = string.Format("Score : {0}", score);
-    }
+    //void UpdateScorePointText()
+    //{
+    //    scorePointText.text = string.Format("Score : {0}", score);
+    //}
 
-    void UpdateTimeText()
-    {
-        TimeText.text = "Time: " + currentTime.ToString("F2") + "s";
-    }
+    //void UpdateTimeText()
+    //{
+    //    TimeText.text = "Time: " + currentTime.ToString("F2") + "s";
+    //}
 
-    public void UpdateLifeText()
-    {
-        lifeText.text = string.Format("Life : {0}", life);
-    }
+    //public void UpdateLifeText()
+    //{
+    //    lifeText.text = string.Format("Life : {0}", life);
+    //}
 
     public void DisplayBestTime()
     {
@@ -110,10 +110,10 @@ public class GManager : MonoBehaviour
         {
             currentTime += Time.deltaTime;
         }
-        if(scorePointText != null) UpdateScorePointText();
-        if (lifeText != null) UpdateLifeText();
-        if (TimeText != null) UpdateTimeText();
-        if (BestTimeText != null) DisplayBestTime();
+        //if(scorePointText != null) UpdateScorePointText();
+        //if (lifeText != null) UpdateLifeText();
+        //if (TimeText != null) UpdateTimeText();
+        //if (BestTimeText != null) DisplayBestTime();
 
         if (Input.GetKeyDown(KeyCode.Escape) && _isPlaying)
         {
@@ -133,7 +133,7 @@ public class GManager : MonoBehaviour
         if (_isOption) return;
 
         _isMenu = !_isMenu;
-        _ui.Menu(_isMenu);
+        //_ui.Menu(_isMenu);
         if(_isMenu )
         {
             Time.timeScale = 0f;
@@ -147,7 +147,7 @@ public class GManager : MonoBehaviour
     public void Option()
     {
         _isOption =!_isOption;
-        _ui.Option(_isOption);
+        //_ui.Option(_isOption);
     }
 
     public void CommandCheck(bool ischeck)
@@ -156,17 +156,17 @@ public class GManager : MonoBehaviour
     }
 
     // Clamp値を変更
-    public void SetCameraBounds(Vector2 min, Vector2 max) //カメラ制限
-    {
-        _mainCamera.minPos = min;
-        _mainCamera.maxPos = max;
-    }
+    //public void SetCameraBounds(Vector2 min, Vector2 max) //カメラ制限
+    //{
+    //    _mainCamera.minPos = min;
+    //    _mainCamera.maxPos = max;
+    //}
 
-    public void OnPlayerHit() //プレイヤーがダメージを受けたとき
-    {
-        if (_mainCamera != null)
-            _mainCamera.ShakeCamera();   // カメラ揺らす
-    }
+    //public void OnPlayerHit() //プレイヤーがダメージを受けたとき
+    //{
+    //    if (_mainCamera != null)
+    //        _mainCamera.ShakeCamera();   // カメラ揺らす
+    //}
 
     public void AreaTrigger(Cameralimit area)
     {
@@ -196,12 +196,12 @@ public class GManager : MonoBehaviour
 
     public IEnumerator DiePlayer()
     {
-        _player.Dead();//Vector3.zeroにするため　後消す
+        //_player.Dead();//Vector3.zeroにするため　後消す
         //AudioManager.Instance.PlaySound("dead");
         if (life <= 0)
         {
             _isTiming = false;
-            _ui.GameOver();
+            //_ui.GameOver();
             Debug.Log("gameover");
             yield break;
         }
@@ -209,18 +209,18 @@ public class GManager : MonoBehaviour
         DeadAreaTrigger();//AreaEnemyのリセット
         DeadEnemySpawn();//EnemySpawnのリセット
 
-        _ui.FadeIn();                                                  //フェードインさせる
+        //_ui.FadeIn();                                                  //フェードインさせる
         yield return new WaitForSeconds(1.5f);
 
-        _player.ChangeState(PlayerState.Respawn);                     //一旦respawnに
+        //_player.ChangeState(PlayerState.Respawn);                     //一旦respawnに
         life--;                                                        //life-1
-        SetCameraBounds(_respawnmin, _respawnmax);
-        _playerposition.position = currentpoint;
-        StartCoroutine(_playerhp.ResetHP());
-        _ui.FadeOut();
+        //SetCameraBounds(_respawnmin, _respawnmax);
+        //_playerposition.position = currentpoint;
+        //StartCoroutine(_playerhp.ResetHP());
+        //_ui.FadeOut();
         yield return new WaitForSeconds(1f);
 
-        _player._ReturnNormal();
+        //_player._ReturnNormal();
 
         yield return new WaitForSeconds(2f);
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
@@ -251,7 +251,7 @@ public class GManager : MonoBehaviour
     public void Clear()
     {
         //AudioManager.Instance.PlaySound("clear");
-        _player.ChangeState(PlayerState.Other);
+        //_player.ChangeState(PlayerState.Other);
         _isTiming = false;
         score +=baseScore * Mathf.Pow(targetTime / currentTime, rate);//(a,b) aのb乗
         score = Mathf.Round(score * 100f) / 100f;
@@ -271,7 +271,7 @@ public class GManager : MonoBehaviour
         }
         //score = 0;
         //強化UIを出す
-        _ui.Shop();
+        //_ui.Shop();
     }
 
     public void Title()
@@ -292,21 +292,21 @@ public class GManager : MonoBehaviour
 
     void SceneLoaded(Scene nextScene, LoadSceneMode mode)//シーンがロードされると呼ばれる
     {
-        scorePointText = GameObject.Find("ScoreText")?.GetComponent<TextMeshProUGUI>();
-        lifeText = GameObject.Find("LifeText")?.GetComponent<TextMeshProUGUI>();
-        TimeText = GameObject.Find("TimeText")?.GetComponent<TextMeshProUGUI>();
-        BestTimeText = GameObject.Find("BestTime")?.GetComponent<TextMeshProUGUI>();
-        _mainCamera = FindFirstObjectByType<CameraManager>();
-        _playerobj = GameObject.FindWithTag("Player");
-        if (_playerobj != null)
-        {
-            _player = _playerobj.GetComponent<Player>();
-            _playerposition = _playerobj.transform;
-            _playerhp = _playerobj.GetComponent<PlayerHP>();
-            _playerattack = _playerobj.GetComponent<Player_Attack>();
-            currentpoint = _playerobj.transform.position;
-        }
-        _ui = FindFirstObjectByType<UIController>();
+        //scorePointText = GameObject.Find("ScoreText")?.GetComponent<TextMeshProUGUI>();
+        //lifeText = GameObject.Find("LifeText")?.GetComponent<TextMeshProUGUI>();
+        //TimeText = GameObject.Find("TimeText")?.GetComponent<TextMeshProUGUI>();
+        //BestTimeText = GameObject.Find("BestTime")?.GetComponent<TextMeshProUGUI>();
+        //_mainCamera = FindFirstObjectByType<CameraManager>();
+        //_playerobj = GameObject.FindWithTag("Player");
+        //if (_playerobj != null)
+        //{
+        //    _player = _playerobj.GetComponent<Player>();
+        //    _playerposition = _playerobj.transform;
+        //    _playerhp = _playerobj.GetComponent<PlayerHP>();
+        //    _playerattack = _playerobj.GetComponent<Player_Attack>();
+        //    currentpoint = _playerobj.transform.position;
+        //}
+        //_ui = FindFirstObjectByType<UIController>();
 
         if (nextScene.name == "StageScene")
         {
@@ -314,14 +314,14 @@ public class GManager : MonoBehaviour
             //AudioManager.Instance.PlayBGM("244_BPM184");
             if(clear == 0)
             {
-                _ui.Tutorial();
+                //_ui.Tutorial();
                 //Debug.Log("チュートリアル");
 
             }
             
             score = 0;
-            _player._ReturnNormal();
-            _playerposition.position = currentpoint;
+            //_player._ReturnNormal();
+            //_playerposition.position = currentpoint;
             _respawnmax = new Vector2(0, 2f);//カメラ初期化//5と7
             _respawnmax = new Vector2(1000, 4f);
             _isTiming = true;
@@ -339,9 +339,9 @@ public class GManager : MonoBehaviour
             Time.timeScale = 1f;//menuの時止め解除保険
         }
 
-        if (scorePointText == null) Debug.Log("scorePointText null");
-        if (lifeText == null) Debug.Log("lifeText null");
-        if (TimeText == null) Debug.Log("TimeText null");
-        if (BestTimeText == null) Debug.Log("BestTimeText null");
+        //if (scorePointText == null) Debug.Log("scorePointText null");
+        //if (lifeText == null) Debug.Log("lifeText null");
+        //if (TimeText == null) Debug.Log("TimeText null");
+        //if (BestTimeText == null) Debug.Log("BestTimeText null");
     }
 }

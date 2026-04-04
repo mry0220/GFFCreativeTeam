@@ -19,18 +19,18 @@ public class Option : MonoBehaviour
     {
         if (isOn)
         {
-            GManager.Instance.CommandCheck(true);
+            //GManager.Instance.CommandCheck(true);
             Debug.Log("on");
         }
         else
         {
-            GManager.Instance.CommandCheck(false);
+            //GManager.Instance.CommandCheck(false);
             Debug.Log("off");
         }
     }
 
     public void OptionButton()
     {
-        GManager.Instance.Option();
+        //GManager.Instance.Option();
     }
 }

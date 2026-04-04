@@ -29,7 +29,7 @@ public class Burst_Attack : MonoBehaviour
 
     private void Start()
     {
-        m_enhance = GManager.Instance.clear;
+        //m_enhance = GManager.Instance.clear;
     }
 
     private void Update()

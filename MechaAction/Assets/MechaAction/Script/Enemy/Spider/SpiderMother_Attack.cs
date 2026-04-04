@@ -22,7 +22,7 @@ public class SpiderMother_Attack : MonoBehaviour
 
     private void Start()
     {
-        _clear = GManager.Instance.clear;
+        //_clear = GManager.Instance.clear;
         var attackData = _enemyattackSO.GetEffect("SpiderMother");
         if (attackData != null)
         {

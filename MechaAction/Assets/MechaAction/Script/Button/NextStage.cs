@@ -9,7 +9,7 @@ public class NextStage : MonoBehaviour
     {
         //AudioManager.Instance.PlaySound("click");
 
-        GManager.Instance.NextStage();
+        //GManager.Instance.NextStage();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

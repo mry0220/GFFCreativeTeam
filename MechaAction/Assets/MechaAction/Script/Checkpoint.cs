@@ -13,6 +13,6 @@ public class Checkpoint : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         _wall.SetActive(true);
-        GManager.Instance.CheckPoint(transform.position,minPos,maxPos); 
+        //GManager.Instance.CheckPoint(transform.position,minPos,maxPos); 
     }
 }

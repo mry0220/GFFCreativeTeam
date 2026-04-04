@@ -8,7 +8,7 @@ public class Goal : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            GManager.Instance.Clear();
+            //GManager.Instance.Clear();
         }
     }
 }

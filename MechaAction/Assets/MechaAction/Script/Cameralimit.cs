@@ -30,7 +30,7 @@ public class Cameralimit : MonoBehaviour
         if (invisibleWall != null)
             invisibleWall.SetActive(false);
 
-        GManager.Instance.AreaTrigger(this);
+        //GManager.Instance.AreaTrigger(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,7 +40,7 @@ public class Cameralimit : MonoBehaviour
         if (activated) return;
 
         // ÉJÉÅÉâêßå¿Çê›íË
-        GManager.Instance.SetCameraBounds(cameraMin, cameraMax);
+        //GManager.Instance.SetCameraBounds(cameraMin, cameraMax);
         if (_bosscheck == false)
             _spawn.StartSpawn();
         else
@@ -54,7 +54,7 @@ public class Cameralimit : MonoBehaviour
     public void Clear()
     {
         invisibleWall.SetActive(false);
-        GManager.Instance.SetCameraBounds(cameraMinRE,cameraMaxRE);
+        //GManager.Instance.SetCameraBounds(cameraMinRE,cameraMaxRE);
     }
 
     public void DeadClear()

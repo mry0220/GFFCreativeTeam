@@ -24,7 +24,7 @@ public class AudioManager : MonoBehaviour
     {
         m_damageEventSO.Unregister(AudioDamagePlay);
         m_bgmEventSO.Unregister(AudioBGMPlay);
-        m_seEventSO.Register(AudioSEPlay);
+        m_seEventSO.Unregister(AudioSEPlay);
     }
 
     private void Awake()

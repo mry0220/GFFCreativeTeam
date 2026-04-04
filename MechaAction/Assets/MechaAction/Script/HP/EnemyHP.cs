@@ -38,7 +38,7 @@ public class EnemyHP : MonoBehaviour,IDamage
 
     void Start()
     {
-        _clear = GManager.Instance.clear;
+        //_clear = GManager.Instance.clear;
         maxHP = maxHP + (_clear * 50);
         currentHP = maxHP;
         //Debug.Log("<color=red>" + gameObject.name + " (“G) ‚ÌHP‚ª‰Šú‰»‚³‚ê‚Ü‚µ‚½: " + currentHP);

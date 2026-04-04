@@ -27,7 +27,7 @@ public class StunEnemy : MonoBehaviour
 
     private void Start()
     {
-        _clear = GManager.Instance.clear;
+        //_clear = GManager.Instance.clear;
         var attackData = _enemyattackSO.GetEffect("StunEnemy");
         if (attackData != null)
         {

@@ -25,7 +25,7 @@ public class SpiderChild_Attack : MonoBehaviour
 
     private void Start()
     {
-        _clear = GManager.Instance.clear;
+        //_clear = GManager.Instance.clear;
         var attackData = _enemyattackSO.GetEffect("SpiderChild");
         if (attackData != null)
         {

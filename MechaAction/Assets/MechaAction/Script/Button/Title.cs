@@ -8,6 +8,6 @@ public class Title : MonoBehaviour
         //AudioManager.Instance.PlaySound("click");
 
         SceneManager.LoadScene("Title");
-        GManager.Instance.Title();
+        //GManager.Instance.Title();
     }
 }

@@ -43,7 +43,7 @@ public class Tire_Drone : MonoBehaviour
 
     private void Start()
     {
-        _clear = GManager.Instance.clear;
+        //_clear = GManager.Instance.clear;
         var attackData = _enemyattackSO.GetEffect("Tire");
         if (attackData != null)
         {

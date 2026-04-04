@@ -316,7 +316,7 @@ public class PlayerHP : MonoBehaviour ,IDamage
 
     private IEnumerator _DamageTime(float time)
     {
-        GManager.Instance.OnPlayerHit();//カメラ揺らす
+        //GManager.Instance.OnPlayerHit();//カメラ揺らす
 
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
         //    LayerMask.NameToLayer("Enemy"), true);
@@ -351,7 +351,7 @@ public class PlayerHP : MonoBehaviour ,IDamage
         //    LayerMask.NameToLayer("Enemy"), true);
         m_player.ChangeState(PlayerState.Dead);
         m_player.Dead();//animとか
-        StartCoroutine(GManager.Instance.DiePlayer());
+        //StartCoroutine(GManager.Instance.DiePlayer());
 
         // ここにプレイヤー入力の無効化などの処理を追加
         // プレイヤーオブジェクトを非アクティブ化
