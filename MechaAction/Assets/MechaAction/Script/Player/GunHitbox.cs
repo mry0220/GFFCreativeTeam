@@ -22,7 +22,7 @@ public class GunHitbox : MonoBehaviour
     private int _GUN = 0;
     private float _RAY = 0f;
     private int _SHOTGUN = 0;
-    private float _SHOTGUNRADIUS = 0f;
+    //private float _SHOTGUNRADIUS = 0f;
     private int _RIFLE = 0;
     private int _KNOCKP = 0;
 

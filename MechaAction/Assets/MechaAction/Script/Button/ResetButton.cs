@@ -9,6 +9,6 @@ public class ResetButton : MonoBehaviour
     {
         //AudioManager.Instance.PlaySound("click");
 
-        SaveManager.Instance.ResetData();
+        //SaveManager.Instance.ResetData();
     }
 }

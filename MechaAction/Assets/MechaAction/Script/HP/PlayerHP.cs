@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerHP : MonoBehaviour ,IDamage
 {
     [SerializeField] private Player m_player;
-    private bool _isDeadArea = false;
+    //private bool _isDeadArea = false;
 
     private int maxHP = 100;
     private int currentHP;
@@ -13,9 +13,9 @@ public class PlayerHP : MonoBehaviour ,IDamage
     public int CurrentHP => currentHP; //UIHPゲージで使う　ゲームマネージャーでmaxにするためだめかも
     public int MaxHP => maxHP;//こっちもまあ使うか
 
-    private int _HP = 0;
-    private int _KNOCKS = 0;
-    private float _UNB = 0f;
+    //private int _HP = 0;
+    //private int _KNOCKS = 0;
+    //private float _UNB = 0f;
     public void Awake()
     {
         
@@ -24,7 +24,7 @@ public class PlayerHP : MonoBehaviour ,IDamage
     private void Start()
     {
         ApplySkillUpgrades();
-        maxHP += _HP;
+        //maxHP += _HP;
         currentHP = maxHP;
     }
 
@@ -372,7 +372,7 @@ public class PlayerHP : MonoBehaviour ,IDamage
 
     public IEnumerator ResetHP()//GManagerから復活の命令
     {
-        _isDeadArea = false;
+        //_isDeadArea = false;
         currentHP = MaxHP;
         m_player.Respawn();
         //Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),

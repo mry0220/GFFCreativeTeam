@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "SctiptableObjects/EffectData")]
+[CreateAssetMenu(fileName = "Data", menuName = "SctiptableObjects/Datas/EffectData")]
 public class EffectDataSO : ScriptableObject
 {
     [SerializeField] private GameObject m_prefab;

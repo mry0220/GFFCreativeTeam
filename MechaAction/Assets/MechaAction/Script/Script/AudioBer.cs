@@ -11,10 +11,10 @@ public class AudioBer : MonoBehaviour
     private void Start()
     {
         // 保存済み音量をロードしてスライダーに反映
-        var audio = SaveManager.Instance.AudioLoad();
+        //var audio = SaveManager.Instance.AudioLoad();
 
-        bgmSlider.value = audio.data.BGMVolume;
-        seSlider.value = audio.data.SEVolume;
+        //bgmSlider.value = audio.data.BGMVolume;
+        //seSlider.value = audio.data.SEVolume;
 
         // 初期値を AudioManager にも反映
         //AudioManager.Instance.ChangeVolume(

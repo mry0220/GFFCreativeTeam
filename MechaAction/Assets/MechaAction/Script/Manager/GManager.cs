@@ -83,20 +83,20 @@ public class GManager : MonoBehaviour
 
     public void DisplayBestTime()
     {
-        var RecordData = SaveManager.Instance.Load();
+        //var RecordData = SaveManager.Instance.Load();
 
-        if(RecordData.Records == null || RecordData.Records.Count == 0)
-        {
-            BestTimeText.text = "Best Time: --";
-        }
-        else
-        {
-            float bestTime = RecordData.Records[0].ClearTime;
-            int Stage = RecordData.Records[0].ClearStage;
+        //if(RecordData.Records == null || RecordData.Records.Count == 0)
+        //{
+        //    BestTimeText.text = "Best Time: --";
+        //}
+        //else
+        //{
+        //    float bestTime = RecordData.Records[0].ClearTime;
+        //    int Stage = RecordData.Records[0].ClearStage;
 
-            BestTimeText.text = "Best Time: " + bestTime.ToString("F2") + "s  STAGE:" 
-                + Stage;
-        }
+        //    BestTimeText.text = "Best Time: " + bestTime.ToString("F2") + "s  STAGE:" 
+        //        + Stage;
+        //}
     }
 
     public void ScoreUP(float _score)
@@ -260,7 +260,7 @@ public class GManager : MonoBehaviour
         //ƒXƒRƒA‚ð•Û‘¶
 
         GameData data = new GameData { ClearStage = clear, ClearTime = currentTime };
-        SaveManager.Instance.Save(data);
+        //SaveManager.Instance.Save(data);
 
         if(clear >= 4)
         {

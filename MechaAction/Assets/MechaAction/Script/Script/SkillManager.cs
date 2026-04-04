@@ -46,6 +46,9 @@ public class SkillManager : MonoBehaviour
     [SerializeField] private AudioDataSO m_audioGetData;
     [SerializeField] private AudioDataSO m_audioNotData;
 
+    [Header("SaveManager")]
+    [SerializeField] private SaveManager m_saveManager;
+
     private int m_score;
 
     private void OnEnable()
@@ -111,5 +114,61 @@ public class SkillManager : MonoBehaviour
     public void SkillAudio(AudioDataSO data)
     {
         m_audioEvent.Raise(data);
+    }
+
+    public void SkillSave()//GameManager‚ÅŒÄ‚ñ‚Å‚à‚¢‚¢Event‚Å‚à‚¢‚¢
+    {
+        var saveData = GetSaveData();
+        m_saveManager.SkillSave(saveData);
+    }
+
+    public void SkillLoad()
+    {
+        var data = m_saveManager.SkillLoad();
+        SkillLoadDataList(data);
+    }
+
+    private SkillSaveDataList GetSaveData()
+    {
+        SkillSaveDataList saveList = new SkillSaveDataList();
+
+        foreach(var skill in m_skillStates)
+        {
+            //var skillData = skill.Key;//SkillDataSO
+            var state = skill.Value;//SkillState
+
+            SkillSaveData data = new SkillSaveData
+            {
+                ID = state.data.ID,
+                isUnlocked = state.isUnlocked
+            };
+
+            saveList.m_skillDataList.Add(data);
+        }
+
+        return saveList;
+    }
+
+    private void SkillLoadDataList(SkillSaveDataList data)
+    {
+        foreach(var saveData  in data.m_skillDataList)
+        {
+            var skillData = FindSkillByID(saveData.ID);
+
+            if(skillData != null)
+            {
+                m_skillStates[skillData].isUnlocked = saveData.isUnlocked;
+            }
+        }
+    }
+
+    private SkillDataSO FindSkillByID(int ID)//ID‚É‚ ‚¤SkillDataSO‚ð’T‚·
+    {
+        foreach(var skill in m_skillStates.Values)
+        {
+            if (skill.data.ID == ID) return skill.data;
+        }
+
+        return null;
     }
 }

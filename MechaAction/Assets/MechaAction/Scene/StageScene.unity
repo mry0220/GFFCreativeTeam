@@ -3944,6 +3944,7 @@ MonoBehaviour:
   m_audioEvent: {fileID: 11400000, guid: c5bd51306c88b9b4c968513a22e3a5f0, type: 2}
   m_audioGetData: {fileID: 0}
   m_audioNotData: {fileID: 0}
+  m_saveManager: {fileID: 292479242}
 --- !u!4 &346643278
 Transform:
   m_ObjectHideFlags: 0

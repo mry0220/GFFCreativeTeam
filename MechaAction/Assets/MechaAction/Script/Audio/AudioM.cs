@@ -58,9 +58,9 @@ public class AudioM : MonoBehaviour
 
     private void Start()
     {
-        var loadedAudio = SaveManager.Instance.AudioLoad();
-        AttachBGMSource.volume = loadedAudio.data.BGMVolume;
-        AttachSESource.volume = loadedAudio.data.BGMVolume;
+        //var loadedAudio = SaveManager.Instance.AudioLoad();
+        //AttachBGMSource.volume = loadedAudio.data.BGMVolume;
+        //AttachSESource.volume = loadedAudio.data.BGMVolume;
     }
 
     //=================================================================================
@@ -141,9 +141,9 @@ public class AudioM : MonoBehaviour
         if (AttachBGMSource.volume <= 0)
         {
             AttachBGMSource.Stop();
-            var loadedAudio = SaveManager.Instance.AudioLoad();
-            AttachBGMSource.volume = loadedAudio.data.BGMVolume;
-            AttachSESource.volume = loadedAudio.data.BGMVolume;
+            //var loadedAudio = SaveManager.Instance.AudioLoad();
+            //AttachBGMSource.volume = loadedAudio.data.BGMVolume;
+            //AttachSESource.volume = loadedAudio.data.BGMVolume;
             _isFadeOut = false;
 
             if (!string.IsNullOrEmpty(_nextBGMName))
@@ -167,6 +167,6 @@ public class AudioM : MonoBehaviour
         AttachSESource.volume = SEVolume;
 
         // JSON‚É•Û‘¶
-        SaveManager.Instance.AudioSave(BGMVolume, SEVolume);
+        //SaveManager.Instance.AudioSave(BGMVolume, SEVolume);
     }
 }

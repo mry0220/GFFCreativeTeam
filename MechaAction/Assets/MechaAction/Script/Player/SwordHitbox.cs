@@ -24,13 +24,13 @@ public class SwordHitbox : MonoBehaviour
     private string _audioname;
     private int _dir;
 
-    private bool _groundattack = false;
+    //private bool _groundattack = false;
 
     private int _ATTACK= 0;
     private int _SLASH = 0;
     private bool _ELECTSLASH = false;
     private int _GROUND = 0;
-    private float _GROUNDRADIUS = 0;
+    //private float _GROUNDRADIUS = 0;
     private int _KNOCKP = 0;
 
     private void Awake()
@@ -95,7 +95,7 @@ public class SwordHitbox : MonoBehaviour
         // 攻撃開始時にリストをリセット
         hitTargets.Clear();
         //_collider.enabled = true;
-        _groundattack = false;
+        //_groundattack = false;
     }
 
 
@@ -147,7 +147,7 @@ public class SwordHitbox : MonoBehaviour
         _effectname = _playerAttackSO.playerAttackList[1].EffectName;
         _audioname = _playerAttackSO.playerAttackList[1].AudioName;
         _dir = dir;
-        _groundattack = true;
+        //_groundattack = true;
         //AudioManager.Instance.PlaySound("groundattack");//音がおそいから
 
     }
@@ -253,7 +253,7 @@ public class SwordHitbox : MonoBehaviour
         //        }
         //    }
         //}
-        _groundattack = false;
+        //_groundattack = false;
     }
 
     //アニメーションのシグナルでboolを切り替えて　攻撃アニメーション中に見れるようにしよう

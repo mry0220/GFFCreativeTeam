@@ -28,9 +28,20 @@ public class AudioDataList
     public AudioData data = new AudioData();
 }
 
+public class SkillSaveData
+{
+    public int ID;
+    public bool isUnlocked;
+}
+
+public class SkillSaveDataList
+{
+    public List<SkillSaveData> m_skillDataList = new List<SkillSaveData>();
+}
+
 public class SaveManager : MonoBehaviour
 {
-    public static SaveManager Instance;
+    //public static SaveManager Instance;
 
     private string fileName = "gamedata.json";
     private string fullPath;
@@ -38,19 +49,23 @@ public class SaveManager : MonoBehaviour
     private string audioFileName = "audioSettings.json";
     private string audioFullPath;
 
+    private string skillFileName = "skillSettings.json";
+    private string skillFullPath;
+
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // 重複を消す
-        }
+        //if (Instance == null)
+        //{
+        //    Instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //}
+        //else
+        //{
+        //    Destroy(gameObject); // 重複を消す
+        //}
         fullPath = Path.Combine(Application.persistentDataPath, fileName);
         audioFullPath = Path.Combine(Application.persistentDataPath, audioFileName);
+        skillFullPath = Path.Combine(Application.persistentDataPath, skillFileName);
     }
 
     public void Save(GameData newdata)
@@ -82,6 +97,12 @@ public class SaveManager : MonoBehaviour
         File.WriteAllText(audioFullPath, json);
     }
 
+    public void SkillSave(SkillSaveDataList data)
+    {
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(skillFullPath, json);
+    }
+
     public GameDataList Load()
     {
         if (File.Exists(fullPath))
@@ -105,6 +126,19 @@ public class SaveManager : MonoBehaviour
         else
         {
             return new AudioDataList(); // デフォルト値
+        }
+    }
+
+    public SkillSaveDataList SkillLoad()
+    {
+        if(File.Exists(skillFullPath))
+        {
+            string json = File.ReadAllText(skillFullPath);
+            return JsonUtility.FromJson<SkillSaveDataList>(json);
+        }
+        else
+        {
+            return new SkillSaveDataList();
         }
     }
 

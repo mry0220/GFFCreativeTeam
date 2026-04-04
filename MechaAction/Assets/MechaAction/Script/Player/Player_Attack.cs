@@ -54,7 +54,7 @@ public class Player_Attack : MonoBehaviour
     private DamageType m_type;
     private float m_duration;
 
-    private float _SKILL = 0f;
+    //private float _SKILL = 0f;
 
     private void OnEnable()
     {
