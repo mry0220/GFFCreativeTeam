@@ -7,9 +7,6 @@ TagManager:
   - Grounded
   - DeadArea
   - UI
-  - Enemy
-  - EnemyWeapon
-  - PlayerWeapon
   layers:
   - Default
   - TransparentFX

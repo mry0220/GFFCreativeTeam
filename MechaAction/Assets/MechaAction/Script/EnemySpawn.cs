@@ -5,14 +5,30 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    [SerializeField] private GameObject _enemy;
+    [SerializeField] private GameObject m_enemy;
 
-    [SerializeField] private float _spawnDistance = 10f;   // ‚±‚Ì‹——£ˆÈ“à‚É—ˆ‚½‚çoŒ»
-    [SerializeField] private float _respawnDistance = 15f; // ‚±‚Ì‹——£‚æ‚è—£‚ê‚½‚çíœ
+    [SerializeField] private float _spawnDistance;   // ‚±‚Ì‹——£ˆÈ“à‚É—ˆ‚½‚çoŒ»
+    [SerializeField] private float _respawnDistance; // ‚±‚Ì‹——£‚æ‚è—£‚ê‚½‚çíœ
     private bool m_canSpawn = true;
+
+    [Header("Pool")]
+    [SerializeField] private PoolManager m_pool;
+
+    [Header("Event")]
+    [SerializeField] private EventSO m_enemySpawnReset;
 
     private GameObject m_currentEnemy;
     private Transform m_player;
+
+    private void OnEnable()
+    {
+        
+    }
+
+    private void OnDisable()
+    {
+        
+    }
 
     private void Awake()
     {
@@ -47,7 +63,14 @@ public class EnemySpawn : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        m_currentEnemy = Instantiate(_enemy, transform.position, Quaternion.identity);
+        m_currentEnemy = m_pool.Get(
+                m_enemy,
+                transform.position,
+                Quaternion.identity
+            );
+        var enemyInfo = m_currentEnemy.GetComponent<EnemyHP>();
+        enemyInfo.m_OnEnemyDied += OnEnemyDied;
+        enemyInfo.Init(m_pool);
     }
 
     public void DeadClear()
@@ -55,11 +78,12 @@ public class EnemySpawn : MonoBehaviour
         m_currentEnemy = null;
     }
 
-    private void DespawnEnemy()
+    private void OnEnemyDied(EnemyHP enemy)
     {
-        if (m_currentEnemy != null)
+        enemy.m_OnEnemyDied -= OnEnemyDied;
+
+        if (m_currentEnemy  != null)
         {
-            Destroy(m_currentEnemy);
             m_currentEnemy = null;
         }
     }

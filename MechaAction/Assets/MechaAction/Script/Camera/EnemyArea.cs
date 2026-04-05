@@ -45,6 +45,7 @@ public class EnemyArea : MonoBehaviour
     private int currentWaveIndex = 0;
     private bool spawning = false;
 
+    [SerializeField] private PoolManager m_pool;
     private int m_aliveCount;
 
     public void StartSpawn()
@@ -73,8 +74,14 @@ public class EnemyArea : MonoBehaviour
 
         foreach (var enemyData in waves[waveIndex].enemies)
         {
-            GameObject enemy = Instantiate(enemyData.enemyPrefab, enemyData.spawnPoint.position, Quaternion.identity);
-            enemy.GetComponent<EnemyHP>().m_OnEnemyDied += OnEnemyDied;
+            GameObject enemy = m_pool.Get(
+                enemyData.enemyPrefab, 
+                enemyData.spawnPoint.position, 
+                Quaternion.identity
+            );
+            var enemyInfo = enemy.GetComponent<EnemyHP>();
+            enemyInfo.m_OnEnemyDied += OnEnemyDied;
+            enemyInfo.Init(m_pool);
         }
     }
 

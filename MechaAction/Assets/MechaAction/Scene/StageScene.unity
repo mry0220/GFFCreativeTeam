@@ -1743,9 +1743,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14df265f0057a4a8e749117e747e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
+  m_enemy: {fileID: 0}
   _spawnDistance: 20
   _respawnDistance: 25
+  m_pool: {fileID: 0}
+  m_enemySpawnReset: {fileID: 0}
 --- !u!1001 &169006827
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2351,12 +2353,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e608ae5ed5e454381a2583d5ca0a83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 260267895}
+  m_target: {fileID: 0}
   minPos: {x: 0, y: 3}
   maxPos: {x: 1000, y: 5}
   smoothSpeed: 9
   shakeDuration: 0.25
   shakeMagnitude: 0.2
+  m_cameraLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &210751302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4947,9 +4952,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14df265f0057a4a8e749117e747e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 2388327889867868699, guid: e4dd22d061e27cd47af50402585d9cfd, type: 3}
+  m_enemy: {fileID: 0}
   _spawnDistance: 20
   _respawnDistance: 25
+  m_pool: {fileID: 0}
+  m_enemySpawnReset: {fileID: 0}
 --- !u!1 &428370050
 GameObject:
   m_ObjectHideFlags: 0
@@ -7870,21 +7877,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81b25635c9d7454b838ae0f3d5249cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - enemies:
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 1659663364}
-    - enemyPrefab: {fileID: 2388327889867868699, guid: fc39faa379060034da4c9c3f05f04cf2, type: 3}
-      spawnPoint: {fileID: 962198460}
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 188515885}
-  - enemies:
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 1659663364}
-    - enemyPrefab: {fileID: 2388327889867868699, guid: fc39faa379060034da4c9c3f05f04cf2, type: 3}
-      spawnPoint: {fileID: 962198460}
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 188515885}
 --- !u!1 &624707104
 GameObject:
   m_ObjectHideFlags: 0
@@ -8309,17 +8301,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81b25635c9d7454b838ae0f3d5249cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - enemies:
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 138458213}
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 901309045}
-  - enemies:
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 138458213}
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 901309045}
 --- !u!65 &633590418
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9609,9 +9590,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14df265f0057a4a8e749117e747e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 1505974631302371888, guid: cc731a5bc71837a46ba04a3e94af70dc, type: 3}
+  m_enemy: {fileID: 0}
   _spawnDistance: 20
   _respawnDistance: 25
+  m_pool: {fileID: 0}
+  m_enemySpawnReset: {fileID: 0}
 --- !u!4 &718968161 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2932805331139184962, guid: 085f9b34d4b663a479e326ffde5e5cd8, type: 3}
@@ -17533,21 +17516,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81b25635c9d7454b838ae0f3d5249cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - enemies:
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 1432888961}
-    - enemyPrefab: {fileID: 2388327889867868699, guid: fc39faa379060034da4c9c3f05f04cf2, type: 3}
-      spawnPoint: {fileID: 1934253595}
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 415562094}
-  - enemies:
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 1432888961}
-    - enemyPrefab: {fileID: 2388327889867868699, guid: fc39faa379060034da4c9c3f05f04cf2, type: 3}
-      spawnPoint: {fileID: 1934253595}
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 415562094}
 --- !u!1 &1351954423
 GameObject:
   m_ObjectHideFlags: 0
@@ -17592,9 +17560,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14df265f0057a4a8e749117e747e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 1505974631302371888, guid: cc731a5bc71837a46ba04a3e94af70dc, type: 3}
+  m_enemy: {fileID: 0}
   _spawnDistance: 20
   _respawnDistance: 25
+  m_pool: {fileID: 0}
+  m_enemySpawnReset: {fileID: 0}
 --- !u!1 &1359380663
 GameObject:
   m_ObjectHideFlags: 0
@@ -17848,9 +17818,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14df265f0057a4a8e749117e747e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 1505974631302371888, guid: cc731a5bc71837a46ba04a3e94af70dc, type: 3}
+  m_enemy: {fileID: 0}
   _spawnDistance: 20
   _respawnDistance: 25
+  m_pool: {fileID: 0}
+  m_enemySpawnReset: {fileID: 0}
 --- !u!224 &1368233465 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3492420791854826671, guid: d7a4d36e113fcd642a0824614207a847, type: 3}
@@ -17900,9 +17872,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14df265f0057a4a8e749117e747e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
+  m_enemy: {fileID: 0}
   _spawnDistance: 20
   _respawnDistance: 25
+  m_pool: {fileID: 0}
+  m_enemySpawnReset: {fileID: 0}
 --- !u!1 &1383529873
 GameObject:
   m_ObjectHideFlags: 0
@@ -21003,9 +20977,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14df265f0057a4a8e749117e747e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 7774646899534372430, guid: e4ab672266ad4f0449a2e4487b984780, type: 3}
+  m_enemy: {fileID: 0}
   _spawnDistance: 20
   _respawnDistance: 25
+  m_pool: {fileID: 0}
+  m_enemySpawnReset: {fileID: 0}
 --- !u!1 &1703132669
 GameObject:
   m_ObjectHideFlags: 0
@@ -22018,21 +21994,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c81b25635c9d7454b838ae0f3d5249cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - enemies:
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 2034196721}
-    - enemyPrefab: {fileID: 2388327889867868699, guid: fc39faa379060034da4c9c3f05f04cf2, type: 3}
-      spawnPoint: {fileID: 2111449196}
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 1058836828}
-  - enemies:
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 2034196721}
-    - enemyPrefab: {fileID: 2388327889867868699, guid: fc39faa379060034da4c9c3f05f04cf2, type: 3}
-      spawnPoint: {fileID: 2111449196}
-    - enemyPrefab: {fileID: 2345407026311542380, guid: b040460c17e040547aeaf8a7fba17d8f, type: 3}
-      spawnPoint: {fileID: 1058836828}
 --- !u!1 &1806727993
 GameObject:
   m_ObjectHideFlags: 0
@@ -23345,9 +23306,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a14df265f0057a4a8e749117e747e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemy: {fileID: 2388327889867868699, guid: e4dd22d061e27cd47af50402585d9cfd, type: 3}
+  m_enemy: {fileID: 0}
   _spawnDistance: 20
   _respawnDistance: 25
+  m_pool: {fileID: 0}
+  m_enemySpawnReset: {fileID: 0}
 --- !u!1 &1950311621
 GameObject:
   m_ObjectHideFlags: 0

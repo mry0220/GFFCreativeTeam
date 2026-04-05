@@ -21,7 +21,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     //private GameObject _targets;
     private GameObject _canvas;
 
-    public event Action<EnemyHP> m_OnEnemyDied;
+    public event Action<EnemyHP> m_OnEnemyDied;//€‚ñ‚¾ÛEvent@spawn‚Ì•Ï”‚ğnull‚É
     private PoolManager m_pool;
 
     [SerializeField]
