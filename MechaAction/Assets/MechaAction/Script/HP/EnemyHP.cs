@@ -1,4 +1,5 @@
 using Critical;
+using System;
 using TMPro;
 using UnityEngine;
 public class EnemyHP : MonoBehaviour,IDamage
@@ -19,6 +20,9 @@ public class EnemyHP : MonoBehaviour,IDamage
     //[SerializeField]
     //private GameObject _targets;
     private GameObject _canvas;
+
+    public event Action<EnemyHP> m_OnEnemyDied;
+    private PoolManager m_pool;
 
     [SerializeField]
     private GameObject _damageUI;
@@ -42,6 +46,11 @@ public class EnemyHP : MonoBehaviour,IDamage
         maxHP = maxHP + (_clear * 50);
         currentHP = maxHP;
         //Debug.Log("<color=red>" + gameObject.name + " (敵) のHPが初期化されました: " + currentHP);
+    }
+
+    public void Init(PoolManager pool)
+    {
+        m_pool = pool;
     }
 
     private void Update()
@@ -222,7 +231,11 @@ public class EnemyHP : MonoBehaviour,IDamage
     {
         if (Vector3.Distance(transform.position, _player.position) > 30f)
         {
-            Destroy(gameObject);
+            m_OnEnemyDied?.Invoke(this);
+            if (m_pool != null)
+            {
+                m_pool.Return(gameObject);
+            }
         }
     }
 
@@ -252,8 +265,14 @@ public class EnemyHP : MonoBehaviour,IDamage
         // Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
         // 例3: オブジェクトをシーンから破壊
-        Destroy(gameObject);
+        m_OnEnemyDied?.Invoke(this);
+        if(m_pool != null)
+        {
+            m_pool.Return(gameObject);
+        }
     }
+
+
 
     private void PopDamageUI(int damage)
     {
@@ -274,8 +293,8 @@ public class EnemyHP : MonoBehaviour,IDamage
         //ui.transform.GetComponent<TextMeshPro>().text = damage.ToString();
         ui.SetActive(true);
 
-        var circlePos = Random.insideUnitCircle * 1.2f;
-        obj.transform.position = transform.position + Vector3.up * Random.Range(3.0f, 4.0f) + new Vector3(circlePos.x, 0, circlePos.y);
+        var circlePos = UnityEngine.Random.insideUnitCircle * 1.2f;
+        obj.transform.position = transform.position + Vector3.up * UnityEngine.Random.Range(3.0f, 4.0f) + new Vector3(circlePos.x, 0, circlePos.y);
         ui.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, obj.transform.position);
 
         Destroy(obj, 2.0f);
@@ -301,8 +320,8 @@ public class EnemyHP : MonoBehaviour,IDamage
         //ui.transform.GetComponent<TextMeshPro>().text = damage.ToString();
         ui.SetActive(true);
 
-        var circlePos = Random.insideUnitCircle * 1.2f;
-        obj.transform.position = transform.position + Vector3.up * Random.Range(3.0f, 4.0f) + new Vector3(circlePos.x, 0, circlePos.y);
+        var circlePos = UnityEngine.Random.insideUnitCircle * 1.2f;
+        obj.transform.position = transform.position + Vector3.up * UnityEngine.Random.Range(3.0f, 4.0f) + new Vector3(circlePos.x, 0, circlePos.y);
         ui.GetComponent<RectTransform>().position = RectTransformUtility.WorldToScreenPoint(Camera.main, obj.transform.position);
 
         Destroy(obj, 2.0f);

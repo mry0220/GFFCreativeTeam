@@ -8727,6 +8727,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658402819}
   m_CullTransparentMesh: 1
+--- !u!1 &664171003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 664171005}
+  - component: {fileID: 664171004}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &664171004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664171003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b808a5b19e007c489b3774b4405ec16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_eventGameOverUI: {fileID: 11400000, guid: f4e9d586a1525bc42ace98121d7f8df6, type: 2}
+  m_eventEnhanceUI: {fileID: 11400000, guid: ce5e05e4cd811eb45ae82cd83db26947, type: 2}
+  m_eventMenuUI: {fileID: 11400000, guid: afa42fc257640cb41910999b910fd884, type: 2}
+  m_eventOptionUI: {fileID: 11400000, guid: 7908ac123eed2054088c75d9b266f3bf, type: 2}
+  m_eventTutorialUI: {fileID: 11400000, guid: 9033f0ddeeb54a647a905f97eb415f43, type: 2}
+  m_gameOverUI: {fileID: 0}
+  m_enhanceUI: {fileID: 0}
+  m_menuUI: {fileID: 0}
+  m_optionUI: {fileID: 0}
+  m_tutorialUI: {fileID: 0}
+--- !u!4 &664171005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 664171003}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 31.73119, y: 17.280266, z: 4.1011124}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &666627718
 GameObject:
   m_ObjectHideFlags: 0
@@ -11745,6 +11799,7 @@ GameObject:
   - component: {fileID: 916488593}
   - component: {fileID: 916488595}
   - component: {fileID: 916488596}
+  - component: {fileID: 916488597}
   m_Layer: 5
   m_Name: CommandToggle
   m_TagString: Untagged
@@ -11818,7 +11873,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 916488597}
+        m_TargetAssemblyTypeName: ClickEventToMain, Assembly-CSharp
+        m_MethodName: OnClickToCommandCheckInOption
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!114 &916488596
 MonoBehaviour:
@@ -11833,6 +11900,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _commandtoggle: {fileID: 916488595}
+--- !u!114 &916488597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916488592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5982e425bb51c848a85ead7ade9edd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_eventAudioSE: {fileID: 0}
+  m_titleString: {fileID: 0}
+  m_audioDataToTitle: {fileID: 0}
+  m_audioDataToReload: {fileID: 0}
+  m_audioDataToOption: {fileID: 0}
+  m_eventOptionUI: {fileID: 0}
+  m_audioDataToCommandCheck: {fileID: 0}
+  m_IsCommandCheck: {fileID: 0}
 --- !u!1 &921749877
 GameObject:
   m_ObjectHideFlags: 0
@@ -16739,6 +16826,11 @@ MonoBehaviour:
   clear: 0
   score: 0
   currentpoint: {x: 0, y: 0, z: 0}
+  m_eventOptionUI: {fileID: 0}
+  m_eventMenuUI: {fileID: 0}
+  m_eventAudioSE: {fileID: 0}
+  m_audioClickOn: {fileID: 0}
+  m_audioClickOff: {fileID: 0}
 --- !u!4 &1274224768
 Transform:
   m_ObjectHideFlags: 0
@@ -26622,3 +26714,4 @@ SceneRoots:
   - {fileID: 1806727998}
   - {fileID: 1528180946}
   - {fileID: 468197919}
+  - {fileID: 664171005}

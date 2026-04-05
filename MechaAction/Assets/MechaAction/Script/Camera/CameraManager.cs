@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    public Transform target;       // プレイヤー
+    [SerializeField] private Transform m_target;       // プレイヤー
     public Vector2 minPos;         // Clamp最小値
     public Vector2 maxPos;         // Clamp最大値
     public float smoothSpeed = 5f; // カメラ追従の滑らかさ
@@ -13,17 +13,65 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private float shakeMagnitude = 0.2f;
     //private Coroutine shakeCoroutine;
 
+    [SerializeField] private LayerMask m_cameraLayer;
+
+    private CameraArea m_currentArea;
+
     void FixedUpdate()
     {
-        if (target == null) return;
+        if (m_target == null) return;
+
+        if (m_currentArea == null) return;
+
+        var bounds = m_currentArea.Bounds;
 
         // Clampで制限しつつ追従
-        float targetX = Mathf.Clamp(target.position.x, minPos.x, maxPos.x);
-        float targetY = Mathf.Clamp(target.position.y, minPos.y, maxPos.y);
+        float targetX = Mathf.Clamp(m_target.position.x, bounds.min.x, bounds.max.x);
+        float targetY = Mathf.Clamp(m_target.position.y, bounds.min.y, bounds.max.y);
         Vector3 desiredPos = new Vector3(targetX, targetY, transform.position.z);
 
         // 滑らかに追従
         transform.position = Vector3.Lerp(transform.position, desiredPos, smoothSpeed * Time.deltaTime);
+    }
+
+    private void LateUpdate()
+    {
+        CheckCameraArea();
+    }
+
+    private void CheckCameraArea()
+    {
+        Vector3 playerPos = m_target.position;
+
+        Collider[] cols = Physics.OverlapSphere(playerPos, 1f, m_cameraLayer);
+
+        CameraArea bestArea = null;
+
+        foreach(var col in cols)
+        {
+            var area = col.GetComponent<CameraArea>();
+            if (area == null) continue;
+
+            if(bestArea == null || area.priority > bestArea.priority)
+            {
+                bestArea = area;
+            }
+        }
+
+        if(bestArea != null)
+        {
+            SetArea(bestArea);
+        }
+    }
+
+    public void SetArea(CameraArea area)
+    {
+        m_currentArea = area;
+    }
+
+    public void SetEnemyArea(CameraArea area)
+    {
+        m_currentArea = area;
     }
 
     // カメラ揺れ開始メソッド

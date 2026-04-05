@@ -33,8 +33,8 @@ public class GManager : MonoBehaviour
     public float score = 0;
     private bool _isMenu = false;
     private bool _isOption = false;
-    public bool IsCommandEasy => _isCommandcheck;
-    private bool _isCommandcheck = false;
+
+    //private bool m_isCommandcheck = false;
     private bool _isPlaying = false;
 
     public Vector3 currentpoint;
@@ -42,6 +42,17 @@ public class GManager : MonoBehaviour
     private Vector2 _respawnmin;
     private Vector2 _respawnmax;
 
+    [SerializeField] private BoolEvent m_eventOptionUI;
+
+    private void OnEnable()
+    {
+        m_eventOptionUI.Register(Option);
+    }
+
+    private void OnDisable()
+    {
+        m_eventOptionUI.Unregister(Option);
+    }
 
     void Awake()
     {
@@ -104,6 +115,15 @@ public class GManager : MonoBehaviour
         score += _score;
     }
 
+    [SerializeField] private BoolEvent m_eventMenuUI;
+
+    private bool m_isMenu = false;
+    private bool m_isOption = false;
+
+    [SerializeField] private AudioEventSO m_eventAudioSE;
+    [SerializeField] private AudioDataSO m_audioClickOn;
+    [SerializeField] private AudioDataSO m_audioClickOff;
+
     private void Update()
     {
         if (_isTiming)
@@ -115,13 +135,29 @@ public class GManager : MonoBehaviour
         //if (TimeText != null) UpdateTimeText();
         //if (BestTimeText != null) DisplayBestTime();
 
-        if (Input.GetKeyDown(KeyCode.Escape) && _isPlaying)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Menu();
-            //AudioManager.Instance.PlaySound("menu");
+            if(!m_isMenu)
+            {
+                m_eventAudioSE.Raise(m_audioClickOn);
+                m_eventMenuUI.Raise(true);
+                Menu();
+            }
+            else if(m_isMenu)
+            {
+                m_eventAudioSE.Raise(m_audioClickOff);
+                m_eventMenuUI.Raise(false);
+                Menu();
+            }
+            else if(m_isOption)
+            {
+                m_eventAudioSE.Raise(m_audioClickOff);
+                m_eventOptionUI.Raise(false);
+            }
+            //ばつボタンでもOptionUIをfalse
         }
 
-        if(Input.GetKeyDown(KeyCode.C))
+        if(Input.GetKeyDown(KeyCode.C))//Debug
         {
             clear++;
             Debug.Log(clear);
@@ -130,11 +166,9 @@ public class GManager : MonoBehaviour
 
     private void Menu()
     {
-        if (_isOption) return;
+        m_isMenu = !m_isMenu;
 
-        _isMenu = !_isMenu;
-        //_ui.Menu(_isMenu);
-        if(_isMenu )
+        if(m_isMenu)
         {
             Time.timeScale = 0f;
         }
@@ -144,16 +178,16 @@ public class GManager : MonoBehaviour
         }
     }
 
-    public void Option()
+    //OptionUIEventに入れることでOptionUIがOnのときEscapeで閉じれる
+    private void Option(bool isbool)
     {
-        _isOption =!_isOption;
-        //_ui.Option(_isOption);
+        m_isOption = isbool;
     }
 
-    public void CommandCheck(bool ischeck)
-    {
-        _isCommandcheck = ischeck;
-    }
+    //private void CommandCheck(bool isbool)
+    //{
+    //    m_isCommandcheck = isbool;
+    //}
 
     // Clamp値を変更
     //public void SetCameraBounds(Vector2 min, Vector2 max) //カメラ制限
@@ -207,7 +241,7 @@ public class GManager : MonoBehaviour
         }
 
         DeadAreaTrigger();//AreaEnemyのリセット
-        DeadEnemySpawn();//EnemySpawnのリセット
+        //DeadEnemySpawn();//EnemySpawnのリセット
 
         //_ui.FadeIn();                                                  //フェードインさせる
         yield return new WaitForSeconds(1.5f);
