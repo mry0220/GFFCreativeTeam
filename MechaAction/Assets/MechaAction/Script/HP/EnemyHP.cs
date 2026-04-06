@@ -236,6 +236,10 @@ public class EnemyHP : MonoBehaviour,IDamage
             {
                 m_pool.Return(gameObject);
             }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -269,6 +273,10 @@ public class EnemyHP : MonoBehaviour,IDamage
         if(m_pool != null)
         {
             m_pool.Return(gameObject);
+        }
+        else
+        {
+            Destroy (gameObject);
         }
     }
 

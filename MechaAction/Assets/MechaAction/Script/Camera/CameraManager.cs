@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField] private Transform m_target;       // プレイヤー
-    public Vector2 minPos;         // Clamp最小値
-    public Vector2 maxPos;         // Clamp最大値
+    private Transform m_target;       // プレイヤー
+    private Vector2 minPos;         // Clamp最小値
+    private Vector2 maxPos;         // Clamp最大値
     public float smoothSpeed = 5f; // カメラ追従の滑らかさ
 
     [SerializeField] private float shakeDuration = 0.25f;
@@ -16,6 +16,11 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private LayerMask m_cameraLayer;
 
     private CameraArea m_currentArea;
+
+    private void Awake()
+    {
+        m_target = GameObject.FindWithTag("Player").transform;
+    }
 
     void FixedUpdate()
     {

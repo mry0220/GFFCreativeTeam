@@ -43,28 +43,41 @@ public class EnemyArea : MonoBehaviour
     [SerializeField] private List<Wave> waves = new List<Wave>();
 
     private int currentWaveIndex = 0;
-    private bool spawning = false;
+    private bool m_spawning = false;
 
     [SerializeField] private PoolManager m_pool;
     private int m_aliveCount;
 
+    [Header("Event")]
+    [SerializeField] private EventSO m_enemySpawnReset;
+
+    private void OnEnable()
+    {
+        m_enemySpawnReset.Register(AreaSpawnClear);
+    }
+
+    private void OnDisable()
+    {
+        m_enemySpawnReset.Unregister(AreaSpawnClear);
+    }
+
     public void StartSpawn()
     {
-        if (spawning) return;
-        spawning = true;
+        if (m_spawning) return;
+        m_spawning = true;
         currentWaveIndex = 0;
         SpawnWave(currentWaveIndex);
     }
 
     private void SpawnWave(int waveIndex)
     {
-        if (!spawning) return;
+        if (!m_spawning) return;
 
         if (waveIndex >= waves.Count)
         {
             Debug.Log("All wave finish");
             Clear();
-            spawning = false;
+            m_spawning = false;
             return;
         }
 
@@ -98,4 +111,8 @@ public class EnemyArea : MonoBehaviour
         }
     }
 
+    private void AreaSpawnClear()
+    {
+        m_spawning = false;
+    }
 }

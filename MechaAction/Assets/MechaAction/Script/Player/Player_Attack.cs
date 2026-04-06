@@ -17,6 +17,9 @@ public class Player_Attack : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject ammoIconPrefab;
 
+    [Header("EasyCommandCheck")]
+    [SerializeField] private BoolRunTimeSO m_IsCommandCheck;
+
     private Transform ammoParent;
     private int _currentammo;
     private int _Maxammo = 10;
@@ -149,28 +152,28 @@ public class Player_Attack : MonoBehaviour
                 _dirtarget._ischeck = false;
         }
 
-        //if (GManager.Instance.IsCommandEasy)//Option�ŕύX
-        //{
-        //    //if (Input.GetMouseButtonDown(0))
-        //    //{
-        //    //    LeftAttack();
-        //    //}
-            
+        if (m_IsCommandCheck.Value)//Option�ŕύX
+        {
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    LeftAttack();
+            //}
 
-        //    if (Input.GetKeyDown(KeyCode.Q))
-        //    {
-        //        if (_currectskill < 10) return;
-        //        _currectskill -= 10;
-        //        tatakituke();
-        //    }
 
-        //    if (Input.GetKeyDown(KeyCode.E))
-        //    {
-        //        if (_currectskill < 10) return;
-        //        _currectskill -= 10;
-        //        slash();
-        //    }
-        //}
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (_currectskill < 10) return;
+                _currectskill -= 10;
+                tatakituke();
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (_currectskill < 10) return;
+                _currectskill -= 10;
+                slash();
+            }
+        }
 
         _skilltime += Time.deltaTime;
         if(_skilltime > 0.1)

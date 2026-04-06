@@ -22,12 +22,12 @@ public class EnemySpawn : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        m_enemySpawnReset.Register(SpawnClear);
     }
 
     private void OnDisable()
     {
-        
+        m_enemySpawnReset.Unregister(SpawnClear);
     }
 
     private void Awake()
@@ -73,9 +73,10 @@ public class EnemySpawn : MonoBehaviour
         enemyInfo.Init(m_pool);
     }
 
-    public void DeadClear()
+    public void SpawnClear()
     {
         m_currentEnemy = null;
+        m_canSpawn = true;
     }
 
     private void OnEnemyDied(EnemyHP enemy)

@@ -48,4 +48,6 @@ public class ClickEventToMain : MonoBehaviour
         //RunTime
         m_IsCommandCheck.SetValue(isbool);
     }
+
+    //command check sheet
 }

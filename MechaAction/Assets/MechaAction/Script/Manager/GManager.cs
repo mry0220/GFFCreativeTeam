@@ -202,31 +202,31 @@ public class GManager : MonoBehaviour
     //        _mainCamera.ShakeCamera();   // カメラ揺らす
     //}
 
-    public void AreaTrigger(Cameralimit area)
-    {
-        if(!_areaTriggers.Contains(area)) _areaTriggers.Add(area);
-    }
+    //public void AreaTrigger(Cameralimit area)
+    //{
+    //    if(!_areaTriggers.Contains(area)) _areaTriggers.Add(area);
+    //}
 
-    private void DeadAreaTrigger()
-    {
-        foreach(var area in _areaTriggers)
-        {
-            area.DeadClear();
-        }
-    }
+    //private void DeadAreaTrigger()
+    //{
+    //    foreach(var area in _areaTriggers)
+    //    {
+    //        area.DeadClear();
+    //    }
+    //}
 
-    public void EnemySpawn(EnemySpawn area)
-    {
-        if(!_enemySpawn.Contains(area)) _enemySpawn.Add(area);
-    }
+    //public void EnemySpawn(EnemySpawn area)
+    //{
+    //    if(!_enemySpawn.Contains(area)) _enemySpawn.Add(area);
+    //}
 
-    private void DeadEnemySpawn()
-    {
-        foreach(var area in _enemySpawn)
-        {
-            area.DeadClear();
-        }
-    }
+    //private void DeadEnemySpawn()
+    //{
+    //    foreach(var area in _enemySpawn)
+    //    {
+    //        area.DeadClear();
+    //    }
+    //}
 
     public IEnumerator DiePlayer()
     {
@@ -240,7 +240,7 @@ public class GManager : MonoBehaviour
             yield break;
         }
 
-        DeadAreaTrigger();//AreaEnemyのリセット
+        //DeadAreaTrigger();//AreaEnemyのリセット
         //DeadEnemySpawn();//EnemySpawnのリセット
 
         //_ui.FadeIn();                                                  //フェードインさせる
