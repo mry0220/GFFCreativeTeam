@@ -46,6 +46,7 @@ public class ClickEventToMain : MonoBehaviour
     {
         m_eventAudioSE.Raise(m_audioDataToCommandCheck);
         //RunTime
+        Debug.Log("Is On");
         m_IsCommandCheck.SetValue(isbool);
     }
 
