@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [CreateAssetMenu(fileName = "Event", menuName = "SctiptableObjects/Events/Event")]
 public class EventSO : ScriptableObject

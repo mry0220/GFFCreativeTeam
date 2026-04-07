@@ -69,6 +69,11 @@ public class Player_Attack : MonoBehaviour
         m_skillevent.Unregister(Skillgauge);
     }
 
+    public void Skillgauge(float gauge)//“G‚ð“|‚µ‚½‚ç‰ñ•œ
+    {
+        _currectskill += gauge;
+    }
+
     private void Awake()
     {
         _anim = GetComponentInChildren<Animator>();
@@ -110,10 +115,7 @@ public class Player_Attack : MonoBehaviour
         //}
     }
 
-    public void Skillgauge(float gauge)//“G‚ð“|‚µ‚½‚ç‰ñ•œ
-    {
-        _currectskill += gauge;
-    }
+   
 
     private void Update()
     {
