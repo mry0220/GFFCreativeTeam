@@ -4,27 +4,39 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    [SerializeField] private Transform m_parent;
+    [System.Serializable]
+    public class InitPoolData
+    {
+        public GameObject m_prefab;
+        public int m_size;
+    }
+
+    [SerializeField] private List<InitPoolData> m_poolList;
 
     private Dictionary<GameObject, Queue<GameObject>> m_pool
         = new Dictionary<GameObject, Queue<GameObject>>();
 
-    [SerializeField] private int m_initialSize = 10;
+    [SerializeField] private int m_initialSize;
+
+    private void Awake()
+    {
+        foreach (var data in m_poolList)
+        {
+            CreatePool(data.m_prefab, data.m_size);
+        }
+    }
 
     public GameObject Get(GameObject prefab, Vector3 pos, Quaternion rot)
     {
         if (!m_pool.ContainsKey(prefab))
         {
-            CreatePool(prefab);
+            CreatePool(prefab, m_initialSize);
         }
 
-        var pool = m_pool[prefab];
-
         GameObject obj;
-
-        if (pool.Count > 0)
+        if (m_pool[prefab].Count > 0)
         {
-            obj = pool.Dequeue();//êÊì™Ç©ÇÁéÊÇÈ
+            obj = m_pool[prefab].Dequeue();//êÊì™
         }
         else
         {
@@ -40,45 +52,50 @@ public class PoolManager : MonoBehaviour
 
     public void Return(GameObject obj)
     {
-        var poolObj = obj.GetComponent<ObjectPool>();
+        var objPool = obj.GetComponent<ObjectPool>();
 
-        if (poolObj == null)
+        if (objPool == null)
         {
             Destroy(obj);
             return;
         }
 
-        var prefab = poolObj.m_prefab;
+        var prefab = objPool.m_prefab;
 
         obj.SetActive(false);
-        m_pool[prefab].Enqueue(obj);//å„ÇÎÇ…í«â¡
+        m_pool[prefab].Enqueue(obj);
     }
 
-    private void CreatePool(GameObject prefab)
+    private void CreatePool(GameObject prefab, int initialSize)
     {
         var queue = new Queue<GameObject>();
 
-        for (int i = 0; i < m_initialSize; i++)
+        for (int i = 0; i < initialSize; i++)
         {
             var obj = CreateObject(prefab);
             obj.SetActive(false);
-            queue.Enqueue(obj);//å„ÇÎÇ…í«â¡
+            queue.Enqueue(obj);//å„ÇÎÇ…
         }
 
         m_pool.Add(prefab, queue);
+
     }
+
+    [SerializeField] private GameObject m_parent;
 
     private GameObject CreateObject(GameObject prefab)
     {
-        var obj = Instantiate(prefab, m_parent);
+        var obj = Instantiate(prefab, m_parent.transform);
 
-        var poolObj = obj.GetComponent<ObjectPool>();
-        if (poolObj == null)
+        var objPool = obj.GetComponent<ObjectPool>();
+        if (objPool == null)
         {
-            poolObj = obj.AddComponent<ObjectPool>();
+            objPool = obj.AddComponent<ObjectPool>();
         }
 
-        poolObj.m_prefab = prefab;
+        objPool.m_prefab = prefab;
+        objPool.m_pool = this;
+
 
         return obj;
     }

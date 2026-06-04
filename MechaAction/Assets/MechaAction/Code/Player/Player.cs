@@ -48,7 +48,7 @@ public class Player : MonoBehaviour, ITeam
     public Vector3 Forward { get => m_forward; }
 
     private float prevHorizontal = 0f;
-    private bool _isDash = false;//ダッシュ中向きが変わらないように
+    //private bool _isDash = false;//ダッシュ中向きが変わらないように
     private bool _canDash = true;//空中で２回目ダッシュを防ぐため
     public bool _isBan= false;
 
@@ -385,7 +385,7 @@ public class Player : MonoBehaviour, ITeam
         ChangeState(PlayerState.Dash);
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), true);
-        _isDash = true;
+        //_isDash = true;
         Vector3 velocity = m_rb.velocity;
         _fallTime = 0f;
 
@@ -406,7 +406,7 @@ public class Player : MonoBehaviour, ITeam
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"), false);
         _ReturnNormal();
-        _isDash = false;
+        //_isDash = false;
         yield break;
     }
 

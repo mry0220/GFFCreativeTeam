@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class AutoReturn : MonoBehaviour
 {
-    private float m_lifeTime;
+    private ObjectPool m_objPool;
 
-    private PoolManager m_pool;
+    private float m_time;
 
-    public void Init(PoolManager pool,float time)
+    public void Init(float time)
     {
-        m_pool = pool;
-        m_lifeTime = time;
+        m_time = time;
 
-        Invoke(nameof(Return), m_lifeTime);
+        m_objPool = GetComponent<ObjectPool>();
+
+        Invoke(nameof(Return), m_time);
     }
 
     private void Return()
     {
-        m_pool.Return(gameObject);
+        m_objPool.Return();
     }
 }

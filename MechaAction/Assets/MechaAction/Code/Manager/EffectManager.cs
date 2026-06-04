@@ -30,9 +30,9 @@ public class EffectManager : MonoBehaviour
             rot
         );
 
-        effect.GetComponent<AutoReturn>().Init(
-            m_pool, 
-            d_event.effectData.Duration
-        );
+        //effect.GetComponent<AutoReturn>().Init(
+        //    m_pool, 
+        //    d_event.effectData.Duration
+        //);
     }
 }

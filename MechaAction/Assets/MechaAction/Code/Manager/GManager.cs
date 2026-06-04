@@ -31,16 +31,16 @@ public class GManager : MonoBehaviour
     public int life = 2;
     public int clear = 0;
     public float score = 0;
-    private bool _isMenu = false;
-    private bool _isOption = false;
+    //private bool _isMenu = false;
+    //private bool _isOption = false;
 
     //private bool m_isCommandcheck = false;
-    private bool _isPlaying = false;
+    //private bool _isPlaying = false;
 
     public Vector3 currentpoint;
     private Vector3 _startPosition = new Vector3(0f,3.5f,0f);
-    private Vector2 _respawnmin;
-    private Vector2 _respawnmax;
+    //private Vector2 _respawnmin;
+    //private Vector2 _respawnmax;
 
     [SerializeField] private BoolEvent m_eventOptionUI;
 
@@ -266,8 +266,8 @@ public class GManager : MonoBehaviour
     public void CheckPoint(Vector3 newPos,Vector2 newmin,Vector2 newmax)
     {
         currentpoint = newPos;
-        _respawnmin = newmin;
-        _respawnmax = newmax;
+        //_respawnmin = newmin;
+        //_respawnmax = newmax;
     }
 
     public void Reset()//gameover‚ÌRetry
@@ -356,20 +356,20 @@ public class GManager : MonoBehaviour
             score = 0;
             //_player._ReturnNormal();
             //_playerposition.position = currentpoint;
-            _respawnmax = new Vector2(0, 2f);//ƒJƒƒ‰‰Šú‰»//5‚Æ7
-            _respawnmax = new Vector2(1000, 4f);
+            //_respawnmax = new Vector2(0, 2f);//ƒJƒƒ‰‰Šú‰»//5‚Æ7
+            //_respawnmax = new Vector2(1000, 4f);
             _isTiming = true;
             currentTime = 0;
             life = 2;
           //  Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
           //LayerMask.NameToLayer("Enemy"), false);
-            _isPlaying = true;
+            //_isPlaying = true;
         }
 
         if(nextScene.name == "Title")
         {
             //AudioManager.Instance.StartTitleMusic();
-            _isPlaying = false;
+            //_isPlaying = false;
             Time.timeScale = 1f;//menu‚Ì~‚ß‰ğœ•ÛŒ¯
         }
 
