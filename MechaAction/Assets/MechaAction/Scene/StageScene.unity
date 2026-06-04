@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 27623025}
   m_Layer: 0
   m_Name: OptionButton
-  m_TagString: UI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1313,7 +1313,7 @@ GameObject:
   - component: {fileID: 141313023}
   m_Layer: 0
   m_Name: MenuText
-  m_TagString: UI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1999,7 +1999,7 @@ MonoBehaviour:
   shakeMagnitude: 0.2
   m_cameraLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
 --- !u!1001 &210751302
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6819,7 +6819,7 @@ GameObject:
   - component: {fileID: 625199171}
   m_Layer: 0
   m_Name: Command
-  m_TagString: UI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10256,7 +10256,7 @@ GameObject:
   - component: {fileID: 948492542}
   m_Layer: 0
   m_Name: TitleButton
-  m_TagString: UI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16849,8 +16849,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8bee3e2094ec5743ac04f66742c429a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_poolList: []
+  addSize: 0
   m_parent: {fileID: 1528180946}
-  m_initialSize: 10
 --- !u!4 &1528180946
 Transform:
   m_ObjectHideFlags: 0
@@ -19034,7 +19035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1806727994
 MonoBehaviour:
   m_ObjectHideFlags: 0

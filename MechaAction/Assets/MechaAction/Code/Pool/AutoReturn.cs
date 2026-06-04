@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AutoReturn : MonoBehaviour
 {
+    //this code is attach effect
+    //effect auto return pool
+
     private ObjectPool m_objPool;
 
     private float m_time;

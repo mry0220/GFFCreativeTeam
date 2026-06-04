@@ -112,7 +112,7 @@ public class Player : MonoBehaviour, ITeam
         if (Input.GetMouseButtonDown(1) && _canDash)
         {
             m_anim.SetFloat("Speed", 3);
-            StartCoroutine(_Dash());
+            //StartCoroutine(_Dash());
             _canDash = false;
         }
 
@@ -378,37 +378,37 @@ public class Player : MonoBehaviour, ITeam
         }
     }
 
-    private IEnumerator _Dash()
-    {
-        if(!CanMove) yield break;
+    //private IEnumerator _Dash()
+    //{
+    //    if(!CanMove) yield break;
 
-        ChangeState(PlayerState.Dash);
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-            LayerMask.NameToLayer("Enemy"), true);
-        //_isDash = true;
-        Vector3 velocity = m_rb.velocity;
-        _fallTime = 0f;
+    //    ChangeState(PlayerState.Dash);
+    //    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+    //        LayerMask.NameToLayer("Enemy"), true);
+    //    //_isDash = true;
+    //    Vector3 velocity = m_rb.velocity;
+    //    _fallTime = 0f;
 
-        float t = 0f;
-        float duration = 0.3f;
-        while (t < duration)
-        {
-            velocity = m_rb.velocity;
+    //    float t = 0f;
+    //    float duration = 0.3f;
+    //    while (t < duration)
+    //    {
+    //        velocity = m_rb.velocity;
 
-            velocity.x = m_forward.x * 30f;
-            velocity.y = 0f;
+    //        velocity.x = m_forward.x * 30f;
+    //        velocity.y = 0f;
 
-            //Debug.Log(velocity.x);
-            m_rb.velocity = velocity;
-            t += Time.deltaTime;
-            yield return new WaitForFixedUpdate();  //コルーチン内でFixedUpdateできるのAIで知った
-        }
-        Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
-            LayerMask.NameToLayer("Enemy"), false);
-        _ReturnNormal();
-        //_isDash = false;
-        yield break;
-    }
+    //        //Debug.Log(velocity.x);
+    //        m_rb.velocity = velocity;
+    //        t += Time.deltaTime;
+    //        yield return new WaitForFixedUpdate();  //コルーチン内でFixedUpdateできるのAIで知った
+    //    }
+    //    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
+    //        LayerMask.NameToLayer("Enemy"), false);
+    //    _ReturnNormal();
+    //    //_isDash = false;
+    //    yield break;
+    //}
 
     public void SKnockBack(int dir,int knockback)
     {

@@ -8,7 +8,7 @@ public class PoolManager : MonoBehaviour
     public class InitPoolData
     {
         public GameObject m_prefab;
-        public int m_size;
+        public int m_initialSize;
     }
 
     [SerializeField] private List<InitPoolData> m_poolList;
@@ -16,13 +16,13 @@ public class PoolManager : MonoBehaviour
     private Dictionary<GameObject, Queue<GameObject>> m_pool
         = new Dictionary<GameObject, Queue<GameObject>>();
 
-    [SerializeField] private int m_initialSize;
+    [SerializeField] private int addSize;
 
     private void Awake()
     {
         foreach (var data in m_poolList)
         {
-            CreatePool(data.m_prefab, data.m_size);
+            CreatePool(data.m_prefab, data.m_initialSize);
         }
     }
 
@@ -30,13 +30,13 @@ public class PoolManager : MonoBehaviour
     {
         if (!m_pool.ContainsKey(prefab))
         {
-            CreatePool(prefab, m_initialSize);
+            CreatePool(prefab, addSize);
         }
 
         GameObject obj;
         if (m_pool[prefab].Count > 0)
         {
-            obj = m_pool[prefab].Dequeue();//êÊì™
+            obj = m_pool[prefab].Dequeue();//front
         }
         else
         {
@@ -74,7 +74,7 @@ public class PoolManager : MonoBehaviour
         {
             var obj = CreateObject(prefab);
             obj.SetActive(false);
-            queue.Enqueue(obj);//å„ÇÎÇ…
+            queue.Enqueue(obj);//back
         }
 
         m_pool.Add(prefab, queue);
