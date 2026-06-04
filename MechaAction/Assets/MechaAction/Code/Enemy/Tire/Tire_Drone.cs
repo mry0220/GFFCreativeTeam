@@ -25,7 +25,7 @@ public class Tire_Drone : MonoBehaviour
     private string _effectname;
     private string _audioname;
 
-    private float _moveSpeed = 10f;  // ‰E‚Ö‚ÌˆÚ“®‘¬“x
+    private float _moveSpeed = 10f;  // ï¿½Eï¿½Ö‚ÌˆÚ“ï¿½ï¿½ï¿½ï¿½x
     private bool _isdrop = false;
 
     private int _clear;
@@ -55,12 +55,12 @@ public class Tire_Drone : MonoBehaviour
 
         if (_rb.position.x < _player.position.x)
         {
-            transform.rotation = Quaternion.Euler(0, 90, 0);//‰E
+            transform.rotation = Quaternion.Euler(0, 90, 0);//ï¿½E
             _dir = 1;
         }
         else
         {
-            transform.rotation = Quaternion.Euler(0, 270, 0);//¶
+            transform.rotation = Quaternion.Euler(0, 270, 0);//ï¿½ï¿½
             _dir = -1;
         }
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
@@ -69,11 +69,11 @@ public class Tire_Drone : MonoBehaviour
     private void FixedUpdate()
     {
         if(!CanMove) return;
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
 
         velocity.x = _moveSpeed * _dir;
 
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private void Update()
@@ -93,7 +93,7 @@ public class Tire_Drone : MonoBehaviour
         _childrb.AddForce(transform.forward * 6f, ForceMode.Impulse);
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -103,7 +103,7 @@ public class Tire_Drone : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(0.5f));
@@ -112,7 +112,7 @@ public class Tire_Drone : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1.0f));
@@ -121,7 +121,7 @@ public class Tire_Drone : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));

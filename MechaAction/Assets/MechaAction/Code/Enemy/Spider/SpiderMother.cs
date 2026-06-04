@@ -26,8 +26,8 @@ public class SpiderMother : MonoBehaviour
     private float _moveSpeed = 2f;
     private float _time;
     private float _distance;
-    const float _ditection = 13;       //õ“G”ÍˆÍ‚ªŠm’è‚µ‚½‚çconst‚É•ÏX
-    const float _turnTime = 2f;      //d’¼ŠÔ‚ªŠm’è‚µ‚½‚çconst‚É•ÏX
+    const float _ditection = 13;       //ï¿½ï¿½ï¿½Gï¿½ÍˆÍ‚ï¿½ï¿½mï¿½è‚µï¿½ï¿½ï¿½ï¿½constï¿½É•ÏX
+    const float _turnTime = 2f;      //ï¿½dï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½mï¿½è‚µï¿½ï¿½ï¿½ï¿½constï¿½É•ÏX
 
     private float _generateTime;
 
@@ -68,7 +68,7 @@ public class SpiderMother : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _velocity = _rb.velocity;
+        _velocity = _rb.linearVelocity;
         _distance = Vector3.Distance(_rb.position, _player.position);
         
         if (_distance<= _ditection)
@@ -87,7 +87,7 @@ public class SpiderMother : MonoBehaviour
         {
             _fallTime = 0f;
         }
-        _rb.velocity = _velocity;
+        _rb.linearVelocity = _velocity;
     }
 
     private void Move()
@@ -102,7 +102,7 @@ public class SpiderMother : MonoBehaviour
         {
             _velocity.x = 0;
             _time = 0;
-            _rb.velocity = _velocity;
+            _rb.linearVelocity = _velocity;
             return;
         }
         else
@@ -127,11 +127,11 @@ public class SpiderMother : MonoBehaviour
     {
         _fallTime += Time.deltaTime;
 
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
-        _velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁZ
-                                                         //Time.fixedDeltaTime •¨—‰‰Z‚ğƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (_velocity.y < -20f)//—‰º‘¬“x‚Ì§ŒÀ
+        _velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                         //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (_velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
             _velocity.y = -20f;
         }
@@ -139,12 +139,12 @@ public class SpiderMother : MonoBehaviour
 
     private void Generate()
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         var _Bombspider = Instantiate(Bombspider, transform.position, transform.rotation);
         GenerateCount++;
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -154,7 +154,7 @@ public class SpiderMother : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(0.5f));
@@ -163,7 +163,7 @@ public class SpiderMother : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1.0f));
@@ -172,7 +172,7 @@ public class SpiderMother : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));

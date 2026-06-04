@@ -23,9 +23,9 @@ public class BoxDrone_Move : MonoBehaviour
     private string _effectname;
     private string _audioname;
     
-    private float chaseRange = 15f;          // ‹”F‹——£
-    private float moveSpeed = 8f;           // ’ÇÕ‘¬“x
-    private float velocitySmoothTime = 0.9f; // ‰Á‘¬EŒ¸‘¬‚ÌŠŠ‚ç‚©‚³
+    private float chaseRange = 15f;          // ï¿½ï¿½ï¿½Fï¿½ï¿½ï¿½ï¿½
+    private float moveSpeed = 8f;           // ï¿½ÇÕ‘ï¿½ï¿½x
+    private float velocitySmoothTime = 0.9f; // ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½ÌŠï¿½ï¿½ç‚©ï¿½ï¿½
     private Vector3 currentVelocity = Vector3.zero;
 
     private int _clear;
@@ -55,12 +55,12 @@ public class BoxDrone_Move : MonoBehaviour
     {
         if (_rb.position.x < _player.position.x)
         {
-            transform.rotation = Quaternion.Euler(0, 90, 0);//‰E
+            transform.rotation = Quaternion.Euler(0, 90, 0);//ï¿½E
             _dir = 1;
         }
         else
         {
-            transform.rotation = Quaternion.Euler(0, 270, 0);//¶
+            transform.rotation = Quaternion.Euler(0, 270, 0);//ï¿½ï¿½
             _dir = -1;
         }
 
@@ -79,7 +79,7 @@ public class BoxDrone_Move : MonoBehaviour
         }
         else
         {
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -88,9 +88,9 @@ public class BoxDrone_Move : MonoBehaviour
         Vector3 direction = (_player.position - transform.position).normalized;
         Vector3 targetVelocity = direction * moveSpeed;
 
-        // ŠŠ‚ç‚©‚É‘¬“x‚ğ•Ï‰»‚³‚¹‚é
+        // ï¿½ï¿½ï¿½ç‚©ï¿½É‘ï¿½ï¿½xï¿½ï¿½Ï‰ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         
-        _rb.velocity = Vector3.SmoothDamp(_rb.velocity, targetVelocity, ref currentVelocity, velocitySmoothTime);
+        _rb.linearVelocity = Vector3.SmoothDamp(_rb.linearVelocity, targetVelocity, ref currentVelocity, velocitySmoothTime);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -105,7 +105,7 @@ public class BoxDrone_Move : MonoBehaviour
         }
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -115,7 +115,7 @@ public class BoxDrone_Move : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1f));
@@ -124,7 +124,7 @@ public class BoxDrone_Move : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(2f));
@@ -133,7 +133,7 @@ public class BoxDrone_Move : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));

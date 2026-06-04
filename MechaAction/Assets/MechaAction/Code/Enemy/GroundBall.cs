@@ -45,11 +45,11 @@ public class GroundBall : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
 
         velocity.x = _movespeed * _dir;
 
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -57,7 +57,7 @@ public class GroundBall : MonoBehaviour
         var Interface = other.GetComponent<IPlayerDamage>();
         if (Interface != null)
         {
-            Interface.TakeElectDamage(_damage,_knockback, _dir,_electtime, _effectname, _audioname);//“G‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX<IDamage>æ“¾
+            Interface.TakeElectDamage(_damage,_knockback, _dir,_electtime, _effectname, _audioname);//ï¿½Gï¿½ÌƒCï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½[ï¿½X<IDamage>ï¿½æ“¾
         }
     }
 }

@@ -20,7 +20,7 @@ public class StunEnergy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _rb.velocity = transform.right * _speed;
+        _rb.linearVelocity = transform.right * _speed;
     }
 
     public void Initialize(float bantime, string effectname, string audioname)
@@ -37,7 +37,7 @@ public class StunEnergy : MonoBehaviour
             var Interface = other.gameObject.GetComponent<IPlayerDamage>();
             if (Interface != null)
             {
-                Interface.TakeBanDamage(_bantime, _effectname, _audioname);//“G‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX<IDamage>æ“¾
+                Interface.TakeBanDamage(_bantime, _effectname, _audioname);//ï¿½Gï¿½ÌƒCï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½[ï¿½X<IDamage>ï¿½æ“¾
             }
         }
     }

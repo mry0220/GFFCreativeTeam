@@ -6,9 +6,9 @@ public class Boss : MonoBehaviour
 {
     private enum EnemyState
     {
-        Move,          //’ÇÕ
-        Wait,          //”­Ë—pˆÓ(‚¢‚ç‚È‚¢)
-        Shock,         //”­Ë
+        Move,          //ï¿½Çï¿½
+        Wait,          //ï¿½ï¿½ï¿½Ë—pï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½È‚ï¿½)
+        Shock,         //ï¿½ï¿½ï¿½ï¿½
         Energy,
         Rocket,
         Fire,
@@ -26,8 +26,8 @@ public class Boss : MonoBehaviour
     private int _dir = -1;
     private float _jumpPower = 7f;
     private bool _isshock;
-    private bool _iswait;//waitƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
-    private bool _ismove;//moveƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
+    private bool _iswait;//waitï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+    private bool _ismove;//moveï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
     private bool _isjump;
 
     private float _fallTime;
@@ -68,24 +68,24 @@ public class Boss : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
 
         switch (_state)
         {
             case EnemyState.Shock:
-                if (!_isshock)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if (!_isshock)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(Shock());
                 break;
 
             case EnemyState.Move:
-                if (!_ismove)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if (!_ismove)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(Move());
                 break;
 
             case EnemyState.Wait:
                 Direction();
-                if (!_iswait)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
-                    StartCoroutine(Wait());//‚µ‚Î‚ç‚­‘Ò‚Á‚ÄMove‚É
+                if (!_iswait)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
+                    StartCoroutine(Wait());//ï¿½ï¿½ï¿½Î‚ç‚­ï¿½Ò‚ï¿½ï¿½ï¿½Moveï¿½ï¿½
                 break;
 
             case EnemyState.Energy:
@@ -108,7 +108,7 @@ public class Boss : MonoBehaviour
 
             case EnemyState.Jump:
                 Direction();
-                if (!_isjump)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if (!_isjump)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(Jump());
                 break;
         }
@@ -121,7 +121,7 @@ public class Boss : MonoBehaviour
         {
             _fallTime = 0;
         }
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private void Direction()
@@ -145,7 +145,7 @@ public class Boss : MonoBehaviour
     private IEnumerator Shock()
     {
         _isshock = true;
-        int _rand = Random.Range(0, 10);//0ˆÈã10–¢–
+        int _rand = Random.Range(0, 10);//0ï¿½Èï¿½10ï¿½ï¿½ï¿½ï¿½
 
         if (Vector3.Distance(transform.position, _player.position) < 5f)
         {
@@ -167,7 +167,7 @@ public class Boss : MonoBehaviour
     private IEnumerator Move()
     {
         _ismove = true;
-        int _rand = Random.Range(0, 10);//0ˆÈã10–¢–
+        int _rand = Random.Range(0, 10);//0ï¿½Èï¿½10ï¿½ï¿½ï¿½ï¿½
 
         if(_rand < 2)
         {
@@ -196,7 +196,7 @@ public class Boss : MonoBehaviour
     {
         _iswait = true;
         float count = 0f;
-        int _rand = Random.Range(0, 10);//0ˆÈã10–¢–
+        int _rand = Random.Range(0, 10);//0ï¿½Èï¿½10ï¿½ï¿½ï¿½ï¿½
         if( _rand < 4)
         {
             count = 0.5f;
@@ -219,7 +219,7 @@ public class Boss : MonoBehaviour
     private IEnumerator Jump()
     {
         _isjump = true;
-        int _rand = Random.Range(0, 10);//0ˆÈã10–¢–
+        int _rand = Random.Range(0, 10);//0ï¿½Èï¿½10ï¿½ï¿½ï¿½ï¿½
 
         if( _rand < 6)
         {
@@ -229,13 +229,13 @@ public class Boss : MonoBehaviour
             if( _rand2 < 5)
             {
                 //attack
-                Debug.Log("‹ó’†UŒ‚");
+                Debug.Log("ï¿½ó’†Uï¿½ï¿½");
             }
 
             yield return new WaitForSeconds(0.5f);
-            yield return new WaitForFixedUpdate(); //ƒRƒ‹[ƒ`ƒ““à‚¾‚ÆFixedUpdate(Update?)‚Å
-                                                   //ã‘‚«‚³‚ênew Vector3‚ªg‚¦‚È‚½‚ß(AIQÆ)
-            _rb.velocity = Vector3.zero;
+            yield return new WaitForFixedUpdate(); //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdate(Update?)ï¿½ï¿½
+                                                   //ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½new Vector3ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½(AIï¿½Qï¿½ï¿½)
+            _rb.linearVelocity = Vector3.zero;
         }
         _state = EnemyState.Shock;
         _isjump = false;
@@ -246,17 +246,17 @@ public class Boss : MonoBehaviour
     {
         _fallTime += Time.deltaTime;
 
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
-        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁZ
-                                                        //Time.fixedDeltaTime •¨—‰‰Z‚ğƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (velocity.y < -20f)//—‰º‘¬“x‚Ì§ŒÀ
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                        //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
             velocity.y = -20f;
         }
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -266,7 +266,7 @@ public class Boss : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(0.5f));
@@ -275,7 +275,7 @@ public class Boss : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1.0f));
@@ -284,7 +284,7 @@ public class Boss : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));

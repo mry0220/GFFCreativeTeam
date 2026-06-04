@@ -35,9 +35,9 @@ public class EnemyBoundBullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
         velocity.x = _dir * _speed;
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private IEnumerator _Destroy()

@@ -38,26 +38,26 @@ public class Slash : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
         velocity.x = _dir * _speed;
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
         
     }
 
     //private void OnTriggerEnter(Collider other)
     //{
-    //    //Debug.Log("“–‚½‚Á‚½");
+    //    //Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
     //    if (other.CompareTag("Enemy"))
     //    {
-    //        if(_electslash)//audio‚ÍŒã‚É’¼Ú
+    //        if(_electslash)//audioï¿½ÍŒï¿½É’ï¿½ï¿½ï¿½
     //        {
     //            var Interface_E = other.GetComponent<IDamage>();
     //            if (Interface_E != null)
     //            {
-    //                Interface_E.TakeElectDamage(_damage, _knockback, _dir,5f, _audioname);//“G‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX<IDamage>æ“¾
+    //                Interface_E.TakeElectDamage(_damage, _knockback, _dir,5f, _audioname);//ï¿½Gï¿½ÌƒCï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½[ï¿½X<IDamage>ï¿½æ“¾
 
-    //                //var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ƒ‰ƒ€ƒ_Œ`®AI‚Å’m‚Á‚½
+    //                //var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½`ï¿½ï¿½AIï¿½Å’mï¿½ï¿½ï¿½ï¿½
     //                //if (attackData != null && attackData.HitEffect != null)
     //                //{
     //                //    var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);
@@ -71,9 +71,9 @@ public class Slash : MonoBehaviour
     //        var Interface = other.GetComponent<IDamage>();
     //        if (Interface != null)
     //        {
-    //            Interface.TakeDamage(_damage, _knockback, _dir,_audioname);//“G‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX<IDamage>æ“¾
+    //            Interface.TakeDamage(_damage, _knockback, _dir,_audioname);//ï¿½Gï¿½ÌƒCï¿½ï¿½ï¿½^ï¿½[ï¿½tï¿½Fï¿½[ï¿½X<IDamage>ï¿½æ“¾
 
-    //            var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ƒ‰ƒ€ƒ_Œ`®AI‚Å’m‚Á‚½
+    //            var attackData = _damageEffectSO.damageEffectList.Find(x => x.EffectName == _effectname);//ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½`ï¿½ï¿½AIï¿½Å’mï¿½ï¿½ï¿½ï¿½
     //            if (attackData != null && attackData.HitEffect != null)
     //            {
     //                var effect = Instantiate(attackData.HitEffect, transform.position, Quaternion.identity);

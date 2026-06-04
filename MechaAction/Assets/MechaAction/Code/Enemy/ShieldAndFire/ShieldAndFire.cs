@@ -72,7 +72,7 @@ public class ShieldAndFire : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _velocity = _rb.velocity;
+        _velocity = _rb.linearVelocity;
         _distance = Vector3.Distance(_playerTransfrom.position, _rb.position);
 
         if (!_isGrounded)
@@ -115,7 +115,7 @@ public class ShieldAndFire : MonoBehaviour
             }
         }
 
-        _rb.velocity = _velocity;
+        _rb.linearVelocity = _velocity;
     }
 
     private void Ditection()
@@ -136,7 +136,7 @@ public class ShieldAndFire : MonoBehaviour
         if (_distance < 4f)
         {
             _velocity.x = 0;
-            _rb.velocity = _velocity;   
+            _rb.linearVelocity = _velocity;   
             _state = EnemyState.ATTACK;
         }
     }
@@ -145,11 +145,11 @@ public class ShieldAndFire : MonoBehaviour
     {
         _fallTime += Time.deltaTime;
 
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
-        _velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁŽZ
-                                                        //Time.fixedDeltaTime •¨—‰‰ŽZ‚ðƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (_velocity.y < -20f)//—Ž‰º‘¬“x‚Ì§ŒÀ
+        _velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                        //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (_velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
             _velocity.y = -20f;
         }
@@ -171,7 +171,7 @@ public class ShieldAndFire : MonoBehaviour
             return;
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -181,7 +181,7 @@ public class ShieldAndFire : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.DAMAGE;
         StartCoroutine(_ReturnNormal(0.5f));
@@ -190,7 +190,7 @@ public class ShieldAndFire : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.DAMAGE;
         StartCoroutine(_ReturnNormal(1.0f));
@@ -199,7 +199,7 @@ public class ShieldAndFire : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.DAMAGE;
         StartCoroutine(_ReturnNormal(electtime));

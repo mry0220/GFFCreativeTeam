@@ -17,12 +17,12 @@ public class YPlayer : MonoBehaviour
 
     void Update()
     {
-        // ¶‰EˆÚ“®i‰¡²‚Ì‚İj
+        // ï¿½ï¿½ï¿½Eï¿½Ú“ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½Ì‚İj
         float moveX = Input.GetAxis("Horizontal");
-        Vector3 velocity = rb.velocity;
-        rb.velocity = new Vector3(moveX * moveSpeed, velocity.y, velocity.z);
+        Vector3 velocity = rb.linearVelocity;
+        rb.linearVelocity = new Vector3(moveX * moveSpeed, velocity.y, velocity.z);
 
-        // ƒWƒƒƒ“ƒv
+        // ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½v
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -31,7 +31,7 @@ public class YPlayer : MonoBehaviour
 
     void OnCollisionStay(Collision collision)
     {
-        // ’n–Ê‚ÉÚ‚µ‚Ä‚¢‚é‚Æ‚«‚¾‚¯ƒWƒƒƒ“ƒv‰Â”\‚É‚·‚é
+        // ï¿½nï¿½Ê‚ÉÚ‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½vï¿½Â”\ï¿½É‚ï¿½ï¿½ï¿½
         if (collision.gameObject.CompareTag("Grounded"))
         {
             isGrounded = true;

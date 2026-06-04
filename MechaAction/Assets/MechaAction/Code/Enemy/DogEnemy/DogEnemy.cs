@@ -6,10 +6,10 @@ public class DogEnemy : MonoBehaviour
 {
     private enum EnemyState
     {
-        Look,          //’T‚·
-        Move,          //’ÇÕ
-        Wait,          //”­Ë—pˆÓ(‚¢‚ç‚È‚¢)
-        Attack,         //”­Ë
+        Look,          //ï¿½Tï¿½ï¿½
+        Move,          //ï¿½Çï¿½
+        Wait,          //ï¿½ï¿½ï¿½Ë—pï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½È‚ï¿½)
+        Attack,         //ï¿½ï¿½ï¿½ï¿½
         Damage
     }
 
@@ -23,9 +23,9 @@ public class DogEnemy : MonoBehaviour
     private int _dir = -1;
     private float _jumpPower = 7f;
     private bool _moveStop = false;
-    private bool _iswait;//waitƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
-    private bool _ismove;//moveƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
-    private bool _isattack;//attackƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
+    private bool _iswait;//waitï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+    private bool _ismove;//moveï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+    private bool _isattack;//attackï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
 
     private float _fallTime;
     Vector3 origin;
@@ -65,7 +65,7 @@ public class DogEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
 
         switch (_state)
         {
@@ -73,7 +73,7 @@ public class DogEnemy : MonoBehaviour
                 Look();
                 if (Vector3.Distance(transform.position, _player.position) < 13f)
                 {
-                    Debug.Log("”­Œ©");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½");
                     _state = EnemyState.Wait;
                 }
                 break;
@@ -84,18 +84,18 @@ public class DogEnemy : MonoBehaviour
                     _state = EnemyState.Look;
                 }
                 Direction();
-                if(!_ismove)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if(!_ismove)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(Move());
                 break;
 
             case EnemyState.Wait:
                 Direction();
-                if(!_iswait)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
-                    StartCoroutine(Wait());//‚µ‚Î‚ç‚­‘Ò‚Á‚ÄMove‚É
+                if(!_iswait)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
+                    StartCoroutine(Wait());//ï¿½ï¿½ï¿½Î‚ç‚­ï¿½Ò‚ï¿½ï¿½ï¿½Moveï¿½ï¿½
                 break;
 
             case EnemyState.Attack:
-                if(!_isattack)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if(!_isattack)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(Attack());
                 _state = EnemyState.Wait;
                 break;
@@ -109,7 +109,7 @@ public class DogEnemy : MonoBehaviour
         {
             _fallTime = 0;
         }
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private void Look()
@@ -127,7 +127,7 @@ public class DogEnemy : MonoBehaviour
         if (_moveStop)
         {
             velocity.x = 0f;
-            _rb.velocity = velocity;
+            _rb.linearVelocity = velocity;
             return;
         }
 
@@ -176,10 +176,10 @@ public class DogEnemy : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
 
             
-            Debug.Log("‚Ò‚½");
-            yield return new WaitForFixedUpdate(); //ƒRƒ‹[ƒ`ƒ““à‚¾‚ÆFixedUpdate(Update?)‚Å
-                                                       //ã‘‚«‚³‚ênew Vector3‚ªg‚¦‚È‚½‚ß(AIQÆ)
-            _rb.velocity = Vector3.zero;
+            Debug.Log("ï¿½Ò‚ï¿½");
+            yield return new WaitForFixedUpdate(); //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdate(Update?)ï¿½ï¿½
+                                                       //ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½new Vector3ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½(AIï¿½Qï¿½ï¿½)
+            _rb.linearVelocity = Vector3.zero;
             _state = EnemyState.Attack;
             
             
@@ -196,10 +196,10 @@ public class DogEnemy : MonoBehaviour
 
             yield return new WaitForSeconds(0.4f);
 
-            Debug.Log("‚Ò‚½");
-            yield return new WaitForFixedUpdate(); //ƒRƒ‹[ƒ`ƒ““à‚¾‚ÆFixedUpdate(Update?)‚Å
-                                                       //ã‘‚«‚³‚ênew Vector3‚ªg‚¦‚È‚½‚ß(AIQÆ)
-            _rb.velocity = Vector3.zero;
+            Debug.Log("ï¿½Ò‚ï¿½");
+            yield return new WaitForFixedUpdate(); //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdate(Update?)ï¿½ï¿½
+                                                       //ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½new Vector3ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½(AIï¿½Qï¿½ï¿½)
+            _rb.linearVelocity = Vector3.zero;
             _state = EnemyState.Attack;
         }
 
@@ -211,11 +211,11 @@ public class DogEnemy : MonoBehaviour
     {
         _fallTime += Time.deltaTime;
 
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
-        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁZ
-                                                        //Time.fixedDeltaTime •¨—‰‰Z‚ğƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (velocity.y < -20f)//—‰º‘¬“x‚Ì§ŒÀ
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                        //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
             velocity.y = -20f;
         }
@@ -241,7 +241,7 @@ public class DogEnemy : MonoBehaviour
         yield break;
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -251,7 +251,7 @@ public class DogEnemy : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(0.5f));
@@ -260,7 +260,7 @@ public class DogEnemy : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1.0f));
@@ -269,7 +269,7 @@ public class DogEnemy : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));

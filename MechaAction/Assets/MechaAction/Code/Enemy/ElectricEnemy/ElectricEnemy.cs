@@ -71,7 +71,7 @@ public class ElectricEnemy : MonoBehaviour
     private void FixedUpdate()
     {
         _lapseTime += Time.deltaTime;
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
 
         switch ( _state)
         {
@@ -79,7 +79,7 @@ public class ElectricEnemy : MonoBehaviour
                 Look();
                 if (Vector3.Distance(transform.position, _player.position) < 15f)
                 {
-                    //Debug.Log("”­Œ©");
+                    //Debug.Log("ï¿½ï¿½ï¿½ï¿½");
                     _state = EnemyState.Move;
                 }
                 break;
@@ -92,14 +92,14 @@ public class ElectricEnemy : MonoBehaviour
                 }
                 else if (Vector3.Distance(transform.position, _player.position) < 4f)
                 {
-                    //Debug.Log("UŒ‚");
+                    //Debug.Log("ï¿½Uï¿½ï¿½");
                     _state = EnemyState.Attack;
                     break;
                 }
                 else if (Vector3.Distance(transform.position, _player.position) < 7f
                     && _lapseTime >= 3f)
                 {
-                    //Debug.Log("’n–ÊUŒ‚");
+                    //Debug.Log("ï¿½nï¿½ÊUï¿½ï¿½");
                     _state = EnemyState.GroundAttack;
                     break;
                 }
@@ -127,7 +127,7 @@ public class ElectricEnemy : MonoBehaviour
         {
             _fallTime = 0f;
         }
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private void Look()
@@ -143,7 +143,7 @@ public class ElectricEnemy : MonoBehaviour
         if (_moveStop)
         {
             velocity.x = 0f;
-            _rb.velocity = velocity;
+            _rb.linearVelocity = velocity;
             return;
         }
 
@@ -180,11 +180,11 @@ public class ElectricEnemy : MonoBehaviour
     {
         _fallTime += Time.deltaTime;
 
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
-        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁZ
-                                                        //Time.fixedDeltaTime •¨—‰‰Z‚ğƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (velocity.y < -20f)//—‰º‘¬“x‚Ì§ŒÀ
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                        //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
             velocity.y = -20f;
         }
@@ -193,7 +193,7 @@ public class ElectricEnemy : MonoBehaviour
     private IEnumerator Attack()
     {
         _isattack = true;
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         yield return new WaitForSeconds(1f);
         _attack.ElectricAttack();
         _lapseTime = 0;
@@ -207,10 +207,10 @@ public class ElectricEnemy : MonoBehaviour
     private IEnumerator GroundAttack()
     {
         _isgroundatack = true;
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _attack.ElectricGroundAttack();
         yield return new WaitForSeconds(2f);
-        //ƒCƒ“ƒXƒ^ƒ“ƒX‰»
+        //ï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ï¿½
         
         _lapseTime = 0;
 
@@ -219,7 +219,7 @@ public class ElectricEnemy : MonoBehaviour
         yield break;
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -229,7 +229,7 @@ public class ElectricEnemy : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1f));
@@ -238,7 +238,7 @@ public class ElectricEnemy : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(2f));
@@ -247,7 +247,7 @@ public class ElectricEnemy : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));

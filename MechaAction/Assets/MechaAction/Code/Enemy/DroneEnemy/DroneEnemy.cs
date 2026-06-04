@@ -11,7 +11,7 @@ public class DroneEnemy : MonoBehaviour
         MOVE,
         ATTACK,
         STIFFNESS,
-        DAMAGE//“®‚©‚È‚¢
+        DAMAGE//ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½
     };
     private EnemyState _state = EnemyState.DITECTION;
 
@@ -38,12 +38,12 @@ public class DroneEnemy : MonoBehaviour
     {
         if (_rb.position.x < _playerTransform.position.x)
         {
-            transform.rotation = Quaternion.Euler(0, 90, 0);//‰E
+            transform.rotation = Quaternion.Euler(0, 90, 0);//ï¿½E
             _dir = 1;
         }
         else
         {
-            transform.rotation = Quaternion.Euler(0, 270, 0);//¶
+            transform.rotation = Quaternion.Euler(0, 270, 0);//ï¿½ï¿½
             _dir = -1;
         }
         Debug.DrawRay(transform.position, transform.forward * 10f, Color.cyan);
@@ -89,16 +89,16 @@ public class DroneEnemy : MonoBehaviour
 
     private void Move()
     {
-        _velocity = _rb.velocity;
+        _velocity = _rb.linearVelocity;
         if(_distance <= 10f)
         {
             
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
             _state = EnemyState.ATTACK;
             return;
         }
         _velocity.x = _moveSpeed;
-        _rb.velocity = (_rb.position.x < _playerTransform.position.x) ? (_velocity) : (-_velocity); 
+        _rb.linearVelocity = (_rb.position.x < _playerTransform.position.x) ? (_velocity) : (-_velocity); 
     }
 
     private void Attack()
@@ -119,7 +119,7 @@ public class DroneEnemy : MonoBehaviour
             return true;
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -129,7 +129,7 @@ public class DroneEnemy : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.DAMAGE;
         StartCoroutine(_ReturnNormal(0.5f));
@@ -138,7 +138,7 @@ public class DroneEnemy : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.DAMAGE;
         StartCoroutine(_ReturnNormal(1.0f));
@@ -147,7 +147,7 @@ public class DroneEnemy : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.DAMAGE;
         StartCoroutine(_ReturnNormal(electtime));

@@ -6,15 +6,15 @@ public class MoveEnemy : MonoBehaviour
 {
     private enum EnemyState
     {
-        Look,          //’T‚·
-        Move,          //’ÇÕ
-        Wait,          //”­Ë—pˆÓ(‚¢‚ç‚È‚¢)
-        Attack         //”­Ë
+        Look,          //ï¿½Tï¿½ï¿½
+        Move,          //ï¿½Çï¿½
+        Wait,          //ï¿½ï¿½ï¿½Ë—pï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½È‚ï¿½)
+        Attack         //ï¿½ï¿½ï¿½ï¿½
     }
 
     private EnemyState _state = EnemyState.Look;
 
-    private Vector3 _spawnPos;//‚à‚Æ‚É‚à‚Ç‚é‚½‚ß
+    private Vector3 _spawnPos;//ï¿½ï¿½ï¿½Æ‚É‚ï¿½ï¿½Ç‚é‚½ï¿½ï¿½
     private Transform _player;
     private Rigidbody _rb;
     private float _moveSpeed = 3.0f;
@@ -79,11 +79,11 @@ public class MoveEnemy : MonoBehaviour
 
     private void Move()
     {
-        Vector3 velocity = _rb.velocity;
+        Vector3 velocity = _rb.linearVelocity;
 
         if (_moveStop)
         {
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
             return;
         }
 
@@ -109,12 +109,12 @@ public class MoveEnemy : MonoBehaviour
 
         velocity.x = _direction * _moveSpeed;
 
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
         Debug.Log(_direction);
         //Debug.Log(_attacktime);
     }
 
-    //U‚è•Ô‚é‚Æ‚«­‚µ—¯‚Ü‚é
+    //ï¿½Uï¿½ï¿½Ô‚ï¿½Æ‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½
     private IEnumerator Waitturn(int _newdirection)
     {
         _moveStop = true;

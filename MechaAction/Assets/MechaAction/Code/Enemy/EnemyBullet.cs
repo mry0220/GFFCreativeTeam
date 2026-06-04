@@ -42,9 +42,9 @@ public class EnemyBullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
         velocity.x = m_attackDir.x * _speed;
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private IEnumerator _Destroy()
@@ -62,7 +62,7 @@ public class EnemyBullet : MonoBehaviour
         var team = other.GetComponentInParent<ITeam>();
         if (team != null)
         {
-            // “¯‚¶ƒ`[ƒ€‚È‚ç–³‹
+            // ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½[ï¿½ï¿½ï¿½È‚ç–³ï¿½ï¿½
             if (team.Team == m_team) return;
         }
         else

@@ -3,13 +3,13 @@ using UnityEngine;
 
 public enum PlayerState
 {
-    Standing,    //—§‚¿A“®‚­AƒWƒƒƒ“ƒv
+    Standing,    //ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½v
     Dash,
     Attack,
     Knockback,
-    Other,@@@//ƒMƒ~ƒbƒNA“d‹CA–WŠQ
-    Dead,       //€‚ñ‚¾‚çó‘Ô‘JˆÚ–h~
-    Respawn     //—BˆêDead‚ğ‚·‚è”²‚¯‚é
+    Other,      //ï¿½Mï¿½~ï¿½bï¿½Nï¿½Aï¿½dï¿½Cï¿½Aï¿½Wï¿½Q
+    Dead,       //ï¿½ï¿½ï¿½ñ‚¾‚ï¿½ï¿½Ô‘Jï¿½Ú–hï¿½~
+    Respawn     //ï¿½Bï¿½ï¿½Deadï¿½ï¿½ï¿½ï¿½ï¿½è”²ï¿½ï¿½ï¿½ï¿½
 }
 
 public class Player : MonoBehaviour, ITeam
@@ -48,8 +48,8 @@ public class Player : MonoBehaviour, ITeam
     public Vector3 Forward { get => m_forward; }
 
     private float prevHorizontal = 0f;
-    //private bool _isDash = false;//ƒ_ƒbƒVƒ…’†Œü‚«‚ª•Ï‚í‚ç‚È‚¢‚æ‚¤‚É
-    private bool _canDash = true;//‹ó’†‚Å‚Q‰ñ–Úƒ_ƒbƒVƒ…‚ğ–h‚®‚½‚ß
+    //private bool _isDash = false;//ï¿½_ï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï‚ï¿½ï¿½È‚ï¿½ï¿½æ‚¤ï¿½ï¿½
+    private bool _canDash = true;//ï¿½ó’†‚Å‚Qï¿½ï¿½Úƒ_ï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public bool _isBan= false;
 
     private float _fallTime;
@@ -77,23 +77,23 @@ public class Player : MonoBehaviour, ITeam
         //if (SkillManager.Instance.HasSkill(SkillType.SHOTGUN))
         //{
         //    _SPEED += 0.1f;
-        //    Debug.Log("ƒXƒs[ƒhƒAƒbƒvI");
+        //    Debug.Log("ï¿½Xï¿½sï¿½[ï¿½hï¿½Aï¿½bï¿½vï¿½I");
         //}
         //if (SkillManager.Instance.HasSkill(SkillType.RIFLE))
         //{
         //    _SPEED += 0.2f;
-        //    Debug.Log("ƒXƒs[ƒhƒAƒbƒvI");
+        //    Debug.Log("ï¿½Xï¿½sï¿½[ï¿½hï¿½Aï¿½bï¿½vï¿½I");
         //}
         //if (SkillManager.Instance.HasSkill(SkillType.KNOCKP1))
         //{
         //    _SPEED += 0.2f;
-        //    Debug.Log("ƒXƒs[ƒhƒAƒbƒvI");
+        //    Debug.Log("ï¿½Xï¿½sï¿½[ï¿½hï¿½Aï¿½bï¿½vï¿½I");
         //}
     }
 
     private void Update()
     {
-        _MousePosition();//ƒ}ƒEƒX‚ÌˆÊ’uæ“¾
+        _MousePosition();//ï¿½}ï¿½Eï¿½Xï¿½ÌˆÊ’uï¿½æ“¾
 
         if(m_forward.x != 0)
         {
@@ -101,7 +101,7 @@ public class Player : MonoBehaviour, ITeam
             transform.rotation = Quaternion.Euler(0, Yrot, 0);
         }
         
-        _InputDetection();//ƒ_ƒbƒVƒ…‚Ì‚Q‰ñ“ü—ÍŒŸ’m
+        _InputDetection();//ï¿½_ï¿½bï¿½Vï¿½ï¿½ï¿½Ì‚Qï¿½ï¿½ï¿½ï¿½ÍŒï¿½ï¿½m
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -142,14 +142,14 @@ public class Player : MonoBehaviour, ITeam
 
         Gizmos.color = Color.yellow;
 
-        // ŠJn’n“_
+        // ï¿½Jï¿½nï¿½nï¿½_
         Gizmos.DrawWireSphere(m_groundCheck.position, m_radius);
 
-        // I“_
+        // ï¿½Iï¿½_
         Vector3 end = m_groundCheck.position + Vector3.down * m_checkDistance;
         Gizmos.DrawWireSphere(end, m_radius);
 
-        // ŠÔ‚ğü‚Å‚Â‚È‚®
+        // ï¿½Ô‚ï¿½ï¿½ï¿½Å‚Â‚È‚ï¿½
         Gizmos.DrawLine(m_groundCheck.position, end);
     }
 
@@ -160,14 +160,14 @@ public class Player : MonoBehaviour, ITeam
 
         if (m_state == PlayerState.Dash) return;
 
-        velocity = m_rb.velocity; //ˆê“x•Ï”‚ÉƒRƒs[‚µ‚Ä‚©‚ç•ÒW
-        _moveVector.x = _inputVector.x; //‚±‚±‚É‘‚­‚±‚Æ‚Å‹ó’†‚Å¶‰E‚ÉˆÚ“®‰Â”\
+        velocity = m_rb.linearVelocity; //ï¿½ï¿½xï¿½Ïï¿½ï¿½ÉƒRï¿½sï¿½[ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ÒW
+        _moveVector.x = _inputVector.x; //ï¿½ï¿½ï¿½ï¿½ï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚Å‹ó’†‚Åï¿½ï¿½Eï¿½ÉˆÚ“ï¿½ï¿½Â”\
 
         Move();
 
         _Jump();
 
-        #region@•à‚«ƒAƒjƒ[ƒVƒ‡ƒ“
+        #regionï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½
         if(m_isGrounded)
         {
             //Debug.Log("moveanimation");
@@ -210,7 +210,7 @@ public class Player : MonoBehaviour, ITeam
             _fallTime = 0f;
         }
 
-        m_rb.velocity = velocity; //•ÒW‚µ‚½’l‚ğ–ß‚µ‚Ärigidbody‚ÅÀs
+        m_rb.linearVelocity = velocity; //ï¿½ÒWï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½ß‚ï¿½ï¿½ï¿½rigidbodyï¿½Åï¿½ï¿½s
     }
 
     public void ChangeState(PlayerState newState)
@@ -218,7 +218,7 @@ public class Player : MonoBehaviour, ITeam
         m_state = newState;
         if(newState == PlayerState.Attack && m_isGrounded)
         {
-            m_rb.velocity = Vector3.zero;
+            m_rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -229,12 +229,12 @@ public class Player : MonoBehaviour, ITeam
 
     private void _MousePosition()
     {
-        // ƒ}ƒEƒX‚ÌƒXƒNƒŠ[ƒ“À•W‚ğæ“¾
+        // ï¿½}ï¿½Eï¿½Xï¿½ÌƒXï¿½Nï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½æ“¾
         Vector3 mousePos = Input.mousePosition;
 
         //Debug.Log($"Screen Position: X={mousePos.x}, Y={mousePos.y}");
 
-        // ƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·iƒJƒƒ‰•K{j
+        // ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Wï¿½É•ÏŠï¿½ï¿½iï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Kï¿½{ï¿½j
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(
             new Vector3(mousePos.x, mousePos.y, 10f)//Camera.main.nearClipPlane
         );
@@ -263,7 +263,7 @@ public class Player : MonoBehaviour, ITeam
 
     private void _InputDetection()
     {
-        if (prevHorizontal == 0f && (_inputVector.x == 1 || _inputVector.x == -1))//_inputVector‚Ì‰Ÿ‚·uŠÔ‚ğæ“¾‚·‚é‚½‚ß
+        if (prevHorizontal == 0f && (_inputVector.x == 1 || _inputVector.x == -1))//_inputVectorï¿½Ì‰ï¿½ï¿½ï¿½ï¿½uï¿½Ô‚ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½é‚½ï¿½ï¿½
         {
             if (_Runcount <= 0)
             {
@@ -330,7 +330,7 @@ public class Player : MonoBehaviour, ITeam
     private void _Jump()
     {
         if (!CanMove) return;
-        if (_isBan) return;//PlayerHP‚ÅŠÇ—‚µ‚½bool
+        if (_isBan) return;//PlayerHPï¿½ÅŠÇ—ï¿½ï¿½ï¿½ï¿½ï¿½bool
 
         if (m_isGrounded)
         {
@@ -348,7 +348,7 @@ public class Player : MonoBehaviour, ITeam
         {
             if (_isSecondJump && _isJump)
             {
-                velocity.y = 0f;//“ñ’i–Ú‚Å’µ‚Ëã‚ª‚è–h‚¬
+                velocity.y = 0f;//ï¿½ï¿½iï¿½Ú‚Å’ï¿½ï¿½Ëã‚ªï¿½ï¿½hï¿½ï¿½
                 _fallTime = 0f;
                 m_anim.SetTrigger("Jump");
                 m_rb.AddForce(0f, m_jumpPower, 0f, ForceMode.Impulse);
@@ -365,14 +365,14 @@ public class Player : MonoBehaviour, ITeam
     {
         _fallTime += Time.deltaTime;
 
-        //_moveVector.y = Physics.gravity.y * _FallTime * 2.0f;@//’¼Ú’l‚ğ•Ï‚¦‚Ä‚µ‚Ü‚·‚Ì‚ÅŸ‚ÌƒtƒŒ[ƒ€‚Å‚O‚É–ß‚Á‚Ä‚µ‚Ü‚¤
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        //_moveVector.y = Physics.gravity.y * _FallTime * 2.0f;ï¿½@//ï¿½ï¿½ï¿½Ú’lï¿½ï¿½Ï‚ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½ï¿½Ì‚Åï¿½ï¿½Ìƒtï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Å‚Oï¿½É–ß‚ï¿½ï¿½Ä‚ï¿½ï¿½Ü‚ï¿½
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
         //Debug.Log(_fallSpeed);
 
-        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁZ
-                                                        //Time.fixedDeltaTime •¨—‰‰Z‚ğƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (velocity.y < -20f)//—‰º‘¬“x‚Ì§ŒÀ
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                        //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
             velocity.y = -20f;
         }
@@ -401,7 +401,7 @@ public class Player : MonoBehaviour, ITeam
     //        //Debug.Log(velocity.x);
     //        m_rb.velocity = velocity;
     //        t += Time.deltaTime;
-    //        yield return new WaitForFixedUpdate();  //ƒRƒ‹[ƒ`ƒ““à‚ÅFixedUpdate‚Å‚«‚é‚ÌAI‚Å’m‚Á‚½
+    //        yield return new WaitForFixedUpdate();  //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdateï¿½Å‚ï¿½ï¿½ï¿½ï¿½AIï¿½Å’mï¿½ï¿½ï¿½ï¿½
     //    }
     //    Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Player"),
     //        LayerMask.NameToLayer("Enemy"), false);
@@ -412,27 +412,27 @@ public class Player : MonoBehaviour, ITeam
 
     public void SKnockBack(int dir,int knockback)
     {
-        m_rb.velocity = Vector3.zero;
+        m_rb.linearVelocity = Vector3.zero;
         m_rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         m_anim.SetTrigger("SKnock");
     }
 
     public void BKnockBack(int dir, int knockback)
     {
-        m_rb.velocity = Vector3.zero;
+        m_rb.linearVelocity = Vector3.zero;
         m_rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         m_anim.SetTrigger("BKnock");
     }
 
-    public void Stun()//“dŒ‚ƒ_ƒ[ƒW‚ÅŒÄ‚Ô
+    public void Stun()//ï¿½dï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½[ï¿½Wï¿½ÅŒÄ‚ï¿½
     {
-        m_rb.velocity = Vector3.zero;
+        m_rb.linearVelocity = Vector3.zero;
     }
 
 
     public void Dead()
     {
-        m_rb.velocity = Vector3.zero;
+        m_rb.linearVelocity = Vector3.zero;
         m_anim.SetInteger("Dead", 1);
     }
 

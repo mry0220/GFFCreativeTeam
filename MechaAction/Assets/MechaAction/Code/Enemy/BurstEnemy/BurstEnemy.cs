@@ -4,10 +4,10 @@ using UnityEngine;
 public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
 {
     private enum EnemyState { 
-        Look,          //’T‚·
-        Move,          //’ÇÕ
-        Wait,          //”­Ë—pˆÓ(‚¢‚ç‚È‚¢)
-        Attack        //”­Ë
+        Look,          //ï¿½Tï¿½ï¿½
+        Move,          //ï¿½Çï¿½
+        Wait,          //ï¿½ï¿½ï¿½Ë—pï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½È‚ï¿½)
+        Attack        //ï¿½ï¿½ï¿½ï¿½
     }
 
     private EnemyState _state = EnemyState.Look;
@@ -31,7 +31,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
     private Vector3 m_forward;
     public Vector3 Forward { get => m_forward; }
 
-    private int m_moveDir = -1;//‰Šú¶Œü‚«
+    private int m_moveDir = -1;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private int m_nextDir;
  
     private float _attacktime;
@@ -56,7 +56,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
 
     private void Update()
     {
-        #region ŠÔŒo‰ß
+        #region ï¿½ï¿½ï¿½ÔŒoï¿½ï¿½
         if (m_isTurn)
         {
             m_tuenTime -= Time.deltaTime;
@@ -110,20 +110,20 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
 
         Gizmos.color = Color.yellow;
 
-        // ŠJn’n“_
+        // ï¿½Jï¿½nï¿½nï¿½_
         Gizmos.DrawWireSphere(m_groundCheck.position, m_radius);
 
-        // I“_
+        // ï¿½Iï¿½_
         Vector3 end = m_groundCheck.position + Vector3.down * m_checkDistance;
         Gizmos.DrawWireSphere(end, m_radius);
 
-        // ŠÔ‚ğü‚Å‚Â‚È‚®
+        // ï¿½Ô‚ï¿½ï¿½ï¿½Å‚Â‚È‚ï¿½
         Gizmos.DrawLine(m_groundCheck.position, end);
     }
 
     private void FixedUpdate()
     {
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
 
         if (!_isGrounded)
         {
@@ -167,7 +167,7 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
         }
 
         
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private void Look()
@@ -209,11 +209,11 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
     {
         _fallTime += Time.deltaTime;
 
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
-        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁZ
-                                                        //Time.fixedDeltaTime •¨—‰‰Z‚ğƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (velocity.y < -20f)//—‰º‘¬“x‚Ì§ŒÀ
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                        //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
             velocity.y = -20f;
         }
@@ -231,10 +231,10 @@ public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
     }
 
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public void KnockBack(Vector3 attackDir,int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(attackDir.x * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
 
         Stun();

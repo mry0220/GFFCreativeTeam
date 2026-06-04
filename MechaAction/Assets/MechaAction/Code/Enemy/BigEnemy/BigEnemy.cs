@@ -5,13 +5,13 @@ public class BigEnemy : MonoBehaviour
 {
     private enum EnemyState
     {
-        Look,          //’T‚·
-        Move,          //“®‚­
-        Charge,        //“Ëi
-        Jump,@@@@@//ƒWƒƒƒ“ƒv
-        BigJump,       //‘åƒWƒƒƒ“ƒv
-        Wait,          //—”
-        Attack,        //‹ßÚUŒ‚
+        Look,          //ï¿½Tï¿½ï¿½
+        Move,          //ï¿½ï¿½ï¿½ï¿½
+        Charge,        //ï¿½Ëi
+        Jump,          //ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½v
+        BigJump,       //ï¿½ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½v
+        Wait,          //ï¿½ï¿½ï¿½ï¿½
+        Attack,        //ï¿½ßÚUï¿½ï¿½
         Damage
     }
 
@@ -28,12 +28,12 @@ public class BigEnemy : MonoBehaviour
     private float _bigjumpPower = 18f;
     private float _moveSpeed = 5f;
     private bool _moveStop = false;
-    private bool _iswait = false;//waitƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
-    private bool _ismove = false;//moveƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
-    private bool _ischarge = false;//chargeƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
-    private bool _isjump = false;//jumpƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
-    private bool _isbigjump = false;//bigjumpƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
-    private bool _isattack = false;//attackƒRƒ‹[ƒ`ƒ“‚Ìd•¡‚ğ–h‚®
+    private bool _iswait = false;//waitï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+    private bool _ismove = false;//moveï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+    private bool _ischarge = false;//chargeï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+    private bool _isjump = false;//jumpï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+    private bool _isbigjump = false;//bigjumpï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+    private bool _isattack = false;//attackï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
 
     Vector3 velocity;
 
@@ -79,14 +79,14 @@ public class BigEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = _rb.velocity;
+        velocity = _rb.linearVelocity;
         switch (_state)
         {
             case EnemyState.Look:
                 Look();
                 if (Vector3.Distance(transform.position, _player.position) < 13f)
                 {
-                    Debug.Log("”­Œ©");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½");
                     _state = EnemyState.Wait;
                 }
                 break;
@@ -96,12 +96,12 @@ public class BigEnemy : MonoBehaviour
                 Direction();
                 velocity.x = _dir * _moveSpeed;
 
-                if (!_ismove)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if (!_ismove)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(MoveTimelimit());
                 break;
 
             case EnemyState.Charge:
-                if (!_ischarge)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if (!_ischarge)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(Charge());
                 break;
 
@@ -111,18 +111,18 @@ public class BigEnemy : MonoBehaviour
                 break;
 
             case EnemyState.BigJump:
-                if (!_isbigjump)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if (!_isbigjump)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(BigJump());
                 break;
 
             case EnemyState.Wait:
                 Direction();
-                if (!_iswait)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
-                    StartCoroutine(Wait());//‚µ‚Î‚ç‚­‘Ò‚Á‚ÄMove‚É
+                if (!_iswait)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
+                    StartCoroutine(Wait());//ï¿½ï¿½ï¿½Î‚ç‚­ï¿½Ò‚ï¿½ï¿½ï¿½Moveï¿½ï¿½
                 break;
 
             case EnemyState.Attack:
-                if (!_isattack)//ƒRƒ‹[ƒ`ƒ“‚Ìd•¡–h‚®
+                if (!_isattack)//ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½Ìdï¿½ï¿½ï¿½hï¿½ï¿½
                     StartCoroutine(Attack());
                 break;
         }
@@ -135,7 +135,7 @@ public class BigEnemy : MonoBehaviour
         {
             _fallTime = 0;
         }
-        _rb.velocity = velocity;
+        _rb.linearVelocity = velocity;
     }
 
     private void Look()
@@ -152,7 +152,7 @@ public class BigEnemy : MonoBehaviour
 
         if (_moveStop)
         {
-            _rb.velocity = Vector3.zero;
+            _rb.linearVelocity = Vector3.zero;
             return;
         }
 
@@ -178,11 +178,11 @@ public class BigEnemy : MonoBehaviour
     {
         _fallTime += Time.deltaTime;
 
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
-        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁZ
-                                                        //Time.fixedDeltaTime •¨—‰‰Z‚ğƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (velocity.y < -20f)//—‰º‘¬“x‚Ì§ŒÀ
+        velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                        //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
             velocity.y = -20f;
         }
@@ -214,7 +214,7 @@ public class BigEnemy : MonoBehaviour
     private IEnumerator Charge()
     {
         _ischarge = true;
-        Debug.Log("Charge€”õ");
+        Debug.Log("Chargeï¿½ï¿½ï¿½ï¿½");
         yield return new WaitForSeconds(0.2f);
 
         _rb.AddForce(_dir * 20f, 0f, 0f, ForceMode.Impulse);
@@ -227,16 +227,16 @@ public class BigEnemy : MonoBehaviour
     private IEnumerator Jump()
     {
         _isjump = true;
-        int _rand = Random.Range(1, 4);//1ˆÈã4–¢–
+        int _rand = Random.Range(1, 4);//1ï¿½Èï¿½4ï¿½ï¿½ï¿½ï¿½
         if (Vector3.Distance(transform.position, _player.position) < 5f)
         {
             Debug.Log("backjump");
             _rb.AddForce(_dir * -7f, _jumpPower, 0f, ForceMode.Impulse);
             yield return new WaitForSeconds(1f);
 
-            yield return new WaitForFixedUpdate(); //ƒRƒ‹[ƒ`ƒ““à‚¾‚ÆFixedUpdate(Update?)‚Å
-                                                   //ã‘‚«‚³‚ênew Vector3‚ªg‚¦‚È‚½‚ß(AIQÆ)
-            _rb.velocity = Vector3.zero;
+            yield return new WaitForFixedUpdate(); //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdate(Update?)ï¿½ï¿½
+                                                   //ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½new Vector3ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½(AIï¿½Qï¿½ï¿½)
+            _rb.linearVelocity = Vector3.zero;
 
             _state = EnemyState.Wait;
             _isjump = false;
@@ -255,9 +255,9 @@ public class BigEnemy : MonoBehaviour
             }
             yield return new WaitForSeconds(0.6f);
 
-            yield return new WaitForFixedUpdate(); //ƒRƒ‹[ƒ`ƒ““à‚¾‚ÆFixedUpdate(Update?)‚Å
-                                                   //ã‘‚«‚³‚ênew Vector3‚ªg‚¦‚È‚½‚ß(AIQÆ)
-            _rb.velocity = Vector3.zero;
+            yield return new WaitForFixedUpdate(); //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdate(Update?)ï¿½ï¿½
+                                                   //ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½new Vector3ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½(AIï¿½Qï¿½ï¿½)
+            _rb.linearVelocity = Vector3.zero;
 
             _state = EnemyState.Attack;
             _isjump = false;
@@ -270,15 +270,15 @@ public class BigEnemy : MonoBehaviour
     {
         _isbigjump = true;
         Debug.Log("bigjump");
-        //int _rand = Random.Range(1, 4);//1ˆÈã4–¢–
+        //int _rand = Random.Range(1, 4);//1ï¿½Èï¿½4ï¿½ï¿½ï¿½ï¿½
         
         _rb.AddForce(_dir * 20f, _bigjumpPower, 0f, ForceMode.Impulse);
 
         yield return new WaitForSeconds(1f);
 
-        yield return new WaitForFixedUpdate(); //ƒRƒ‹[ƒ`ƒ““à‚¾‚ÆFixedUpdate(Update?)‚Å
-                                               //ã‘‚«‚³‚ênew Vector3‚ªg‚¦‚È‚½‚ß(AIQÆ)
-        _rb.velocity = Vector3.zero;
+        yield return new WaitForFixedUpdate(); //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdate(Update?)ï¿½ï¿½
+                                               //ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½new Vector3ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½(AIï¿½Qï¿½ï¿½)
+        _rb.linearVelocity = Vector3.zero;
 
         _state = EnemyState.Wait;
 
@@ -290,13 +290,13 @@ public class BigEnemy : MonoBehaviour
     {
         _iswait = true;
         Debug.Log("wait");
-        yield return new WaitForFixedUpdate(); //ƒRƒ‹[ƒ`ƒ““à‚¾‚ÆFixedUpdate(Update?)‚Å
-                                               //ã‘‚«‚³‚ênew Vector3‚ªg‚¦‚È‚½‚ß(AIQÆ)
-        _rb.velocity = Vector3.zero; //move‚ÌŒã‚È‚Çƒsƒ^‚Á‚Æ‚Æ‚ß‚½‚¢
+        yield return new WaitForFixedUpdate(); //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdate(Update?)ï¿½ï¿½
+                                               //ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½new Vector3ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½(AIï¿½Qï¿½ï¿½)
+        _rb.linearVelocity = Vector3.zero; //moveï¿½ÌŒï¿½È‚Çƒsï¿½^ï¿½ï¿½ï¿½Æ‚Æ‚ß‚ï¿½ï¿½ï¿½
 
         yield return new WaitForSeconds(2f);
 
-        int _rand = Random.Range(0, 10);//0ˆÈã10–¢–
+        int _rand = Random.Range(0, 10);//0ï¿½Èï¿½10ï¿½ï¿½ï¿½ï¿½
         
         if(Vector3.Distance(transform.position, _player.position) > 10f)
         {
@@ -357,16 +357,16 @@ public class BigEnemy : MonoBehaviour
 
     private IEnumerator JumpAttack()
     {
-        yield return new WaitForFixedUpdate(); //ƒRƒ‹[ƒ`ƒ““à‚¾‚ÆFixedUpdate(Update?)‚Å
-                                               //ã‘‚«‚³‚ênew Vector3‚ªg‚¦‚È‚½‚ß(AIQÆ)
-        _rb.velocity = new Vector3(0f, -50f, 0f);
+        yield return new WaitForFixedUpdate(); //ï¿½Rï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½FixedUpdate(Update?)ï¿½ï¿½
+                                               //ï¿½ã‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½new Vector3ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½(AIï¿½Qï¿½ï¿½)
+        _rb.linearVelocity = new Vector3(0f, -50f, 0f);
         _attack.JumpAttack();
         _state = EnemyState.Wait;
 
         yield break;
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -376,7 +376,7 @@ public class BigEnemy : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(0.5f));
@@ -385,7 +385,7 @@ public class BigEnemy : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1.0f));
@@ -394,7 +394,7 @@ public class BigEnemy : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));

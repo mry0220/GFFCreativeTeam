@@ -22,9 +22,9 @@ public class BoxDrone_Normal : MonoBehaviour
     private string _effectname;
     private string _audioname;
 
-    private float _horizontalSpeed = 3f;   // ¶‚Ö‚ÌˆÚ“®‘¬“x
-    private float _verticalAmplitude = 5f; // ã‰º‚ÌU‚ê•
-    private float _verticalSpeed = 3f; // ã‰º‚Ì‘¬‚³
+    private float _horizontalSpeed = 3f;   // ï¿½ï¿½ï¿½Ö‚ÌˆÚ“ï¿½ï¿½ï¿½ï¿½x
+    private float _verticalAmplitude = 5f; // ï¿½ã‰ºï¿½ÌUï¿½ê•
+    private float _verticalSpeed = 3f; // ï¿½ã‰ºï¿½Ì‘ï¿½ï¿½ï¿½
 
     private int _clear;
 
@@ -52,15 +52,15 @@ public class BoxDrone_Normal : MonoBehaviour
 
         if (_rb.position.x < _player.position.x)
         {
-            transform.rotation = Quaternion.Euler(0, 90, 0);//‰E
+            transform.rotation = Quaternion.Euler(0, 90, 0);//ï¿½E
             _dir = 1;
         }
         else
         {
-            transform.rotation = Quaternion.Euler(0, 270, 0);//¶
+            transform.rotation = Quaternion.Euler(0, 270, 0);//ï¿½ï¿½
             _dir = -1;
         }
-        _timeOffset = Random.Range(0f, Mathf.PI * 2f);  // “G‚²‚Æ‚É“®‚«‚ğ‚¸‚ç‚·
+        _timeOffset = Random.Range(0f, Mathf.PI * 2f);  // ï¿½Gï¿½ï¿½ï¿½Æ‚É“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç‚·
         _PositionY = transform.position.y;
     }
 
@@ -71,7 +71,7 @@ public class BoxDrone_Normal : MonoBehaviour
         if (!CanMove) return;
         float newY = _PositionY + Mathf.Sin(Time.time * _verticalSpeed + _timeOffset) * _verticalAmplitude;
         Vector3 newVelocity = new Vector3(_horizontalSpeed * _dir, (newY - transform.position.y) / Time.fixedDeltaTime, 0f);
-        _rb.velocity = newVelocity;
+        _rb.linearVelocity = newVelocity;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -86,7 +86,7 @@ public class BoxDrone_Normal : MonoBehaviour
         }
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -96,7 +96,7 @@ public class BoxDrone_Normal : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1f));
@@ -105,7 +105,7 @@ public class BoxDrone_Normal : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(2f));
@@ -114,7 +114,7 @@ public class BoxDrone_Normal : MonoBehaviour
 
     public void ElectStun(int dir, int knockback,float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));

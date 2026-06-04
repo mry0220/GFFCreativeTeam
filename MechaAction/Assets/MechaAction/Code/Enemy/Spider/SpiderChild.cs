@@ -27,7 +27,7 @@ public class SpiderChild : MonoBehaviour
     private float _limittime;
     private int tmp;
     private float _time;
-    const float _turnTime = 2f;      //d’¼ŽžŠÔ‚ªŠm’è‚µ‚½‚çconst‚É•ÏX
+    const float _turnTime = 2f;      //ï¿½dï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½mï¿½è‚µï¿½ï¿½ï¿½ï¿½constï¿½É•ÏX
 
     Vector3 _velocity;
 
@@ -74,7 +74,7 @@ public class SpiderChild : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _velocity = _rb.velocity;
+        _velocity = _rb.linearVelocity;
 
         if ((_time += Time.deltaTime) >= _turnTime)
         {
@@ -90,7 +90,7 @@ public class SpiderChild : MonoBehaviour
         {
             _fallTime = 0f;
         }
-        _rb.velocity = _velocity;
+        _rb.linearVelocity = _velocity;
         //if (Vector3.Distance(_rb.position, _PerentPos) >= 10)
         //Boom();
     }
@@ -105,7 +105,7 @@ public class SpiderChild : MonoBehaviour
         {
             _time = 0;
             _velocity.x = 0;
-            _rb.velocity = _velocity;
+            _rb.linearVelocity = _velocity;
             return;
         }
         else
@@ -117,7 +117,7 @@ public class SpiderChild : MonoBehaviour
         {
             if((_limittime -= Time.deltaTime) <0)
             {
-                //Debug.Log("boom”­“®");
+                //Debug.Log("boomï¿½ï¿½ï¿½ï¿½");
                 Boom();
             }
         }
@@ -129,7 +129,7 @@ public class SpiderChild : MonoBehaviour
         if (Vector3.Distance(_player.position, _rb.position) < 3.5f)
         {
             _velocity.x = 0;
-            _rb.velocity = _velocity;
+            _rb.linearVelocity = _velocity;
         }
     }
 
@@ -137,11 +137,11 @@ public class SpiderChild : MonoBehaviour
     {
         _fallTime += Time.deltaTime;
 
-        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unity‚Ì•W€d—Í‚É”C‚¹‚½‚¢‚È‚ç fallSpeed ‚Í•s—v
+        float _fallSpeed = Physics.gravity.y * _fallTime * 2f * 2f; //Unityï¿½Ì•Wï¿½ï¿½ï¿½dï¿½Í‚É”Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ fallSpeed ï¿½Í•sï¿½v
 
-        _velocity.y += _fallSpeed * Time.fixedDeltaTime; // Y‘¬“x‚É™X‚É‰ÁŽZ
-                                                        //Time.fixedDeltaTime •¨—‰‰ŽZ‚ðƒtƒŒ[ƒ€ƒŒ[ƒg‚ÉˆË‘¶‚³‚¹‚È‚¢‚½‚ß•K{
-        if (_velocity.y < -20f)//—Ž‰º‘¬“x‚Ì§ŒÀ
+        _velocity.y += _fallSpeed * Time.fixedDeltaTime; // Yï¿½ï¿½ï¿½xï¿½Éï¿½ï¿½Xï¿½É‰ï¿½ï¿½Z
+                                                        //Time.fixedDeltaTime ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½ï¿½ï¿½tï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÉˆË‘ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ß•Kï¿½{
+        if (_velocity.y < -20f)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½Ìï¿½ï¿½ï¿½
         {
            _velocity.y = -20f;
         }
@@ -174,7 +174,7 @@ public class SpiderChild : MonoBehaviour
         Destroy(gameObject, 0.5f);
     }
 
-    #region ”íƒ_ƒˆ—
+    #region ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public IEnumerator _ReturnNormal(float time)
     {
         yield return new WaitForSeconds(time);
@@ -184,7 +184,7 @@ public class SpiderChild : MonoBehaviour
 
     public void SKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(0.5f));
@@ -193,7 +193,7 @@ public class SpiderChild : MonoBehaviour
 
     public void BKnockBack(int dir, int knockback)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(1.0f));
@@ -202,7 +202,7 @@ public class SpiderChild : MonoBehaviour
 
     public void ElectStun(int dir, int knockback, float electtime)
     {
-        _rb.velocity = Vector3.zero;
+        _rb.linearVelocity = Vector3.zero;
         _rb.AddForce(dir * knockback, knockback * 0.4f, 0f, ForceMode.Impulse);
         _state = EnemyState.Damage;
         StartCoroutine(_ReturnNormal(electtime));
