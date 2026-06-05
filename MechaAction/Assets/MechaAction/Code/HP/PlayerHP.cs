@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerHP : MonoBehaviour ,IDamage
 {
-    [SerializeField] private Player m_player;
+    [SerializeField] private PlayerT m_player;
     //private bool _isDeadArea = false;
 
     private int maxHP = 100;

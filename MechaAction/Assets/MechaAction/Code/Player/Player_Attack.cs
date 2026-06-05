@@ -11,7 +11,7 @@ public class Player_Attack : MonoBehaviour
 
 
     private Animator _anim;
-    [SerializeField] private Player m_player;
+    [SerializeField] private PlayerT m_player;
     private DirectionTarget _dirtarget;
 
     [Header("UI")]
