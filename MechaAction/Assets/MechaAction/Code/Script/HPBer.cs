@@ -5,7 +5,7 @@ public class HPBarUI : MonoBehaviour
 {
     [SerializeField] private Image hpBarImage;   // HP–{‘Ì‚ÌImage
     private GameObject _player;
-    private PlayerHP _playerhp;
+    private PlayerHPT _playerhp;
     private float maxHealth;
     private float currentHealth;
 
@@ -14,7 +14,7 @@ public class HPBarUI : MonoBehaviour
         _player = GameObject.FindWithTag("Player");
         if (_player != null)
         {
-            _playerhp = _player.GetComponent<PlayerHP>();
+            _playerhp = _player.GetComponent<PlayerHPT>();
         }
             //currentHealth = maxHealth;
             

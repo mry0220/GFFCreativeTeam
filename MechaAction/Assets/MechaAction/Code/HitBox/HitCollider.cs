@@ -15,9 +15,6 @@ public class HitCollider : MonoBehaviour
     }
     [SerializeField] private AttackHitBox[] hitBoxes;
 
-    [SerializeField] private EffectDataSO m_overrideEffect;
-    [SerializeField] private AudioDataSO m_overrideAudio;
-
     private Coroutine m_viewCoroutine;
 
     public void AttackCollider(DamageData data,TeamType myteam)
@@ -58,10 +55,7 @@ public class HitCollider : MonoBehaviour
                 DamageResult result = new DamageResult
                 {
                     hitPoint = hitPoint,
-                    hitNormal = hitNormal,
-
-                    overrideEffectData = m_overrideEffect,
-                    overrideAudioData = m_overrideAudio
+                    hitNormal = hitNormal
                 };
 
                 damageable.TakeDamage(data,result);

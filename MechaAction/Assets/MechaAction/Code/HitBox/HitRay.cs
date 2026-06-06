@@ -19,8 +19,6 @@ public class HitRay : MonoBehaviour
 
     [SerializeField] private int m_count;//ä—í êlêî
     [SerializeField] private LayerMask m_layer;//ignoreLayer
-    [SerializeField] private EffectDataSO m_overrideEffect;
-    [SerializeField] private AudioDataSO m_overrideAudio;
 
     private Coroutine m_viewCoroutine;
 
@@ -65,10 +63,7 @@ public class HitRay : MonoBehaviour
                 DamageResult result = new DamageResult
                 {
                     hitPoint = hitPoint,
-                    hitNormal = hitNormal,
-
-                    overrideEffectData = m_overrideEffect,
-                    overrideAudioData = m_overrideAudio
+                    hitNormal = hitNormal
                 };
 
                 damageable.TakeDamage(data, result);
@@ -125,9 +120,7 @@ public class HitRay : MonoBehaviour
                 DamageResult result = new DamageResult
                 {
                     hitPoint = hitPoint,
-                    hitNormal = hitNormal,
-                    overrideEffectData = m_overrideEffect,
-                    overrideAudioData = m_overrideAudio
+                    hitNormal = hitNormal
                 };
 
                 damageable.TakeDamage(data, result);
@@ -188,9 +181,7 @@ public class HitRay : MonoBehaviour
                 DamageResult result = new DamageResult
                 {
                     hitPoint = hitPoint,
-                    hitNormal = hitNormal,
-                    overrideEffectData = m_overrideEffect,
-                    overrideAudioData = m_overrideAudio
+                    hitNormal = hitNormal
                 };
 
                 damageable.TakeDamage(data, result);

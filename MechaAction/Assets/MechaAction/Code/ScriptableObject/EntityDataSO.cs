@@ -3,8 +3,11 @@ using UnityEngine;
 public enum StatusType
 {
     HP,
+    Shield,
     Speed,
-    Jump
+    DashSpeed,
+    Jump,
+    Attack,
 }
 
 [CreateAssetMenu(fileName = "EntityData", menuName = "ScriptableObjects/Datas/EntityData")]

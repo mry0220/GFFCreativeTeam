@@ -11,9 +11,6 @@ public class EnemyBullet : MonoBehaviour
 
     private Vector3 m_attackDir;
 
-    [SerializeField] private EffectDataSO m_overrideEffectData;
-    [SerializeField] private AudioDataSO m_overrideAudioData;
-
     private float _speed = 20f;
     Vector3 velocity;
 
@@ -75,9 +72,6 @@ public class EnemyBullet : MonoBehaviour
             hitPoint = transform.position,
             hitNormal = transform.position - 
             (other.transform.position).normalized,
-
-            overrideEffectData = m_overrideEffectData,
-            overrideAudioData = m_overrideAudioData
         };
 
         damageable.TakeDamage(m_data, result);

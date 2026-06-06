@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerHP : MonoBehaviour ,IDamage
+public class PlayerHPT : MonoBehaviour ,IDamage
 {
     [SerializeField] private PlayerT m_player;
     //private bool _isDeadArea = false;
@@ -95,23 +95,23 @@ public class PlayerHP : MonoBehaviour ,IDamage
 
         var defaultEffect = data.isCritical ? m_criticalEffectData : m_normalEffectData;
 
-        var effect = result.overrideEffectData != null ? result.overrideEffectData : defaultEffect;
-        var audio = result.overrideAudioData != null ? result.overrideAudioData : m_audio;
+        //var effect = result.overrideEffectData != null ? result.overrideEffectData : defaultEffect;
+        //var audio = result.overrideAudioData != null ? result.overrideAudioData : m_audio;
 
         switch(data.type)
         {
-            case DamageType.Normal:
+            case AttackType.Normal:
                 ApplyDamage(data.damage, data.isCritical, data.criticalRate);
                 ApplyKnockBack(data.knockback,data.attackDir);
                 break;
-            case DamageType.Electric:
+            case AttackType.Electric:
                 ApplyDamage(data.damage, data.isCritical, data.criticalRate);
                 ApplyElect(data.duration);
                 break;
-            case DamageType.Ban:
+            case AttackType.Ban:
                 ApplyBan(data.duration);
                 break;
-            case DamageType.Heal:
+            case AttackType.Heal:
                 ApplyHeal(data.damage);
                 break;
         }
@@ -119,8 +119,8 @@ public class PlayerHP : MonoBehaviour ,IDamage
         m_damageEventSO.Raise(new ApplyDamageEvent
         {
             hitPoint = transform.position,
-            effectData = effect,
-            audioData = audio,
+            //effectData = effect,
+            //audioData = audio,
         });
     }
 

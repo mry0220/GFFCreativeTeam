@@ -54,7 +54,7 @@ public class Player_Attack : MonoBehaviour
     private float m_criticalRate;
     private float m_criticalChance;
     private int m_knockback;
-    private DamageType m_type;
+    private AttackType m_type;
     private float m_duration;
 
     //private float _SKILL = 0f;

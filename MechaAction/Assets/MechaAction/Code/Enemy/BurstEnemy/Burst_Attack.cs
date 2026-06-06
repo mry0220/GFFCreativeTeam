@@ -8,7 +8,7 @@ public class Burst_Attack : MonoBehaviour
     private float m_criticalRate;
     private float m_criticalChance;
     private int m_knockback;
-    private DamageType m_type;
+    private AttackType m_type;
     private float m_duration;
 
     [SerializeField] private BurstEnemy m_enemy;
