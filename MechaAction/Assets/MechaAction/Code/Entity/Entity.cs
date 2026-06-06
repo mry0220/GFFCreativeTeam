@@ -7,6 +7,7 @@ public enum TeamType
     Neutral
 }
 
+[RequireComponent(typeof(Rigidbody))]
 public class Entity : MonoBehaviour
 {
     public enum EntityState
@@ -44,6 +45,8 @@ public class Entity : MonoBehaviour
     protected bool m_IsDashing;
 
     protected bool m_IsGrounded;
+
+    protected bool m_IsJumped;
     //--------------------------
 
     [Header("Check IsGrounded value")]
@@ -63,12 +66,15 @@ public class Entity : MonoBehaviour
     {
         m_rb = GetComponent<Rigidbody>();
         m_anim = GetComponentInChildren<Animator>();
-        m_classHP = GetComponent<EntityHP>();
+        //m_classHP = GetComponent<EntityHP>();
     }
 
     protected virtual void Start()
     {
-        m_classHP.OnInitialized(m_entityData);
+        //m_classHP.OnInitialized(m_entityData);
+
+        m_speed = m_entityData.Speed;
+        m_jump = m_entityData.Jump;
     }
 
     protected virtual void Update()
@@ -131,11 +137,6 @@ public class Entity : MonoBehaviour
 
     private void OnGravity()
     {
-        if(m_IsGrounded && m_velocity.y < 0f)
-        {
-            m_velocity.y = 0f;
-        }
-
         if (m_IsGrounded) return;
 
         m_fallTime += Time.deltaTime;
@@ -144,12 +145,17 @@ public class Entity : MonoBehaviour
 
         m_velocity.y += fallSpeed * Time.fixedDeltaTime;
 
-        m_velocity.y = Mathf.Min(m_velocity.y, -20f); //limit velocity.y speed
+        m_velocity.y = Mathf.Max(m_velocity.y, -20f); //limit velocity.y speed
     }
 
     protected virtual void OnJump()
     {
+        if (!m_IsGrounded) return;
+
+        m_fallTime = 0f;
         m_rb.AddForce(Vector3.up * m_jump, ForceMode.Impulse);
+
+
     }
 
     public void OnTakeDamage()
