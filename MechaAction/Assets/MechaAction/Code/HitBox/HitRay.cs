@@ -10,10 +10,10 @@ public class HitRay : MonoBehaviour
     [System.Serializable]
     public class AttackHitBox
     {
-        public Transform m_Pos;
+        public Transform m_startPos;
+        public Transform m_endPos;
         public float m_radius;
 
-        public float m_distance;
     }
     [SerializeField] private AttackHitBox[] hitBoxes;
 
@@ -24,38 +24,35 @@ public class HitRay : MonoBehaviour
 
     public void AttackCastAll(DamageData data, TeamType myteam)
     {
-        HashSet<IDamage> hitSet = new HashSet<IDamage>();
+        HashSet<Entity> hitSet = new();
 
         foreach (var hitBox in hitBoxes)
         {
-            if (hitBox.m_Pos == null) continue;
+            Vector3 start = hitBox.m_startPos.position;
+            Vector3 end = hitBox.m_endPos.position;
+
+            Vector3 dir = (end - start).normalized;
+
+            float distance = Vector3.Distance(start, end);
 
             RaycastHit[] hits = Physics.SphereCastAll(
-                hitBox.m_Pos.position,
+                hitBox.m_startPos.position,
                 hitBox.m_radius,
-                data.attackDir,
-                hitBox.m_distance
+                dir,
+                distance
             );
 
             foreach (var hit in hits)
             {
                 var col = hit.collider;
-                var damageable = col.GetComponentInParent<IDamage>();
-                if (damageable == null) continue;
-                if (hitSet.Contains(damageable)) continue;
 
-                var team = col.GetComponentInParent<ITeam>();
-                if (team != null)
-                {
-                    // 同じチームなら無視
-                    if (team.Team == myteam) continue;
-                }
-                else
-                {
-                    continue;
-                }
+                var entity = col.GetComponentInParent<Entity>();
+                if (entity == null) continue;
+                if (hitSet.Contains(entity)) continue;
 
-                hitSet.Add(damageable);
+                if(entity.Team == myteam) continue;
+
+                hitSet.Add(entity);
 
                 Vector3 hitPoint = hit.point;
                 Vector3 hitNormal = hit.normal;
@@ -66,7 +63,7 @@ public class HitRay : MonoBehaviour
                     hitNormal = hitNormal
                 };
 
-                damageable.TakeDamage(data, result);
+                entity.OnTakeDamage(data, result);
             }
         }
 
@@ -82,11 +79,18 @@ public class HitRay : MonoBehaviour
     {
         foreach (var hitBox in hitBoxes)
         {
+            Vector3 start = hitBox.m_startPos.position;
+            Vector3 end = hitBox.m_endPos.position;
+
+            Vector3 dir = (end - start).normalized;
+
+            float distance = Vector3.Distance(start, end);
+
             RaycastHit[] hits = Physics.SphereCastAll(
-                hitBox.m_Pos.position,
+                hitBox.m_startPos.position,
                 hitBox.m_radius,
-                data.attackDir,
-                hitBox.m_distance
+                dir,
+                distance
             );
 
             System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
@@ -100,19 +104,10 @@ public class HitRay : MonoBehaviour
                     break;
                 }
 
-                var damageable = col.GetComponentInParent<IDamage>();
-                if (damageable == null) continue;
+                var entity = col.GetComponentInParent<Entity>();
+                if (entity == null) continue;
 
-                var team = col.GetComponentInParent<ITeam>();
-                if (team != null)
-                {
-                    // 同じチームなら無視
-                    if (team.Team == myteam) continue;
-                }
-                else
-                {
-                    continue;
-                }
+                if(entity.Team == myteam) continue;
 
                 Vector3 hitPoint = hit.point;
                 Vector3 hitNormal = hit.normal;
@@ -123,7 +118,7 @@ public class HitRay : MonoBehaviour
                     hitNormal = hitNormal
                 };
 
-                damageable.TakeDamage(data, result);
+                entity.OnTakeDamage(data, result);
 
                 break;
             }
@@ -141,11 +136,18 @@ public class HitRay : MonoBehaviour
     {
         foreach (var hitBox in hitBoxes)
         {
+            Vector3 start = hitBox.m_startPos.position;
+            Vector3 end = hitBox.m_endPos.position;
+
+            Vector3 dir = (end - start).normalized;
+
+            float distance = Vector3.Distance(start, end);
+
             RaycastHit[] hits = Physics.SphereCastAll(
-                hitBox.m_Pos.position,
+                hitBox.m_startPos.position,
                 hitBox.m_radius,
-                data.attackDir,
-                hitBox.m_distance
+                dir,
+                distance
             );
 
             System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
@@ -161,19 +163,10 @@ public class HitRay : MonoBehaviour
                     break;
                 }
 
-                var damageable = col.GetComponentInParent<IDamage>();
-                if (damageable == null) continue;
-
-                var team = col.GetComponentInParent<ITeam>();
-                if (team != null)
-                {
-                    // 同じチームなら無視
-                    if (team.Team == myteam) continue;
-                }
-                else
-                {
-                    continue;
-                }
+                var entity = col.GetComponentInParent<Entity>();
+                if (entity == null) continue;
+             
+                if(entity.Team == myteam) continue;
 
                 Vector3 hitPoint = hit.point;
                 Vector3 hitNormal = hit.normal;
@@ -184,7 +177,7 @@ public class HitRay : MonoBehaviour
                     hitNormal = hitNormal
                 };
 
-                damageable.TakeDamage(data, result);
+                entity.OnTakeDamage(data, result);
 
                 hitCount++;
 
@@ -220,17 +213,14 @@ public class HitRay : MonoBehaviour
 
         foreach (var hitBox in hitBoxes)
         {
-            if (hitBox.m_Pos == null) continue;
-            Vector3 start = hitBox.m_Pos.position;
-            Vector3 end = start + hitBox.m_Pos.forward * hitBox.m_distance;
 
-            // 開始地点
+            Vector3 start = hitBox.m_startPos.position;
+            Vector3 end = hitBox.m_endPos.position;
+
             Gizmos.DrawWireSphere(start, hitBox.m_radius);
 
-            // 終了地点
             Gizmos.DrawWireSphere(end, hitBox.m_radius);
 
-            // 線
             Gizmos.DrawLine(start, end);
         }
     }

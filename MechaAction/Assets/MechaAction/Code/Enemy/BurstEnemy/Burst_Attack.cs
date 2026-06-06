@@ -49,20 +49,20 @@ public class Burst_Attack : MonoBehaviour
 
         if (iscritical) Debug.Log("クリティカル!");
 
-        DamageData data = new DamageData
-        {
-            damage = m_damage,
-            isCritical = iscritical,
-            criticalRate = m_criticalRate,
-            knockback = m_knockback,
-            type = m_type,
-            duration = m_duration,
-            attackDir = m_enemy.Forward
-        };
+        //DamageData data = new DamageData
+        //{
+        //    damage = m_damage,
+        //    isCritical = iscritical,
+        //    criticalRate = m_criticalRate,
+        //    knockback = m_knockback,
+        //    type = m_type,
+        //    duration = m_duration,
+        //    attackDir = m_enemy.Forward
+        //};
 
         if (m_shootCoroutine != null) return;
 
-        m_shootCoroutine = StartCoroutine(Shoot(data));
+        //m_shootCoroutine = StartCoroutine(Shoot(data));
     }
 
     public IEnumerator Shoot(DamageData data)

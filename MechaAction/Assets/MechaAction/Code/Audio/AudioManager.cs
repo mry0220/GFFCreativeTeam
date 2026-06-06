@@ -40,11 +40,11 @@ public class AudioManager : MonoBehaviour
         //}
     }
 
-    public void AudioDamagePlay(ApplyDamageEvent d_event)
+    public void AudioDamagePlay(EffectEvent d_event)
     {
-        if(d_event.audioData == null) return;
+        //if(d_event.audioData == null) return;
 
-        m_SE.PlayOneShot(d_event.audioData.Clip);
+        //m_SE.PlayOneShot(d_event.audioData.Clip);
     }
 
     public void AudioBGMPlay(AudioDataSO data)

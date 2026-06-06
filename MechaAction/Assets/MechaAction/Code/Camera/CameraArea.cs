@@ -37,16 +37,16 @@ public class CameraArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var team = other.GetComponentInParent<ITeam>();
+        //var team = other.GetComponentInParent<ITeam>();
 
-        if (team == null) return;
+        //if (team == null) return;
 
-        if (team.Team != TeamType.Player) return;
+        //if (team.Team != TeamType.Player) return;
 
-        if(m_cameraManager != null)
-        {
-            m_cameraManager.SetArea(this);
-        }
+        //if(m_cameraManager != null)
+        //{
+        //    m_cameraManager.SetArea(this);
+        //}
     }
 
     private void OnDrawGizmos()

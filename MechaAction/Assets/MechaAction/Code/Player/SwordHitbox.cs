@@ -118,24 +118,24 @@ public class SwordHitbox : MonoBehaviour
 
     public void AttackCollider(DamageData data,Transform Pos)
     {
-        Vector3 attackPos = Pos.position;
+        //Vector3 attackPos = Pos.position;
 
-        Collider[] hits = Physics.OverlapSphere(attackPos, radius);
+        //Collider[] hits = Physics.OverlapSphere(attackPos, radius);
 
-        foreach (var col in hits)
-        {
-            var damageable = col.GetComponent<IDamage>();
-            if (damageable == null) continue;
+        //foreach (var col in hits)
+        //{
+        //    var damageable = col.GetComponent<IDamage>();
+        //    if (damageable == null) continue;
 
-            Vector3 hitPoint = col.ClosestPoint(attackPos);
-            Vector3 hitNormal = (hitPoint - attackPos).normalized;
+        //    Vector3 hitPoint = col.ClosestPoint(attackPos);
+        //    Vector3 hitNormal = (hitPoint - attackPos).normalized;
 
-            DamageResult result = new DamageResult
-            {
-                hitPoint = hitPoint,
-                hitNormal = hitNormal
-            };
-        }
+        //    DamageResult result = new DamageResult
+        //    {
+        //        hitPoint = hitPoint,
+        //        hitNormal = hitNormal
+        //    };
+        //}
     }
 
     //問題　連続した攻撃の際、アニメーションのシグナルか何かでClear();を呼ぶ必要あり

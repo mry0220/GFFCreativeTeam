@@ -19,7 +19,7 @@ public class HitCollider : MonoBehaviour
 
     public void AttackCollider(DamageData data,TeamType myteam)
     {
-        HashSet<IDamage> hitSet = new HashSet<IDamage>();
+        HashSet<Entity> hitSet = new HashSet<Entity>();
 
         foreach (var hitBox in hitBoxes)
         {
@@ -32,22 +32,13 @@ public class HitCollider : MonoBehaviour
 
             foreach (var col in hits)
             {
-                var damageable = col.GetComponentInParent<IDamage>();
-                if (damageable == null) continue;
-                if(hitSet.Contains(damageable)) continue;
+                var entity = col.GetComponentInParent<Entity>();
+                if (entity == null) continue;
+                if(hitSet.Contains(entity)) continue;
 
-                var team = col.GetComponentInParent<ITeam>();
-                if (team != null)
-                {
-                    // ìØÇ∂É`Å[ÉÄÇ»ÇÁñ≥éã
-                    if (team.Team == myteam) continue;
-                }
-                else
-                {
-                    continue;
-                }
+                if(entity.Team == myteam) continue;
 
-                hitSet.Add(damageable);
+                hitSet.Add(entity);
 
                 Vector3 hitPoint = col.ClosestPoint(hitBox.m_Pos.position);
                 Vector3 hitNormal = (hitPoint - hitBox.m_Pos.position).normalized;
@@ -58,7 +49,7 @@ public class HitCollider : MonoBehaviour
                     hitNormal = hitNormal
                 };
 
-                damageable.TakeDamage(data,result);
+                entity.OnTakeDamage(data,result);
             }
         }
 
@@ -89,7 +80,6 @@ public class HitCollider : MonoBehaviour
 
         foreach (var hitBox in hitBoxes)
         {
-            if (hitBox.m_Pos == null) continue;
             Gizmos.DrawWireSphere(
                 hitBox.m_Pos.position,
                 hitBox.m_radius);

@@ -24,7 +24,7 @@ public class EnemyBullet : MonoBehaviour
         m_data = data;
         m_team = team;
 
-        m_attackDir = data.attackDir;
+        //m_attackDir = data.attackDir;
     }
 
     private void Start()
@@ -53,29 +53,29 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var damageable = other.GetComponentInParent<IDamage>();
-        if (damageable == null) return;
+        //var damageable = other.GetComponentInParent<IDamage>();
+        //if (damageable == null) return;
 
-        var team = other.GetComponentInParent<ITeam>();
-        if (team != null)
-        {
-            // �����`�[���Ȃ疳��
-            if (team.Team == m_team) return;
-        }
-        else
-        {
-            return;
-        }
+        //var team = other.GetComponentInParent<ITeam>();
+        //if (team != null)
+        //{
+        //    // �����`�[���Ȃ疳��
+        //    if (team.Team == m_team) return;
+        //}
+        //else
+        //{
+        //    return;
+        //}
 
-        DamageResult result = new DamageResult
-        {
-            hitPoint = transform.position,
-            hitNormal = transform.position - 
-            (other.transform.position).normalized,
-        };
+        //DamageResult result = new DamageResult
+        //{
+        //    hitPoint = transform.position,
+        //    hitNormal = transform.position - 
+        //    (other.transform.position).normalized,
+        //};
 
-        damageable.TakeDamage(m_data, result);
+        //damageable.TakeDamage(m_data, result);
 
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }

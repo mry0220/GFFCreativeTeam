@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerHPT : MonoBehaviour ,IDamage
+public class PlayerHPT : MonoBehaviour
 {
     [SerializeField] private PlayerT m_player;
     //private bool _isDeadArea = false;
@@ -93,30 +93,30 @@ public class PlayerHPT : MonoBehaviour ,IDamage
         //if (m_player.State == PlayerState.Invincible) return;
         //m_player.ChangeState(PlayerState )
 
-        var defaultEffect = data.isCritical ? m_criticalEffectData : m_normalEffectData;
+        //var defaultEffect = data.isCritical ? m_criticalEffectData : m_normalEffectData;
 
         //var effect = result.overrideEffectData != null ? result.overrideEffectData : defaultEffect;
         //var audio = result.overrideAudioData != null ? result.overrideAudioData : m_audio;
 
-        switch(data.type)
-        {
-            case AttackType.Normal:
-                ApplyDamage(data.damage, data.isCritical, data.criticalRate);
-                ApplyKnockBack(data.knockback,data.attackDir);
-                break;
-            case AttackType.Electric:
-                ApplyDamage(data.damage, data.isCritical, data.criticalRate);
-                ApplyElect(data.duration);
-                break;
-            case AttackType.Ban:
-                ApplyBan(data.duration);
-                break;
-            case AttackType.Heal:
-                ApplyHeal(data.damage);
-                break;
-        }
+        //switch(data.type)
+        //{
+        //    case AttackType.Normal:
+        //        ApplyDamage(data.damage, data.isCritical, data.criticalRate);
+        //        ApplyKnockBack(data.knockback,data.attackDir);
+        //        break;
+        //    case AttackType.Electric:
+        //        ApplyDamage(data.damage, data.isCritical, data.criticalRate);
+        //        ApplyElect(data.duration);
+        //        break;
+        //    case AttackType.Ban:
+        //        ApplyBan(data.duration);
+        //        break;
+        //    case AttackType.Heal:
+        //        ApplyHeal(data.damage);
+        //        break;
+        //}
 
-        m_damageEventSO.Raise(new ApplyDamageEvent
+        m_damageEventSO.Raise(new EffectEvent
         {
             hitPoint = transform.position,
             //effectData = effect,

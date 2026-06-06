@@ -158,7 +158,7 @@ public class Entity : MonoBehaviour
 
     }
 
-    public void OnTakeDamage()
+    public void OnTakeDamage(DamageData data, DamageResult result)
     {
         //hp
     }

@@ -2,14 +2,14 @@ using Critical;
 using System;
 using TMPro;
 using UnityEngine;
-public class EnemyHP : MonoBehaviour,IDamage
+public class EnemyHP : MonoBehaviour
 {
     [SerializeField] private int maxHP; // HP
     [SerializeField] private float m_skillgauge;
     [SerializeField] private float score;
     [SerializeField] private GameObject _recover;
     //[SerializeField] DamageEffectSO _damageEffectSO;
-    private IEnemy _ienemy;
+    //private IEnemy _ienemy;
 
     private int _clear;
     private Transform _player;
@@ -36,7 +36,7 @@ public class EnemyHP : MonoBehaviour,IDamage
     private void Awake()
     {
         _player = GameObject.FindWithTag("Player").transform;
-        _ienemy = GetComponent<IEnemy>();
+        //_ienemy = GetComponent<IEnemy>();
         _canvas = GameObject.Find("Canvas");
     }
 
@@ -73,30 +73,30 @@ public class EnemyHP : MonoBehaviour,IDamage
         //if (m_player.State == PlayerState.Invincible) return;
         //m_player.ChangeState(PlayerState )
 
-        var defaultEffect = data.isCritical ? m_criticalEffectData : m_normalEffectData;
+        //var defaultEffect = data.isCritical ? m_criticalEffectData : m_normalEffectData;
 
         //var effect = result.overrideEffectData != null ? result.overrideEffectData : defaultEffect;
         //var audio = result.overrideAudioData != null ? result.overrideAudioData : m_audio;
 
-        switch (data.type)
-        {
-            case AttackType.Normal:
-                ApplyDamage(data.damage, data.isCritical, data.criticalRate);
-                ApplyKnockBack(data.knockback, data.attackDir);
-                break;
-            case AttackType.Electric:
-                ApplyDamage(data.damage, data.isCritical, data.criticalRate);
-                ApplyElect(data.duration);
-                break;
-            case AttackType.Ban:
-                ApplyBan(data.duration);
-                break;
-            case AttackType.Heal:
-                ApplyHeal(data.damage);
-                break;
-        }
+        //switch (data.type)
+        //{
+        //    case AttackType.Normal:
+        //        ApplyDamage(data.damage, data.isCritical, data.criticalRate);
+        //        ApplyKnockBack(data.knockback, data.attackDir);
+        //        break;
+        //    case AttackType.Electric:
+        //        ApplyDamage(data.damage, data.isCritical, data.criticalRate);
+        //        ApplyElect(data.duration);
+        //        break;
+        //    case AttackType.Ban:
+        //        ApplyBan(data.duration);
+        //        break;
+        //    case AttackType.Heal:
+        //        ApplyHeal(data.damage);
+        //        break;
+        //}
 
-        m_damageEventSO.Raise(new ApplyDamageEvent
+        m_damageEventSO.Raise(new EffectEvent
         {
             hitPoint = transform.position,
             //effectData = effect,

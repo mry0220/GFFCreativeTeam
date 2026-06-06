@@ -18,7 +18,7 @@ public class EffectManager : MonoBehaviour
         m_DamageEventSO.Unregister(InstantiateEffect);
     }
 
-    public void InstantiateEffect(ApplyDamageEvent d_event)
+    public void InstantiateEffect(EffectEvent d_event)
     {
         if (d_event.effectData == null) return;
 

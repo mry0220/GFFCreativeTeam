@@ -12,7 +12,7 @@ public enum PlayerState
     Respawn     
 }
 
-public class PlayerT : MonoBehaviour, ITeam
+public class PlayerT : MonoBehaviour
 {
     private PlayerState m_state;
     public PlayerState State { get => m_state; }

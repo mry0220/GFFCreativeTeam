@@ -336,18 +336,18 @@ public class Player_Attack : MonoBehaviour
 
         if (iscritical) Debug.Log("クリティカル!");
 
-        DamageData data = new DamageData
-        {
-            damage = m_damage,
-            isCritical = iscritical,
-            criticalRate = m_criticalRate,
-            knockback = m_knockback,
-            type = m_type,
-            duration = m_duration,
-            attackDir = m_player.Forward
-        };
+        //DamageData data = new DamageData
+        //{
+        //    damage = m_damage,
+        //    isCritical = iscritical,
+        //    criticalRate = m_criticalRate,
+        //    knockback = m_knockback,
+        //    type = m_type,
+        //    duration = m_duration,
+        //    attackDir = m_player.Forward
+        //};
 
-        m_DAttack.AttackCollider(data, m_player.Team);
+        //m_DAttack.AttackCollider(data, m_player.Team);
         //effect.Play
     }
 
@@ -364,16 +364,16 @@ public class Player_Attack : MonoBehaviour
 
         if (iscritical) Debug.Log("クリティカル!");
 
-        DamageData data = new DamageData
-        {
-            damage = m_damage,
-            isCritical = iscritical,
-            criticalRate = m_criticalRate,
-            knockback = m_knockback,
-            type = m_type,
-            duration = m_duration,
-            attackDir = m_player.Forward
-        };
+        //DamageData data = new DamageData
+        //{
+        //    damage = m_damage,
+        //    isCritical = iscritical,
+        //    criticalRate = m_criticalRate,
+        //    knockback = m_knockback,
+        //    type = m_type,
+        //    duration = m_duration,
+        //    attackDir = m_player.Forward
+        //};
 
         //攻撃オブジェクトに関数を渡す
         //effect.Play(プレイヤーについたエフェクトオブジェクトを動かす
@@ -393,18 +393,18 @@ public class Player_Attack : MonoBehaviour
 
         if (iscritical) Debug.Log("クリティカル!");
 
-        DamageData data = new DamageData
-        {
-            damage = m_damage,
-            isCritical = iscritical,
-            criticalRate = m_criticalRate,
-            knockback = m_knockback,
-            type = m_type,
-            duration = m_duration,
-            attackDir = m_player.Forward
-        };
+        //DamageData data = new DamageData
+        //{
+        //    damage = m_damage,
+        //    isCritical = iscritical,
+        //    criticalRate = m_criticalRate,
+        //    knockback = m_knockback,
+        //    type = m_type,
+        //    duration = m_duration,
+        //    attackDir = m_player.Forward
+        //};
 
-        m_GAttack.AttackCollider(data, m_player.Team);
+        //m_GAttack.AttackCollider(data, m_player.Team);
         //effect.Play
     }//Animation Event
 
@@ -423,18 +423,18 @@ public class Player_Attack : MonoBehaviour
 
         if (iscritical) Debug.Log("クリティカル!");
 
-        DamageData data = new DamageData
-        {
-            damage = m_damage,
-            isCritical = iscritical,
-            criticalRate = m_criticalRate,
-            knockback = m_knockback,
-            type = m_type,
-            duration = m_duration,
-            attackDir = m_player.Forward
-        };
+        //DamageData data = new DamageData
+        //{
+        //    damage = m_damage,
+        //    isCritical = iscritical,
+        //    criticalRate = m_criticalRate,
+        //    knockback = m_knockback,
+        //    type = m_type,
+        //    duration = m_duration,
+        //    attackDir = m_player.Forward
+        //};
 
-        m_DGun.AttackCast(data, m_player.Team);
+        //m_DGun.AttackCast(data, m_player.Team);
         //effect.Play
     }
 
@@ -452,18 +452,18 @@ public class Player_Attack : MonoBehaviour
 
         if (iscritical) Debug.Log("クリティカル!");
 
-        DamageData data = new DamageData
-        {
-            damage = m_damage,
-            isCritical = iscritical,
-            criticalRate = m_criticalRate,
-            knockback = m_knockback,
-            type = m_type,
-            duration = m_duration,
-            attackDir = m_player.Forward
-        };
+        //DamageData data = new DamageData
+        //{
+        //    damage = m_damage,
+        //    isCritical = iscritical,
+        //    criticalRate = m_criticalRate,
+        //    knockback = m_knockback,
+        //    type = m_type,
+        //    duration = m_duration,
+        //    attackDir = m_player.Forward
+        //};
 
-        m_SGun.AttackCastPenetration(data, m_player.Team);
+        //m_SGun.AttackCastPenetration(data, m_player.Team);
         //effect.Play
     }
 
@@ -481,18 +481,18 @@ public class Player_Attack : MonoBehaviour
 
         if (iscritical) Debug.Log("クリティカル!");
 
-        DamageData data = new DamageData
-        {
-            damage = m_damage,
-            isCritical = iscritical,
-            criticalRate = m_criticalRate,
-            knockback = m_knockback,
-            type = m_type,
-            duration = m_duration,
-            attackDir = m_player.Forward
-        };
+        //DamageData data = new DamageData
+        //{
+        //    damage = m_damage,
+        //    isCritical = iscritical,
+        //    criticalRate = m_criticalRate,
+        //    knockback = m_knockback,
+        //    type = m_type,
+        //    duration = m_duration,
+        //    attackDir = m_player.Forward
+        //};
 
-        m_RGun.AttackCastPenetration(data, m_player.Team);
+        //m_RGun.AttackCastPenetration(data, m_player.Team);
         //effect.Play
     }
 

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BurstEnemy : MonoBehaviour, IEnemy, ITeam
+public class BurstEnemy : MonoBehaviour
 {
     private enum EnemyState { 
         Look,          //�T��
