@@ -67,7 +67,7 @@ public class CommandManager : MonoBehaviour
     private InputAction _strongPunchAction;
     private InputAction _strongKickAction;
 
-    private Player_Attack _attack;
+    private Player_AttackT _attack;
 
     private void Awake()
     {
@@ -84,7 +84,7 @@ public class CommandManager : MonoBehaviour
         _strongPunchAction.performed += ctx => AddInput("StrongPunch");
         _strongKickAction.performed += ctx => AddInput("StrongKick");
 
-        _attack = GetComponent<Player_Attack>();
+        _attack = GetComponent<Player_AttackT>();
      //   QualitySettings.vSyncCount = 0;
      //   Application.targetFrameRate = 60;
     }

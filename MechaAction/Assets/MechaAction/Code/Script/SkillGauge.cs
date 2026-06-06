@@ -7,7 +7,7 @@ public class SkillGauge : MonoBehaviour
 {
     [SerializeField] private Image hpBarImage;   // HP–{‘Ì‚ÌImage
     private GameObject _player;
-    private Player_Attack _playerattack;
+    private Player_AttackT _playerattack;
     private float _skillmax;
     private float _currentskill;
 
@@ -16,7 +16,7 @@ public class SkillGauge : MonoBehaviour
         _player = GameObject.FindWithTag("Player");
         if (_player != null)
         {
-            _playerattack = _player.GetComponent<Player_Attack>();
+            _playerattack = _player.GetComponent<Player_AttackT>();
         }
         //currentHealth = maxHealth;
 

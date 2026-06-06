@@ -10,6 +10,7 @@ public class InputClass : IInputProvide
     private Vector2 m_move;
     private bool m_IsJumped;
 
+
     public void Enable()
     {
         m_action = new CommandInput();

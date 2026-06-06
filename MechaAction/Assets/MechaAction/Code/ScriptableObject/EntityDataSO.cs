@@ -10,7 +10,7 @@ public enum StatusType
     Attack,
 }
 
-[CreateAssetMenu(fileName = "EntityData", menuName = "ScriptableObjects/Datas/EntityData")]
+[CreateAssetMenu(fileName = "EntityData", menuName = "ScriptableObjects/Data/EntityData")]
 public class EntityDataSO : ScriptableObject
 {
     [SerializeField] private int m_maxHP;

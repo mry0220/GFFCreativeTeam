@@ -3,6 +3,9 @@ using UnityEngine.InputSystem;
 
 public class Player : Entity
 {
+    //component-----------------------
+    private PlayerAttack m_attack;
+    //--------------------------------
 
     // player dir forward 
     private int m_frontDir; // 1 or -1
@@ -18,6 +21,8 @@ public class Player : Entity
     protected override void Awake()
     {
         base.Awake();
+
+        m_attack = GetComponent<PlayerAttack>();
 
         m_input = new InputClass();
 

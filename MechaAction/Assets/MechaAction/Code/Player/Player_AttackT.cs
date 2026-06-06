@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Attack : MonoBehaviour
+public class Player_AttackT : MonoBehaviour
 {
     [SerializeField] private GameObject m_swordObj;
     [SerializeField] private GameObject m_handGunObj;
