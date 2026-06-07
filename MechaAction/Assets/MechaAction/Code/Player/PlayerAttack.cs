@@ -68,6 +68,9 @@ public class PlayerAttack : MonoBehaviour
             case PlayerAttackType.Slash:
                 m_slashCollider.AttackCollider(data, m_entity.Team, m_entity.Forward);
                 break;
+            case PlayerAttackType.GroundAttack:
+
+                break;
         }
     }
 }

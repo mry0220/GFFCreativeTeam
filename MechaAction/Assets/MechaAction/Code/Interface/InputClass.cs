@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.EventSystems.StandaloneInputModule;
 
 public class InputClass : IInputProvide
 {
@@ -9,7 +8,7 @@ public class InputClass : IInputProvide
 
     private Vector2 m_move;
     private bool m_IsJumped;
-
+    private PlayerAttackMode m_attackMode = PlayerAttackMode.Sword;
 
     public void Enable()
     {
@@ -19,6 +18,7 @@ public class InputClass : IInputProvide
         m_action.Player.Move.canceled += InputMove;
 
         m_action.Player.Jump.performed += InputJump;
+        m_action.Player.ModeChange.performed += InputAttackModeChange;
 
         m_action.Enable();
     }
@@ -38,6 +38,19 @@ public class InputClass : IInputProvide
         m_IsJumped = true;
     }
 
+    private void InputAttackModeChange(InputAction.CallbackContext context)
+    {
+        switch(m_attackMode)
+        {
+            case PlayerAttackMode.Sword:
+                m_attackMode = PlayerAttackMode.Gun;
+                break;
+            case PlayerAttackMode.Gun:
+                m_attackMode = PlayerAttackMode.Sword;
+                break;
+        }
+    }
+
     public Vector2 Move
     {
         get
@@ -53,6 +66,14 @@ public class InputClass : IInputProvide
             m_IsJumped = false;
 
             return result;
+        }
+    }
+
+    public PlayerAttackMode AttackMode
+    {
+        get
+        {
+            return m_attackMode;
         }
     }
 }

@@ -172,6 +172,15 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ModeChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""4434aee7-d534-4f7f-94d8-8f48ad2eecf7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -317,6 +326,17 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e76a033b-8b3a-4239-9237-68b0d4069d5a"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ModeChange"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -334,6 +354,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Switch = m_Player.FindAction("Switch", throwIfNotFound: true);
+        m_Player_ModeChange = m_Player.FindAction("ModeChange", throwIfNotFound: true);
     }
 
     ~@CommandInput()
@@ -423,6 +444,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Switch;
+    private readonly InputAction m_Player_ModeChange;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -470,6 +492,10 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Switch".
         /// </summary>
         public InputAction @Switch => m_Wrapper.m_Player_Switch;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ModeChange".
+        /// </summary>
+        public InputAction @ModeChange => m_Wrapper.m_Player_ModeChange;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -523,6 +549,9 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
             @Switch.started += instance.OnSwitch;
             @Switch.performed += instance.OnSwitch;
             @Switch.canceled += instance.OnSwitch;
+            @ModeChange.started += instance.OnModeChange;
+            @ModeChange.performed += instance.OnModeChange;
+            @ModeChange.canceled += instance.OnModeChange;
         }
 
         /// <summary>
@@ -561,6 +590,9 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
             @Switch.started -= instance.OnSwitch;
             @Switch.performed -= instance.OnSwitch;
             @Switch.canceled -= instance.OnSwitch;
+            @ModeChange.started -= instance.OnModeChange;
+            @ModeChange.performed -= instance.OnModeChange;
+            @ModeChange.canceled -= instance.OnModeChange;
         }
 
         /// <summary>
@@ -664,5 +696,12 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSwitch(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ModeChange" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnModeChange(InputAction.CallbackContext context);
     }
 }

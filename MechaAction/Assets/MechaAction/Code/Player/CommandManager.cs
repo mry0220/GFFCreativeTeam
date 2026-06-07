@@ -67,7 +67,7 @@ public class CommandManager : MonoBehaviour
     private InputAction _strongPunchAction;
     private InputAction _strongKickAction;
 
-    private Player_AttackT _attack;
+    private Player m_player;
 
     private void Awake()
     {
@@ -84,7 +84,7 @@ public class CommandManager : MonoBehaviour
         _strongPunchAction.performed += ctx => AddInput("StrongPunch");
         _strongKickAction.performed += ctx => AddInput("StrongKick");
 
-        _attack = GetComponent<Player_AttackT>();
+        m_player = GetComponent<Player>();
      //   QualitySettings.vSyncCount = 0;
      //   Application.targetFrameRate = 60;
     }
@@ -154,8 +154,8 @@ public class CommandManager : MonoBehaviour
 
     private void RegisterCommands() //�R�}���h�Z�̓o�^
     {
-        commandList.Add(new Command(1,"Hadouken", new List<string> { "2", "3", "6", "Punch"}, 10));
-        commandList.Add(new Command(2,"Reload", new List<string> { "2","5", "2", "Punch" }, 10));
+        commandList.Add(new Command(1, "Reload", new List<string> { "2", "5", "2", "Punch" }, 10));
+        commandList.Add(new Command(2,"Hadouken", new List<string> { "2", "3", "6", "Punch"}, 10));
         commandList.Add(new Command(3,"Shouryuken", new List<string> { "6", "2", "3", "Punch" }, 10));
         commandList.Add(new Command(4,"Tatsumakisenpukyaku", new List<string> { "2", "1", "4", "Kick" }, 10));
         commandList.Add(new Command(5,"TyrantRave", new List<string> { "6", "3", "2","1","4","6", "Punch" }, 10));
@@ -175,16 +175,16 @@ public class CommandManager : MonoBehaviour
             {
                 switch(cmd.SkillNumber)
                 {
-                    case 1: //�g����
-                        _attack.CallSlash();
+                    case 1: 
+                        //m_player.CallSlash();
                         break;
-                    case 2: _attack.Relod();
+                    case 2: m_player.OnHadouken();
                         break;
                     case 5:
-                        _attack.Calltatakituke();
+                        m_player.OnShouryuken();
                         break;
                     case 10:
-                        _attack.CallLeftAttack();
+                        m_player.OnNormalAttack();
                         break;
                 }
                 //Debug.Log($"�Z����:{cmd.Name} Frame: {_currentFrame}");

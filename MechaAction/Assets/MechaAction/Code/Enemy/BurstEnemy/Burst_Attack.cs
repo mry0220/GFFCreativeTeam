@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Burst_Attack : MonoBehaviour
 {
-    private int m_damage;
+    private float m_damage;
     private float m_criticalRate;
     private float m_criticalChance;
-    private int m_knockback;
+    private float m_knockback;
     private AttackType m_type;
     private float m_duration;
 

@@ -1,8 +1,16 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum PlayerAttackMode
+{
+    Sword,
+    Gun
+}
+
 public class Player : Entity
 {
+  
+
     //component-----------------------
     private PlayerAttack m_attack;
     //--------------------------------
@@ -81,5 +89,20 @@ public class Player : Entity
         m_fallTime = 0f;
         m_rb.linearVelocity = Vector2.zero;
         m_rb.AddForce(Vector3.up * Jump, ForceMode.Impulse);
+    }
+
+    public void OnNormalAttack()
+    {
+        m_attack.OnAttack(PlayerAttackType.NormalAttack);
+    }
+
+    public void OnHadouken()
+    {
+        m_attack.OnAttack(PlayerAttackType.Slash);
+    }
+
+    public void OnShouryuken()
+    {
+        m_attack.OnAttack(PlayerAttackType.GroundAttack);
     }
 }

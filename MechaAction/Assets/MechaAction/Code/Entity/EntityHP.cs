@@ -63,12 +63,12 @@ public abstract class EntityHP : MonoBehaviour
 
     public void OnTakeDamage(DamageData data, DamageResult result)
     {
-
+        bool IsCritical = Critical(data.CriticalChance);
 
         switch(data.Type)
         {
             case AttackType.Normal:
-
+                OnDamage(data, IsCritical);
                 break;
             case AttackType.Electric:
 
@@ -97,9 +97,23 @@ public abstract class EntityHP : MonoBehaviour
     }
 
 
-    private void OnDamage()
+    private void OnDamage(DamageData data, bool IsCritical)
     {
+        if(IsCritical)
+        {
+            int value = (int)(data.Damage * data.CriticalRate);
+            m_currentHP -= value;
 
+            //damageUI
+            //audio
+        }
+        else
+        {
+            m_currentHP -= data.Damage;
+
+            //damageUI
+            //audio
+        }
     }
 
     private void OnKnockBack()

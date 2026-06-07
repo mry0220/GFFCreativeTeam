@@ -98,6 +98,12 @@ public class Entity : MonoBehaviour
     protected virtual void Update()
     {
         m_IsGrounded = IsGrounded();
+
+        if(m_frontDir != 0)
+        {
+            float Yrot = m_frontDir > 0 ? 90f : 270f;
+            transform.rotation = Quaternion.Euler(0, Yrot, 0);
+        }
     }
 
     private bool IsGrounded()
@@ -150,6 +156,19 @@ public class Entity : MonoBehaviour
         else
         {
             m_velocity.x = dir.x * Speed;
+        }
+
+        if(dir.x == 0)
+        {
+            m_frontDir = 0;
+        }
+        else if(dir.x > 0)
+        {
+            m_frontDir = 1;
+        }
+        else
+        {
+            m_frontDir = -1;
         }
     }
 

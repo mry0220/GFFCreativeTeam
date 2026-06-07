@@ -50,10 +50,10 @@ public class Player_AttackT : MonoBehaviour
     [SerializeField] private FloatEvent m_skillevent;
     private CriticalDamage m_criticaldamage = new CriticalDamage();
 
-    private int m_damage;
+    private float m_damage;
     private float m_criticalRate;
     private float m_criticalChance;
-    private int m_knockback;
+    private float m_knockback;
     private AttackType m_type;
     private float m_duration;
 
