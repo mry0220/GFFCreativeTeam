@@ -7,9 +7,6 @@ public class Player : Entity
     private PlayerAttack m_attack;
     //--------------------------------
 
-    // player dir forward 
-    private int m_frontDir; // 1 or -1
-
     //PlayerState---------------------
     private bool m_canDoubleJump;
 
@@ -83,6 +80,6 @@ public class Player : Entity
     {
         m_fallTime = 0f;
         m_rb.linearVelocity = Vector2.zero;
-        m_rb.AddForce(Vector3.up * m_jump, ForceMode.Impulse);
+        m_rb.AddForce(Vector3.up * Jump, ForceMode.Impulse);
     }
 }

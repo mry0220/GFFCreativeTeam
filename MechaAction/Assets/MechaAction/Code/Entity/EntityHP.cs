@@ -10,36 +10,30 @@ public enum AttackType
 
 public struct DamageData
 {
-    public int Damage;
-    public bool IsCritical;
-    public float CriticalRate;
-    public int KnockBack;
-
     public AttackType Type;
-
+    public float Damage;
+    public float CriticalRate;
+    public float CriticalChance;
+    public float KnockBack;
     public float Duration;
 
     public EffectDataSO OverrideEffect;//special audio
     public AudioDataSO OverrideAudio;//special audio
-
-    public Vector3 AttackDir;
-
 }
 
 public struct DamageResult
 {
-    public Vector3 hitPoint;
-    public Vector3 hitNormal;
-
-   
+    public Vector3 HitPoint;
+    public Vector3 HitNormal;
+    public Vector3 AttackDir;
 }
 
 public struct EffectEvent
 {
-    public Vector3 hitPoint;
-    public Vector3 hitNormal;
+    public Vector3 HitPoint;
+    public Vector3 HitNormal;
 
-    public EffectDataSO effectData;
+    public EffectDataSO EffectData;
 }
 
 public abstract class EntityHP : MonoBehaviour
@@ -61,24 +55,36 @@ public abstract class EntityHP : MonoBehaviour
     }
 
     //call frome Entity, give hp data
-    public void OnInitialized(EntityDataSO data)
+    public void OnInitialized()
     {
-        m_maxHP = data.MaxHP;
+        m_maxHP = m_entity.MaxHP;
         m_currentHP = m_maxHP;
     }
 
     public void OnTakeDamage(DamageData data, DamageResult result)
     {
+
+
         switch(data.Type)
         {
             case AttackType.Normal:
+
+                break;
+            case AttackType.Electric:
+
+                break;
+            case AttackType.Ban:
+
+                break;
+            case AttackType.Heal:
 
                 break;
         }
 
         EffectEvent effectData = new EffectEvent
         {
-
+            HitPoint = result.HitPoint,
+            HitNormal = result.HitNormal,
         };
     }
 
@@ -100,6 +106,23 @@ public abstract class EntityHP : MonoBehaviour
     {
         
     }
+
+    private void OnElectBuff()
+    {
+
+    }
+
+    private void OnStun()
+    {
+
+    }
+
+    private void OnHeal()
+    {
+
+    }
+
+
 
     protected abstract void OnDead();
 }

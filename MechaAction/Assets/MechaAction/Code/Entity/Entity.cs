@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum TeamType
@@ -35,9 +36,13 @@ public class Entity : MonoBehaviour
     //--------------------------
 
     //StateValue----------------
-    protected float m_speed;
-    protected float m_dashSpeed;
-    protected float m_jump;
+    protected Dictionary<StatusType, EntityStatus> m_status = new();
+
+    public float MaxHP     { get => m_status[StatusType.HP].Value; }
+    public float Speed     { get => m_status[StatusType.Speed].Value; }
+    public float DashSpeed { get => m_status[StatusType.DashSpeed].Value; }
+    public float Jump      { get => m_status[StatusType.Jump].Value; }
+    public float Shield    { get => m_status[StatusType.Shield].Value; }
     //--------------------------
 
     //rule is flag can not reference other script
@@ -56,6 +61,15 @@ public class Entity : MonoBehaviour
     [SerializeField] private LayerMask m_groundLayer;
 
     //variable------------------
+    private int m_frontDir; // 1 or -1
+    public Vector3 Forward
+    {
+        get
+        {
+            return new Vector3(m_frontDir, 0f, 0f);
+        }
+    }
+
     protected Vector2 m_moveDir; //entity dir (in value frome Entity.cs child script)
 
     protected Vector3 m_velocity; //save rigidbody value
@@ -66,15 +80,19 @@ public class Entity : MonoBehaviour
     {
         m_rb = GetComponent<Rigidbody>();
         m_anim = GetComponentInChildren<Animator>();
-        //m_classHP = GetComponent<EntityHP>();
+        m_classHP = GetComponent<EntityHP>();
     }
 
     protected virtual void Start()
     {
-        //m_classHP.OnInitialized(m_entityData);
+        m_status.Add(StatusType.HP,        new EntityStatus(m_entityData.MaxHP));
+        m_status.Add(StatusType.Speed,     new EntityStatus(m_entityData.Speed));
+        m_status.Add(StatusType.DashSpeed, new EntityStatus(m_entityData.DashSpeed));
+        m_status.Add(StatusType.Jump,      new EntityStatus(m_entityData.Jump));
+        m_status.Add(StatusType.Shield,    new EntityStatus(m_entityData.Shield));
 
-        m_speed = m_entityData.Speed;
-        m_jump = m_entityData.Jump;
+        m_classHP.OnInitialized();
+
     }
 
     protected virtual void Update()
@@ -127,11 +145,11 @@ public class Entity : MonoBehaviour
     {
         if(m_IsDashing)
         {
-            m_velocity.x = dir.x * m_dashSpeed;
+            m_velocity.x = dir.x * DashSpeed;
         }
         else
         {
-            m_velocity.x = dir.x * m_speed;
+            m_velocity.x = dir.x * Speed;
         }
     }
 
@@ -153,7 +171,7 @@ public class Entity : MonoBehaviour
         if (!m_IsGrounded) return;
 
         m_fallTime = 0f;
-        m_rb.AddForce(Vector3.up * m_jump, ForceMode.Impulse);
+        m_rb.AddForce(Vector3.up * Jump, ForceMode.Impulse);
 
 
     }
@@ -161,5 +179,10 @@ public class Entity : MonoBehaviour
     public void OnTakeDamage(DamageData data, DamageResult result)
     {
         //hp
+    }
+
+    public EntityStatus GetStatus(StatusType type)
+    {
+        return m_status[type];
     }
 }

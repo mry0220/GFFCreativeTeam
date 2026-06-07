@@ -20,13 +20,13 @@ public class EffectManager : MonoBehaviour
 
     public void InstantiateEffect(EffectEvent d_event)
     {
-        if (d_event.effectData == null) return;
+        if (d_event.EffectData == null) return;
 
-        var rot = Quaternion.LookRotation(d_event.hitNormal);
+        var rot = Quaternion.LookRotation(d_event.HitNormal);
 
         var effect = m_pool.Get(
-            d_event.effectData.EffectPrefab,
-            d_event.hitPoint,
+            d_event.EffectData.EffectPrefab,
+            d_event.HitPoint,
             rot
         );
 

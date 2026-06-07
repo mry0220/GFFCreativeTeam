@@ -22,7 +22,7 @@ public class HitRay : MonoBehaviour
 
     private Coroutine m_viewCoroutine;
 
-    public void AttackCastAll(DamageData data, TeamType myteam)
+    public void AttackCastAll(DamageData data, TeamType myteam, Vector3 attackDir)
     {
         HashSet<Entity> hitSet = new();
 
@@ -59,8 +59,9 @@ public class HitRay : MonoBehaviour
 
                 DamageResult result = new DamageResult
                 {
-                    hitPoint = hitPoint,
-                    hitNormal = hitNormal
+                    HitPoint = hitPoint,
+                    HitNormal = hitNormal,
+                    AttackDir = attackDir
                 };
 
                 entity.OnTakeDamage(data, result);
@@ -75,7 +76,7 @@ public class HitRay : MonoBehaviour
         }
     }
 
-    public void AttackCast(DamageData data, TeamType myteam)
+    public void AttackCast(DamageData data, TeamType myteam, Vector3 attackDir)
     {
         foreach (var hitBox in hitBoxes)
         {
@@ -114,8 +115,9 @@ public class HitRay : MonoBehaviour
 
                 DamageResult result = new DamageResult
                 {
-                    hitPoint = hitPoint,
-                    hitNormal = hitNormal
+                    HitPoint = hitPoint,
+                    HitNormal = hitNormal,
+                    AttackDir = attackDir
                 };
 
                 entity.OnTakeDamage(data, result);
@@ -132,7 +134,7 @@ public class HitRay : MonoBehaviour
         }
     }
 
-    public void AttackCastPenetration(DamageData data, TeamType myteam)
+    public void AttackCastPenetration(DamageData data, TeamType myteam, Vector3 attackDir)
     {
         foreach (var hitBox in hitBoxes)
         {
@@ -173,8 +175,9 @@ public class HitRay : MonoBehaviour
 
                 DamageResult result = new DamageResult
                 {
-                    hitPoint = hitPoint,
-                    hitNormal = hitNormal
+                    HitPoint = hitPoint,
+                    HitNormal = hitNormal,
+                    AttackDir = attackDir
                 };
 
                 entity.OnTakeDamage(data, result);

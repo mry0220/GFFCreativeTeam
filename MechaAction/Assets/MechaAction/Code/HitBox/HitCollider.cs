@@ -17,7 +17,7 @@ public class HitCollider : MonoBehaviour
 
     private Coroutine m_viewCoroutine;
 
-    public void AttackCollider(DamageData data,TeamType myteam)
+    public void AttackCollider(DamageData data,TeamType myteam,Vector3 attackDir)
     {
         HashSet<Entity> hitSet = new HashSet<Entity>();
 
@@ -45,8 +45,9 @@ public class HitCollider : MonoBehaviour
 
                 DamageResult result = new DamageResult
                 {
-                    hitPoint = hitPoint,
-                    hitNormal = hitNormal
+                    HitPoint = hitPoint,
+                    HitNormal = hitNormal,
+                    AttackDir = attackDir
                 };
 
                 entity.OnTakeDamage(data,result);

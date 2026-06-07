@@ -118,7 +118,7 @@ public class PlayerHPT : MonoBehaviour
 
         m_damageEventSO.Raise(new EffectEvent
         {
-            hitPoint = transform.position,
+            HitPoint = transform.position,
             //effectData = effect,
             //audioData = audio,
         });
