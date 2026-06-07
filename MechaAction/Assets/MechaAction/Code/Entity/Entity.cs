@@ -197,7 +197,7 @@ public class Entity : MonoBehaviour
 
     public void OnTakeDamage(DamageData data, DamageResult result)
     {
-        //hp
+        m_classHP.OnTakeDamage(data, result);
     }
 
     public EntityStatus GetStatus(StatusType type)
