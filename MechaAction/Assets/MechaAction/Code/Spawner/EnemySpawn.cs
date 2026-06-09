@@ -63,11 +63,11 @@ public class EnemySpawn : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        m_currentEnemy = m_pool.Get(
-                m_enemy,
-                transform.position,
-                Quaternion.identity
-            );
+        //m_currentEnemy = m_pool.Get(
+        //        m_enemy,
+        //        transform.position,
+        //        Quaternion.identity
+        //    );
         var enemyInfo = m_currentEnemy.GetComponent<EnemyHP>();
         enemyInfo.m_OnEnemyDied += OnEnemyDied;
         enemyInfo.Init(m_pool);

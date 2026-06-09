@@ -24,11 +24,11 @@ public class EffectManager : MonoBehaviour
 
         var rot = Quaternion.LookRotation(d_event.HitNormal);
 
-        var effect = m_pool.Get(
-            d_event.EffectData.EffectPrefab,
-            d_event.HitPoint,
-            rot
-        );
+        //var effect = m_pool.Get(
+        //    d_event.EffectData.EffectPrefab,
+        //    d_event.HitPoint,
+        //    rot
+        //);
 
         //effect.GetComponent<AutoReturn>().Init(
         //    m_pool, 

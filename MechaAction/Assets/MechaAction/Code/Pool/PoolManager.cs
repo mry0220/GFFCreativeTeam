@@ -4,43 +4,40 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    [System.Serializable]
-    public class InitPoolData
-    {
-        public GameObject m_prefab;
-        public int m_initialSize;
-    }
+    //[System.Serializable]
+    //public class InitPoolData
+    //{
+    //    public GameObject m_prefab;
+    //    public int m_initialSize;
+    //}
 
-    [SerializeField] private List<InitPoolData> m_poolList;
+    //[SerializeField] private List<InitPoolData> m_poolList;
 
-    private Dictionary<GameObject, Queue<GameObject>> m_pool
-        = new Dictionary<GameObject, Queue<GameObject>>();
+    //private Dictionary<GameObject, Queue<GameObject>> m_pool
+    //    = new Dictionary<GameObject, Queue<GameObject>>();
 
-    [SerializeField] private int addSize;
+    private Queue<GameObject> m_pool = new();
+    [SerializeField] private GameObject m_prefab;
+
+    [SerializeField] private int m_initialSize = 10;
 
     private void Awake()
     {
-        foreach (var data in m_poolList)
-        {
-            CreatePool(data.m_prefab, data.m_initialSize);
-        }
+
+        CreatePool(m_prefab, m_initialSize);
+
     }
 
-    public GameObject Get(GameObject prefab, Vector3 pos, Quaternion rot)
+    public GameObject Get(Vector3 pos, Quaternion rot)
     {
-        if (!m_pool.ContainsKey(prefab))
-        {
-            CreatePool(prefab, addSize);
-        }
-
         GameObject obj;
-        if (m_pool[prefab].Count > 0)
+        if (m_pool.Count > 0)
         {
-            obj = m_pool[prefab].Dequeue();//front
+            obj = m_pool.Dequeue();//front
         }
         else
         {
-            obj = CreateObject(prefab);
+            obj = CreateObject(m_prefab);
         }
 
         obj.transform.position = pos;
@@ -60,24 +57,18 @@ public class PoolManager : MonoBehaviour
             return;
         }
 
-        var prefab = objPool.m_prefab;
-
         obj.SetActive(false);
-        m_pool[prefab].Enqueue(obj);
+        m_pool.Enqueue(obj);
     }
 
     private void CreatePool(GameObject prefab, int initialSize)
     {
-        var queue = new Queue<GameObject>();
-
         for (int i = 0; i < initialSize; i++)
         {
             var obj = CreateObject(prefab);
             obj.SetActive(false);
-            queue.Enqueue(obj);//back
+            m_pool.Enqueue(obj);//back
         }
-
-        m_pool.Add(prefab, queue);
 
     }
 
@@ -93,7 +84,6 @@ public class PoolManager : MonoBehaviour
             objPool = obj.AddComponent<ObjectPool>();
         }
 
-        objPool.m_prefab = prefab;
         objPool.m_pool = this;
 
 

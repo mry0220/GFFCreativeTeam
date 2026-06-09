@@ -87,14 +87,14 @@ public class EnemyArea : MonoBehaviour
 
         foreach (var enemyData in waves[waveIndex].enemies)
         {
-            GameObject enemy = m_pool.Get(
-                enemyData.enemyPrefab, 
-                enemyData.spawnPoint.position, 
-                Quaternion.identity
-            );
-            var enemyInfo = enemy.GetComponent<EnemyHP>();
-            enemyInfo.m_OnEnemyDied += OnEnemyDied;
-            enemyInfo.Init(m_pool);
+            //GameObject enemy = m_pool.Get(
+            //    enemyData.enemyPrefab, 
+            //    enemyData.spawnPoint.position, 
+            //    Quaternion.identity
+            //);
+            //var enemyInfo = enemy.GetComponent<EnemyHP>();
+            //enemyInfo.m_OnEnemyDied += OnEnemyDied;
+            //enemyInfo.Init(m_pool);
         }
     }
 
