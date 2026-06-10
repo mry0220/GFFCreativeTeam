@@ -263,7 +263,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 7b1e4fe8916c9ad4aa854a63f6d48db8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 1386695662526129673}
   - component: {fileID: 6134812239299843958}
   - component: {fileID: 8409183277731269679}
+  - component: {fileID: 4447619125540829743}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -504,3 +505,17 @@ MonoBehaviour:
   Frametest: 0
   commandList: []
   _inputBuffer: []
+--- !u!114 &4447619125540829743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6775975967851873591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6a053b7f572a34aafb93c2bf8a5780, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlurObject
+  m_renderer: {fileID: 1235465826061030047}
+  m_trailRate: 10
