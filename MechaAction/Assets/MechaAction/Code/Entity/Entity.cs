@@ -61,7 +61,7 @@ public class Entity : MonoBehaviour
     [SerializeField] private LayerMask m_groundLayer;
 
     //variable------------------
-    private int m_frontDir; // 1 or -1
+    protected int m_frontDir; // 1 or -1
     public Vector3 Forward
     {
         get
@@ -156,19 +156,6 @@ public class Entity : MonoBehaviour
         else
         {
             m_velocity.x = dir.x * Speed;
-        }
-
-        if(dir.x == 0)
-        {
-            m_frontDir = 0;
-        }
-        else if(dir.x > 0)
-        {
-            m_frontDir = 1;
-        }
-        else
-        {
-            m_frontDir = -1;
         }
     }
 

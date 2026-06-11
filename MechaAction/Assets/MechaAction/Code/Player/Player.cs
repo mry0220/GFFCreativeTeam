@@ -57,6 +57,7 @@ public class Player : Entity
         m_moveDir = m_input.Move;
         m_IsJumped = m_input.IsJump;
         m_IsDashing = m_input.IsDashed;
+        m_frontDir = m_input.FrontDir;
 
         if (!m_IsGrounded)
         {

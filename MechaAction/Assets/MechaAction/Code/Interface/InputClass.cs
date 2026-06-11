@@ -8,10 +8,12 @@ public class InputClass : IInputProvide
 
     private Vector2 m_move;
     private bool m_IsDashed;
-    private float m_TimeDashing;
+    private float m_TimeRightDashing;
+    private float m_TimeLeftDashing;
 
     private bool m_IsJumped;
     private PlayerAttackMode m_attackMode = PlayerAttackMode.Sword;
+    private int m_frontDir;
 
     public void Enable()
     {
@@ -19,11 +21,15 @@ public class InputClass : IInputProvide
 
         m_action.Player.Move.performed += InputMove;
         m_action.Player.Move.canceled += InputMove;
-        m_action.Player.Move.performed += InputDash;
         m_action.Player.Move.canceled += InputDashCancel;
+
+        m_action.Player.MoveRight.performed += InputMoveRight;
+        m_action.Player.MoveLeft.performed += InputMoveLeft;
 
         m_action.Player.Jump.performed += InputJump;
         m_action.Player.ModeChange.performed += InputAttackModeChange;
+
+        m_action.Player.Switch.performed += InputSwitch;
 
         m_action.Enable();
     }
@@ -35,10 +41,15 @@ public class InputClass : IInputProvide
 
     public void Update()
     {
-        if(m_TimeDashing > 0)
+        if(m_TimeRightDashing > 0)
         {
-            m_TimeDashing -= Time.deltaTime;
+            m_TimeRightDashing -= Time.deltaTime;
 
+        }
+
+        if(m_TimeLeftDashing > 0)
+        {
+            m_TimeLeftDashing -= Time.deltaTime;
         }
     }
 
@@ -49,15 +60,28 @@ public class InputClass : IInputProvide
        
     }
 
-    private void InputDash(InputAction.CallbackContext context)
+    private void InputMoveRight(InputAction.CallbackContext context)
     {
-        if (m_TimeDashing > 0)
+        if (m_TimeRightDashing > 0)
         {
             m_IsDashed = true;
-            m_TimeDashing = 0;
+            m_TimeRightDashing = 0;
         }
 
-        m_TimeDashing = 0.3f;
+        m_TimeLeftDashing = 0f;
+        m_TimeRightDashing = 0.3f;
+    }
+
+    private void InputMoveLeft(InputAction.CallbackContext context)
+    {
+        if (m_TimeLeftDashing > 0)
+        {
+            m_IsDashed = true;
+            m_TimeLeftDashing = 0;
+        }
+
+        m_TimeRightDashing = 0f;
+        m_TimeLeftDashing = 0.3f;
     }
 
     private void InputDashCancel(InputAction.CallbackContext context)
@@ -83,6 +107,18 @@ public class InputClass : IInputProvide
             case PlayerAttackMode.Gun:
                 m_attackMode = PlayerAttackMode.Sword;
                 break;
+        }
+    }
+
+    private void InputSwitch(InputAction.CallbackContext context)
+    {
+        if(m_frontDir == 1)
+        {
+            m_frontDir = -1;
+        }
+        else
+        {
+            m_frontDir = 1;
         }
     }
 
@@ -118,6 +154,14 @@ public class InputClass : IInputProvide
         get
         {
             return m_attackMode;
+        }
+    }
+
+    public int FrontDir
+    {
+        get
+        {
+            return m_frontDir;
         }
     }
 }

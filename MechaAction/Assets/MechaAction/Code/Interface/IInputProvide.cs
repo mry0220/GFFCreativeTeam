@@ -6,6 +6,7 @@ public interface IInputProvide
     public bool IsDashed { get; }
     public bool IsJump { get; }
     public PlayerAttackMode AttackMode { get; }
+    public int FrontDir { get; }
     public void Enable();
 
     public void Disable();

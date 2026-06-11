@@ -26,6 +26,7 @@ public struct DamageResult
     public Vector3 HitPoint;
     public Vector3 HitNormal;
     public Vector3 AttackDir;
+    public Vector3 KnockBackDir;
 }
 
 public struct EffectEvent
