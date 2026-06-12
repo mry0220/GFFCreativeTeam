@@ -47,7 +47,7 @@ public class Entity : MonoBehaviour
 
     //rule is flag can not reference other script
     //EntityFlag----------------
-    protected bool m_IsDashing;
+    protected bool m_IsRunning;
 
     protected bool m_IsGrounded;
 
@@ -149,7 +149,7 @@ public class Entity : MonoBehaviour
 
     private void OnMove(Vector2 dir)
     {
-        if(m_IsDashing)
+        if(m_IsRunning)
         {
             m_velocity.x = dir.x * DashSpeed;
         }

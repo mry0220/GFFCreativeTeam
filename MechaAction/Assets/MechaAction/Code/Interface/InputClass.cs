@@ -7,7 +7,7 @@ public class InputClass : IInputProvide
     private CommandInput m_action;
 
     private Vector2 m_move;
-    private bool m_IsDashed;
+    private bool m_IsRun;
     private float m_TimeRightDashing;
     private float m_TimeLeftDashing;
 
@@ -64,7 +64,7 @@ public class InputClass : IInputProvide
     {
         if (m_TimeRightDashing > 0)
         {
-            m_IsDashed = true;
+            m_IsRun = true;
             m_TimeRightDashing = 0;
         }
 
@@ -76,7 +76,7 @@ public class InputClass : IInputProvide
     {
         if (m_TimeLeftDashing > 0)
         {
-            m_IsDashed = true;
+            m_IsRun = true;
             m_TimeLeftDashing = 0;
         }
 
@@ -86,9 +86,9 @@ public class InputClass : IInputProvide
 
     private void InputDashCancel(InputAction.CallbackContext context)
     {
-        if(m_IsDashed)
+        if(m_IsRun)
         {
-            m_IsDashed = false;
+            m_IsRun = false;
         }
     }
 
@@ -130,11 +130,11 @@ public class InputClass : IInputProvide
         }
     }
 
-    public bool IsDashed
+    public bool IsRun
     {
         get
         {
-            return m_IsDashed;
+            return m_IsRun;
         }
     }
 

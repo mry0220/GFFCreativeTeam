@@ -3,7 +3,7 @@ using UnityEngine;
 public interface IInputProvide
 {
     public Vector2 Move { get; }
-    public bool IsDashed { get; }
+    public bool IsRun { get; }
     public bool IsJump { get; }
     public PlayerAttackMode AttackMode { get; }
     public int FrontDir { get; }
