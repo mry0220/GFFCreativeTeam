@@ -18,6 +18,11 @@ public class Player : Entity
     //PlayerState---------------------
     private bool m_canDoubleJump;
 
+    private bool m_IsDashed;
+    //--------------------------------
+
+    //PlayerStateTimer----------------
+    private float m_TimeDashed;
     //--------------------------------
 
     // input action script
@@ -50,12 +55,25 @@ public class Player : Entity
 
     protected override void Update()
     {
+        //player state change return when dash
+        if(m_TimeDashed > 0)
+        {
+            m_TimeDashed -= Time.deltaTime;
+
+            if(m_TimeDashed <= 0)
+            {
+                m_canActive = true;
+                m_IsInvincible = false;
+            }
+        }
+
         base.Update();
 
         m_input.Update();
 
         m_moveDir = m_input.Move;
         m_IsJumped = m_input.IsJump;
+        m_IsDashed = m_input.IsDashed;
         m_IsRunning = m_input.IsRun;
         m_frontDir = m_input.FrontDir;
 
@@ -73,7 +91,12 @@ public class Player : Entity
             m_canDoubleJump = true;
         }
 
+        if(m_IsDashed)
+        {
 
+            OnDash();
+        }
+        
 
         if (m_IsJumped)
         {
@@ -93,6 +116,17 @@ public class Player : Entity
         m_fallTime = 0f;
         m_rb.linearVelocity = Vector2.zero;
         m_rb.AddForce(Vector3.up * Jump, ForceMode.Impulse);
+    }
+
+    private void OnDash()
+    {
+        m_IsInvincible = true;
+        m_canActive = false;
+        Debug.Log(Forward);
+
+        m_rb.AddForce(Forward * 30f, ForceMode.Impulse);
+
+        m_TimeDashed = 0.2f;
     }
 
     public void OnNormalAttack()

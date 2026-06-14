@@ -52,6 +52,11 @@ public class Entity : MonoBehaviour
     protected bool m_IsGrounded;
 
     protected bool m_IsJumped;
+
+    //can entity move by oneself. move or jump or attack or Input
+    protected bool m_canActive = true;
+
+    protected bool m_IsInvincible;
     //--------------------------
 
     [Header("Check IsGrounded value")]
@@ -149,6 +154,8 @@ public class Entity : MonoBehaviour
 
     private void OnMove(Vector2 dir)
     {
+        if(!m_canActive) return;
+
         if(m_IsRunning)
         {
             m_velocity.x = dir.x * DashSpeed;
@@ -174,6 +181,8 @@ public class Entity : MonoBehaviour
 
     protected virtual void OnJump()
     {
+        if(!m_canActive) return;
+
         if (!m_IsGrounded) return;
 
         m_fallTime = 0f;
@@ -184,6 +193,8 @@ public class Entity : MonoBehaviour
 
     public void OnTakeDamage(DamageData data, DamageResult result)
     {
+        if(m_IsInvincible) return;
+
         m_classHP.OnTakeDamage(data, result);
     }
 

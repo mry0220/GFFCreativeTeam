@@ -12,8 +12,9 @@ public class InputClass : IInputProvide
     private float m_TimeLeftDashing;
 
     private bool m_IsJumped;
+    private bool m_IsDashed;
     private PlayerAttackMode m_attackMode = PlayerAttackMode.Sword;
-    private int m_frontDir;
+    private int m_frontDir = 1;
 
     public void Enable()
     {
@@ -27,6 +28,7 @@ public class InputClass : IInputProvide
         m_action.Player.MoveLeft.performed += InputMoveLeft;
 
         m_action.Player.Jump.performed += InputJump;
+        m_action.Player.Dash.performed += InputDash;
         m_action.Player.ModeChange.performed += InputAttackModeChange;
 
         m_action.Player.Switch.performed += InputSwitch;
@@ -97,6 +99,11 @@ public class InputClass : IInputProvide
         m_IsJumped = true;
     }
 
+    private void InputDash(InputAction.CallbackContext context)
+    {
+        m_IsDashed = true;
+    }
+
     private void InputAttackModeChange(InputAction.CallbackContext context)
     {
         switch(m_attackMode)
@@ -144,6 +151,17 @@ public class InputClass : IInputProvide
         {
             bool result = m_IsJumped;
             m_IsJumped = false;
+
+            return result;
+        }
+    }
+
+    public bool IsDashed
+    {
+        get
+        {
+            bool result = m_IsDashed;
+            m_IsDashed = false;
 
             return result;
         }
