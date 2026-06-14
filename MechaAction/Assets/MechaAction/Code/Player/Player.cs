@@ -136,11 +136,11 @@ public class Player : Entity
 
     public void OnHadouken()
     {
-        m_attack.OnAttack(PlayerAttackType.Slash);
+        m_attack.OnAttack(PlayerAttackType.VoltSlash);
     }
 
     public void OnShouryuken()
     {
-        m_attack.OnAttack(PlayerAttackType.GroundAttack);
+        m_attack.OnAttack(PlayerAttackType.GrandSlash);
     }
 }

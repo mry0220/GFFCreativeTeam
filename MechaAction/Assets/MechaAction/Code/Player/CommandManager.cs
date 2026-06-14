@@ -10,21 +10,21 @@ public class CommandManager : MonoBehaviour
         [SerializeField]
         private int skillNumber;
         [SerializeField]
-        private string name; //�Z��
+        private string name; //技名
         [SerializeField]
-        private List<string> sequence; // ���͎菇
+        private List<string> sequence; // 入力手順
         [SerializeField]
-        private int maxFrameGap; //���͗P�\
+        private int maxFrameGap; //入力猶予
 
         public int SkillNumber => skillNumber;
         
-        public string Name => name; //Name���Ăяo�����Ƃ�name�̒l��Ԃ�
+        public string Name => name; //Nameを呼び出したときnameの値を返す
 
         /*
          public string Name
         {
             get{ return name }
-        } �Ɠ��`
+        } と同義
          */
         public List<string> Sequence => sequence;
         public int MaxFrameGap => maxFrameGap;
@@ -41,8 +41,8 @@ public class CommandManager : MonoBehaviour
     [System.Serializable]
     private struct InputData
     {
-        public string Input; //�@���͓��e
-        public int Frame; //���̓t���[��
+        public string Input; //　入力内容
+        public int Frame; //入力フレーム
 
         public InputData(string inpug, int frame)
         {
@@ -52,14 +52,14 @@ public class CommandManager : MonoBehaviour
     }
 
     [SerializeField] private InputActionAsset inputActions; //inputsystem
-    [SerializeField] private int bufferLimit = 30; // ���͗����̊i�[��
-    [SerializeField] private float frameDuration = 60f; //���ԊǗ��̃t���[���i���t���[�����ł����肵�����͓�Փx��ݒ�ł���
+    [SerializeField] private int bufferLimit = 30; // 入力履歴の格納量
+    [SerializeField] private float frameDuration = 60f; //時間管理のフレーム（高フレーム環境でも安定した入力難易度を設定できる
     [SerializeField] private float Frametest;
     private float _frameTime;
-    [SerializeField] private List<Command> commandList = new(); //�Z��`��ҏW����\���A�����ӏ��̎g�p�����邽��class 
-    [SerializeField]private List<InputData> _inputBuffer = new(); //������ێ����邾��������struct
-    private int _currentFrame = 0; //���͂��s��ꂽ�t���[���ԍ����L�^���邽�߂̊
-    private float _frameTimer = 0f; //Time.deltatime�����Z��frameDuration�𒴂�����_currentframe�ɉ��Z
+    [SerializeField] private List<Command> commandList = new(); //技定義を編集する可能性、複数箇所の使用があるためclass 
+    [SerializeField]private List<InputData> _inputBuffer = new(); //履歴を保持するだけだからstruct
+    private int _currentFrame = 0; //入力が行われたフレーム番号を記録するための基準
+    private float _frameTimer = 0f; //Time.deltatimeを加算しframeDurationを超えたら_currentframeに加算
 
     private InputAction _moveAction; 
     private InputAction _punchAction;
@@ -71,15 +71,15 @@ public class CommandManager : MonoBehaviour
 
     private void Awake()
     {
-        var map = inputActions.FindActionMap("Player"); //inputActionsAsset�Ɋ܂܂��ActionMap Player����
+        var map = inputActions.FindActionMap("Player"); //inputActionsAssetに含まれるActionMap Playerを代入
 
-        _moveAction = map.FindAction("Move"); //���ꂼ���action�̑��
+        _moveAction = map.FindAction("Move"); //それぞれのactionの代入
         _punchAction = map.FindAction("Punch");
         _kickAction = map.FindAction("Kick");
         _strongPunchAction = map.FindAction("StrongPunch");
         _strongKickAction = map.FindAction("StrongKick");
 
-        _punchAction.performed += ctx => AddInput("Punch"); //���ꂼ��̓��͂��������痚���ɒǉ�����u�����v��o�^
+        _punchAction.performed += ctx => AddInput("Punch"); //それぞれの入力が入ったら履歴に追加する「処理」を登録
         _kickAction.performed += ctx => AddInput("Kick");
         _strongPunchAction.performed += ctx => AddInput("StrongPunch");
         _strongKickAction.performed += ctx => AddInput("StrongKick");
@@ -119,7 +119,7 @@ public class CommandManager : MonoBehaviour
         CheckCommands();
     }
 
-    private void AdvanceFrame() //����frame�̊Ǘ�
+    private void AdvanceFrame() //現在frameの管理
     {
         _frameTime = 1 / frameDuration;
         _frameTimer += Time.deltaTime;
@@ -133,26 +133,38 @@ public class CommandManager : MonoBehaviour
 
     private void DetectDirectionalInput()
     {
+        int x;
+        int y;
+
         Vector2 dir = _moveAction.ReadValue<Vector2>();
-        int x = dir.x > 0.5f ? 1 : dir.x < -0.5f ? -1 : 0;
-        int y = dir.y > 0.5f ? 3 : dir.y < -0.5f ? -3 : 0;
+        if(m_player.Forward.x > 0)
+        {
+            x = dir.x > 0.5f ? 1 : dir.x < -0.5f ? -1 : 0;
+            y = dir.y > 0.5f ? 3 : dir.y < -0.5f ? -3 : 0;
+        }
+        else
+        {
+            x = dir.x > 0.5f ? -1 : dir.x < -0.5f ? 1 : 0;
+            y = dir.y > 0.5f ? 3 : dir.y < -0.5f ? -3 : 0;
+        }
+
         int num = 5+x+y;
        // Debug.Log(_currentFrame);
         if(num >= 1 && num <= 9 )//&& num != 5
         AddInput(num.ToString());
-    }//���͕����̊Ǘ�
+    }//入力方向の管理
 
-    private void AddInput(string input) //���͗����̊Ǘ�
+    private void AddInput(string input) //入力履歴の管理
     {
         _inputBuffer.Add(new InputData(input, _currentFrame));
         if(input != "5")
-        //Debug.Log($"����:{input} Frame: {_currentFrame}");
+        // Debug.Log($"入力:{input} Frame: {_currentFrame}");
 
         if(_inputBuffer.Count > bufferLimit)
             _inputBuffer.RemoveAt(0);
     }
 
-    private void RegisterCommands() //�R�}���h�Z�̓o�^
+    private void RegisterCommands() //コマンド技の登録
     {
         commandList.Add(new Command(1, "Reload", new List<string> { "2", "5", "2", "Punch" }, 10));
         commandList.Add(new Command(2,"Hadouken", new List<string> { "2", "3", "6", "Punch"}, 10));
@@ -167,9 +179,9 @@ public class CommandManager : MonoBehaviour
 
     }
 
-    private void CheckCommands() // �Z�o�͓��e���Ǘ�
+    private void CheckCommands() // 技出力内容を管理
     {
-        foreach(var cmd  in commandList) //�z��⃊�X�g�����ɒ��ׂ郋�[�v��
+        foreach(var cmd  in commandList) //配列やリストを順に調べるループ文
         {
             if (MatchCommand(cmd))
             {
@@ -180,15 +192,15 @@ public class CommandManager : MonoBehaviour
                         break;
                     case 2: m_player.OnHadouken();
                         break;
-                    case 5:
+                    case 3:
                         m_player.OnShouryuken();
                         break;
                     case 10:
                         m_player.OnNormalAttack();
                         break;
                 }
-                //Debug.Log($"�Z����:{cmd.Name} Frame: {_currentFrame}");
-                _inputBuffer.Clear(); //�����̏�����
+                //Debug.Log($"技発動:{cmd.Name} Frame: {_currentFrame}");
+                _inputBuffer.Clear(); //履歴の初期化
                 break;
             }
         }
@@ -219,11 +231,13 @@ public class CommandManager : MonoBehaviour
 
                 lastFrame = data.Frame;
                 step++;
-                      //  Debug.Log($"����: Input: {data.Input},Fame: {data.Frame} step: {step}");
+                //  Debug.Log($"入力: Input: {data.Input},Fame: {data.Frame} step: {step}");
+
 
                 if (step >= cmd.Sequence.Count)
                 {
-                      //  Debug.Log($"����: Input: {data.Input},Fame: {data.Frame} step: {step}");
+                    //  Debug.Log($"入力: Input: {data.Input},Fame: {data.Frame} step: {step}");
+
                     return true;
                 }
             }

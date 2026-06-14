@@ -4,11 +4,12 @@ using UnityEngine;
 public enum PlayerAttackType
 {
     NormalAttack,
-    Slash,
-    GroundAttack,
+    VoltSlash,
+    GrandSlash,
+
     NormalGun,
-    ShotGun,
-    Rifle
+    ShockShot,
+    FullBurst
 }
 
 public class PlayerAttack : MonoBehaviour
@@ -21,9 +22,9 @@ public class PlayerAttack : MonoBehaviour
     [Header("NormalAttack")]
     [SerializeField] private AttackDataSO m_normalAttackData;
     [SerializeField] private HitCollider m_normalCollider;
-    [Header("Slash")]
-    [SerializeField] private AttackDataSO m_slashData;
-    [SerializeField] private HitCollider m_slashCollider;
+    [Header("VoltSlash")]
+    [SerializeField] private AttackDataSO m_voltSlashData;
+    [SerializeField] private HitCollider m_voltSlashCollider;
 
     //DamageDatalist, attackData is makeing damageData early
     private Dictionary<PlayerAttackType, DamageData> m_damageDataList = new();
@@ -36,7 +37,7 @@ public class PlayerAttack : MonoBehaviour
     private void Start()
     {
         m_damageDataList.Add(PlayerAttackType.NormalAttack, OnGetDamageData(m_normalAttackData));
-        m_damageDataList.Add(PlayerAttackType.Slash,        OnGetDamageData(m_slashData));
+        m_damageDataList.Add(PlayerAttackType.VoltSlash,        OnGetDamageData(m_voltSlashData));
     }
 
     private DamageData OnGetDamageData(AttackDataSO dataSO)
@@ -65,10 +66,10 @@ public class PlayerAttack : MonoBehaviour
             case PlayerAttackType.NormalAttack:
                 m_normalCollider.AttackCollider(data, m_entity.Team, m_entity.Forward);
                 break;
-            case PlayerAttackType.Slash:
-                m_slashCollider.AttackCollider(data, m_entity.Team, m_entity.Forward);
+            case PlayerAttackType.VoltSlash:
+                m_voltSlashCollider.AttackCollider(data, m_entity.Team, m_entity.Forward);
                 break;
-            case PlayerAttackType.GroundAttack:
+            case PlayerAttackType.GrandSlash:
 
                 break;
         }
