@@ -68,7 +68,7 @@ public class EnemySpawn : MonoBehaviour
         //        transform.position,
         //        Quaternion.identity
         //    );
-        var enemyInfo = m_currentEnemy.GetComponent<EnemyHP>();
+        var enemyInfo = m_currentEnemy.GetComponent<EnemyHPT>();
         enemyInfo.m_OnEnemyDied += OnEnemyDied;
         enemyInfo.Init(m_pool);
     }
@@ -79,7 +79,7 @@ public class EnemySpawn : MonoBehaviour
         m_canSpawn = true;
     }
 
-    private void OnEnemyDied(EnemyHP enemy)
+    private void OnEnemyDied(EnemyHPT enemy)
     {
         enemy.m_OnEnemyDied -= OnEnemyDied;
 

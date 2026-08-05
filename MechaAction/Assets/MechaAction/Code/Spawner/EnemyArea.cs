@@ -98,7 +98,7 @@ public class EnemyArea : MonoBehaviour
         }
     }
 
-    private void OnEnemyDied(EnemyHP enemy)
+    private void OnEnemyDied(EnemyHPT enemy)
     {
         enemy.m_OnEnemyDied -= OnEnemyDied;
 

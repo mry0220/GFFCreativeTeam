@@ -9,20 +9,25 @@ public enum TeamType
 }
 
 [RequireComponent(typeof(Rigidbody))]
-public class Entity : MonoBehaviour
+public abstract class Entity : MonoBehaviour
 {
-    public enum EntityState
-    {
-        Idle,
-        Move,
-        Attack,
-        Down,
-        Dead,
-    }
+    //public enum EntityState
+    //{
+    //    Idle,
+    //    Walk,
+    //    Run,
+    //    Air,
+    //    Crouch,
+    //    Attack,
+    //    Hit,
+    //    Guard,
+    //    Down,
+    //    Dead,
+    //}
 
     //rule is state can reference other script
-    protected EntityState m_state;
-    public EntityState State { get => m_state; }
+    //protected EntityState m_state;
+    //public EntityState State { get => m_state; }
 
     [SerializeField] protected TeamType m_team;
     public TeamType Team { get => m_team; }
@@ -38,11 +43,13 @@ public class Entity : MonoBehaviour
     //StateValue----------------
     protected Dictionary<StatusType, EntityStatus> m_status = new();
 
+    public float CurrentHP { get; private set; }
     public float MaxHP     { get => m_status[StatusType.HP].Value; }
     public float Speed     { get => m_status[StatusType.Speed].Value; }
     public float DashSpeed { get => m_status[StatusType.DashSpeed].Value; }
     public float Jump      { get => m_status[StatusType.Jump].Value; }
     public float Shield    { get => m_status[StatusType.Shield].Value; }
+
     //--------------------------
 
     //rule is flag can not reference other script
@@ -54,7 +61,7 @@ public class Entity : MonoBehaviour
     protected bool m_IsJumped;
 
     //can entity move by oneself. move or jump or attack or Input
-    protected bool m_canActive = true;
+    //protected bool m_canActive = true;
 
     protected bool m_IsInvincible;
     //--------------------------
@@ -85,7 +92,7 @@ public class Entity : MonoBehaviour
     {
         m_rb = GetComponent<Rigidbody>();
         m_anim = GetComponentInChildren<Animator>();
-        m_classHP = GetComponent<EntityHP>();
+        m_classHP = new();
     }
 
     protected virtual void Start()
@@ -96,22 +103,13 @@ public class Entity : MonoBehaviour
         m_status.Add(StatusType.Jump,      new EntityStatus(m_entityData.Jump));
         m_status.Add(StatusType.Shield,    new EntityStatus(m_entityData.Shield));
 
-        m_classHP.OnInitialized();
+        CurrentHP = m_status[StatusType.HP].Value;
+
+        //m_classHP.OnInitialized();
 
     }
 
-    protected virtual void Update()
-    {
-        m_IsGrounded = IsGrounded();
-
-        if(m_frontDir != 0)
-        {
-            float Yrot = m_frontDir > 0 ? 90f : 270f;
-            transform.rotation = Quaternion.Euler(0, Yrot, 0);
-        }
-    }
-
-    private bool IsGrounded()
+    protected bool IsGrounded()
     {
         return Physics.SphereCast(
             m_groundCheckOffset.position,
@@ -139,22 +137,8 @@ public class Entity : MonoBehaviour
     }
     #endregion
 
-    protected virtual void FixedUpdate()
+    protected void OnMove(Vector2 dir)
     {
-        //rule is we do not have to change m_rb.velocity.y because y is use Addforce
-        //if  direct move to y is nothing addForce
-        m_velocity = m_rb.linearVelocity;
-
-        OnMove(m_moveDir);
-        OnGravity();
-
-        m_rb.linearVelocity = m_velocity;
-
-    }
-
-    private void OnMove(Vector2 dir)
-    {
-        if(!m_canActive) return;
 
         if(m_IsRunning)
         {
@@ -166,7 +150,7 @@ public class Entity : MonoBehaviour
         }
     }
 
-    private void OnGravity()
+    protected void OnGravity()
     {
         if (m_IsGrounded) return;
 
@@ -179,9 +163,8 @@ public class Entity : MonoBehaviour
         m_velocity.y = Mathf.Max(m_velocity.y, -20f); //limit velocity.y speed
     }
 
-    protected virtual void OnJump()
+    protected void OnJump()
     {
-        if(!m_canActive) return;
 
         if (!m_IsGrounded) return;
 
@@ -191,15 +174,27 @@ public class Entity : MonoBehaviour
 
     }
 
+    public virtual bool CanTakeDamage()
+    {
+        return m_IsInvincible;
+    }
+
     public void OnTakeDamage(DamageData data, DamageResult result)
     {
-        if(m_IsInvincible) return;
+        if(CanTakeDamage()) return;
 
-        m_classHP.OnTakeDamage(data, result);
+        CurrentHP = m_classHP.OnTakeDamage(CurrentHP, data, result);
+
+        if(CurrentHP  < 0f)
+        {
+            OnDead();
+        }
     }
 
     public EntityStatus GetStatus(StatusType type)
     {
         return m_status[type];
     }
+
+    protected abstract void OnDead();
 }

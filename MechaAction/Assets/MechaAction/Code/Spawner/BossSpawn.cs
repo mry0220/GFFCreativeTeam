@@ -33,7 +33,7 @@ public class BossSpawn : MonoBehaviour
 
     [SerializeField] private Image hpBarImage;   // HP–{‘Ì‚ÌImage
     [SerializeField] private GameObject hpBarObject;   // HP–{‘Ì‚ÌImage
-    private EnemyHP _enemyhp;
+    private EnemyHPT _enemyhp;
 
     private float maxHealth;
     private float currentHealth;
@@ -72,7 +72,7 @@ public class BossSpawn : MonoBehaviour
         enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         if (enemy != null)
         {
-            _enemyhp = enemy.GetComponent<EnemyHP>();
+            _enemyhp = enemy.GetComponent<EnemyHPT>();
             hpBarObject.SetActive(true);
             maxHealth = _enemyhp.MaxHP;
             currentHealth = _enemyhp.CurrentHP;

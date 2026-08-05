@@ -1,78 +1,67 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public enum PlayerAttackMode
+public class DebugEnemy : Entity
 {
-    Sword,
-    Gun
-}
-
-public class Player : Entity
-{
-
     //--------------------state---------------
     public enum EnumActionState
     {
         Idle,
         Walk,
-        Run,
-        Dash,
         Attack,
         Hit,
-        Guard,
         Down,
         Dead
     }
 
-    public enum EnumPoseState
+    public enum EnumAIState
     {
-        Stand,
-        Crouch,
+        Patrol,
+        Chase,
         Air
     }
 
     private EnumActionState m_actionState;
     public EnumActionState actionState => m_actionState;
 
-    private EnumPoseState m_poseState;
-    public EnumPoseState PoseState => m_poseState;
+    private EnumAIState m_AIState;
+    public EnumAIState AIState => m_AIState;
     //---------------------------------------------------
 
     //component-----------------------
-    private PlayerAttack m_attack;
+    private DebugEnemyAttack m_attack;
     //--------------------------------
 
     //PlayerState---------------------
-    private bool m_canDoubleJump;
+    //private bool m_canDoubleJump;
 
-    private bool m_IsDashed;
+    //private bool m_IsDashed;
     //--------------------------------
 
     //PlayerStateTimer----------------
-    private float m_TimeDashed;
+    //private float m_TimeDashed;
     //--------------------------------
 
     // input action script
-    private IInputProvide m_input;
+    //private IInputProvide m_input;
 
     protected override void Awake()
     {
         base.Awake();
 
-        m_attack = GetComponent<PlayerAttack>();
+        m_attack = GetComponent<DebugEnemyAttack>();
 
-        m_input = new InputClass();
+        //m_input = new InputClass();
 
     }
 
     private void OnEnable()
     {
-        m_input.Enable();
+        //m_input.Enable();
     }
 
     private void OnDisable()
     {
-        m_input.Disable();
+        //m_input.Disable();
     }
 
     protected override void Start()
@@ -90,45 +79,45 @@ public class Player : Entity
             transform.rotation = Quaternion.Euler(0, Yrot, 0);
         }
 
-        OnPlayerStatusTimer();
+        //OnPlayerStatusTimer();
 
         OnStateUpdate();
 
-        m_input.Update();
+        //m_input.Update();
 
-        m_moveDir = m_input.Move;
-        m_IsJumped = m_input.IsJump;
-        m_IsDashed = m_input.IsDashed;
-        m_IsRunning = m_input.IsRun;
-        m_frontDir = m_input.FrontDir;
+        //m_moveDir = m_input.Move;
+        //m_IsJumped = m_input.IsJump;
+        //m_IsDashed = m_input.IsDashed;
+        //m_IsRunning = m_input.IsRun;
+        //m_frontDir = m_input.FrontDir;
 
-        if (!m_IsGrounded)
-        {
-            if (m_canDoubleJump && m_IsJumped)
-            {
-                m_canDoubleJump = false;
+        //if (!m_IsGrounded)
+        //{
+        //    if (m_canDoubleJump && m_IsJumped)
+        //    {
+        //        m_canDoubleJump = false;
 
-                OnDoubleJump();
-            }
-        }
-        else
-        {
-            m_canDoubleJump = true;
-        }
+        //        //OnDoubleJump();
+        //    }
+        //}
+        //else
+        //{
+        //    m_canDoubleJump = true;
+        //}
 
-        if(m_IsDashed)
-        {
+        //if (m_IsDashed)
+        //{
 
-            OnDash();
-        }
-        
-
-        if (m_IsJumped)
-        {
+        //    OnDash();
+        //}
 
 
-            CallJump();
-        }
+        //if (m_IsJumped)
+        //{
+
+
+        //    CallJump();
+        //}
 
     }
 
@@ -137,8 +126,6 @@ public class Player : Entity
         if (m_actionState == EnumActionState.Dead) return;
 
         if (m_actionState == EnumActionState.Down) return;
-
-        if (m_actionState == EnumActionState.Dash) return;
 
         OnJump();
     }
@@ -151,14 +138,8 @@ public class Player : Entity
 
         if (m_actionState == EnumActionState.Attack) return;
 
-        if (m_actionState == EnumActionState.Dash) return;
-
-        //run - walk - idle
-        if(m_IsRunning)
-        {
-            OnChangeActionState(EnumActionState.Run);
-        }
-        else if(m_moveDir != Vector2.zero)
+        //walk - idle
+        if (m_moveDir != Vector2.zero)
         {
             OnChangeActionState(EnumActionState.Walk);
         }
@@ -186,44 +167,42 @@ public class Player : Entity
 
         if (m_actionState == EnumActionState.Down) return;
 
-        if (m_actionState == EnumActionState.Dash) return;
-
         OnMove(dir);
     }
 
     private void OnPlayerStatusTimer()
     {
         //player state change return when dash
-        if (m_TimeDashed > 0)
-        {
-            m_TimeDashed -= Time.deltaTime;
+        //if (m_TimeDashed > 0)
+        //{
+        //    m_TimeDashed -= Time.deltaTime;
 
-            if (m_TimeDashed <= 0)
-            {
-                //m_canActive = true;
-                OnChangeActionState(EnumActionState.Idle);
-                m_IsInvincible = false;
-            }
-        }
+        //    if (m_TimeDashed <= 0)
+        //    {
+        //        //m_canActive = true;
+        //        OnChangeActionState(EnumActionState.Idle);
+        //        m_IsInvincible = false;
+        //    }
+        //}
     }
 
-    private void OnDoubleJump()
-    {
-        m_fallTime = 0f;
-        m_rb.linearVelocity = Vector2.zero;
-        m_rb.AddForce(Vector3.up * Jump, ForceMode.Impulse);
-    }
+    //private void OnDoubleJump()
+    //{
+    //    m_fallTime = 0f;
+    //    m_rb.linearVelocity = Vector2.zero;
+    //    m_rb.AddForce(Vector3.up * Jump, ForceMode.Impulse);
+    //}
 
-    private void OnDash()
-    {
-        m_IsInvincible = true;
-        OnChangeActionState(EnumActionState.Dash);
-        //Debug.Log(Forward);
+    //private void OnDash()
+    //{
+    //    m_IsInvincible = true;
+    //    OnChangeActionState(EnumActionState.Dash);
+    //    //Debug.Log(Forward);
 
-        m_rb.AddForce(Forward * 30f, ForceMode.Impulse);
+    //    m_rb.AddForce(Forward * 30f, ForceMode.Impulse);
 
-        m_TimeDashed = 0.2f;
-    }
+    //    m_TimeDashed = 0.2f;
+    //}
 
     public override bool CanTakeDamage()
     {
@@ -244,20 +223,20 @@ public class Player : Entity
         m_actionState = state;
     }
 
-    public void OnNormalAttack()
-    {
-        m_attack.OnAttack(PlayerAttackType.NormalAttack, m_team, Forward);
-    }
+    //public void OnNormalAttack()
+    //{
+    //    m_attack.OnAttack(PlayerAttackType.NormalAttack);
+    //}
 
-    public void OnHadouken()
-    {
-        m_attack.OnAttack(PlayerAttackType.VoltSlash, m_team, Forward);
-    }
+    //public void OnHadouken()
+    //{
+    //    m_attack.OnAttack(PlayerAttackType.VoltSlash);
+    //}
 
-    public void OnShouryuken()
-    {
-        m_attack.OnAttack(PlayerAttackType.GrandSlash, m_team, Forward);
-    }
+    //public void OnShouryuken()
+    //{
+    //    m_attack.OnAttack(PlayerAttackType.GrandSlash);
+    //}
 
     
 }

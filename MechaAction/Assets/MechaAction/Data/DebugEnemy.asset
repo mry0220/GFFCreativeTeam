@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a731553463ad8654290b6435f3f4c2bb, type: 3}
-  m_Name: EntityData
+  m_Name: DebugEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EntityDataSO
   m_maxHP: 100
-  m_speed: 5
-  m_dashSpeed: 10
-  m_jump: 10
+  m_shield: 0
+  m_speed: 0
+  m_dashSpeed: 0
+  m_jump: 0

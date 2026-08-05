@@ -1,35 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerAttackType
-{
-    NormalAttack,
-    VoltSlash,
-    GrandSlash,
-
-    NormalGun,
-    ShockShot,
-    FullBurst
+public enum DebugEnemyAttackType
+{ 
+    NormalAttack
 }
 
-public class PlayerAttack : MonoBehaviour
+public class DebugEnemyAttack : MonoBehaviour
 {
-
     //attackData----------------
     [Header("NormalAttack")]
     [SerializeField] private AttackDataSO m_normalAttackData;
     [SerializeField] private HitCollider m_normalCollider;
-    [Header("VoltSlash")]
-    [SerializeField] private AttackDataSO m_voltSlashData;
-    [SerializeField] private HitCollider m_voltSlashCollider;
 
     //DamageDatalist, attackData is makeing damageData early
-    private Dictionary<PlayerAttackType, DamageData> m_damageDataList = new();
+    private Dictionary<DebugEnemyAttackType, DamageData> m_damageDataList = new();
 
     private void Start()
     {
-        m_damageDataList.Add(PlayerAttackType.NormalAttack, OnGetDamageData(m_normalAttackData));
-        m_damageDataList.Add(PlayerAttackType.VoltSlash,        OnGetDamageData(m_voltSlashData));
+        m_damageDataList.Add(DebugEnemyAttackType.NormalAttack, OnGetDamageData(m_normalAttackData));
     }
 
     private DamageData OnGetDamageData(AttackDataSO dataSO)
@@ -49,20 +38,14 @@ public class PlayerAttack : MonoBehaviour
         return data;
     }
 
-    public void OnAttack(PlayerAttackType type, TeamType team, Vector3 forward)
+    public void OnAttack(DebugEnemyAttackType type, TeamType team, Vector3 forward)
     {
         var data = m_damageDataList[type];
 
         switch (type)
         {
-            case PlayerAttackType.NormalAttack:
+            case DebugEnemyAttackType.NormalAttack:
                 m_normalCollider.AttackCollider(data, team, forward);
-                break;
-            case PlayerAttackType.VoltSlash:
-                m_voltSlashCollider.AttackCollider(data, team, forward);
-                break;
-            case PlayerAttackType.GrandSlash:
-
                 break;
         }
     }
