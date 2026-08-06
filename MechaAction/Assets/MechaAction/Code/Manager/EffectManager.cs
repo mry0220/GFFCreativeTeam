@@ -20,7 +20,7 @@ public class EffectManager : MonoBehaviour
 
     public void InstantiateEffect(EffectEvent d_event)
     {
-        if (d_event.EffectData == null) return;
+        //if (d_event.EffectData == null) return;
 
         var rot = Quaternion.LookRotation(d_event.HitNormal);
 

@@ -22,6 +22,13 @@ public class PlayerAttack : MonoBehaviour
     [Header("VoltSlash")]
     [SerializeField] private AttackDataSO m_voltSlashData;
     [SerializeField] private HitCollider m_voltSlashCollider;
+    [Header("GrandSlash")]
+    [SerializeField] private AttackDataSO m_grandSlashData;
+    [SerializeField] private HitCollider m_grandSlashCollider;
+
+    [Header("NormalGun")]
+    [SerializeField] private AttackDataSO m_normalGunData;
+    [SerializeField] private HitRay m_normalGunCollider;
 
     //DamageDatalist, attackData is makeing damageData early
     private Dictionary<PlayerAttackType, DamageData> m_damageDataList = new();
@@ -30,6 +37,9 @@ public class PlayerAttack : MonoBehaviour
     {
         m_damageDataList.Add(PlayerAttackType.NormalAttack, OnGetDamageData(m_normalAttackData));
         m_damageDataList.Add(PlayerAttackType.VoltSlash,        OnGetDamageData(m_voltSlashData));
+        m_damageDataList.Add(PlayerAttackType.GrandSlash, OnGetDamageData(m_grandSlashData));
+
+        m_damageDataList.Add(PlayerAttackType.NormalGun, OnGetDamageData(m_normalGunData));
     }
 
     private DamageData OnGetDamageData(AttackDataSO dataSO)
@@ -62,7 +72,10 @@ public class PlayerAttack : MonoBehaviour
                 m_voltSlashCollider.AttackCollider(data, team, forward);
                 break;
             case PlayerAttackType.GrandSlash:
-
+                m_grandSlashCollider.AttackCollider(data, team, forward);
+                break;
+            case PlayerAttackType.NormalGun:
+                m_normalGunCollider.AttackCastPenetration(data, team, forward);
                 break;
         }
     }

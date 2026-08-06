@@ -721,7 +721,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1597206116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,8 +734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dda6f570e377bd4589022f864f47e66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DebugEnemyAttack
-  m_normalAttackData: {fileID: 0}
-  m_normalCollider: {fileID: 0}
+  m_normalAttackData: {fileID: 11400000, guid: 6909c89d55470f640aad461bc0310477, type: 2}
+  m_normalCollider: {fileID: 842137603}
 --- !u!114 &1597206117
 MonoBehaviour:
   m_ObjectHideFlags: 0

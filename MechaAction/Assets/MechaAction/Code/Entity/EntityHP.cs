@@ -17,7 +17,8 @@ public struct DamageData
     public float KnockBack;
     public float Duration;
 
-    public EffectDataSO OverrideEffect;//special audio
+    //public EffectDataSO OverrideEffect;//special audio
+    public EffectKind OverrideEffect;
     public AudioDataSO OverrideAudio;//special audio
 }
 
@@ -34,7 +35,7 @@ public struct EffectEvent
     public Vector3 HitPoint;
     public Vector3 HitNormal;
 
-    public EffectDataSO EffectData;
+    public EffectKind m_effect;
 }
 
 public class EntityHP

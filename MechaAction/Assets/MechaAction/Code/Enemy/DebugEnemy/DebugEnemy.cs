@@ -216,6 +216,8 @@ public class DebugEnemy : Entity
     protected override void OnDead()
     {
         OnChangeActionState(EnumActionState.Dead);
+
+        Destroy(gameObject);
     }
 
     private void OnChangeActionState(EnumActionState state)

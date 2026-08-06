@@ -156,14 +156,19 @@ public class Player : Entity
         //run - walk - idle
         if(m_IsRunning)
         {
+            m_anim.SetFloat("move", 1f);
             OnChangeActionState(EnumActionState.Run);
         }
         else if(m_moveDir != Vector2.zero)
         {
+            m_anim.SetFloat("move", 0.5f);
+
             OnChangeActionState(EnumActionState.Walk);
         }
         else
         {
+            m_anim.SetFloat("move", 0f);
+
             OnChangeActionState(EnumActionState.Idle);
         }
     }
@@ -246,7 +251,15 @@ public class Player : Entity
 
     public void OnNormalAttack()
     {
-        m_attack.OnAttack(PlayerAttackType.NormalAttack, m_team, Forward);
+        switch(m_input.AttackMode)
+        {
+            case PlayerAttackMode.Sword:
+                m_attack.OnAttack(PlayerAttackType.NormalAttack, m_team, Forward);
+                break;
+            case PlayerAttackMode.Gun:
+                m_attack.OnAttack(PlayerAttackType.NormalGun, m_team, Forward);
+                break;
+        }
     }
 
     public void OnHadouken()

@@ -183,6 +183,8 @@ public abstract class Entity : MonoBehaviour
     {
         if(CanTakeDamage()) return;
 
+        Debug.Log($"{this.gameObject.name} take damage");
+
         CurrentHP = m_classHP.OnTakeDamage(CurrentHP, data, result);
 
         if(CurrentHP  < 0f)

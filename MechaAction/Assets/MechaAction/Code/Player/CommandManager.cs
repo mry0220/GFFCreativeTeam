@@ -158,9 +158,9 @@ public class CommandManager : MonoBehaviour
     {
         _inputBuffer.Add(new InputData(input, _currentFrame));
         if(input != "5")
-        // Debug.Log($"入力:{input} Frame: {_currentFrame}");
+         //Debug.Log($"入力:{input} Frame: {_currentFrame}");
 
-        if(_inputBuffer.Count > bufferLimit)
+        if (_inputBuffer.Count > bufferLimit)
             _inputBuffer.RemoveAt(0);
     }
 
