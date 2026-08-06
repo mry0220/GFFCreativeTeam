@@ -34,6 +34,9 @@ public abstract class Entity : MonoBehaviour
 
     [SerializeField] private EntityDataSO m_entityData;
 
+    [SerializeField] private EffectKind m_hitEffect;
+    [SerializeField] private AudioDataSO m_hitAudioDataSO;
+
     //component-----------------
     protected Rigidbody m_rb;
     protected Animator m_anim;
@@ -105,7 +108,7 @@ public abstract class Entity : MonoBehaviour
 
         CurrentHP = m_status[StatusType.HP].Value;
 
-        //m_classHP.OnInitialized();
+        m_classHP.OnInitialized(m_hitEffect, m_hitAudioDataSO);
 
     }
 
@@ -183,7 +186,7 @@ public abstract class Entity : MonoBehaviour
     {
         if(CanTakeDamage()) return;
 
-        Debug.Log($"{this.gameObject.name} take damage");
+        Debug.Log($"{gameObject.name} take damage");
 
         CurrentHP = m_classHP.OnTakeDamage(CurrentHP, data, result);
 

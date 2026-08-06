@@ -60,7 +60,7 @@ public class HitRay : MonoBehaviour
                 DamageResult result = new DamageResult
                 {
                     HitPoint = hitPoint,
-                    HitNormal = hitNormal,
+                    HitRot = Quaternion.LookRotation(hitNormal),
                     AttackDir = attackDir
                 };
 
@@ -116,7 +116,7 @@ public class HitRay : MonoBehaviour
                 DamageResult result = new DamageResult
                 {
                     HitPoint = hitPoint,
-                    HitNormal = hitNormal,
+                    HitRot = Quaternion.LookRotation(hitNormal),
                     AttackDir = attackDir
                 };
 
@@ -176,7 +176,7 @@ public class HitRay : MonoBehaviour
                 DamageResult result = new DamageResult
                 {
                     HitPoint = hitPoint,
-                    HitNormal = hitNormal,
+                    HitRot = Quaternion.LookRotation(hitNormal),
                     AttackDir = attackDir
                 };
 

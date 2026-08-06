@@ -80,10 +80,12 @@ public class PoolPath : MonoBehaviour
         m_enemyPools[kind].Get(pos, rot);
     }
 
-    public void CallEffectPoolObj(EffectKind kind, Vector3 pos, Quaternion rot)
+    public void CallEffectPoolObj(EffectEvent data)
     {
-        if(kind == EffectKind.None) return;
+        if(data.EffectKind == EffectKind.None) return;
 
-        m_effectPools[kind].Get(pos, rot);
+        m_effectPools[data.EffectKind].Get(data.HitPoint, data.HitRot);
+
+
     }
 }

@@ -44,6 +44,11 @@ public class PoolManager : MonoBehaviour
         obj.transform.rotation = rot;
         obj.SetActive(true);
 
+        if(obj.TryGetComponent<ObjectPool>(out var pool))
+        {
+            pool.OnSpawn();
+        }
+
         return obj;
     }
 
@@ -81,7 +86,8 @@ public class PoolManager : MonoBehaviour
         var objPool = obj.GetComponent<ObjectPool>();
         if (objPool == null)
         {
-            objPool = obj.AddComponent<ObjectPool>();
+            //objPool = obj.AddComponent<ObjectPool>();
+            Debug.LogError("Don`t forget to attack ObjectPool");
         }
 
         objPool.m_pool = this;

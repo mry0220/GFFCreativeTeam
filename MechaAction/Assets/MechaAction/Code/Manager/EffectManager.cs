@@ -22,7 +22,7 @@ public class EffectManager : MonoBehaviour
     {
         //if (d_event.EffectData == null) return;
 
-        var rot = Quaternion.LookRotation(d_event.HitNormal);
+        //var rot = Quaternion.LookRotation(d_event.HitNormal);
 
         //var effect = m_pool.Get(
         //    d_event.EffectData.EffectPrefab,

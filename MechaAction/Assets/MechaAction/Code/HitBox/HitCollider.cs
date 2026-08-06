@@ -46,7 +46,7 @@ public class HitCollider : MonoBehaviour
                 DamageResult result = new DamageResult
                 {
                     HitPoint = hitPoint,
-                    HitNormal = hitNormal,
+                    HitRot = Quaternion.LookRotation(hitNormal),
                     AttackDir = attackDir
                 };
 

@@ -630,6 +630,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   m_team: 0
   m_entityData: {fileID: 11400000, guid: aea474980a754fa49ba8429870f1ee28, type: 2}
+  m_hitEffect: 1
+  m_hitAudioDataSO: {fileID: 11400000, guid: decf6c4debcbe3149a7a6c707b0ba7b7, type: 2}
   m_groundCheckOffset: {fileID: 5089378729430777326}
   m_radius: 0.2
   m_distance: 2.6

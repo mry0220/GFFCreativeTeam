@@ -8,6 +8,7 @@ public enum AttackType
     Heal
 }
 
+
 public struct DamageData
 {
     public AttackType Type;
@@ -25,7 +26,7 @@ public struct DamageData
 public struct DamageResult
 {
     public Vector3 HitPoint;
-    public Vector3 HitNormal;
+    public Quaternion HitRot;
     public Vector3 AttackDir;
     public Vector3 KnockBackDir;
 }
@@ -33,9 +34,9 @@ public struct DamageResult
 public struct EffectEvent
 {
     public Vector3 HitPoint;
-    public Vector3 HitNormal;
+    public Quaternion HitRot;
 
-    public EffectKind m_effect;
+    public EffectKind EffectKind;
 }
 
 public class EntityHP
@@ -50,12 +51,16 @@ public class EntityHP
     //public float CurrentHP { get => m_currentHP; }
     //------------------------------
 
+    private EffectKind m_hitEffect;
+
+    private AudioDataSO m_hitAudio;
+
 
     //call frome Entity, give hp data
-    public void OnInitialized()
+    public void OnInitialized(EffectKind kind, AudioDataSO audio)
     {
-        //m_maxHP = m_entity.MaxHP;
-        //m_currentHP = m_maxHP;
+        m_hitEffect = kind;
+        m_hitAudio = audio;
     }
 
     public float OnTakeDamage(float hp, DamageData data, DamageResult result)
@@ -78,11 +83,30 @@ public class EntityHP
                 break;
         }
 
-        EffectEvent effectData = new EffectEvent
+        EffectEvent effectData;
+        
+
+        if(data.OverrideEffect == EffectKind.None)
         {
-            HitPoint = result.HitPoint,
-            HitNormal = result.HitNormal,
-        };
+            effectData = new EffectEvent
+            {
+                HitPoint = result.HitPoint,
+                HitRot = result.HitRot,
+                EffectKind = m_hitEffect,
+            };
+        }
+        else
+        {
+            effectData = new EffectEvent
+            {
+                HitPoint = result.HitPoint,
+                HitRot = result.HitRot,
+                EffectKind = data.OverrideEffect,
+            };
+        }
+
+        PoolPath.Instance.CallEffectPoolObj(effectData);
+
 
         return hp;
     }

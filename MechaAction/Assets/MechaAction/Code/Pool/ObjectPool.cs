@@ -7,7 +7,14 @@ public class ObjectPool : MonoBehaviour
 
     public PoolManager m_pool;
 
-    public void Return()
+    public virtual void Init() { }
+    public virtual void OnSpawn() { }
+    public virtual void OnDespawn() 
+    {
+        Return();
+    }
+
+    private void Return()
     {
         m_pool.Return(gameObject);
     }
