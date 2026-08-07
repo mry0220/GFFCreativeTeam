@@ -138,7 +138,18 @@ public class EntityHP
             //audio
         }
 
-        return hp;
+        if(data.OverrideAudio == null)
+        {
+            AudioManager.Instance.AudioSEPlay(m_hitAudio);
+
+        }
+        else
+        {
+            AudioManager.Instance.AudioSEPlay(data.OverrideAudio);
+        }
+
+
+            return hp;
     }
 
     private void OnKnockBack()
