@@ -58,7 +58,7 @@ public class CommandManager : MonoBehaviour
     private float _frameTime;
     [SerializeField] private List<Command> commandList = new(); //技定義を編集する可能性、複数箇所の使用があるためclass 
     [SerializeField]private List<InputData> _inputBuffer = new(); //履歴を保持するだけだからstruct
-    private int _currentFrame = 0; //入力が行われたフレーム番号を記録するための基準
+    [SerializeField] private int _currentFrame = 0; //入力が行われたフレーム番号を記録するための基準
     private float _frameTimer = 0f; //Time.deltatimeを加算しframeDurationを超えたら_currentframeに加算
 
     private InputAction _moveAction; 
@@ -68,6 +68,10 @@ public class CommandManager : MonoBehaviour
     private InputAction _strongKickAction;
 
     private Player m_player;
+
+    [Header("Debug")]
+    [SerializeField] private bool m_debug;
+    [SerializeField] private DebugCommandManager m_debugCommandManager;
 
     private void Awake()
     {
@@ -131,12 +135,14 @@ public class CommandManager : MonoBehaviour
         Frametest = _currentFrame;
     }
 
+
     private void DetectDirectionalInput()
     {
         int x;
         int y;
 
         Vector2 dir = _moveAction.ReadValue<Vector2>();
+
         if(m_player.Forward.x > 0)
         {
             x = dir.x > 0.5f ? 1 : dir.x < -0.5f ? -1 : 0;
@@ -149,13 +155,25 @@ public class CommandManager : MonoBehaviour
         }
 
         int num = 5+x+y;
+
        // Debug.Log(_currentFrame);
         if(num >= 1 && num <= 9 )//&& num != 5
         AddInput(num.ToString());
     }//入力方向の管理
 
+    private string m_bInput;
+
     private void AddInput(string input) //入力履歴の管理
     {
+        if(m_debug)
+        {
+            m_debugCommandManager.OnUpdateCommandView(input, _currentFrame);
+        }
+        //入力した瞬間をinputBufferに　２回入力はNurtralになる（6,5,6)
+        if(m_bInput == input) return;
+
+        m_bInput = input;
+
         _inputBuffer.Add(new InputData(input, _currentFrame));
         if(input != "5")
          //Debug.Log($"入力:{input} Frame: {_currentFrame}");
@@ -176,6 +194,8 @@ public class CommandManager : MonoBehaviour
         commandList.Add(new Command(8,"GyakuyogaFlame", new List<string> { "6", "3", "2","1","4", "StrongPunch" }, 10));
         commandList.Add(new Command(9,"irukasan", new List<string> { "4", "4", "4","4","6", "StrongPunch" }, 10));
         commandList.Add(new Command(10,"Attack", new List<string> { "Punch" }, 10));
+        commandList.Add(new Command(11, "Dash", new List<string> { "6","5","6" }, 60));
+
 
     }
 
@@ -198,6 +218,9 @@ public class CommandManager : MonoBehaviour
                     case 10:
                         m_player.OnNormalAttack();
                         break;
+                    case 11:
+                        Debug.Log("Command Dash");
+                        break;
                 }
                 //Debug.Log($"技発動:{cmd.Name} Frame: {_currentFrame}");
                 _inputBuffer.Clear(); //履歴の初期化
@@ -215,6 +238,12 @@ public class CommandManager : MonoBehaviour
         {
             var data = _inputBuffer[i];
             string expected = cmd.Sequence[step];
+
+            //間に別のが挟まった場合コマンドを無効にする
+            //if(step > 0 && data.Input != expected)
+            //{
+
+            //}
 
             if (data.Input == expected)
             {
