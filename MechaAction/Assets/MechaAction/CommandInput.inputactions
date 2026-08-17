@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Punch",
+                    "name": "Light",
                     "type": "Button",
                     "id": "71ea40d7-c856-4fe6-b22e-c373d4eed188",
                     "expectedControlType": "",
@@ -25,16 +25,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Kick",
-                    "type": "Button",
-                    "id": "65c24936-3a8d-448b-8cf6-2ee8b557f09c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "StrongPunch",
+                    "name": "Medium",
                     "type": "Button",
                     "id": "108ba090-fc6d-4f2f-8594-0d800f64f0f5",
                     "expectedControlType": "",
@@ -43,7 +34,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "StrongKick",
+                    "name": "Heavy",
                     "type": "Button",
                     "id": "d2721150-d4ee-4131-ab14-19aaec2c8a71",
                     "expectedControlType": "",
@@ -70,7 +61,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dash",
+                    "name": "Evade",
                     "type": "Button",
                     "id": "7580a605-e3c0-4d46-a51e-f8a3b91c04d6",
                     "expectedControlType": "",
@@ -97,18 +88,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MoveRight",
+                    "name": "Guard",
                     "type": "Button",
-                    "id": "9bc495e8-3e62-4230-890f-b1880bbad536",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "MoveLeft",
-                    "type": "Button",
-                    "id": "9cfda4dc-9842-421d-8476-80c76fcd730f",
+                    "id": "65c24936-3a8d-448b-8cf6-2ee8b557f09c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -178,7 +160,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Punch",
+                    "action": "Light",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -189,7 +171,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Kick",
+                    "action": "Guard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -200,7 +182,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "StrongPunch",
+                    "action": "Medium",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -211,7 +193,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "StrongKick",
+                    "action": "Heavy",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -244,7 +226,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
+                    "action": "Evade",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -267,28 +249,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "ModeChange",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e63da6e6-738b-4246-9e4c-89f5fbb0f96b",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MoveRight",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "b9898026-1c03-41b0-861d-35e75d40a334",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MoveLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

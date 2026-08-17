@@ -102,7 +102,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Punch"",
+                    ""name"": ""Light"",
                     ""type"": ""Button"",
                     ""id"": ""71ea40d7-c856-4fe6-b22e-c373d4eed188"",
                     ""expectedControlType"": """",
@@ -111,16 +111,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Kick"",
-                    ""type"": ""Button"",
-                    ""id"": ""65c24936-3a8d-448b-8cf6-2ee8b557f09c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""StrongPunch"",
+                    ""name"": ""Medium"",
                     ""type"": ""Button"",
                     ""id"": ""108ba090-fc6d-4f2f-8594-0d800f64f0f5"",
                     ""expectedControlType"": """",
@@ -129,7 +120,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""StrongKick"",
+                    ""name"": ""Heavy"",
                     ""type"": ""Button"",
                     ""id"": ""d2721150-d4ee-4131-ab14-19aaec2c8a71"",
                     ""expectedControlType"": """",
@@ -156,7 +147,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dash"",
+                    ""name"": ""Evade"",
                     ""type"": ""Button"",
                     ""id"": ""7580a605-e3c0-4d46-a51e-f8a3b91c04d6"",
                     ""expectedControlType"": """",
@@ -183,18 +174,9 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MoveRight"",
+                    ""name"": ""Guard"",
                     ""type"": ""Button"",
-                    ""id"": ""9bc495e8-3e62-4230-890f-b1880bbad536"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MoveLeft"",
-                    ""type"": ""Button"",
-                    ""id"": ""9cfda4dc-9842-421d-8476-80c76fcd730f"",
+                    ""id"": ""65c24936-3a8d-448b-8cf6-2ee8b557f09c"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -264,7 +246,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Punch"",
+                    ""action"": ""Light"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -275,7 +257,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Kick"",
+                    ""action"": ""Guard"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -286,7 +268,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""StrongPunch"",
+                    ""action"": ""Medium"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -297,7 +279,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""StrongKick"",
+                    ""action"": ""Heavy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -330,7 +312,7 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Dash"",
+                    ""action"": ""Evade"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -355,28 +337,6 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
                     ""action"": ""ModeChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e63da6e6-738b-4246-9e4c-89f5fbb0f96b"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MoveRight"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b9898026-1c03-41b0-861d-35e75d40a334"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MoveLeft"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -386,17 +346,15 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Punch = m_Player.FindAction("Punch", throwIfNotFound: true);
-        m_Player_Kick = m_Player.FindAction("Kick", throwIfNotFound: true);
-        m_Player_StrongPunch = m_Player.FindAction("StrongPunch", throwIfNotFound: true);
-        m_Player_StrongKick = m_Player.FindAction("StrongKick", throwIfNotFound: true);
+        m_Player_Light = m_Player.FindAction("Light", throwIfNotFound: true);
+        m_Player_Medium = m_Player.FindAction("Medium", throwIfNotFound: true);
+        m_Player_Heavy = m_Player.FindAction("Heavy", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
-        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_Evade = m_Player.FindAction("Evade", throwIfNotFound: true);
         m_Player_Switch = m_Player.FindAction("Switch", throwIfNotFound: true);
         m_Player_ModeChange = m_Player.FindAction("ModeChange", throwIfNotFound: true);
-        m_Player_MoveRight = m_Player.FindAction("MoveRight", throwIfNotFound: true);
-        m_Player_MoveLeft = m_Player.FindAction("MoveLeft", throwIfNotFound: true);
+        m_Player_Guard = m_Player.FindAction("Guard", throwIfNotFound: true);
     }
 
     ~@CommandInput()
@@ -478,17 +436,15 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Punch;
-    private readonly InputAction m_Player_Kick;
-    private readonly InputAction m_Player_StrongPunch;
-    private readonly InputAction m_Player_StrongKick;
+    private readonly InputAction m_Player_Light;
+    private readonly InputAction m_Player_Medium;
+    private readonly InputAction m_Player_Heavy;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Crouch;
-    private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_Evade;
     private readonly InputAction m_Player_Switch;
     private readonly InputAction m_Player_ModeChange;
-    private readonly InputAction m_Player_MoveRight;
-    private readonly InputAction m_Player_MoveLeft;
+    private readonly InputAction m_Player_Guard;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -505,21 +461,17 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Move => m_Wrapper.m_Player_Move;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Punch".
+        /// Provides access to the underlying input action "Player/Light".
         /// </summary>
-        public InputAction @Punch => m_Wrapper.m_Player_Punch;
+        public InputAction @Light => m_Wrapper.m_Player_Light;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Kick".
+        /// Provides access to the underlying input action "Player/Medium".
         /// </summary>
-        public InputAction @Kick => m_Wrapper.m_Player_Kick;
+        public InputAction @Medium => m_Wrapper.m_Player_Medium;
         /// <summary>
-        /// Provides access to the underlying input action "Player/StrongPunch".
+        /// Provides access to the underlying input action "Player/Heavy".
         /// </summary>
-        public InputAction @StrongPunch => m_Wrapper.m_Player_StrongPunch;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/StrongKick".
-        /// </summary>
-        public InputAction @StrongKick => m_Wrapper.m_Player_StrongKick;
+        public InputAction @Heavy => m_Wrapper.m_Player_Heavy;
         /// <summary>
         /// Provides access to the underlying input action "Player/Jump".
         /// </summary>
@@ -529,9 +481,9 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Dash".
+        /// Provides access to the underlying input action "Player/Evade".
         /// </summary>
-        public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @Evade => m_Wrapper.m_Player_Evade;
         /// <summary>
         /// Provides access to the underlying input action "Player/Switch".
         /// </summary>
@@ -541,13 +493,9 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ModeChange => m_Wrapper.m_Player_ModeChange;
         /// <summary>
-        /// Provides access to the underlying input action "Player/MoveRight".
+        /// Provides access to the underlying input action "Player/Guard".
         /// </summary>
-        public InputAction @MoveRight => m_Wrapper.m_Player_MoveRight;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/MoveLeft".
-        /// </summary>
-        public InputAction @MoveLeft => m_Wrapper.m_Player_MoveLeft;
+        public InputAction @Guard => m_Wrapper.m_Player_Guard;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -577,39 +525,33 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Punch.started += instance.OnPunch;
-            @Punch.performed += instance.OnPunch;
-            @Punch.canceled += instance.OnPunch;
-            @Kick.started += instance.OnKick;
-            @Kick.performed += instance.OnKick;
-            @Kick.canceled += instance.OnKick;
-            @StrongPunch.started += instance.OnStrongPunch;
-            @StrongPunch.performed += instance.OnStrongPunch;
-            @StrongPunch.canceled += instance.OnStrongPunch;
-            @StrongKick.started += instance.OnStrongKick;
-            @StrongKick.performed += instance.OnStrongKick;
-            @StrongKick.canceled += instance.OnStrongKick;
+            @Light.started += instance.OnLight;
+            @Light.performed += instance.OnLight;
+            @Light.canceled += instance.OnLight;
+            @Medium.started += instance.OnMedium;
+            @Medium.performed += instance.OnMedium;
+            @Medium.canceled += instance.OnMedium;
+            @Heavy.started += instance.OnHeavy;
+            @Heavy.performed += instance.OnHeavy;
+            @Heavy.canceled += instance.OnHeavy;
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
             @Crouch.started += instance.OnCrouch;
             @Crouch.performed += instance.OnCrouch;
             @Crouch.canceled += instance.OnCrouch;
-            @Dash.started += instance.OnDash;
-            @Dash.performed += instance.OnDash;
-            @Dash.canceled += instance.OnDash;
+            @Evade.started += instance.OnEvade;
+            @Evade.performed += instance.OnEvade;
+            @Evade.canceled += instance.OnEvade;
             @Switch.started += instance.OnSwitch;
             @Switch.performed += instance.OnSwitch;
             @Switch.canceled += instance.OnSwitch;
             @ModeChange.started += instance.OnModeChange;
             @ModeChange.performed += instance.OnModeChange;
             @ModeChange.canceled += instance.OnModeChange;
-            @MoveRight.started += instance.OnMoveRight;
-            @MoveRight.performed += instance.OnMoveRight;
-            @MoveRight.canceled += instance.OnMoveRight;
-            @MoveLeft.started += instance.OnMoveLeft;
-            @MoveLeft.performed += instance.OnMoveLeft;
-            @MoveLeft.canceled += instance.OnMoveLeft;
+            @Guard.started += instance.OnGuard;
+            @Guard.performed += instance.OnGuard;
+            @Guard.canceled += instance.OnGuard;
         }
 
         /// <summary>
@@ -624,39 +566,33 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Punch.started -= instance.OnPunch;
-            @Punch.performed -= instance.OnPunch;
-            @Punch.canceled -= instance.OnPunch;
-            @Kick.started -= instance.OnKick;
-            @Kick.performed -= instance.OnKick;
-            @Kick.canceled -= instance.OnKick;
-            @StrongPunch.started -= instance.OnStrongPunch;
-            @StrongPunch.performed -= instance.OnStrongPunch;
-            @StrongPunch.canceled -= instance.OnStrongPunch;
-            @StrongKick.started -= instance.OnStrongKick;
-            @StrongKick.performed -= instance.OnStrongKick;
-            @StrongKick.canceled -= instance.OnStrongKick;
+            @Light.started -= instance.OnLight;
+            @Light.performed -= instance.OnLight;
+            @Light.canceled -= instance.OnLight;
+            @Medium.started -= instance.OnMedium;
+            @Medium.performed -= instance.OnMedium;
+            @Medium.canceled -= instance.OnMedium;
+            @Heavy.started -= instance.OnHeavy;
+            @Heavy.performed -= instance.OnHeavy;
+            @Heavy.canceled -= instance.OnHeavy;
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
             @Crouch.started -= instance.OnCrouch;
             @Crouch.performed -= instance.OnCrouch;
             @Crouch.canceled -= instance.OnCrouch;
-            @Dash.started -= instance.OnDash;
-            @Dash.performed -= instance.OnDash;
-            @Dash.canceled -= instance.OnDash;
+            @Evade.started -= instance.OnEvade;
+            @Evade.performed -= instance.OnEvade;
+            @Evade.canceled -= instance.OnEvade;
             @Switch.started -= instance.OnSwitch;
             @Switch.performed -= instance.OnSwitch;
             @Switch.canceled -= instance.OnSwitch;
             @ModeChange.started -= instance.OnModeChange;
             @ModeChange.performed -= instance.OnModeChange;
             @ModeChange.canceled -= instance.OnModeChange;
-            @MoveRight.started -= instance.OnMoveRight;
-            @MoveRight.performed -= instance.OnMoveRight;
-            @MoveRight.canceled -= instance.OnMoveRight;
-            @MoveLeft.started -= instance.OnMoveLeft;
-            @MoveLeft.performed -= instance.OnMoveLeft;
-            @MoveLeft.canceled -= instance.OnMoveLeft;
+            @Guard.started -= instance.OnGuard;
+            @Guard.performed -= instance.OnGuard;
+            @Guard.canceled -= instance.OnGuard;
         }
 
         /// <summary>
@@ -705,33 +641,26 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Punch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Light" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPunch(InputAction.CallbackContext context);
+        void OnLight(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Kick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Medium" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnKick(InputAction.CallbackContext context);
+        void OnMedium(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "StrongPunch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Heavy" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnStrongPunch(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "StrongKick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnStrongKick(InputAction.CallbackContext context);
+        void OnHeavy(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Jump" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -747,12 +676,12 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCrouch(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Dash" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Evade" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnDash(InputAction.CallbackContext context);
+        void OnEvade(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Switch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -768,18 +697,11 @@ public partial class @CommandInput: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnModeChange(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "MoveRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Guard" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMoveRight(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "MoveLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMoveLeft(InputAction.CallbackContext context);
+        void OnGuard(InputAction.CallbackContext context);
     }
 }

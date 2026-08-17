@@ -1,20 +1,24 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputClass : IInputProvide
+public class InputClass
 {
     //InputSystem----------------
     private CommandInput m_action;
 
     private Vector2 m_move;
-    private bool m_IsRun;
+    //private bool m_IsRun;
+    private bool m_gurad;
     private float m_TimeRightDashing;
     private float m_TimeLeftDashing;
 
-    private bool m_IsJumped;
-    private bool m_IsDashed;
+    //private bool m_IsJumped;
+    //private bool m_IsDashed;
     private PlayerAttackMode m_attackMode = PlayerAttackMode.Sword;
     private int m_frontDir = 1;
+
+    //back input(4) auto guard
+    //input j guard
 
     public void Enable()
     {
@@ -22,13 +26,15 @@ public class InputClass : IInputProvide
 
         m_action.Player.Move.performed += InputMove;
         m_action.Player.Move.canceled += InputMove;
-        m_action.Player.Move.canceled += InputDashCancel;
+        //m_action.Player.Move.canceled += InputDashCancel;
 
-        m_action.Player.MoveRight.performed += InputMoveRight;
-        m_action.Player.MoveLeft.performed += InputMoveLeft;
+        //m_action.Player.MoveRight.performed += InputMoveRight;
+        //m_action.Player.MoveLeft.performed += InputMoveLeft;
 
-        m_action.Player.Jump.performed += InputJump;
-        m_action.Player.Dash.performed += InputDash;
+        //m_action.Player.Jump.performed += InputJump;
+        //m_action.Player.Dash.performed += InputDash;
+        m_action.Player.Guard.performed += InputGuard;
+        m_action.Player.Guard.canceled += InputGuard;
         m_action.Player.ModeChange.performed += InputAttackModeChange;
 
         m_action.Player.Switch.performed += InputSwitch;
@@ -62,47 +68,62 @@ public class InputClass : IInputProvide
        
     }
 
-    private void InputMoveRight(InputAction.CallbackContext context)
+    private void InputGuard(InputAction.CallbackContext context)
     {
-        if (m_TimeRightDashing > 0)
+        if(context.performed)
         {
-            m_IsRun = true;
-            m_TimeRightDashing = 0;
+            m_gurad = true;
+
+        }
+        else if(context.canceled)
+        {
+            m_gurad = false;
+
         }
 
-        m_TimeLeftDashing = 0f;
-        m_TimeRightDashing = 0.3f;
     }
 
-    private void InputMoveLeft(InputAction.CallbackContext context)
-    {
-        if (m_TimeLeftDashing > 0)
-        {
-            m_IsRun = true;
-            m_TimeLeftDashing = 0;
-        }
+    //private void InputMoveRight(InputAction.CallbackContext context)
+    //{
+    //    if (m_TimeRightDashing > 0)
+    //    {
+    //        m_IsRun = true;
+    //        m_TimeRightDashing = 0;
+    //    }
 
-        m_TimeRightDashing = 0f;
-        m_TimeLeftDashing = 0.3f;
-    }
+    //    m_TimeLeftDashing = 0f;
+    //    m_TimeRightDashing = 0.3f;
+    //}
 
-    private void InputDashCancel(InputAction.CallbackContext context)
-    {
-        if(m_IsRun)
-        {
-            m_IsRun = false;
-        }
-    }
+    //private void InputMoveLeft(InputAction.CallbackContext context)
+    //{
+    //    if (m_TimeLeftDashing > 0)
+    //    {
+    //        m_IsRun = true;
+    //        m_TimeLeftDashing = 0;
+    //    }
 
-    private void InputJump(InputAction.CallbackContext context)
-    {
-        m_IsJumped = true;
-    }
+    //    m_TimeRightDashing = 0f;
+    //    m_TimeLeftDashing = 0.3f;
+    //}
 
-    private void InputDash(InputAction.CallbackContext context)
-    {
-        m_IsDashed = true;
-    }
+    //private void InputDashCancel(InputAction.CallbackContext context)
+    //{
+    //    if(m_IsRun)
+    //    {
+    //        m_IsRun = false;
+    //    }
+    //}
+
+    //private void InputJump(InputAction.CallbackContext context)
+    //{
+    //    m_IsJumped = true;
+    //}
+
+    //private void InputDash(InputAction.CallbackContext context)
+    //{
+    //    m_IsDashed = true;
+    //}
 
     private void InputAttackModeChange(InputAction.CallbackContext context)
     {
@@ -137,35 +158,43 @@ public class InputClass : IInputProvide
         }
     }
 
-    public bool IsRun
+    public bool IsGuard
     {
         get
         {
-            return m_IsRun;
+            return m_gurad;
         }
     }
 
-    public bool IsJump
-    {
-        get
-        {
-            bool result = m_IsJumped;
-            m_IsJumped = false;
+    //public bool IsRun
+    //{
+    //    get
+    //    {
+    //        return m_IsRun;
+    //    }
+    //}
 
-            return result;
-        }
-    }
+    //public bool IsJump
+    //{
+    //    get
+    //    {
+    //        bool result = m_IsJumped;
+    //        m_IsJumped = false;
 
-    public bool IsDashed
-    {
-        get
-        {
-            bool result = m_IsDashed;
-            m_IsDashed = false;
+    //        return result;
+    //    }
+    //}
 
-            return result;
-        }
-    }
+    //public bool IsDashed
+    //{
+    //    get
+    //    {
+    //        bool result = m_IsDashed;
+    //        m_IsDashed = false;
+
+    //        return result;
+    //    }
+    //}
 
     public PlayerAttackMode AttackMode
     {

@@ -53,8 +53,23 @@ public class DebugCommandManager : MonoBehaviour
     {
         switch(input)
         {
-            case "Punch":
+            case "U":
                 m_inputSprite = m_imageData.Find(x => x.m_type == CommandType.U).m_sprite;
+                m_dirSprite = null;
+                m_inputCommand = true;
+                break;
+            case "I":
+                m_inputSprite = m_imageData.Find(x => x.m_type == CommandType.I).m_sprite;
+                m_dirSprite = null;
+                m_inputCommand = true;
+                break;
+            case "O":
+                m_inputSprite = m_imageData.Find(x => x.m_type == CommandType.O).m_sprite;
+                m_dirSprite = null;
+                m_inputCommand = true;
+                break;
+            case "EV":
+                m_inputSprite = m_imageData.Find(x => x.m_type == CommandType.EV).m_sprite;
                 m_dirSprite = null;
                 m_inputCommand = true;
                 break;

@@ -1001,6 +1001,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4473482150885742239, guid: 9a5313adef6fb71419b394741f29e786, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5944531c64948ff4bb6ec6ca46e29fe3, type: 2}
     - target: {fileID: 6775975967851873591, guid: 9a5313adef6fb71419b394741f29e786, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1224,7 +1228,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5944531c64948ff4bb6ec6ca46e29fe3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1647,6 +1651,16 @@ MonoBehaviour:
     m_sprite: {fileID: 1635607773, guid: af936bd61e5e79a448306572a8a6aa4e, type: 3}
   - m_type: 9
     m_sprite: {fileID: -1935380960, guid: af936bd61e5e79a448306572a8a6aa4e, type: 3}
+  - m_type: 10
+    m_sprite: {fileID: 1864609015, guid: af936bd61e5e79a448306572a8a6aa4e, type: 3}
+  - m_type: 11
+    m_sprite: {fileID: -41544457, guid: af936bd61e5e79a448306572a8a6aa4e, type: 3}
+  - m_type: 12
+    m_sprite: {fileID: 1531454370, guid: af936bd61e5e79a448306572a8a6aa4e, type: 3}
+  - m_type: 13
+    m_sprite: {fileID: -607282593, guid: af936bd61e5e79a448306572a8a6aa4e, type: 3}
+  - m_type: 14
+    m_sprite: {fileID: -574420030, guid: af936bd61e5e79a448306572a8a6aa4e, type: 3}
   m_viewObj:
   - {fileID: 1809757959}
   - {fileID: 2129461704}

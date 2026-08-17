@@ -673,7 +673,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9a54ff46394ba846964bba880939957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CommandManager
-  inputActions: {fileID: -944628639613478452, guid: ef24843de1d159b458b54350abe9e55a, type: 3}
   bufferLimit: 30
   frameDuration: 60
   Frametest: 0
@@ -794,7 +793,7 @@ PrefabInstance:
     - target: {fileID: -6499090340583899587, guid: d4c1d7fd9a58a86428bde1d0ac76bb5b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7b1e4fe8916c9ad4aa854a63f6d48db8, type: 2}
+      objectReference: {fileID: 2100000, guid: 5944531c64948ff4bb6ec6ca46e29fe3, type: 2}
     - target: {fileID: 919132149155446097, guid: d4c1d7fd9a58a86428bde1d0ac76bb5b, type: 3}
       propertyPath: m_Name
       value: MechaActionTestPlayer

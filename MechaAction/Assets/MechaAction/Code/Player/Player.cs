@@ -16,10 +16,11 @@ public class Player : Entity
         Idle,
         Walk,
         Run,
-        Dash,
+        Evade,
         Attack,
         Hit,
         Guard,
+        AutoGuard,
         Down,
         Dead
     }
@@ -45,15 +46,17 @@ public class Player : Entity
     //PlayerState---------------------
     private bool m_canDoubleJump;
 
-    private bool m_IsDashed;
+    //private bool m_IsDashed;
+
+    private bool m_IsGuard;
     //--------------------------------
 
     //PlayerStateTimer----------------
-    private float m_TimeDashed;
+    private float m_TimeEvade;
     //--------------------------------
 
     // input action script
-    private IInputProvide m_input;
+    private InputClass m_input;
 
     protected override void Awake()
     {
@@ -97,10 +100,11 @@ public class Player : Entity
         m_input.Update();
 
         m_moveDir = m_input.Move;
-        m_IsJumped = m_input.IsJump;
-        m_IsDashed = m_input.IsDashed;
-        m_IsRunning = m_input.IsRun;
+        //m_IsJumped = m_input.IsJump;
+        //m_IsDashed = m_input.IsDashed;
+        //m_IsRunning = m_input.IsRun;
         m_frontDir = m_input.FrontDir;
+        m_IsGuard = m_input.IsGuard;
 
         if (!m_IsGrounded)
         {
@@ -116,11 +120,7 @@ public class Player : Entity
             m_canDoubleJump = true;
         }
 
-        if(m_IsDashed)
-        {
-
-            OnDash();
-        }
+        OnGuard();
         
 
         if (m_IsJumped)
@@ -132,13 +132,13 @@ public class Player : Entity
 
     }
 
-    private void CallJump()
+    public void CallJump()
     {
         if (m_actionState == EnumActionState.Dead) return;
 
         if (m_actionState == EnumActionState.Down) return;
 
-        if (m_actionState == EnumActionState.Dash) return;
+        if (m_actionState == EnumActionState.Evade) return;
 
         OnJump();
     }
@@ -151,7 +151,7 @@ public class Player : Entity
 
         if (m_actionState == EnumActionState.Attack) return;
 
-        if (m_actionState == EnumActionState.Dash) return;
+        if (m_actionState == EnumActionState.Evade) return;
 
         //run - walk - idle
         if(m_IsRunning)
@@ -191,7 +191,7 @@ public class Player : Entity
 
         if (m_actionState == EnumActionState.Down) return;
 
-        if (m_actionState == EnumActionState.Dash) return;
+        if (m_actionState == EnumActionState.Evade) return;
 
         OnMove(dir);
     }
@@ -199,11 +199,11 @@ public class Player : Entity
     private void OnPlayerStatusTimer()
     {
         //player state change return when dash
-        if (m_TimeDashed > 0)
+        if (m_TimeEvade > 0)
         {
-            m_TimeDashed -= Time.deltaTime;
+            m_TimeEvade -= Time.deltaTime;
 
-            if (m_TimeDashed <= 0)
+            if (m_TimeEvade <= 0)
             {
                 //m_canActive = true;
                 OnChangeActionState(EnumActionState.Idle);
@@ -219,15 +219,45 @@ public class Player : Entity
         m_rb.AddForce(Vector3.up * Jump, ForceMode.Impulse);
     }
 
-    private void OnDash()
+    public void OnRun()
     {
+        m_IsRunning = true;
+    }
+
+    public void OnResetRun()
+    {
+        m_IsRunning = false;
+    }
+
+    public void OnEvade()
+    {
+        if (m_actionState != EnumActionState.Evade) return;
+
         m_IsInvincible = true;
-        OnChangeActionState(EnumActionState.Dash);
+        OnChangeActionState(EnumActionState.Evade);
         //Debug.Log(Forward);
 
         m_rb.AddForce(Forward * 30f, ForceMode.Impulse);
 
-        m_TimeDashed = 0.2f;
+        m_TimeEvade = 0.2f;
+    }
+
+    private void OnGuard()
+    {
+        if (m_input.IsGuard)
+        {
+            if (m_actionState != EnumActionState.Guard)
+            {
+                OnChangeActionState(EnumActionState.Guard);
+            }
+        }
+        else
+        {
+            if (m_actionState == EnumActionState.Guard)
+            {
+                OnChangeActionState(EnumActionState.Idle);
+            }
+        }
     }
 
     public override bool CanTakeDamage()
@@ -246,6 +276,11 @@ public class Player : Entity
 
     private void OnChangeActionState(EnumActionState state)
     {
+        if (state != EnumActionState.Run && state != EnumActionState.Attack)
+        {
+            OnResetRun();
+        }
+
         m_actionState = state;
     }
 

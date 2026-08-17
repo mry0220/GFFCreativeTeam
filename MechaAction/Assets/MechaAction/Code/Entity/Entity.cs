@@ -63,6 +63,7 @@ public abstract class Entity : MonoBehaviour
 
     protected bool m_IsJumped;
 
+
     //can entity move by oneself. move or jump or attack or Input
     //protected bool m_canActive = true;
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -51,7 +52,12 @@ public class CommandManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private InputActionAsset inputActions; //inputsystem
+    //InputSystem----------------
+    private CommandInput m_action;
+
+    private Vector2 m_move;
+
+    //[SerializeField] private InputActionAsset inputActions; //inputsystem
     [SerializeField] private int bufferLimit = 30; // 入力履歴の格納量
     [SerializeField] private float frameDuration = 60f; //時間管理のフレーム（高フレーム環境でも安定した入力難易度を設定できる
     [SerializeField] private float Frametest;
@@ -61,11 +67,14 @@ public class CommandManager : MonoBehaviour
     [SerializeField] private int _currentFrame = 0; //入力が行われたフレーム番号を記録するための基準
     private float _frameTimer = 0f; //Time.deltatimeを加算しframeDurationを超えたら_currentframeに加算
 
-    private InputAction _moveAction; 
-    private InputAction _punchAction;
-    private InputAction _kickAction;
-    private InputAction _strongPunchAction;
-    private InputAction _strongKickAction;
+    //private InputAction _moveAction; 
+    //private InputAction _punchAction;
+    //private InputAction _kickAction;
+    //private InputAction _strongPunchAction;
+    //private InputAction _strongKickAction;
+
+    private int m_jumpBufferFrame;
+    private bool m_pendingJump = false;
 
     private Player m_player;
 
@@ -75,18 +84,18 @@ public class CommandManager : MonoBehaviour
 
     private void Awake()
     {
-        var map = inputActions.FindActionMap("Player"); //inputActionsAssetに含まれるActionMap Playerを代入
+        //var map = inputActions.FindActionMap("Player"); //inputActionsAssetに含まれるActionMap Playerを代入
 
-        _moveAction = map.FindAction("Move"); //それぞれのactionの代入
-        _punchAction = map.FindAction("Punch");
-        _kickAction = map.FindAction("Kick");
-        _strongPunchAction = map.FindAction("StrongPunch");
-        _strongKickAction = map.FindAction("StrongKick");
+        //_moveAction = map.FindAction("Move"); //それぞれのactionの代入
+        //_punchAction = map.FindAction("Punch");
+        //_kickAction = map.FindAction("Kick");
+        //_strongPunchAction = map.FindAction("StrongPunch");
+        //_strongKickAction = map.FindAction("StrongKick");
 
-        _punchAction.performed += ctx => AddInput("Punch"); //それぞれの入力が入ったら履歴に追加する「処理」を登録
-        _kickAction.performed += ctx => AddInput("Kick");
-        _strongPunchAction.performed += ctx => AddInput("StrongPunch");
-        _strongKickAction.performed += ctx => AddInput("StrongKick");
+        //_punchAction.performed += ctx => AddInput("Punch"); //それぞれの入力が入ったら履歴に追加する「処理」を登録
+        //_kickAction.performed += ctx => AddInput("Kick");
+        //_strongPunchAction.performed += ctx => AddInput("StrongPunch");
+        //_strongKickAction.performed += ctx => AddInput("StrongKick");
 
         m_player = GetComponent<Player>();
      //   QualitySettings.vSyncCount = 0;
@@ -95,20 +104,34 @@ public class CommandManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _moveAction.Enable();
-        _punchAction.Enable();
-        _kickAction.Enable();
-        _strongPunchAction.Enable();
-        _strongKickAction.Enable();
+        m_action = new CommandInput();
+
+        m_action.Player.Move.performed += InputMove;
+        m_action.Player.Move.canceled += InputMove;
+
+        m_action.Player.Evade.performed += InputEvade;
+        m_action.Player.Light.performed += InputLight;
+        m_action.Player.Medium.performed += InputMedium;
+        m_action.Player.Heavy.performed += InputHeavy;
+
+        m_action.Enable();
+
+        //_moveAction.Enable();
+        //_punchAction.Enable();
+        //_kickAction.Enable();
+        //_strongPunchAction.Enable();
+        //_strongKickAction.Enable();
     }
 
     private void OnDisable()
     {
-        _moveAction.Disable();
-        _punchAction.Disable();
-        _kickAction.Disable();
-        _strongPunchAction.Disable();
-        _strongKickAction.Disable();
+        m_action.Disable();
+
+        //_moveAction.Disable();
+        //_punchAction.Disable();
+        //_kickAction.Disable();
+        //_strongPunchAction.Disable();
+        //_strongKickAction.Disable();
     }
 
     private void Start()
@@ -135,13 +158,38 @@ public class CommandManager : MonoBehaviour
         Frametest = _currentFrame;
     }
 
+    private void InputMove(InputAction.CallbackContext context)
+    {
+        m_move = context.ReadValue<Vector2>();
+    }
+
+    private void InputEvade(InputAction.CallbackContext context)
+    {
+        AddInput("EV");
+    }
+
+    private void InputLight(InputAction.CallbackContext context)
+    {
+        AddInput("U");
+    }
+
+    private void InputMedium(InputAction.CallbackContext context)
+    {
+        AddInput("I");
+    }
+
+    private void InputHeavy(InputAction.CallbackContext context)
+    {
+        AddInput("O");
+    }
 
     private void DetectDirectionalInput()
     {
         int x;
         int y;
 
-        Vector2 dir = _moveAction.ReadValue<Vector2>();
+        //Vector2 dir = _moveAction.ReadValue<Vector2>();
+        Vector2 dir = m_move;
 
         if(m_player.Forward.x > 0)
         {
@@ -155,6 +203,23 @@ public class CommandManager : MonoBehaviour
         }
 
         int num = 5+x+y;
+
+        if(y == 3)
+        {
+            if(!m_pendingJump)
+            {
+                m_jumpBufferFrame = 4;
+                m_pendingJump = true;
+            }
+        }
+
+        if(m_player.actionState == Player.EnumActionState.Run)
+        {
+            if(num == 5 || num == 4 || num == 7)
+            {
+                m_player.OnResetRun();
+            }
+        }
 
        // Debug.Log(_currentFrame);
         if(num >= 1 && num <= 9 )//&& num != 5
@@ -184,18 +249,21 @@ public class CommandManager : MonoBehaviour
 
     private void RegisterCommands() //コマンド技の登録
     {
-        commandList.Add(new Command(1, "Reload", new List<string> { "2", "5", "2", "Punch" }, 10));
-        commandList.Add(new Command(2,"Hadouken", new List<string> { "2", "3", "6", "Punch"}, 10));
-        commandList.Add(new Command(3,"Shouryuken", new List<string> { "6", "2", "3", "Punch" }, 10));
-        commandList.Add(new Command(4,"Tatsumakisenpukyaku", new List<string> { "2", "1", "4", "Kick" }, 10));
-        commandList.Add(new Command(5,"TyrantRave", new List<string> { "6", "3", "2","1","4","6", "Punch" }, 10));
-        commandList.Add(new Command(6,"Shinkuuhadouken", new List<string> { "2", "3", "6","2","3","6", "StrongPunch" }, 10));
-        commandList.Add(new Command(7,"Shinkuutatumakisenpukyaku", new List<string> { "2", "1", "4","2","1","4", "StrongKick" }, 10));
-        commandList.Add(new Command(8,"GyakuyogaFlame", new List<string> { "6", "3", "2","1","4", "StrongPunch" }, 10));
-        commandList.Add(new Command(9,"irukasan", new List<string> { "4", "4", "4","4","6", "StrongPunch" }, 10));
-        commandList.Add(new Command(10,"Attack", new List<string> { "Punch" }, 10));
-        commandList.Add(new Command(11, "Dash", new List<string> { "6","5","6" }, 60));
+        commandList.Add(new Command(1, "Reload", new List<string> { "2", "5", "2", "U" }, 10));
+        commandList.Add(new Command(2,"Hadouken", new List<string> { "2", "3", "6", "U"}, 10));
+        commandList.Add(new Command(3,"Shouryuken", new List<string> { "6", "2", "3", "U" }, 10));
+        commandList.Add(new Command(4,"Tatsumakisenpukyaku", new List<string> { "2", "1", "4", "I" }, 10));
+        commandList.Add(new Command(5,"TyrantRave", new List<string> { "6", "3", "2","1","4","6", "U" }, 10));
+        commandList.Add(new Command(6,"Shinkuuhadouken", new List<string> { "2", "3", "6","2","3","6", "I" }, 10));
+        commandList.Add(new Command(7,"Shinkuutatumakisenpukyaku", new List<string> { "2", "1", "4","2","1","4", "I" }, 10));
+        commandList.Add(new Command(8,"GyakuyogaFlame", new List<string> { "6", "3", "2","1","4", "O" }, 10));
+        commandList.Add(new Command(9,"irukasan", new List<string> { "4", "4", "4","4","6", "O" }, 10));
+        commandList.Add(new Command(10,"Run", new List<string> { "6","5","6" }, 8));
+        commandList.Add(new Command(11, "Evade", new List<string> { "EV" }, 1));
+        commandList.Add(new Command(12, "UpperAttack", new List<string> { "8","U" }, 4));
+        commandList.Add(new Command(13, "Attack", new List<string> { "U" }, 10));
 
+        //commandList.Add(new Command(14, "Jump", new List<string> { "8" }, 1));
 
     }
 
@@ -216,17 +284,35 @@ public class CommandManager : MonoBehaviour
                         m_player.OnShouryuken();
                         break;
                     case 10:
-                        m_player.OnNormalAttack();
+                        m_player.OnRun();
+                        Debug.Log("Run");
                         break;
                     case 11:
-                        Debug.Log("Command Dash");
+     
+                        m_player.OnEvade();
+                        Debug.Log("EV");
                         break;
+                    case 12:
+                    
+                        Debug.Log("upperAttack");
+
+                        break;
+                    case 13:
+                        m_player.OnNormalAttack();
+
+                        break;
+                    //case 14:
+                    //    m_player.CallJump();
+                    //    break;
                 }
                 //Debug.Log($"技発動:{cmd.Name} Frame: {_currentFrame}");
                 _inputBuffer.Clear(); //履歴の初期化
                 break;
             }
         }
+
+        // コマンドが成立しなかった場合 jumpはここで
+        CheckPendingInput();
     }
 
     private bool MatchCommand(Command cmd)
@@ -279,4 +365,21 @@ public class CommandManager : MonoBehaviour
         return false;
     }
 
+    private void CheckPendingInput()
+    {
+        // 8が入力されたが、
+        // まだ8Pになる可能性がある
+        if (m_jumpBufferFrame > 0)
+        {
+            m_jumpBufferFrame--;
+            return;
+        }
+
+        // 受付時間が終わった
+        if (m_jumpBufferFrame <= 0 && m_pendingJump)
+        {
+            m_pendingJump = false;
+            m_player.CallJump();
+        }
+    }
 }
